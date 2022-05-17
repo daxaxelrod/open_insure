@@ -61,3 +61,18 @@ class Claim(models.Model):
     claiment = models.ForeignKey(
         "pods.User", on_delete=models.CASCADE, related_name="claims"
     )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class ClaimApproval(models.Model):
+    claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="approvals")
+    
+    # no restrictions at the db level because of the direct democracy OR forced commitee switch
+    # to be done at the app level
+    approver = models.ForeignKey(
+        "pods.User", on_delete=models.CASCADE, related_name="approvals"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

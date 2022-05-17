@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from pods.models import Pod
+from pods.models import Pod, User
 from pods.utils.custom_serializers import FieldExcludableModelSerializer
 
 
@@ -13,7 +13,7 @@ class PodSerializer(FieldExcludableModelSerializer):
 
     class Meta:
         model = Pod
-        fields = ('id', 'name', 'description', 'created_at', 'updated_at', 'creator', 'members')
+        fields = ['id', 'name', 'description', 'created_at', 'updated_at', 'creator', 'members']
 
 
 # Private, more permissive
@@ -21,5 +21,15 @@ class UserSerializer(ModelSerializer):
     pods = PodSerializer(many=True, read_only=True, exclude=['members'])
 
     class Meta:
-        model = Pod
-        fields = "*"
+        model = User
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "picture",
+            "created_at",
+            "updated_at",
+            "verified_email",
+            "pods",
+        ]
