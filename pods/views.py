@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 
 from pods.models import Pod, User
@@ -11,3 +10,9 @@ class PodViewSet(ModelViewSet):
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        
