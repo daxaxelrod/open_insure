@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
     'pods',
     'policies',
 ]
@@ -148,8 +148,8 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=env("ACCESS_TOKEN_LIFETIME_MINUTES")),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=env("REFRESH_TOKEN_LIFETIME_DAYS")),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(env("ACCESS_TOKEN_LIFETIME_MINUTES"))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(env("REFRESH_TOKEN_LIFETIME_DAYS"))),
     'UPDATE_LAST_LOGIN': False,
 
     'ALGORITHM': 'HS256',
