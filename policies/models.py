@@ -46,15 +46,30 @@ class Policy(models.Model):
         -1 means no limit.
     """,
     )
-    # pool_escrow = # an interface to some finicial provider setup with settings/config
+
+    # for now every member pays the same premium amount, set at the policy level.
+    # In the future, we will have a premium per member, based on risk of that memeber to the rest of the pod
+    premium_amount = models.IntegerField(default=500, validators=[MinValueValidator(100)], help_text="in cents")
+
+    # an interface to some finicial provider setup with settings/config
+    # actually might be better to have an injected provider, one per instance of the app
+    # escrow_agent = models.CharField(choices=ESCROW_AGENT_TYPES, max_length=32, default="logging_escrow_agent")
+    
     claim_payout_limit = models.IntegerField(validators=[MinValueValidator(-1)])
 
     estimated_risk = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(100)]
-    )
+    ) # an guess set by how big the current pool and pod are
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class Premium(models.Model):
+    amount = models.IntegerField(validators=[MinValueValidator(1)], help_text='in cents')
+    policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name='premiums')
+    payer = models.ForeignKey('pods.User', on_delete=models.CASCADE, related_name='premiums_paid')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Claim(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="claims")

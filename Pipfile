@@ -9,6 +9,7 @@ django = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
 dr-cli = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
