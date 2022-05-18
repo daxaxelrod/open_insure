@@ -11,6 +11,12 @@ class PublicMemberSerializer(ModelSerializer):
 class PodSerializer(FieldExcludableModelSerializer):
     members = PublicMemberSerializer(many=True, read_only=True)
 
+    def create(self, validated_data):
+        return Pod.objects.create(
+            created_by=self.context['request'].user,
+            **validated_data
+        )
+
     class Meta:
         model = Pod
         fields = ['id', 'name', 'description', 'created_at', 'updated_at', 'creator', 'members']

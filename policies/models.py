@@ -26,7 +26,12 @@ POLICY_GOVERNANCE_TYPES = [
     ("voluntary_commitee", "Voluntary Commitee"),
 ]
 
-# Create your models here.
+PREMIUM_PAYMENT_FREQUENCY_CHOICES = [
+    (0, "Yearly"),
+    (1, "Monthly"),
+    (2, "Quarterly")
+]
+
 class Policy(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -37,6 +42,10 @@ class Policy(models.Model):
     coverage_type = models.CharField(choices=COVERAGE_TYPES, max_length=32)
     policy_type = models.CharField(choices=POLICY_TYPES, max_length=32)
     governance_type = models.CharField(choices=POLICY_GOVERNANCE_TYPES, max_length=32)
+
+    
+    coverage_start_date = models.DateTimeField(null=True, blank=True)
+    coverage_duration = models.IntegerField(validators=[MinValueValidator(3), MaxValueValidator(36)], default=12, help_text="Duration of policy, in months")
 
     max_pool_size = models.IntegerField(
         validators=[MinValueValidator(-1)],
@@ -50,6 +59,7 @@ class Policy(models.Model):
     # for now every member pays the same premium amount, set at the policy level.
     # In the future, we will have a premium per member, based on risk of that memeber to the rest of the pod
     premium_amount = models.IntegerField(default=500, validators=[MinValueValidator(100)], help_text="in cents")
+    premium_payment_frequency = models.IntegerField(choices=PREMIUM_PAYMENT_FREQUENCY_CHOICES, default=0, help_text="How often premiums are due,")
 
     # an interface to some finicial provider setup with settings/config
     # actually might be better to have an injected provider, one per instance of the app
@@ -68,6 +78,7 @@ class Premium(models.Model):
     amount = models.IntegerField(validators=[MinValueValidator(1)], help_text='in cents')
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name='premiums')
     payer = models.ForeignKey('pods.User', on_delete=models.CASCADE, related_name='premiums_paid')
+    paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -79,6 +90,33 @@ class Claim(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class PolicyCloseout(models.Model):
+    """
+        A lot of the consumer surplus that comes from this kind of insurance comes from 
+        returning unused premiums at the end of the period if they were not used to pay claims.
+
+        We can pay back in a few ways. Take the following scenario
+        
+        - Policy with 3 users, A, B and C
+        - Premiums are $100 each for entire policy
+        - 1 claim paid to user A, cost $150.
+        - $150 remaining in the pool to be paid
+
+        Now question:
+        Do we pay back each user equally, everyone gets $50
+        Or do we say that if you filed a claim, thats some kind of 'deductable'
+        So user A would get $0 at the end of the period
+        User B and C get $75 each
+
+        This punishes User A for getting unlucky but it also helps to disuage people who are claim trigger happy
+
+        For now, going with simple payback, the everyone gets a proportional split. What do you think! Open a github issue with your ideas!
+    """
+
+    policy = models.OneToOneField(Policy, related_name="close_out", on_delete=models.CASCADE)
+    reason = models.TextField() # for now, policies can only be closed by the policy creator or that they expired
+    premiums_returned_amount = models.IntegerField(validators=[MinValueValidator(1)], help_text="in cents") # or satoshis I guess
 
 class ClaimApproval(models.Model):
     claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="approvals")
