@@ -11,12 +11,11 @@ class ClaimApprovalSerializer(serializers.ModelSerializer):
         fields = ["id", "approver", "created_at", "updated_at"]
 
 class ClaimSerializer(serializers.ModelSerializer):
-    approval_status = ClaimApprovalSerializer(has_many=False)
+    approval_statuses = ClaimApprovalSerializer(many=True, read_only=True)
 
     def create(self, validated_data):
         if policy := validated_data.get("policy"):
             request = self.context['request']
-
             if request.user in policy.pod.memebers.all():
                 claim = Claim.objects.create(**validated_data)
                 return claim
@@ -24,6 +23,8 @@ class ClaimSerializer(serializers.ModelSerializer):
                 serializers.ValidationError("User is not a memeber of the policy's pod.")
         else:
             raise serializers.ValidationError("Missing policy")
+
+
     class Meta:
         model = Claim
         fields = ["id", "policy", "claiment", "created_at", "updated_at", "approval_status"]

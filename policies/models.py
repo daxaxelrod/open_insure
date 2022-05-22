@@ -17,13 +17,15 @@ POLICY_GOVERNANCE_TYPES = [
     # direct_democracy
     # Every claim needs to be voted on by all members of the policy
     ("direct_democracy", "Direct Democracy"),
-    # forced_commitee
+    
+    # forced_commitee (Not implemented)
     # Claims are approved by a randomly chosen, timeboxed committee
     # Sort of like jury duty where you get picked
-    ("forced_commitee", "Forced Commitee"),
-    # voluntary_commitee
+    # ("forced_commitee", "Forced Commitee"),
+    
+    # voluntary_commitee (Not implemented)
     # People vote at the beginning of the policy for who gets to be the claims officator
-    ("voluntary_commitee", "Voluntary Commitee"),
+    # ("voluntary_commitee", "Voluntary Commitee"),
 ]
 
 PREMIUM_PAYMENT_FREQUENCY_CHOICES = [
@@ -54,6 +56,10 @@ class Policy(models.Model):
         -1 means no limit.
     """,
     )
+    # Pool address is the address of this policy stored in the escrow agent that collects premiums
+    # Randomly generated but will have to be configured by the user if they're using a none development
+    # values can be normal random strings, btc address or a bank wire address of <routing_number>:<account_number>
+    pool_address = models.CharField(max_length=200, null=True, blank=True)
 
     # for now every member pays the same premium amount, set at the policy level.
     # In the future, we will have a premium per member, based on risk of that memeber to the rest of the pod
