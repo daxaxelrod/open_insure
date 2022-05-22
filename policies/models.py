@@ -43,7 +43,6 @@ class Policy(models.Model):
     policy_type = models.CharField(choices=POLICY_TYPES, max_length=32)
     governance_type = models.CharField(choices=POLICY_GOVERNANCE_TYPES, max_length=32)
 
-    
     coverage_start_date = models.DateTimeField(null=True, blank=True)
     coverage_duration = models.IntegerField(validators=[MinValueValidator(3), MaxValueValidator(36)], default=12, help_text="Duration of policy, in months")
 
@@ -75,19 +74,10 @@ class Policy(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Premium(models.Model):
-    amount = models.IntegerField(validators=[MinValueValidator(1)], help_text='in cents')
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name='premiums')
+    amount = models.IntegerField(validators=[MinValueValidator(1)], help_text='in cents')
     payer = models.ForeignKey('pods.User', on_delete=models.CASCADE, related_name='premiums_paid')
     paid = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-class Claim(models.Model):
-    policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="claims")
-    claiment = models.ForeignKey(
-        "pods.User", on_delete=models.CASCADE, related_name="claims"
-    )
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -117,6 +107,16 @@ class PolicyCloseout(models.Model):
     policy = models.OneToOneField(Policy, related_name="close_out", on_delete=models.CASCADE)
     reason = models.TextField() # for now, policies can only be closed by the policy creator or that they expired
     premiums_returned_amount = models.IntegerField(validators=[MinValueValidator(1)], help_text="in cents") # or satoshis I guess
+
+
+class Claim(models.Model):
+    policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="claims")
+    claiment = models.ForeignKey(
+        "pods.User", on_delete=models.CASCADE, related_name="claims"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class ClaimApproval(models.Model):
     claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="approvals")
