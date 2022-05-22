@@ -10,6 +10,8 @@ class User(AbstractUser):
     verified_email = models.BooleanField(default=False, null=True, blank=True)
 
 class Pod(models.Model):
+    """One pod per policy"""
+
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=200, null=True, blank=True)
     picture = models.URLField(null=True, blank=True)

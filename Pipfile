@@ -10,6 +10,7 @@ djangorestframework = "*"
 django-cors-headers = "*"
 dr-cli = "*"
 djangorestframework-simplejwt = "*"
+django-apscheduler = "*"
 
 [dev-packages]
 

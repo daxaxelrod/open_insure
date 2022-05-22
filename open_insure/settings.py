@@ -16,7 +16,8 @@ from pathlib import Path
 
 # read config from .env file
 env = environ.Env(
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    IS_MAIN_SCHEDULER=(bool, False)
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -51,6 +52,9 @@ INSTALLED_APPS = [
     'pods',
     'policies',
 ]
+IS_MAIN_SCHEDULER = env('IS_MAIN_SCHEDULER')
+if IS_MAIN_SCHEDULER:
+    INSTALLED_APPS.append('django_apscheduler')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -160,3 +164,8 @@ SIMPLE_JWT = {
 
 ESCROW_AGENT = env("ESCROW_AGENT")
 # more escrow agent config from env ...
+
+
+if IS_MAIN_SCHEDULER:
+    APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+    APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds

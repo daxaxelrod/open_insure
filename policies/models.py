@@ -1,5 +1,7 @@
+from datetime import timedelta
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from pytz import timezone
 
 COVERAGE_TYPES = [
     ("m_property", "Minor Property"),
@@ -78,6 +80,13 @@ class Policy(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def is_policy_active(self):
+        return (
+            self.coverage_start_date is not None \
+            and self.coverage_start_date < timezone.now() \
+            and self.coverage_start_date + timedelta(months=self.coverage_duration) > timezone.now()
+        )
 
 class Premium(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name='premiums')
