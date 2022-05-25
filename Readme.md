@@ -1,6 +1,9 @@
 ## Open insure
 
-A platform that lets you take control of your own insurance
+Take control of your insurance
+- Browse and pick insurance policies that are right for you
+- If premiums are not paid out for claims, they get returned to you at the end of the period
+- Manage claims against your policies with a direct democracy
 
 #### Model list
 
