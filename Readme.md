@@ -2,6 +2,8 @@
 
 A platform that lets you take control of your own insurance
 
+#### Model list
+
 Pods
   - User profile
   - Groups of users

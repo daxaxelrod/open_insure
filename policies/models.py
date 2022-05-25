@@ -92,6 +92,7 @@ class Premium(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name='premiums')
     amount = models.IntegerField(validators=[MinValueValidator(1)], help_text='in cents')
     payer = models.ForeignKey('pods.User', on_delete=models.CASCADE, related_name='premiums_paid')
+    due_date = models.DateField(null=False, blank=False, help_text='Date premiums are due')
     paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

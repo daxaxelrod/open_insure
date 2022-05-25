@@ -2,6 +2,7 @@ from black import schedule_formatting
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import SAFE_METHODS
 from policies.models import Claim, ClaimApproval, Policy
+from policies.premiums import schedule_premiums
 from policies.serializers import ClaimSerializer, PolicySerializer, FullPolicySerializer
 
 class PolicyViewSet(ModelViewSet):

@@ -11,6 +11,7 @@ django-cors-headers = "*"
 dr-cli = "*"
 djangorestframework-simplejwt = "*"
 django-apscheduler = "*"
+python-dateutil = "*"
 
 [dev-packages]
 

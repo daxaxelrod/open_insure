@@ -7,18 +7,18 @@ from escrow.agents.LoggingAgent import LoggingAgent
 from escrow.agents.StripeAgent import StripeAgent
 
 
-escrow_agent = settings["ESCROW_AGENT"]
+escrow_agent = settings.ESCROW_AGENT
 agent = None
 
 class EscrowConfig(AppConfig):
     name = 'escrow'
     def ready(self):
         # Initialize main escrow agent
-        if escrow_agent is 'logger':
+        if escrow_agent == 'logger':
             agent = LoggingAgent()
-        elif escrow_agent is 'stripe':
+        elif escrow_agent == 'stripe':
             agent = StripeAgent()
-        elif escrow_agent is 'bitcoin':
+        elif escrow_agent == 'bitcoin':
             agent = BitcoinAgent()
         else:
             logger.info("ESCROW_AGENT not set in .env")
