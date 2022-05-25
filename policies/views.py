@@ -1,9 +1,9 @@
-from black import schedule_formatting
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import SAFE_METHODS
-from policies.models import Claim, ClaimApproval, Policy
+from policies.models import Claim, ClaimApproval, Policy, Premium
 from policies.premiums import schedule_premiums
-from policies.serializers import ClaimSerializer, PolicySerializer, FullPolicySerializer
+from policies.serializers import ClaimSerializer, PolicySerializer, FullPolicySerializer, PremiumSerializer
 
 class PolicyViewSet(ModelViewSet):
     queryset = Policy.objects.all()
@@ -18,9 +18,14 @@ class PolicyViewSet(ModelViewSet):
         coverage_start_date = serializer.instance.coverage_start_date
         policy = serializer.save()
 
-        # when the policy gets activated, schedule first premiums
+        # when the policy gets activated, schedule all premiums
         if not coverage_start_date and policy.coverage_start_date:
             schedule_premiums(policy)
+
+class PremiumViewSet(RetrieveUpdateDestroyAPIView):
+    queryset = Premium.objects.all()
+    serializer_class = PremiumSerializer
+    
 
 class ClaimViewSet(ModelViewSet):
     queryset = Claim.objects.all()
