@@ -9,7 +9,7 @@ COVERAGE_TYPES = [
     # ("pet", "Pet"),
 ]
 
-POLICY_TYPES = [
+PREMIUM_POOL_TYPE = [
     ("perpetual_pool", "Perpetual Pool"),
     # ("capped_pool", "Capped Pool"),
     # ("capital_call", "Capital Call"),
@@ -31,9 +31,9 @@ POLICY_GOVERNANCE_TYPES = [
 ]
 
 PREMIUM_PAYMENT_FREQUENCY_CHOICES = [
-    (0, "Yearly"),
     (1, "Monthly"),
-    (2, "Quarterly")
+    (3, "Quarterly"),
+    (12, "Yearly"),
 ]
 
 class Policy(models.Model):
@@ -44,7 +44,7 @@ class Policy(models.Model):
     )
 
     coverage_type = models.CharField(choices=COVERAGE_TYPES, max_length=32)
-    policy_type = models.CharField(choices=POLICY_TYPES, max_length=32)
+    premium_pool_type = models.CharField(choices=PREMIUM_POOL_TYPE, max_length=32)
     governance_type = models.CharField(choices=POLICY_GOVERNANCE_TYPES, max_length=32)
 
     coverage_start_date = models.DateTimeField(null=True, blank=True)
@@ -55,8 +55,10 @@ class Policy(models.Model):
         help_text="""
         Only related to Capped Pool policies.
         The maximum size of the collected premiums. Once hit, the policy no longer collects premiums until a claim gets paid out of the pool
-        -1 means no limit.
-    """,
+        None means no limit.
+        """,
+        null=True,
+        blank=True
     )
     # Pool address is the address of this policy stored in the escrow agent that collects premiums
     # Randomly generated but will have to be configured by the user if they're using a none development
@@ -66,16 +68,17 @@ class Policy(models.Model):
     # for now every member pays the same premium amount, set at the policy level.
     # In the future, we will have a premium per member, based on risk of that memeber to the rest of the pod
     premium_amount = models.IntegerField(default=500, validators=[MinValueValidator(100)], help_text="in cents")
-    premium_payment_frequency = models.IntegerField(choices=PREMIUM_PAYMENT_FREQUENCY_CHOICES, default=0, help_text="How often premiums are due,")
+    premium_payment_frequency = models.IntegerField(choices=PREMIUM_PAYMENT_FREQUENCY_CHOICES, default=1, help_text="How often premiums are due,")
 
-    # an interface to some finicial provider setup with settings/config
+    # an interface to some financial provider setup with settings/config
     # actually might be better to have an injected provider, one per instance of the app
     # escrow_agent = models.CharField(choices=ESCROW_AGENT_TYPES, max_length=32, default="logging_escrow_agent")
     
-    claim_payout_limit = models.IntegerField(validators=[MinValueValidator(-1)])
+    claim_payout_limit = models.IntegerField(validators=[MinValueValidator(-1)], null=True, blank=True)
 
     estimated_risk = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(100)]
+        validators=[MinValueValidator(1), MaxValueValidator(100)],
+        null=True, blank=True
     ) # an guess set by how big the current pool and pod are
     
     created_at = models.DateTimeField(auto_now_add=True)

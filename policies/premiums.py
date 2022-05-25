@@ -36,14 +36,14 @@ def schedule_premiums(policy: Policy):
         logger.info(f"Premiums already scheduled for policy ${policy.id}", )
         return
 
-    adjustment = map_premium_frequency_to_months(policy.premium_frequency)
+    premium_frequency = policy.premium_frequency
     for user in policy.pod.members.all():
         premiums_schedule = [
             Premium(policy=policy, 
                     payer=user, 
                     amount=policy.premium_amount, 
-                    due_date=policy.coverage_start_date + relativedelta(months=adjustment * i))
-            for i in range(policy.coverage_duration / adjustment)
+                    due_date=policy.coverage_start_date + relativedelta(months=premium_frequency * i))
+            for i in range(policy.coverage_duration / premium_frequency)
         ]
         
         Premium.objects.bulk_create(premiums_schedule)
