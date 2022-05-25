@@ -10,5 +10,4 @@ router.register(r"claims", ClaimViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("premiums/<int:pk>", PremiumViewSet.as_view(), name="premium_detail"),
-
 ]

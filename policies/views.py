@@ -1,7 +1,9 @@
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import SAFE_METHODS
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from policies.models import Claim, ClaimApproval, Policy, Premium
+from policies.permissions import InPodAndNotPayee
 from policies.premiums import schedule_premiums
 from policies.serializers import ClaimSerializer, PolicySerializer, FullPolicySerializer, PremiumSerializer
 
@@ -25,7 +27,11 @@ class PolicyViewSet(ModelViewSet):
 class PremiumViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Premium.objects.all()
     serializer_class = PremiumSerializer
-    
+    permission_classes = [IsAuthenticated&InPodAndNotPayee]
+
+    # premiums are paid to the publicly available escrow account
+    # available on the policy detail page
+    # for now we dont handle direct debiting, just allowing the pod to keep track of it
 
 class ClaimViewSet(ModelViewSet):
     queryset = Claim.objects.all()
