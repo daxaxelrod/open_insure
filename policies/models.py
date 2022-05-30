@@ -3,39 +3,13 @@ from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from pytz import timezone
-
-COVERAGE_TYPES = [
-    ("m_property", "Minor Property"),
-    ("renters", "Renter's"),
-    # ("pet", "Pet"),
-]
-
-PREMIUM_POOL_TYPE = [
-    ("perpetual_pool", "Perpetual Pool"),
-    # ("capped_pool", "Capped Pool"),
-    # ("capital_call", "Capital Call"),
-]
-
-POLICY_GOVERNANCE_TYPES = [
-    # direct_democracy
-    # Every claim needs to be voted on by all members of the policy
-    ("direct_democracy", "Direct Democracy"),
-    
-    # forced_commitee (Not implemented)
-    # Claims are approved by a randomly chosen, timeboxed committee
-    # Sort of like jury duty where you get picked
-    # ("forced_commitee", "Forced Commitee"),
-    
-    # voluntary_commitee (Not implemented)
-    # People vote at the beginning of the policy for who gets to be the claims officator
-    # ("voluntary_commitee", "Voluntary Commitee"),
-]
-
-PREMIUM_PAYMENT_FREQUENCY_CHOICES = [
-    (1, "Monthly"),
-    (3, "Quarterly"),
-    (12, "Yearly"),
-]
+from policies.model_choices import (
+    COVERAGE_TYPES,
+    PREMIUM_POOL_TYPE,
+    POLICY_GOVERNANCE_TYPES,
+    PREMIUM_PAYMENT_FREQUENCY_CHOICES,
+    CLAIM_EVIDENCE_TYPE_CHOICES,
+)
 
 class Policy(models.Model):
     name = models.CharField(max_length=200)
@@ -65,6 +39,10 @@ class Policy(models.Model):
     # Randomly generated but will have to be configured by the user if they're using a none development
     # values can be normal random strings, btc address or a bank wire address of <routing_number>:<account_number>
     pool_address = models.CharField(max_length=200, null=True, blank=True)
+
+    # The amount of premiums collected in the pool
+    # The escrow agent will actually manage the balance, this acts as an easily accessible mirror
+    pool_balance = models.IntegerField(default=0, help_text='In cents')
 
     # for now every member pays the same premium amount, set at the policy level.
     # In the future, we will have a premium per member, based on risk of that memeber to the rest of the pod
@@ -137,6 +115,9 @@ class Claim(models.Model):
     claimant = models.ForeignKey(
         "pods.User", on_delete=models.CASCADE, related_name="claims"
     )
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+
     amount = models.IntegerField(validators=[MinValueValidator(1)], help_text="in cents")
     paid_on = models.DateField(null=True, blank=True, help_text="Null means not paid yet")
 
@@ -148,6 +129,14 @@ class Claim(models.Model):
         approved_count = self.approvals.filter(approved=True).count()
         return (approved_count / all_approvals_count) >= settings.CLAIM_APPROVAL_THRESHOLD_PERCENTAGE
 
+class ClaimEvidence(models.Model):
+    # Mainly just pictures of what happened. Just links to a url so could also be documents
+    claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="evidence")
+    evidence_type = models.CharField(max_length=16, choices=CLAIM_EVIDENCE_TYPE_CHOICES)
+    url = models.URLField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 # think of these as votes
 class ClaimApproval(models.Model):
     claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="approvals")
@@ -157,7 +146,7 @@ class ClaimApproval(models.Model):
     comment = models.TextField(null=True, blank=True)
     
     # no restrictions at the db level because of the direct democracy OR forced commitee switch
-    # to be done at the app level
+    # checks to be done at the app level
     approver = models.ForeignKey(
         "pods.User", on_delete=models.CASCADE, related_name="approvals"
     )

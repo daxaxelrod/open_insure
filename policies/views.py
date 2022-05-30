@@ -65,7 +65,7 @@ class ClaimViewSet(ModelViewSet):
         policy_type = claim.policy.governance_type
         if policy_type == 'direct_democracy':
             approvals = [
-                ClaimApproval(claim=claim, approver=claim.policy.pod.owner) 
+                ClaimApproval(claim=claim, approver=user) 
                 for user in claim.policy.pod.members.all().exclude(id=claim.claimant.id)
             ]
             ClaimApproval.objects.bulk_create(approvals)

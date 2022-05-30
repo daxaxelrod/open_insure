@@ -1,9 +1,11 @@
+from datetime import datetime
+from typing import Tuple
 from django.utils import timezone
 from pods.models import Pod
 from policies.models import Policy
 from policies.premiums import schedule_premiums
 
-def create_test_policy(pod: Pod):
+def create_test_policy(pod: Pod) -> Tuple[datetime, Policy]:
     start_date = timezone.datetime(2022, 5, 29, tzinfo=timezone.utc)
     policy = Policy.objects.create(
         name="$10 Small electronics policy",

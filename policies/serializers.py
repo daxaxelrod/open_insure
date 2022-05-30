@@ -26,12 +26,12 @@ class ClaimApprovalSerializer(serializers.ModelSerializer):
 
 
 class ClaimSerializer(serializers.ModelSerializer):
-    approval_statuses = ClaimApprovalSerializer(many=True, read_only=True)
+    claimant = serializers.PrimaryKeyRelatedField(read_only=True) # serializers.hiddenfield doesnt work because it doesnt return the representation to the client
 
     def create(self, validated_data):
         if policy := validated_data.get("policy"):
             request = self.context['request']
-            if request.user in policy.pod.memebers.all():
+            if request.user in policy.pod.members.all():
                 claim = Claim.objects.create(**validated_data, claimant=request.user)
                 return claim
             else:
@@ -41,7 +41,7 @@ class ClaimSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Claim
-        fields = ["id", "policy", "claimant", "created_at", "updated_at", "approval_status"]
+        fields = "__all__"
 
 class PremiumSerializer(serializers.ModelSerializer):
     class Meta:

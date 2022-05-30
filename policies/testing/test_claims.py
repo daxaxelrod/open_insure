@@ -22,16 +22,29 @@ class ClaimsTestCase(TestCase):
         self.pod.members.add(self.member_user)
         self.pod.members.add(self.member_user_2)
 
-        _, policy = create_test_policy(self.pod)
-        self.policy = policy
+        _, self.policy = create_test_policy(self.pod)
 
         client.login(username=self.main_user.username, password="password")
 
-    def test_create_sets_requestor_as_claimant(self):
-        self.assertTrue(False)
+    def test_create_claim_sets_requestor_as_claimant(self):
+        self.policy.pool_balance = 5000
+        payload = {
+            "title": "Test Claim",
+            "description": "A claim to test user attribution",
+            "policy": self.policy.id,
+            "amount": 1000, # $10
+        }
+        response = client.post("/api/v1/claims/", payload)
+        _json = response.json()
+        
+        self.assertEquals(response.status_code, HTTP_201_CREATED)
+        self.assertEquals(_json["claimant"], self.main_user.id)
+        self.assertEquals(_json["amount"], 1000)
+        self.assertEquals(_json["paid_on"], None)
     
     @override_settings(CLAIM_APPROVAL_THRESHOLD_PERCENT=0.5)
     def test_claim_gets_paid_upon_majority_approval(self):
+        # the claim gets marked as paid and the policy pool gets debited    
         self.assertTrue(False)
 
     def test_claim_creation_fails_if_user_is_not_member_of_pod(self):
