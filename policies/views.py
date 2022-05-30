@@ -3,17 +3,18 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from policies.models import Claim, ClaimApproval, Policy, Premium
-from policies.permissions import InPodAndNotPayee
+from policies.permissions import InPod, InPodAndNotPayee
 from policies.premiums import schedule_premiums
 from policies.serializers import ClaimSerializer, PolicySerializer, FullPolicySerializer, PremiumSerializer
 
 class PolicyViewSet(ModelViewSet):
     queryset = Policy.objects.all()
+    permission_classes = [IsAuthenticated&InPod]
     
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
-            return PolicySerializer
-        return FullPolicySerializer
+            return FullPolicySerializer
+        return PolicySerializer
 
     def perform_update(self, serializer):
         # schedule first premiums when coverage date gets set
@@ -22,6 +23,11 @@ class PolicyViewSet(ModelViewSet):
 
         # when the policy gets activated, schedule all premiums
         if not coverage_start_date and policy.coverage_start_date:
+            schedule_premiums(policy)
+
+    def perform_create(self, serializer):
+        policy = serializer.save()
+        if policy.coverage_start_date:
             schedule_premiums(policy)
 
 class PremiumViewSet(RetrieveUpdateDestroyAPIView):

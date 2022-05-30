@@ -5,7 +5,7 @@ from pods.utils.custom_serializers import FieldExcludableModelSerializer
 
 class PublicMemberSerializer(ModelSerializer):
     class Meta:
-        model = Pod
+        model = User
         fields = ['id', 'first_name', 'last_name', 'email', 'created_at', 'updated_at']
 
 class PodSerializer(FieldExcludableModelSerializer):
@@ -13,7 +13,7 @@ class PodSerializer(FieldExcludableModelSerializer):
 
     def create(self, validated_data):
         return Pod.objects.create(
-            created_by=self.context['request'].user,
+            # creator=self.context['request'].user,
             **validated_data
         )
 

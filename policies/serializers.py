@@ -1,9 +1,10 @@
-from dataclasses import fields
 from rest_framework import serializers
 
 from policies.models import Claim, Policy, Premium, PolicyCloseout, Claim, ClaimApproval
 
-policy_fields = [ "name", "description", "pod", "coverage_type", "policy_type", "governance_type", "max_pool_size", "claim_payout_limit", "estimated_risk", "created_at", "updated_at" ]
+policy_fields = ["id", "name", "description", "pod", "coverage_type", "premium_pool_type",
+                 "governance_type", "max_pool_size", "claim_payout_limit", "estimated_risk",
+                 "created_at", "updated_at", "coverage_start_date", "coverage_end_date" ]
 
 class ClaimApprovalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,7 +25,6 @@ class ClaimSerializer(serializers.ModelSerializer):
         else:
             raise serializers.ValidationError("Missing policy")
 
-
     class Meta:
         model = Claim
         fields = ["id", "policy", "claiment", "created_at", "updated_at", "approval_status"]
@@ -40,15 +40,23 @@ class PolicyCloseoutSerializer(serializers.ModelSerializer):
         fields = ["id", "reason", "premiums_returned_amount"]
 class PolicySerializer(serializers.ModelSerializer):
     # Meant to be used for posting/patching
+
+    # coverage start date should be immutable
+    def validate_spouse(self, value):
+        if self.instance and self.instance.coverage_start_date and value != self.instance.coverage_start_date:
+            raise serializers.ValidationError("Cannot change coverage start date once a policy has been activated.")
+        return value
+
+
     class Meta:
         model = Policy
-        fields = [*policy_fields]
+        fields = "__all__"
 
 class FullPolicySerializer(serializers.ModelSerializer):
     # meant for get, has a few nested joins
-    premiums = PremiumSerializer(many=True)
-    claims = ClaimSerializer(many=True)
-    closeout = PolicyCloseoutSerializer()
+    premiums = PremiumSerializer(many=True, read_only=True)
+    claims = ClaimSerializer(many=True, read_only=True)
+    close_out = PolicyCloseoutSerializer(many=False, read_only=True)
     class Meta:
         model = Policy
-        fields = [*policy_fields, 'premiums', 'claims', 'closeout']
+        fields = "__all__"

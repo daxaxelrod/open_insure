@@ -145,11 +145,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Auth standard is JWT,
 # I've mostly used token authentication, but jwt saves a db hit for each request
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  
+    ],
 }
-
+# tried to do this inline, but it didn't work
+if DEBUG:
+    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append('rest_framework.authentication.SessionAuthentication')
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(env("ACCESS_TOKEN_LIFETIME_MINUTES"))),

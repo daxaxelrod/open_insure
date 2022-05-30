@@ -68,7 +68,7 @@ class Policy(models.Model):
     # for now every member pays the same premium amount, set at the policy level.
     # In the future, we will have a premium per member, based on risk of that memeber to the rest of the pod
     premium_amount = models.IntegerField(default=500, validators=[MinValueValidator(100)], help_text="in cents")
-    premium_payment_frequency = models.IntegerField(choices=PREMIUM_PAYMENT_FREQUENCY_CHOICES, default=1, help_text="How often premiums are due,")
+    premium_payment_frequency = models.IntegerField(choices=PREMIUM_PAYMENT_FREQUENCY_CHOICES, default=1, help_text="How often premiums are due, in months. 1 means monthly, 3 means quarterly, etc.")
 
     # an interface to some financial provider setup with settings/config
     # actually might be better to have an injected provider, one per instance of the app
@@ -99,6 +99,9 @@ class Premium(models.Model):
     paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"Premium for {self.policy.id} paid by {self.payer}, due on {self.due_date}"
 
 class PolicyCloseout(models.Model):
     """
