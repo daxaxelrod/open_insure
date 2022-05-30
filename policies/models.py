@@ -1,4 +1,5 @@
 from datetime import timedelta
+from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from pytz import timezone
@@ -136,18 +137,29 @@ class Claim(models.Model):
     claiment = models.ForeignKey(
         "pods.User", on_delete=models.CASCADE, related_name="claims"
     )
+    amount = models.IntegerField(validators=[MinValueValidator(1)], help_text="in cents")
+    paid_on = models.DateField(null=True, blank=True, help_text="Null means not paid yet")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def is_approved(self):
+        all_approvals_count = self.approvals.count()
+        approved_count = self.approvals.filter(approved=True).count()
+        return (approved_count / all_approvals_count) >= settings.CLAIM_APPROVAL_THRESHOLD_PERCENTAGE
+
+# think of these as votes
 class ClaimApproval(models.Model):
     claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="approvals")
+    approved = models.BooleanField(default=False)
+    approved_on = models.DateTimeField(null=True, blank=True)
+    viewed_on = models.DateTimeField(null=True, blank=True, help_text="When the approver viewed the approval. Helpful to nudge those who let stuff pile up. Wuick turnarounds on claims is a better user experience")
+    comment = models.TextField(null=True, blank=True)
     
     # no restrictions at the db level because of the direct democracy OR forced commitee switch
     # to be done at the app level
     approver = models.ForeignKey(
         "pods.User", on_delete=models.CASCADE, related_name="approvals"
     )
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

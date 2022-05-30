@@ -106,7 +106,6 @@ class PolicyTestCase(TestCase):
         self.assertEquals(policy.premiums.count(), 36)
         
 
-
 def setUpModule():
     logging.disable()
 

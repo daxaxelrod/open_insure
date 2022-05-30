@@ -6,10 +6,16 @@ policy_fields = ["id", "name", "description", "pod", "coverage_type", "premium_p
                  "governance_type", "max_pool_size", "claim_payout_limit", "estimated_risk",
                  "created_at", "updated_at", "coverage_start_date", "coverage_end_date" ]
 
+
+class FullClaimApprovalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClaimApproval
+        fields = "__all__"
 class ClaimApprovalSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClaimApproval
         fields = ["id", "approver", "created_at", "updated_at"]
+
 
 class ClaimSerializer(serializers.ModelSerializer):
     approval_statuses = ClaimApprovalSerializer(many=True, read_only=True)
