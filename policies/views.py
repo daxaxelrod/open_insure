@@ -32,15 +32,15 @@ class PolicyViewSet(ModelViewSet):
         if policy.coverage_start_date:
             schedule_premiums(policy)
 
-    @action(detail=True, methods=['POST'])
+    @action(detail=True, methods=['POST'], permission_classes=[IsAuthenticated])
     def join(self, request, pk=None):
         # there should be gaurdrails for a new user to join
         # namely based the risk that this user personally carries
         # but for now, let them in.
         policy = self.get_object()
         policy.pod.members.add(request.user)
-        schedule_premiums(policy, for_user=request.user)
-        return Response(FullPolicySerializer(policy).data)
+        schedule_premiums(policy, for_users=[request.user])
+        return Response(FullPolicySerializer(policy).data, status=201)
 
 
 class PremiumViewSet(RetrieveUpdateDestroyAPIView):

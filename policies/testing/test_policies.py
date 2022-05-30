@@ -8,6 +8,7 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
 
 from pods.models import Pod, User
 from policies.models import Policy, Premium
+from policies.premiums import schedule_premiums
 
 # initialize the APIClient app
 client = Client()
@@ -35,6 +36,7 @@ class PolicyTestCase(TestCase):
             coverage_duration=12, # months
             coverage_start_date=start_date
         )
+        schedule_premiums(policy)
         
         return start_date,policy
 
@@ -94,8 +96,15 @@ class PolicyTestCase(TestCase):
         self.assertEquals(policy.coverage_start_date, start_date)
 
     def test_user_joins_a_policy_after_it_is_activated_that_premiums_get_created_for_new_member(self):
-        self.create_test_policy()
-        self.assertTrue(False)
+        _, policy = self.create_test_policy()
+        new_user = User.objects.create_user("interested_user@gmail.com", password="password")
+        client.login(username=new_user.username, password="password")
+        response = client.post(f"/api/v1/policies/{policy.id}/join/", data={}, content_type='application/json')
+
+        self.assertEquals(response.status_code, HTTP_201_CREATED)
+        self.assertEquals(policy.pod.members.count(), 3)
+        self.assertEquals(policy.premiums.count(), 36)
+        
 
 
 def setUpModule():
