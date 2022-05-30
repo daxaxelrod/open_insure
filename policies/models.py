@@ -70,6 +70,9 @@ class Policy(models.Model):
             and self.coverage_start_date + timedelta(months=self.coverage_duration) > timezone.now()
         )
 
+    def __str__(self) -> str:
+        return f"{self.name} Policy ({self.pod.name} Pod)"
+
 class Premium(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name='premiums')
     amount = models.IntegerField(validators=[MinValueValidator(1)], help_text='in cents')
@@ -80,7 +83,7 @@ class Premium(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return f"Premium for {self.policy.id} paid by {self.payer}, due on {self.due_date}"
+        return f"Premium for {self.policy.name} paid by {self.payer}, due on {self.due_date}"
 
 class PolicyCloseout(models.Model):
     """
@@ -127,8 +130,14 @@ class Claim(models.Model):
     def is_approved(self):
         all_approvals_count = self.approvals.count()
         approved_count = self.approvals.filter(approved=True).count()
-        return (approved_count / all_approvals_count) >= settings.CLAIM_APPROVAL_THRESHOLD_PERCENTAGE
+        return (approved_count / all_approvals_count) >= float(settings.CLAIM_APPROVAL_THRESHOLD_PERCENTAGE)
 
+    def __str__(self) -> str:
+        if self.is_approved():
+            approval_str = "Approved :"
+        else:
+            approval_str = "test"
+        return f"{approval_str} Claim for {self.policy.name} by {self.claimant}"
 class ClaimEvidence(models.Model):
     # Mainly just pictures of what happened. Just links to a url so could also be documents
     claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="evidence")

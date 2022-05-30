@@ -6,7 +6,7 @@ from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from policies.models import Claim, ClaimApproval, Policy, Premium
-from policies.permissions import InPod, InPodAndNotClaimant
+from policies.permissions import InPolicyPod, InPodAndNotClaimant, InClaimPod
 from policies.premiums import schedule_premiums
 from policies.serializers import (ClaimSerializer, PolicySerializer, 
                                   FullPolicySerializer, PremiumSerializer, 
@@ -14,7 +14,7 @@ from policies.serializers import (ClaimSerializer, PolicySerializer,
 
 class PolicyViewSet(ModelViewSet):
     queryset = Policy.objects.all()
-    permission_classes = [IsAuthenticated&InPod]
+    permission_classes = [IsAuthenticated&InPolicyPod]
     
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
@@ -58,7 +58,7 @@ class PremiumViewSet(RetrieveUpdateDestroyAPIView):
 class ClaimViewSet(ModelViewSet):
     queryset = Claim.objects.all()
     serializer_class = ClaimSerializer
-    permission_classes = [IsAuthenticated&InPod]
+    permission_classes = [IsAuthenticated&InClaimPod]
 
     def perform_create(self, serializer):
         claim = serializer.save()

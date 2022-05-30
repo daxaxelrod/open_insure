@@ -1,7 +1,17 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+
 
 from pods.models import Pod, User
 
-# Register your models here.
-admin.site.register(User)
-admin.site.register(Pod)
+class MembershipInline(admin.TabularInline):
+    model = Pod.members.through
+
+class PodModelAdmin(admin.ModelAdmin):
+    inlines = [MembershipInline]
+
+class UserAdmin(UserAdmin):
+    pass
+
+admin.site.register(User, UserAdmin)
+admin.site.register(Pod, PodModelAdmin)

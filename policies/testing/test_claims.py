@@ -87,3 +87,5 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
         self.assertEqual(num_claims_for_policy, 0)
         
+    def test_identical_claims_get_rejected(self):
+        self.assertTrue(False)

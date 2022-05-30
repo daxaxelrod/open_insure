@@ -42,6 +42,7 @@ class ClaimSerializer(serializers.ModelSerializer):
     class Meta:
         model = Claim
         fields = "__all__"
+        read_only_fields = ['paid_on']
 
 class PremiumSerializer(serializers.ModelSerializer):
     class Meta:
