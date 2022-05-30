@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, override_settings, Client
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_200_OK
 
 from pods.models import Pod, User
-from policies.models import Claim
+from policies.models import Claim, ClaimApproval
 from policies.testing.helpers import create_test_policy
 
 # initialize the APIClient app
@@ -23,7 +23,6 @@ class ClaimsTestCase(TestCase):
         client.login(username=self.main_user.username, password="password")
 
     def test_create_claim_sets_requestor_as_claimant(self):
-        self.policy.pool_balance = 5000
         payload = {
             "title": "Test Claim",
             "description": "A claim to test user attribution",
@@ -38,10 +37,39 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(_json["amount"], 1000)
         self.assertEquals(_json["paid_on"], None)
     
-    @override_settings(CLAIM_APPROVAL_THRESHOLD_PERCENT=0.5)
+    @override_settings(CLAIM_APPROVAL_THRESHOLD_PERCENTAGE=0.10)
     def test_claim_gets_paid_upon_majority_approval(self):
-        # the claim gets marked as paid and the policy pool gets debited    
-        self.assertTrue(False)
+        # the claim gets marked as paid and the policy pool gets debited
+        # main user creates a claim, 1 of the other two then approve it
+        #   - (main user doesnt get a vote on their claim)
+        self.policy.pool_balance = 5000
+        self.policy.save()
+
+        payload = {
+            "title": "Test Claim",
+            "description": "A claim to test user attribution",
+            "policy": self.policy.id,
+            "amount": 1000, # $10
+        }
+
+        claim_creation_response = client.post("/api/v1/claims/", payload)
+        
+        main_user_claim = Claim.objects.get(policy=self.policy, claimant=self.main_user)
+        member_claim_approval = ClaimApproval.objects.get(claim=main_user_claim, approver=self.member_user)
+
+        # member 1 approves the claim
+        client.login(username=self.member_user.username, password="password")
+        
+        member_1_approval_response = client.patch(f"/api/v1/claims/{main_user_claim.id}/approvals/{member_claim_approval.id}/", {
+            "approved": True,
+        }, content_type='application/json')
+
+        self.policy.refresh_from_db()
+
+        self.assertEquals(claim_creation_response.status_code, HTTP_201_CREATED)
+        self.assertEquals(member_1_approval_response.status_code, HTTP_200_OK)
+        self.assertTrue(main_user_claim.is_approved())
+        self.assertEquals(self.policy.pool_balance, 4000)
 
     def test_claim_creation_fails_if_user_is_not_member_of_pod(self):
         intruder = User.objects.create_user("intruder@gmail.com", password="password")

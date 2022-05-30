@@ -15,14 +15,14 @@ class ClaimApprovalSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if self.instance:
-            if self.instance.claim.is_is_approved():
+            if self.instance.claim.is_approved():
                 raise serializers.ValidationError("Claim is already approved")
 
         return super().validate(attrs)
 
     class Meta:
         model = ClaimApproval
-        fields = ["id", "approver", "created_at", "updated_at"]
+        fields = "__all__"
 
 
 class ClaimSerializer(serializers.ModelSerializer):

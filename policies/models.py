@@ -152,3 +152,10 @@ class ClaimApproval(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        if self.approved:
+            repr_str = "approved"
+        else:
+            repr_str = "not approved"
+        return f"{self.approver} vote on claim {self.claim} - {repr_str}"

@@ -1,11 +1,12 @@
 
+from django.utils import timezone
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from policies.models import Claim, ClaimApproval, Policy, Premium
-from policies.permissions import InPod, InPodAndNotPayee
+from policies.permissions import InPod, InPodAndNotClaimant
 from policies.premiums import schedule_premiums
 from policies.serializers import (ClaimSerializer, PolicySerializer, 
                                   FullPolicySerializer, PremiumSerializer, 
@@ -48,7 +49,7 @@ class PolicyViewSet(ModelViewSet):
 class PremiumViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Premium.objects.all()
     serializer_class = PremiumSerializer
-    permission_classes = [IsAuthenticated&InPodAndNotPayee]
+    permission_classes = [IsAuthenticated&InPodAndNotClaimant]
 
     # premiums are paid to the publicly available escrow account
     # available on the policy detail page
@@ -77,6 +78,18 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
     serializer_class = ClaimApprovalSerializer
     def get_queryset(self):
         return ClaimApproval.objects.filter(approver=self.request.user)
+
+    def perform_update(self, serializer):
+        approval = serializer.save()
+        claim = approval.claim
+        policy = claim.policy
+        if claim.is_approved() and claim.paid_on is None:
+            # TODO what happens when the claim is > pool_balance? Tough cookies?
+            policy.pool_balance -= claim.amount
+            policy.save()
+            claim.paid_on = timezone.now()
+            claim.save()
+            
 
 
     
