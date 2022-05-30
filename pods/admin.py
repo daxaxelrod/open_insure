@@ -11,7 +11,12 @@ class PodModelAdmin(admin.ModelAdmin):
     inlines = [MembershipInline]
 
 class UserAdmin(UserAdmin):
-    pass
+    model = User
+
+    fieldsets = UserAdmin.fieldsets + (
+            (None, {'fields': ('picture','verified_email')}),
+    )
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Pod, PodModelAdmin)
