@@ -57,6 +57,7 @@ class PremiumViewSet(RetrieveUpdateDestroyAPIView):
 class ClaimViewSet(ModelViewSet):
     queryset = Claim.objects.all()
     serializer_class = ClaimSerializer
+    permission_classes = [IsAuthenticated&InPod]
 
     def perform_create(self, serializer):
         claim = serializer.save()
@@ -69,8 +70,8 @@ class ClaimViewSet(ModelViewSet):
                 for user in claim.policy.pod.members.all().exclude(id=claim.claimant.id)
             ]
             ClaimApproval.objects.bulk_create(approvals)
-
             # maybe send an email too?
+
 
 class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
     serializer_class = ClaimApprovalSerializer

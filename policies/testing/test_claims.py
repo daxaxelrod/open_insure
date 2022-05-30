@@ -1,13 +1,9 @@
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase, override_settings, Client
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
 
 from pods.models import Pod, User
-from policies.models import Policy
-from policies.premiums import schedule_premiums
+from policies.models import Claim
 from policies.testing.helpers import create_test_policy
 
 # initialize the APIClient app
@@ -50,9 +46,16 @@ class ClaimsTestCase(TestCase):
     def test_claim_creation_fails_if_user_is_not_member_of_pod(self):
         intruder = User.objects.create_user("intruder@gmail.com", password="password")
         client.login(username=intruder.username, password="password")
-
         payload = {
+            "title": "Test Claim",
+            "description": "A claim to test user attribution",
             "policy": self.policy.id,
-            "amount": 10000, # $100
+            "amount": 1000, # $10
         }
-        self.assertTrue(False)
+        response = client.post("/api/v1/claims/", payload)
+        
+        num_claims_for_policy = Claim.objects.filter(policy=self.policy).count()
+        
+        self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEqual(num_claims_for_policy, 0)
+        

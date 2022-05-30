@@ -35,9 +35,9 @@ class ClaimSerializer(serializers.ModelSerializer):
                 claim = Claim.objects.create(**validated_data, claimant=request.user)
                 return claim
             else:
-                serializers.ValidationError("User is not a memeber of the policy's pod.")
+                raise serializers.ValidationError({"claimant": "User is not a memeber of the policy's pod."})
         else:
-            raise serializers.ValidationError("Missing policy")
+            raise serializers.ValidationError({"policy": "Missing policy"})
 
     class Meta:
         model = Claim
