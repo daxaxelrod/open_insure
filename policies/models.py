@@ -134,7 +134,7 @@ class PolicyCloseout(models.Model):
 
 class Claim(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="claims")
-    claiment = models.ForeignKey(
+    claimant = models.ForeignKey(
         "pods.User", on_delete=models.CASCADE, related_name="claims"
     )
     amount = models.IntegerField(validators=[MinValueValidator(1)], help_text="in cents")
@@ -151,7 +151,7 @@ class Claim(models.Model):
 # think of these as votes
 class ClaimApproval(models.Model):
     claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="approvals")
-    approved = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False, blank=True)
     approved_on = models.DateTimeField(null=True, blank=True)
     viewed_on = models.DateTimeField(null=True, blank=True, help_text="When the approver viewed the approval. Helpful to nudge those who let stuff pile up. Wuick turnarounds on claims is a better user experience")
     comment = models.TextField(null=True, blank=True)

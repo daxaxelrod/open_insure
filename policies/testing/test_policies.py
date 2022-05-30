@@ -7,8 +7,8 @@ from dateutil.relativedelta import relativedelta
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
 
 from pods.models import Pod, User
-from policies.models import Policy, Premium
-from policies.premiums import schedule_premiums
+from policies.models import Premium
+from policies.testing.helpers import create_test_policy
 
 # initialize the APIClient app
 client = Client()
@@ -22,23 +22,7 @@ class PolicyTestCase(TestCase):
         
         client.login(username=self.main_user.username, password="password")
         
-    def create_test_policy(self):
-        start_date = timezone.datetime(2022, 5, 29, tzinfo=timezone.utc)
-        policy = Policy.objects.create(
-            name="$10 Small electronics policy",
-            description="No pool cap, $500 claim payout limit",
-            pod=self.pod,
-            coverage_type='m_property',
-            premium_pool_type='perpetual_pool',
-            governance_type='direct_democracy',
-            premium_amount=1000, # 10 bucks
-            premium_payment_frequency=1, # 1 means monthly
-            coverage_duration=12, # months
-            coverage_start_date=start_date
-        )
-        schedule_premiums(policy)
-        
-        return start_date,policy
+    
 
     ### Start Tests ###
     def test_premiums_get_created_correctly_when_policy_gets_turned_on(self):
@@ -82,7 +66,7 @@ class PolicyTestCase(TestCase):
     @override_settings(DEBUG=True)
     def test_coverage_start_date_cant_change_after_being_set(self):
         
-        start_date, policy = self.create_test_policy()
+        start_date, policy = create_test_policy(self.pod)
 
         payload = {
             "coverage_start_date": timezone.datetime(2022, 1, 1)
@@ -96,7 +80,7 @@ class PolicyTestCase(TestCase):
         self.assertEquals(policy.coverage_start_date, start_date)
 
     def test_user_joins_a_policy_after_it_is_activated_that_premiums_get_created_for_new_member(self):
-        _, policy = self.create_test_policy()
+        _, policy = create_test_policy(self.pod)
         new_user = User.objects.create_user("interested_user@gmail.com", password="password")
         client.login(username=new_user.username, password="password")
         response = client.post(f"/api/v1/policies/{policy.id}/join/", data={}, content_type='application/json')

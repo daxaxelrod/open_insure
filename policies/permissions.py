@@ -4,7 +4,7 @@ class InPodAndNotPayee(BasePermission):
         return request.user in request.policy.pod.members.all()
 
     def has_object_permission(self, request, view, obj):
-        return request.user in obj.policy.pod.members.all() and obj.claiment != request.user
+        return request.user in obj.policy.pod.members.all() and obj.claimant != request.user
 
 class InPod(BasePermission):
 

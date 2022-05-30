@@ -7,7 +7,9 @@ from rest_framework.decorators import action
 from policies.models import Claim, ClaimApproval, Policy, Premium
 from policies.permissions import InPod, InPodAndNotPayee
 from policies.premiums import schedule_premiums
-from policies.serializers import ClaimSerializer, PolicySerializer, FullPolicySerializer, PremiumSerializer
+from policies.serializers import (ClaimSerializer, PolicySerializer, 
+                                  FullPolicySerializer, PremiumSerializer, 
+                                  ClaimApprovalSerializer)
 
 class PolicyViewSet(ModelViewSet):
     queryset = Policy.objects.all()
@@ -64,11 +66,19 @@ class ClaimViewSet(ModelViewSet):
         if policy_type == 'direct_democracy':
             approvals = [
                 ClaimApproval(claim=claim, approver=claim.policy.pod.owner) 
-                for user in claim.policy.pod.members.all().exclude(id=claim.claiment.id)
+                for user in claim.policy.pod.members.all().exclude(id=claim.claimant.id)
             ]
             ClaimApproval.objects.bulk_create(approvals)
 
             # maybe send an email too?
+
+class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
+    serializer_class = ClaimApprovalSerializer
+    def get_queryset(self):
+        return ClaimApproval.objects.filter(approver=self.request.user)
+
+
+    
     
 
 

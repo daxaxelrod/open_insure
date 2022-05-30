@@ -12,6 +12,14 @@ class FullClaimApprovalSerializer(serializers.ModelSerializer):
         model = ClaimApproval
         fields = "__all__"
 class ClaimApprovalSerializer(serializers.ModelSerializer):
+
+    def validate(self, attrs):
+        if self.instance:
+            if self.instance.claim.is_is_approved():
+                raise serializers.ValidationError("Claim is already approved")
+
+        return super().validate(attrs)
+
     class Meta:
         model = ClaimApproval
         fields = ["id", "approver", "created_at", "updated_at"]
@@ -24,7 +32,7 @@ class ClaimSerializer(serializers.ModelSerializer):
         if policy := validated_data.get("policy"):
             request = self.context['request']
             if request.user in policy.pod.memebers.all():
-                claim = Claim.objects.create(**validated_data)
+                claim = Claim.objects.create(**validated_data, claimant=request.user)
                 return claim
             else:
                 serializers.ValidationError("User is not a memeber of the policy's pod.")
@@ -33,7 +41,7 @@ class ClaimSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Claim
-        fields = ["id", "policy", "claiment", "created_at", "updated_at", "approval_status"]
+        fields = ["id", "policy", "claimant", "created_at", "updated_at", "approval_status"]
 
 class PremiumSerializer(serializers.ModelSerializer):
     class Meta:
