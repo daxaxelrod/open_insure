@@ -2,6 +2,8 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.decorators import action
 from policies.models import Claim, ClaimApproval, Policy, Premium
 from policies.permissions import InPod, InPodAndNotPayee
 from policies.premiums import schedule_premiums
@@ -29,6 +31,17 @@ class PolicyViewSet(ModelViewSet):
         policy = serializer.save()
         if policy.coverage_start_date:
             schedule_premiums(policy)
+
+    @action(detail=True, methods=['POST'])
+    def join(self, request, pk=None):
+        # there should be gaurdrails for a new user to join
+        # namely based the risk that this user personally carries
+        # but for now, let them in.
+        policy = self.get_object()
+        policy.pod.members.add(request.user)
+        schedule_premiums(policy, for_user=request.user)
+        return Response(FullPolicySerializer(policy).data)
+
 
 class PremiumViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Premium.objects.all()

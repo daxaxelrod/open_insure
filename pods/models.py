@@ -9,6 +9,7 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
     verified_email = models.BooleanField(default=False, null=True, blank=True)
 
+
 class Pod(models.Model):
     """One pod per policy"""
 
@@ -18,7 +19,14 @@ class Pod(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
-    members = models.ManyToManyField(User, related_name='pods')
+    members = models.ManyToManyField(User, related_name='pods', through='UserPod')
 
     def __str__(self):
         return f"{self.name} Pod ({self.members.count()} members)"
+
+
+class UserPod(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pod = models.ForeignKey(Pod, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

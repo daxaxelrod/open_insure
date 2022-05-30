@@ -42,7 +42,7 @@ class PolicySerializer(serializers.ModelSerializer):
     # Meant to be used for posting/patching
 
     # coverage start date should be immutable
-    def validate_spouse(self, value):
+    def validate_coverage_start_date(self, value):
         if self.instance and self.instance.coverage_start_date and value != self.instance.coverage_start_date:
             raise serializers.ValidationError("Cannot change coverage start date once a policy has been activated.")
         return value

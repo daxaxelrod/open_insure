@@ -6,7 +6,8 @@ from pods.utils.custom_serializers import FieldExcludableModelSerializer
 class PublicMemberSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'created_at', 'updated_at']
+        fields = ['id', 'first_name', 'last_name', 'email', 'created_at',
+                  'updated_at', 'picture', 'verified_email']
 
 class PodSerializer(FieldExcludableModelSerializer):
     members = PublicMemberSerializer(many=True, read_only=True)
