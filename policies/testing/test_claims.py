@@ -108,6 +108,18 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_201_CREATED)
         self.assertEqual(all_claims, 1) # not recreated
 
+    def test_claim_gets_created_with_lower_amount_if_user_over_payout_limit(self):
+        # if a policy has a payout limit, 
+        # then a user can only create a claim up to the max taking into account
+        # their prior paid out claims plus the theorical payout
 
-    def test_cant_create_claim_if_over_user_payout_limit(self):
+        # create a policy with a payout limit of $100
+        # and a user who has an $80 claim already paid
+
+        # create a claim of $30, the amount should be switched to $20
+        self.assertTrue(False)
+
+    def test_claim_instantly_rejected_if_over_user_payout_limit(self):
+        
+        
         self.assertTrue(False)

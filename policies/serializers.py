@@ -29,6 +29,22 @@ class ClaimApprovalSerializer(serializers.ModelSerializer):
 class ClaimSerializer(serializers.ModelSerializer):
     claimant = serializers.PrimaryKeyRelatedField(read_only=True) # serializers.hiddenfield doesnt work because it doesnt return the representation to the client
 
+    def validate(self, attrs):
+
+        # check against policy payout limits
+        if policy := attrs.get("policy"):
+            if policy.claim_payout_limit:
+                if policy.claim_payout_limit < attrs.get("amount"):
+                    raise serializers.ValidationError({"amount": "Claim amount exceeds policy payout limit."})
+            if policy.lifetime_payout_limit:
+                total_paid_out_to_user = Claim.objects.filter(
+                    claimant=self.context['request'].user, 
+                    policy=policy
+                ).select_related("approvals")
+
+                if policy.lifetime_payout_limit < (attrs.get("amount") + policy.total_paid_out):
+                    raise serializers.ValidationError({"amount": "Claim amount exceeds policy lifetime payout limit."})
+        
     def create(self, validated_data):
         if policy := validated_data.get("policy"):
             request = self.context['request']

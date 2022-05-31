@@ -54,6 +54,7 @@ class Policy(models.Model):
     # escrow_agent = models.CharField(choices=ESCROW_AGENT_TYPES, max_length=32, default="logging_escrow_agent")
     
     claim_payout_limit = models.IntegerField(validators=[MinValueValidator(-1)], null=True, blank=True)
+    lifetime_payout_limit = models.IntegerField(validators=[MinValueValidator(-1)], null=True, blank=True)
 
     estimated_risk = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(100)],
