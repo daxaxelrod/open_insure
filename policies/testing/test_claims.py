@@ -108,7 +108,7 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_201_CREATED)
         self.assertEqual(all_claims, 1) # not recreated
 
-    def test_claim_gets_created_with_lower_amount_if_user_over_lifetime_payout_limit(self):
+    def test_claim_gets_created_with_lower_amount_if_prior_payouts_puts_user_over_lifetime_payout_limit(self):
         # if a policy has a payout limit, 
         # then a user can only create a claim up to the max 
         # taking into account their prior paid out claims plus the theorical payout up to the limit
@@ -154,7 +154,29 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
         self.assertEquals(claims.count(), 0)
         
+    def test_claim_gets_rejected_if_user_at_lifetime_payout_limit(self):
+        # a user has already drawn the max they can for the policy
+        # Ie policy has limit of $100 and user has $100 paid out already
+
+        self.policy.lifetime_payout_limit = 500
+        self.policy.save()
+        
+        create_paid_claim_for_user(self.main_user, self.policy, 500)
+
+        claim_over_limit = {
+            "policy": self.policy.id,
+            "title": "Something else happened",
+            "description": "I swear, plz pay me",
+            "amount": 50,
+        }
+        response = client.post("/api/v1/claims/", claim_over_limit)
+        claims = Claim.objects.filter(policy=self.policy)
+
+        self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEquals(claims.count(), 1)
+
     def test_claim_approval_prevented_if_claimant_is_over_lifetime_policy_limit(self):
+        #    ^------------^ 
         # prevents a users from having a bunch of outstanding claims that get past the first over payment filter
         # hopefuly real people notice this but not a bad thing to have the system prevent this kind of thing
-        self.assertTrue(False)
+        self.assertFalse(True)

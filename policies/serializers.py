@@ -48,6 +48,8 @@ class ClaimSerializer(serializers.ModelSerializer):
                         approved_claims.append(claim)
 
                 total_paid_out_to_user = sum([claim.amount for claim in approved_claims])
+                if policy.lifetime_payout_limit <= total_paid_out_to_user:
+                    raise serializers.ValidationError({"amount": "Claim amount exceeds policy lifetime payout limit."})
                 if policy.lifetime_payout_limit < total_paid_out_to_user + attrs.get("amount"):
                     attrs["amount"] = policy.lifetime_payout_limit - total_paid_out_to_user
         return attrs
