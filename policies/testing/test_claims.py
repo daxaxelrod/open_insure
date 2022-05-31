@@ -88,4 +88,26 @@ class ClaimsTestCase(TestCase):
         self.assertEqual(num_claims_for_policy, 0)
         
     def test_identical_claims_get_rejected(self):
+        orignal_claim = Claim.objects.create(
+            policy=self.policy,
+            claimant=self.main_user,
+            title="Test Claim",
+            description="Testing no duplicates",
+            amount=1000,
+        )
+        # same title, policy, description and amount
+        payload = {
+            "title": orignal_claim.title,
+            "description": orignal_claim.description,
+            "policy": orignal_claim.policy.id,
+            "amount": orignal_claim.amount
+        }
+        response = client.post("/api/v1/claims/", payload)
+
+        all_claims = Claim.objects.filter(policy=self.policy).count()
+        self.assertEquals(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(all_claims, 1) # not recreated
+
+
+    def test_cant_create_claim_if_over_user_payout_limit(self):
         self.assertTrue(False)

@@ -132,6 +132,17 @@ class Claim(models.Model):
         approved_count = self.approvals.filter(approved=True).count()
         return (approved_count / all_approvals_count) >= float(settings.CLAIM_APPROVAL_THRESHOLD_PERCENTAGE)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=[
+                "policy",
+                "claimant",
+                "title",
+                "description",
+                "amount",
+            ], name="user-claim-unique")
+        ]
+
     def __str__(self) -> str:
         if self.is_approved():
             approval_str = "Approved :"

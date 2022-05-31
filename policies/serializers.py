@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from rest_framework import serializers
 
 from policies.models import Claim, Policy, Premium, PolicyCloseout, Claim, ClaimApproval
@@ -32,7 +33,7 @@ class ClaimSerializer(serializers.ModelSerializer):
         if policy := validated_data.get("policy"):
             request = self.context['request']
             if request.user in policy.pod.members.all():
-                claim = Claim.objects.create(**validated_data, claimant=request.user)
+                claim, _ = Claim.objects.get_or_create(**validated_data, claimant=request.user)
                 return claim
             else:
                 raise serializers.ValidationError({"claimant": "User is not a memeber of the policy's pod."})
