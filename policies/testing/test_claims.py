@@ -4,7 +4,7 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_2
 
 from pods.models import Pod, User
 from policies.models import Claim, ClaimApproval
-from policies.testing.helpers import create_test_policy
+from policies.testing.helpers import create_test_policy, create_paid_claim_for_user
 
 # initialize the APIClient app
 client = Client()
@@ -108,18 +108,55 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_201_CREATED)
         self.assertEqual(all_claims, 1) # not recreated
 
-    def test_claim_gets_created_with_lower_amount_if_user_over_payout_limit(self):
+    def test_claim_gets_created_with_lower_amount_if_user_over_lifetime_payout_limit(self):
         # if a policy has a payout limit, 
-        # then a user can only create a claim up to the max taking into account
-        # their prior paid out claims plus the theorical payout
+        # then a user can only create a claim up to the max 
+        # taking into account their prior paid out claims plus the theorical payout up to the limit
 
         # create a policy with a payout limit of $100
         # and a user who has an $80 claim already paid
 
         # create a claim of $30, the amount should be switched to $20
-        self.assertTrue(False)
+        self.policy.lifetime_payout_limit = 1000
+        self.policy.save()
+        
+        create_paid_claim_for_user(self.main_user, self.policy, 800)
+        claim_over_limit = {
+            "policy": self.policy.id,
+            "title": "Test Claim",
+            "description": "Testing no duplicates",
+            "amount": 1000,
+        }
+        response = client.post("/api/v1/claims/", claim_over_limit)
+        _json = response.json()
 
-    def test_claim_instantly_rejected_if_over_user_payout_limit(self):
+        # claim got created but amount was lowered
+        self.assertEquals(response.status_code, HTTP_201_CREATED)
+        self.assertEquals(_json["amount"], 200) 
+
         
+    def test_claim_instantly_rejected_if_over_policy_claim_payout_limit(self):
+        # a user has already drawn the max they can for the policy
+        # Ie policy has limit of $100 and user has $100 paid out already
+
+        self.policy.claim_payout_limit = 500
+        self.policy.save()
         
+        create_paid_claim_for_user(self.main_user, self.policy, 1000)
+
+        claim_over_limit = {
+            "policy": self.policy.id,
+            "title": "Test Claim",
+            "description": "Testing no duplicates",
+            "amount": 50,
+        }
+        response = client.post("/api/v1/claims/", claim_over_limit)
+        claims = Claim.objects.filter(policy=self.policy)
+
+        self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEquals(claims.count(), 1)
+        
+    def test_claim_approval_prevented_if_claimant_is_over_lifetime_policy_limit(self):
+        # prevents a users from having a bunch of outstanding claims that get past the first over payment filter
+        # hopefuly real people notice this but not a bad thing to have the system prevent this kind of thing
         self.assertTrue(False)

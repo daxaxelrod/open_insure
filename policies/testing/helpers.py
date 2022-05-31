@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Tuple
 from django.utils import timezone
 from pods.models import Pod
-from policies.models import Policy
+from policies.models import Claim, ClaimApproval, Policy
 from policies.premiums import schedule_premiums
 
 def create_test_policy(pod: Pod) -> Tuple[datetime, Policy]:
@@ -22,3 +22,19 @@ def create_test_policy(pod: Pod) -> Tuple[datetime, Policy]:
     schedule_premiums(policy)
     
     return start_date, policy
+
+def create_paid_claim_for_user(user, policy, amount):
+    
+    claim = Claim.objects.create(
+        policy=policy,
+        claimant=user,
+        amount=amount,
+    )
+    
+    other_pod_members = policy.pod.members.exclude(id=user.id)
+    for member in other_pod_members:
+        ClaimApproval.objects.create(
+            claim=claim,
+            approver=member,
+            approved=True
+        )

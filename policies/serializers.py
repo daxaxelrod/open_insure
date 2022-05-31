@@ -37,24 +37,29 @@ class ClaimSerializer(serializers.ModelSerializer):
                 if policy.claim_payout_limit < attrs.get("amount"):
                     raise serializers.ValidationError({"amount": "Claim amount exceeds policy payout limit."})
             if policy.lifetime_payout_limit:
-                total_paid_out_to_user = Claim.objects.filter(
+                claims_for_user = Claim.objects.filter(
                     claimant=self.context['request'].user, 
                     policy=policy
-                ).select_related("approvals")
+                ).prefetch_related("approvals")
 
-                if policy.lifetime_payout_limit < (attrs.get("amount") + policy.total_paid_out):
-                    raise serializers.ValidationError({"amount": "Claim amount exceeds policy lifetime payout limit."})
-        
+                approved_claims = []
+                for claim in claims_for_user:
+                    if claim.is_approved():
+                        approved_claims.append(claim)
+
+                total_paid_out_to_user = sum([claim.amount for claim in approved_claims])
+                if policy.lifetime_payout_limit < total_paid_out_to_user + attrs.get("amount"):
+                    attrs["amount"] = policy.lifetime_payout_limit - total_paid_out_to_user
+        return attrs
+
     def create(self, validated_data):
-        if policy := validated_data.get("policy"):
-            request = self.context['request']
-            if request.user in policy.pod.members.all():
-                claim, _ = Claim.objects.get_or_create(**validated_data, claimant=request.user)
-                return claim
-            else:
-                raise serializers.ValidationError({"claimant": "User is not a memeber of the policy's pod."})
+        policy = validated_data.get("policy")
+        request = self.context['request']
+        if request.user in policy.pod.members.all():
+            claim, _ = Claim.objects.get_or_create(**validated_data, claimant=request.user)
+            return claim
         else:
-            raise serializers.ValidationError({"policy": "Missing policy"})
+            raise serializers.ValidationError({"claimant": "User is not a memeber of the policy's pod."})
 
     class Meta:
         model = Claim
