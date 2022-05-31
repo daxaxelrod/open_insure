@@ -142,19 +142,17 @@ class ClaimsTestCase(TestCase):
         self.policy.claim_payout_limit = 500
         self.policy.save()
         
-        create_paid_claim_for_user(self.main_user, self.policy, 1000)
-
         claim_over_limit = {
             "policy": self.policy.id,
             "title": "Test Claim",
             "description": "Testing no duplicates",
-            "amount": 50,
+            "amount": 1000,
         }
         response = client.post("/api/v1/claims/", claim_over_limit)
         claims = Claim.objects.filter(policy=self.policy)
 
         self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
-        self.assertEquals(claims.count(), 1)
+        self.assertEquals(claims.count(), 0)
         
     def test_claim_approval_prevented_if_claimant_is_over_lifetime_policy_limit(self):
         # prevents a users from having a bunch of outstanding claims that get past the first over payment filter
