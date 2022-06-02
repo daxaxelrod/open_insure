@@ -83,12 +83,14 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
         approval = serializer.save()
         claim = approval.claim
         policy = claim.policy
-        if claim.is_approved() and claim.paid_on is None:
-            # TODO what happens when the claim is > pool_balance? Tough cookies?
-            policy.pool_balance -= claim.amount
-            policy.save()
-            claim.paid_on = timezone.now()
-            claim.save()
+        
+        # TODO what happens when the claim is > pool_balance? Tough cookies?
+
+        # Everything is all good, pay out the claim
+        policy.pool_balance -= claim.amount
+        policy.save()
+        claim.paid_on = timezone.now()
+        claim.save()
             
 
 

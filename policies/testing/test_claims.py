@@ -175,8 +175,46 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
         self.assertEquals(claims.count(), 1)
 
+    @override_settings(CLAIM_APPROVAL_THRESHOLD_PERCENTAGE=0.10)
     def test_claim_approval_prevented_if_claimant_is_over_lifetime_policy_limit(self):
         #    ^------------^ 
         # prevents a users from having a bunch of outstanding claims that get past the first over payment filter
         # hopefuly real people notice this but not a bad thing to have the system prevent this kind of thing
-        self.assertFalse(True)
+
+        self.policy.lifetime_payout_limit = 5000
+        self.policy.save()
+        
+        payload = {
+            "policy": self.policy.id,
+            "title": "An outstanding claim while the other gets paid",
+            "description": "I should be declined",
+            "amount": 1000,
+        }
+        response = client.post("/api/v1/claims/", payload)
+        _json = response.json()
+        outstanding_claim_id = _json["id"]
+        overage_claim = Claim.objects.get(id=outstanding_claim_id)
+
+        # then that same user makes a claim of $50 which gets instantly paid
+        create_paid_claim_for_user(self.main_user, self.policy, 5000)
+
+        
+        member_claim_approval = ClaimApproval.objects.get(claim=overage_claim, approver=self.member_user)
+
+        # member 1 tries to approves the claim
+        client.login(username=self.member_user.username, password="password")
+        
+        member_1_approval_response = client.patch(f"/api/v1/claims/{outstanding_claim_id}/approvals/{member_claim_approval.id}/", {
+            "approved": True,
+        }, content_type='application/json')
+
+        member_claim_approval.refresh_from_db()
+        self.policy.refresh_from_db()
+        overage_claim.refresh_from_db()
+        
+        self.assertEquals(member_1_approval_response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEquals(member_claim_approval.approved, False)
+        self.assertEquals(overage_claim.paid_on, None)
+        self.assertEquals(self.policy.pool_balance, 0)
+        
+        

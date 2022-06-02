@@ -38,3 +38,6 @@ def create_paid_claim_for_user(user, policy, amount):
             approver=member,
             approved=True
         )
+    
+    claim.paid_on = timezone.now()
+    claim.save()

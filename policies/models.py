@@ -61,6 +61,14 @@ class Policy(models.Model):
         null=True, blank=True
     ) # an guess set by how big the current pool and pod are
     
+    # I'm conflicted as to whether or not to add deductables
+    # Pro:
+    #       Extra incentive to not make non-serious claims
+    #       The user has 'skin in the game'
+    # Cons:
+    #       Complicates claims process
+    #       Encourages claim inflation
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -124,6 +132,11 @@ class Claim(models.Model):
 
     amount = models.IntegerField(validators=[MinValueValidator(1)], help_text="in cents")
     paid_on = models.DateField(null=True, blank=True, help_text="Null means not paid yet")
+    
+    # does this need more context? Maybe another field with an explanation
+    # its useful for allowing the system to mark claims as over the limit without having to recompute all the prior payouts each time
+    is_claim_invalid = models.BooleanField(default=False, help_text="If true, claim can't be paid out, regardless of approval status")
+
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

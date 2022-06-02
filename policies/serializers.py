@@ -16,8 +16,31 @@ class ClaimApprovalSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if self.instance:
-            if self.instance.claim.is_approved():
+            claim = self.instance.claim
+            policy = self.instance.claim.policy
+
+            if claim.is_approved():
                 raise serializers.ValidationError("Claim is already approved")
+            
+            if claim.is_claim_invalid:
+                raise serializers.ValidationError("Claim is invalid and can't be approved be paid")
+            
+            # check that other claims have not exceeded the policy payout limit
+            # I dont love this logic, This needs to be a side effect of the claim getting paid out, not at the approval level
+            if policy.lifetime_payout_limit:
+                all_user_policy_claims = policy.claims.filter(claimant=claim.claimant)
+                total_paid_out = sum(c.amount for c in all_user_policy_claims if c.paid_on)
+                if total_paid_out >= policy.lifetime_payout_limit:
+                    # mark all other claims as invalid including this one
+                    other_outstanding_claims = Claim.objects.filter(
+                        paid_on=None,
+                        policy=policy,
+                        claimant=claim.claimant,
+                    )
+                    for c in other_outstanding_claims:
+                        c.is_claim_invalid = True
+                        c.save()
+                    raise serializers.ValidationError('Claim payout limit exceeded')
 
         return super().validate(attrs)
 
@@ -46,7 +69,6 @@ class ClaimSerializer(serializers.ModelSerializer):
                 for claim in claims_for_user:
                     if claim.is_approved():
                         approved_claims.append(claim)
-
                 total_paid_out_to_user = sum([claim.amount for claim in approved_claims])
                 if policy.lifetime_payout_limit <= total_paid_out_to_user:
                     raise serializers.ValidationError({"amount": "Claim amount exceeds policy lifetime payout limit."})
