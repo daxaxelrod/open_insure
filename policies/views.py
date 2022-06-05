@@ -83,10 +83,11 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
         approval = serializer.save()
         claim = approval.claim
         policy = claim.policy
-        
+
         # TODO what happens when the claim is > pool_balance? Tough cookies?
 
-        # Everything is all good, pay out the claim
+        # Everything is all good, mark the claim as something to be paid out
+        # Maybe there should be another record for claim payouts, similar to policy closeouts
         policy.pool_balance -= claim.amount
         policy.save()
         claim.paid_on = timezone.now()

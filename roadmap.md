@@ -3,4 +3,9 @@
 | Just some ideas, not to be taken as gospel
 
 ## Policies
- - Policies have hard start and stop dates. If a pod of 4 starts a year long policy and a 5th wants to join, there really is no way of knowing when that user joined, just that they joined
+ - Policies have hard start and stop dates, rolling coverage requires a new policy to be created
+ - A user can however join a policy mid flight and only be responsible for premiums until the end of the policy
+ 
+## Todo
+ - Allow for a user to terminate their participation in a policy if the policy allows for it
+ - Payouts should hit the escrow agent, logging or otherwise

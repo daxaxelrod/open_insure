@@ -17,6 +17,7 @@ class Policy(models.Model):
     pod = models.OneToOneField(
         "pods.Pod", on_delete=models.CASCADE, related_name="policies"
     )
+    # fields limiting size of policy pod exist on the pod model
 
     coverage_type = models.CharField(choices=COVERAGE_TYPES, max_length=32)
     premium_pool_type = models.CharField(choices=PREMIUM_POOL_TYPE, max_length=32)

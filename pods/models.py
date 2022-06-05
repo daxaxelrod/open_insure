@@ -21,6 +21,10 @@ class Pod(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     members = models.ManyToManyField(User, related_name='pods', through='UserPod')
 
+    # related to security and locking down a pod
+    max_pod_size = models.IntegerField(null=True, blank=True)
+    allow_joiners_after_policy_start = models.BooleanField(default=True)
+
     def __str__(self):
         return f"{self.name} Pod ({self.members.count()} members)"
 
