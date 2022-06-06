@@ -57,7 +57,7 @@ class PodTestCase(TestCase):
         response = client.post(f"/api/v1/pods/{self.pod.id}/join/", {})
         
         self.assertEquals(response.status_code, HTTP_201_CREATED)
-        self.assertEquals(self.pod.members.count(), 2)
+        self.assertEquals(self.pod.members.count(), 3)
         self.assertIn(new_user, self.pod.members.all())
 
 
@@ -71,16 +71,17 @@ class PodTestCase(TestCase):
             max_pod_size=10,
             allow_joiners_after_policy_start=False # key for this test
         )
-        the_past = timezone.datetime(2022, 1, 1)
+        pod.members.add(self.member_user)
+        the_past = timezone.datetime(2022, 1, 1, tzinfo=timezone.utc)
         start_date, policy = create_test_policy(pod, the_past)
 
         
         new_user = User.objects.create_user(username="interested_user", password="password")
         client.login(username=new_user.username, password="password")
         with patch.object(timezone, 'now', return_value=timezone.datetime(2022, 3, 1, tzinfo=timezone.utc)):
-            response = client.post(f"/api/v1/pods/{self.pod.id}/join/", {})
+            response = client.post(f"/api/v1/pods/{pod.id}/join/", {})
             
             self.assertEquals(response.status_code, HTTP_403_FORBIDDEN)
             self.assertEquals(policy.is_policy_active(), True)
-            self.assertEquals(self.pod.members.count(), 2)
-            self.assertNotIn(new_user, self.pod.members.all())
+            self.assertEquals(pod.members.count(), 2)
+            self.assertNotIn(new_user, pod.members.all())

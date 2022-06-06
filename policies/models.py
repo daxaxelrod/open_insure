@@ -1,8 +1,8 @@
-from datetime import timedelta
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from pytz import timezone
+from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 from policies.model_choices import (
     COVERAGE_TYPES,
     PREMIUM_POOL_TYPE,
@@ -77,7 +77,7 @@ class Policy(models.Model):
         return (
             self.coverage_start_date is not None \
             and self.coverage_start_date < timezone.now() \
-            and self.coverage_start_date + timedelta(months=self.coverage_duration) > timezone.now()
+            and self.coverage_start_date + relativedelta(months=self.coverage_duration) > timezone.now()
         )
 
     def __str__(self) -> str:

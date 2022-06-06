@@ -23,7 +23,7 @@ class PodViewSet(ModelViewSet):
         spots_remaining = -1
         if pod.max_pod_size > 0:
             spots_remaining = pod.max_pod_size - pod.members.count()
-        return Response({**self.get_serializer_class()(pod),
+        return Response({**self.get_serializer_class()(pod).data,
             "spots_remaining": spots_remaining
         }, status=HTTP_201_CREATED)
         
