@@ -1,10 +1,11 @@
 import logging
+from unittest.mock import patch
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase, override_settings, Client
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_200_OK
 
 from pods.models import Pod, User
 from policies.models import Premium
@@ -93,7 +94,29 @@ class PolicyTestCase(TestCase):
         # and the premiums that are from now until the end of the policy get deleted
         # we should keep all the other premiums, even if they are unpaid
         _, policy = create_test_policy(self.pod)
+
+        client.login(username=self.member_user.username, password="password")
+        response = client.post(f"/api/v1/pods/{self.pod.id}/leave/")
+
+        self.assertEquals(response.status_code, HTTP_200_OK)
+        self.assertEquals(policy.pod.members.count(), 1)
+        self.assertEquals(policy.premiums.count(), 12)
+
+    @patch('django.utils.timezone.now')
+    def test_user_leaving_policy_only_deletes_future_premiums(self, mock_timezone):
+        self.assertTrue(False)
+        return
+        # create a year long policy that starts on jan 1st.
+        # patch timezone.now to sometime in march
+        # ensure that 3/4th of premiums are deleted, the ones in the first quarter remain
+        start_date = timezone.datetime(2022, 1, 1, tzinfo=timezone.utc)
+        _, policy = create_test_policy(self.pod, start_date)
         
+        future_now = timezone.datetime(2022, 3, 1, tzinfo=timezone.utc)
+        mock_timezone.return_value = future_now
+
+        self.assertTrue(False)
+
 
 def setUpModule():
     logging.disable()

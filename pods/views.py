@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.status import HTTP_201_CREATED, HTTP_403_FORBIDDEN, HTTP_200_OK
+from rest_framework.status import HTTP_201_CREATED, HTTP_403_FORBIDDEN, HTTP_200_OK, HTTP_400_BAD_REQUEST
 from pods.models import Pod, User
 from pods.serializers import PodSerializer, UserSerializer
 from policies.premiums import remove_future_premiums
@@ -11,11 +11,12 @@ class PodViewSet(ModelViewSet):
     serializer_class = PodSerializer
 
     @action(detail=True, methods=["POST"])
-    def join(self, request):
+    def join(self, request, **kwargs):
         pod = self.get_object()
         user = request.user
-        if pod.policy.is_policy_active() and not pod.allow_joiners_after_policy_start:
-            return Response({"message": "Policy is active and does not allow for new memebers after policy start"}, status=HTTP_403_FORBIDDEN)
+        if pod.has_policy():
+            if pod.policy.is_policy_active() and not pod.allow_joiners_after_policy_start:
+                return Response({"message": "Policy is active and does not allow for new memebers after policy start"}, status=HTTP_403_FORBIDDEN)
         if pod.is_full():
             return Response({"message": "Pod is full"}, status=HTTP_403_FORBIDDEN)
         pod.members.add(user)
@@ -25,8 +26,7 @@ class PodViewSet(ModelViewSet):
         return Response({**self.get_serializer_class()(pod),
             "spots_remaining": spots_remaining
         }, status=HTTP_201_CREATED)
-
-
+        
     # Leaving a pod should be allowed
     #   - gives people flexibility if they cant pay premiums anymore for example
     # Just conflicted on what to do with the already paid premiums
@@ -36,7 +36,7 @@ class PodViewSet(ModelViewSet):
     #   - Blocks bad acting admins from kicking everyone out and keeping premiums for themselves
     # Happy to hear other opinions on the matter
     @action(detail=True, methods=["POST"])
-    def leave(self, request):
+    def leave(self, request, **kwargs):
         pod = self.get_object()
         user = request.user
         remove_future_premiums(user, pod.policy)

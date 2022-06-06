@@ -5,8 +5,7 @@ from pods.models import Pod
 from policies.models import Claim, ClaimApproval, Policy
 from policies.premiums import schedule_premiums
 
-def create_test_policy(pod: Pod) -> Tuple[datetime, Policy]:
-    start_date = timezone.datetime(2022, 5, 29, tzinfo=timezone.utc)
+def create_test_policy(pod: Pod, start_date: datetime = timezone.datetime(2022, 5, 29, tzinfo=timezone.utc)) -> Tuple[datetime, Policy]:
     policy = Policy.objects.create(
         name="$10 Small electronics policy",
         description="No pool cap, $500 claim payout limit",

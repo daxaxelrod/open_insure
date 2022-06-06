@@ -15,7 +15,7 @@ class Policy(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     pod = models.OneToOneField(
-        "pods.Pod", on_delete=models.CASCADE, related_name="policies"
+        "pods.Pod", on_delete=models.CASCADE, related_name="policy"
     )
     # fields limiting size of policy pod exist on the pod model
 

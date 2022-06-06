@@ -1,6 +1,6 @@
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 
-# Create your models here.
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
@@ -27,6 +27,13 @@ class Pod(models.Model):
 
     def is_full(self):
         return self.members.count() >= self.max_pod_size
+
+    def has_policy(self):
+        try:
+            self.policy
+            return True
+        except ObjectDoesNotExist:
+            return False
 
     def __str__(self):
         return f"{self.name} Pod ({self.members.count()} members)"
