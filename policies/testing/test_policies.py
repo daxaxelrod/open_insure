@@ -88,6 +88,11 @@ class PolicyTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_201_CREATED)
         self.assertEquals(policy.pod.members.count(), 3)
         self.assertEquals(policy.premiums.count(), 36)
+    
+    def test_user_can_leave_a_policy_after_it_is_activated(self):
+        # and the premiums that are from now until the end of the policy get deleted
+        # we should keep all the other premiums, even if they are unpaid
+        _, policy = create_test_policy(self.pod)
         
 
 def setUpModule():

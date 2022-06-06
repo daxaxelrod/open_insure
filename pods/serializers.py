@@ -14,7 +14,6 @@ class PodSerializer(FieldExcludableModelSerializer):
 
     def create(self, validated_data):
         return Pod.objects.create(
-            # creator=self.context['request'].user,
             **validated_data
         )
 

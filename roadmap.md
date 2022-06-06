@@ -1,6 +1,6 @@
 # Roadmap
 
-| Just some ideas, not to be taken as gospel
+| Just some ideas, sort of operates as a loose todo list.
 
 ## Policies
  - Policies have hard start and stop dates, rolling coverage requires a new policy to be created

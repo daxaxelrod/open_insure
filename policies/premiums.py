@@ -40,3 +40,8 @@ def schedule_premiums(policy: Policy, for_users: List[User]=None):
         premiums = Premium.objects.bulk_create(premiums_schedule)
 
         logger.info(f"Created premiums {len(premiums)} for policy {policy.id} for user {user.id}")
+
+def remove_future_premiums(user: User, policy: Policy):
+    now = timezone.now()
+    premiums = Premium.objects.filter(policy=policy, payer=user, due_date__gt=now)
+    return premiums.delete()

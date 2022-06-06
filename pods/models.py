@@ -22,8 +22,11 @@ class Pod(models.Model):
     members = models.ManyToManyField(User, related_name='pods', through='UserPod')
 
     # related to security and locking down a pod
-    max_pod_size = models.IntegerField(null=True, blank=True)
+    max_pod_size = models.IntegerField(null=True, blank=True, help_text="Maximum number of members in pod. If null then there is no limit.")
     allow_joiners_after_policy_start = models.BooleanField(default=True)
+
+    def is_full(self):
+        return self.members.count() >= self.max_pod_size
 
     def __str__(self):
         return f"{self.name} Pod ({self.members.count()} members)"

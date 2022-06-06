@@ -86,7 +86,10 @@ class ClaimsTestCase(TestCase):
         
         self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
         self.assertEqual(num_claims_for_policy, 0)
-        
+
+    def test_user_cannot_create_claim_if_they_are_not_current_on_their_premiums(self):
+        self.assertTrue(False)    
+    
     def test_identical_claims_get_rejected(self):
         orignal_claim = Claim.objects.create(
             policy=self.policy,
