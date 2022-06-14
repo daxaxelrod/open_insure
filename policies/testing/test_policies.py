@@ -108,18 +108,27 @@ class PolicyTestCase(TestCase):
 
     @patch('django.utils.timezone.now')
     def test_user_leaving_policy_only_deletes_future_premiums(self, mock_timezone):
-        self.assertTrue(False)
-        return
+        
         # create a year long policy that starts on jan 1st.
         # patch timezone.now to sometime in march
         # ensure that 3/4th of premiums are deleted, the ones in the first quarter remain
         start_date = timezone.datetime(2022, 1, 1, tzinfo=timezone.utc)
+        mock_timezone.return_value = start_date
+
         _, policy = create_test_policy(self.pod, start_date)
         
+        # fast forward to march 1st, 2022
         future_now = timezone.datetime(2022, 3, 1, tzinfo=timezone.utc)
         mock_timezone.return_value = future_now
 
-        self.assertTrue(False)
+        client.login(username=self.member_user.username, password="password")
+        response = client.post(f"/api/v1/pods/{self.pod.id}/leave/")
+        member_user_premiums = Premium.objects.filter(payer=self.member_user, policy=policy).order_by('due_date')
+        
+
+        self.assertEquals(response.status_code, HTTP_200_OK)
+        self.assertEquals(policy.pod.members.count(), 1)
+        self.assertEquals(member_user_premiums.count(), 3)
 
 
 def setUpModule():
