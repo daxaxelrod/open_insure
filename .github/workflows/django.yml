@@ -8,7 +8,12 @@ on:
 
 env:
   SECRET_KEY: "public-insecure-test-key"
+  ACCESS_TOKEN_LIFETIME_MINUTES: 5
+  REFRESH_TOKEN_LIFETIME_DAYS: 14
   CLAIM_APPROVAL_THRESHOLD_PERCENTAGE: 0.5
+  DEBUG: False
+  ESCROW_AGENT: 'logger'
+  IS_MAIN_SCHEDULER: False
 
 jobs:
   build:
