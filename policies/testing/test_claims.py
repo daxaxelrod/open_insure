@@ -91,7 +91,20 @@ class ClaimsTestCase(TestCase):
         self.assertEqual(num_claims_for_policy, 0)
 
     def test_user_cannot_create_claim_if_they_are_not_current_on_their_premiums(self):
-        self.assertTrue(False)
+        # member_user hasnt paid their premiums yet
+        # Should block member_user from creating a claim
+        client.login(username=self.member_user, password="password")
+        payload = {
+            "title": "Test Claim",
+            "description": "A claim to test blocking claims",
+            "policy": self.policy.id,
+            "amount": 1000, # $10
+        }
+        response = client.post("/api/v1/claims/", payload)
+        claims = Claim.objects.filter(policy=self.policy)
+
+        self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEqual(claims.count(), 0)
     
     def test_identical_claims_get_rejected(self):
         orignal_claim = Claim.objects.create(
