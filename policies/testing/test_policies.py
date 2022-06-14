@@ -97,10 +97,14 @@ class PolicyTestCase(TestCase):
 
         client.login(username=self.member_user.username, password="password")
         response = client.post(f"/api/v1/pods/{self.pod.id}/leave/")
+        member_user_premiums = Premium.objects.filter(payer=self.member_user, policy=policy)
 
         self.assertEquals(response.status_code, HTTP_200_OK)
         self.assertEquals(policy.pod.members.count(), 1)
-        self.assertEquals(policy.premiums.count(), 12)
+        self.assertEquals(policy.premiums.count(), 13)
+        self.assertEquals(member_user_premiums.count(), 1)
+        self.assertEquals(member_user_premiums[0].paid, False)
+
 
     @patch('django.utils.timezone.now')
     def test_user_leaving_policy_only_deletes_future_premiums(self, mock_timezone):
