@@ -40,3 +40,8 @@ def create_paid_claim_for_user(user, policy, amount):
     
     claim.paid_on = timezone.now()
     claim.save()
+
+def prepay_all_premiums_for_user(user, policy):
+    for premium in policy.premiums.filter(payer=user):
+        premium.paid = True
+        premium.save()

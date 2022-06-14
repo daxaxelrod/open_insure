@@ -4,7 +4,7 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_2
 
 from pods.models import Pod, User
 from policies.models import Claim, ClaimApproval
-from policies.testing.helpers import create_test_policy, create_paid_claim_for_user
+from policies.testing.helpers import create_test_policy, create_paid_claim_for_user, prepay_all_premiums_for_user
 
 # initialize the APIClient app
 client = Client()
@@ -19,6 +19,7 @@ class ClaimsTestCase(TestCase):
         self.pod.members.add(self.member_user_2)
 
         _, self.policy = create_test_policy(self.pod)
+        prepay_all_premiums_for_user(self.main_user, self.policy)
 
         client.login(username=self.main_user.username, password="password")
 
@@ -53,8 +54,10 @@ class ClaimsTestCase(TestCase):
         }
 
         claim_creation_response = client.post("/api/v1/claims/", payload)
-        
-        main_user_claim = Claim.objects.get(policy=self.policy, claimant=self.main_user)
+        try:
+            main_user_claim = Claim.objects.get(policy=self.policy, claimant=self.main_user)
+        except Claim.DoesNotExist:
+            self.assertTrue(False)
         member_claim_approval = ClaimApproval.objects.get(claim=main_user_claim, approver=self.member_user)
 
         # member 1 approves the claim
@@ -88,7 +91,7 @@ class ClaimsTestCase(TestCase):
         self.assertEqual(num_claims_for_policy, 0)
 
     def test_user_cannot_create_claim_if_they_are_not_current_on_their_premiums(self):
-        self.assertTrue(False)    
+        self.assertTrue(False)
     
     def test_identical_claims_get_rejected(self):
         orignal_claim = Claim.objects.create(
