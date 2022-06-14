@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  SECRET_KEY: "public-insecure-test-key"
+  CLAIM_APPROVAL_THRESHOLD_PERCENTAGE: 0.5
+
 jobs:
   build:
 
