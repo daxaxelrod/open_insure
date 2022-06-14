@@ -30,6 +30,16 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Set up sqlite    
+      run: |
+        wget https://sqlite.org/2022/sqlite-autoconf-3380500.tar.gz
+        tar -xvf sqlite-autoconf-3380500.tar.gz
+      run: |
+        ./configure
+        make
+        sudo make install
+        export PATH="/usr/local/lib:$PATH"
+      working-directory: sqlite-autoconf-3380500
     - name: Install dependecies
       uses: VaultVulp/action-pipenv@v2.0.1
       with:
@@ -37,5 +47,8 @@ jobs:
 
     - name: Test
       uses: VaultVulp/action-pipenv@v2.0.1
+      env:
+          LD_LIBRARY_PATH: /usr/local/lib
       with:
         command: run python manage.py test
+      
