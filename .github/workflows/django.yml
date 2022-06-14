@@ -34,7 +34,6 @@ jobs:
       run: |
         wget https://sqlite.org/2022/sqlite-autoconf-3380500.tar.gz
         tar -xvf sqlite-autoconf-3380500.tar.gz
-      run: |
         ./configure
         make
         sudo make install
