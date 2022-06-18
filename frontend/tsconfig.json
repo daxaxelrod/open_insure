@@ -22,5 +22,11 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "paths": {
+    "@components/*": ["./src/app/components/*"],
+    "@constants/*": ["./src/app/constants/*"],
+    "@redux/*": ["./src/redux/*"],
+    "@networking/*": ["./src/networking/*"],
+  }
 }
