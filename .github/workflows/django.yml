@@ -1,8 +1,10 @@
 name: Django Test Runner CI
 
+# Ok i tried, the goal is to run the test suite on every master push
+# But env setup is slowing me down, time to move on
 on:
-  push: 
-    branches: [ master ]
+  # push: 
+  #   branches: [ master ]
   pull_request:
     branches: [ master ]
 
