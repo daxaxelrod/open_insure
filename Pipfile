@@ -13,7 +13,7 @@ djangorestframework-simplejwt = "*"
 django-apscheduler = "*"
 python-dateutil = "*"
 install = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 black = "*"
