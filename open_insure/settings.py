@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from datetime import timedelta
 import os
 import environ
+import sys
 from pathlib import Path
 
 # read config from .env file
@@ -38,6 +39,8 @@ SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
+
+TESTING = 'test' in sys.argv
 
 ALLOWED_HOSTS = ["*"]
 
@@ -163,7 +166,7 @@ REST_FRAMEWORK = {
     ],
 }
 # tried to do this inline, but it didn't work
-if DEBUG:
+if DEBUG or TESTING:
     REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append('rest_framework.authentication.SessionAuthentication')
 
 SIMPLE_JWT = {
