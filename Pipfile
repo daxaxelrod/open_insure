@@ -12,6 +12,8 @@ dr-cli = "*"
 djangorestframework-simplejwt = "*"
 django-apscheduler = "*"
 python-dateutil = "*"
+install = "*"
+psycopg2 = "*"
 
 [dev-packages]
 black = "*"

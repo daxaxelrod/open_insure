@@ -1,8 +1,6 @@
 name: Django Test Runner CI
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -12,8 +10,13 @@ env:
   REFRESH_TOKEN_LIFETIME_DAYS: 14
   CLAIM_APPROVAL_THRESHOLD_PERCENTAGE: 0.5
   DEBUG: False
-  ESCROW_AGENT: 'logger'
+  ESCROW_AGENT: "logger"
   IS_MAIN_SCHEDULER: False
+  PG_HOST: "localhost"
+  PG_PORT: 5432
+  PG_USER: "postgres"
+  PG_PASSWORD: "postgres"
+  PG_DBNAME: "open_insure"
 
 jobs:
   build:
@@ -24,23 +27,25 @@ jobs:
       matrix:
         python-version: [3.9]
 
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: open_insure
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Download up sqlite
-      run: |
-        wget https://sqlite.org/2022/sqlite-autoconf-3380500.tar.gz
-        tar -xvf sqlite-autoconf-3380500.tar.gz
-    - name: Install sqlite
-      run: |
-        ./configure
-        make
-        sudo make install
-        export PATH="/usr/local/lib:$PATH"
-      working-directory: sqlite-autoconf-3380500
     - name: Install dependecies
       uses: VaultVulp/action-pipenv@v2.0.1
       with:

@@ -38,3 +38,15 @@ Note: database is all sqlite, proper db settings setup to come
 
 For development notes see: [roadmap.md](./roadmap.md)
 
+### setup help
+
+If you're running on a mac you might need to set up postgres for psycopg2, pythons postgresql driver:
+```
+brew install libpq --build-from-source
+brew install openssl
+
+export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib -L/opt/homebrew/opt/libpq/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include -I/opt/homebrew/opt/libpq/include"
+
+pipnev install
+```

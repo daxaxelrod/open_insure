@@ -17,7 +17,12 @@ from pathlib import Path
 # read config from .env file
 env = environ.Env(
     DEBUG=(bool, False),
-    IS_MAIN_SCHEDULER=(bool, False)
+    IS_MAIN_SCHEDULER=(bool, False),
+    PG_HOST=(str, "localhost"),
+    PG_PORT=(int, 5432),
+    PG_USER=(str, "postgres"),
+    PG_PASSWORD=(str, "postgres"),
+    PG_DBNAME=(str, "open_insure"),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -92,6 +97,14 @@ WSGI_APPLICATION = 'open_insure.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('PG_DBNAME'),
+        'USER': env('PG_USER'),
+        'PASSWORD': env('PG_PASSWORD'),
+        'HOST': env('PG_HOST'),
+        'PORT': env('PG_PORT'),
+    },
+    'test': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
