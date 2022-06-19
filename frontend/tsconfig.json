@@ -23,10 +23,11 @@
   "include": [
     "src"
   ],
-  "paths": {
-    "@components/*": ["./src/app/components/*"],
-    "@constants/*": ["./src/app/constants/*"],
-    "@redux/*": ["./src/redux/*"],
-    "@networking/*": ["./src/networking/*"],
-  }
+  // need to eject the project first
+  // "paths": {
+  //   "@components/*": ["./src/app/components/*"],
+  //   "@constants/*": ["./src/app/constants/*"],
+  //   "@redux/*": ["./src/redux/*"],
+  //   "@networking/*": ["./src/networking/*"],
+  // }
 }
