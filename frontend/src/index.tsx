@@ -2,10 +2,13 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import App from './App';
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import 'antd/dist/antd.css'; 
+import Dashboard from './app/pages/Dashboard';
+import Onboarding from './app/pages/Onboarding';
+import Index from './app/pages/Home';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -14,7 +17,11 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/join" element={<Onboarding />} />
+          <Route path="/home" element={<Dashboard />} />
+        </Routes>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>
