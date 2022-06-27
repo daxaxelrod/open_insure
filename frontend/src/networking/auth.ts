@@ -4,8 +4,14 @@ import { axiosInstance } from './api'
 type ILoginRequest = {
     email: string;
     password: string;
-    first_name: string;
-    last_name: string;
+}
+
+
+export type RegisterRequest = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
 }
 
 // 4. Post email and password and get tokens in return. Call setAuthTokens with the result.
@@ -16,7 +22,17 @@ export const login = async (params: ILoginRequest) => {
   setAuthTokens({
     accessToken: response.data.access_token,
     refreshToken: response.data.refresh_token
-  })
+  });
+  return response
+}
+
+export const register = async (params: RegisterRequest) => {
+  const response = await axiosInstance.post('/auth/register', params);
+  setAuthTokens({
+    accessToken: response.data.access_token,
+    refreshToken: response.data.refresh_token
+  });
+  return response
 }
 
 // 5. Clear the auth tokens from localstorage
