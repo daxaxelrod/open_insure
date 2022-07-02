@@ -47,9 +47,10 @@ class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    # Register
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        user = User.objects.get(response.data['id'])
+        user = User.objects.get(email=response.data['email']) # id not returned but email is unique
         refresh = RefreshToken.for_user(user)
         response.data['refresh'] = str(refresh)
         response.data['access'] = str(refresh.access_token)

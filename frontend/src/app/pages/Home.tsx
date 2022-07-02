@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button, Col, Row, Typography } from 'antd'
 import Layout, { Content } from 'antd/lib/layout/layout'
-import NavBar from '../components/NavBar'
 import { Link } from 'react-router-dom';
 
 const { Title, Paragraph } = Typography;

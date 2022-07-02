@@ -27,10 +27,10 @@ export const login = async (params: ILoginRequest) => {
 }
 
 export const register = async (params: RegisterRequest) => {
-  const response = await axiosInstance.post('/auth/register', params);
+  const response = await axiosInstance.post('/api/v1/users/', {...params, username: params.email});
   setAuthTokens({
-    accessToken: response.data.access_token,
-    refreshToken: response.data.refresh_token
+    accessToken: response.data.access,
+    refreshToken: response.data.refresh
   });
   return response
 }
@@ -38,10 +38,6 @@ export const register = async (params: RegisterRequest) => {
 // 5. Clear the auth tokens from localstorage
 export const logout = () => clearAuthTokens()
 
-// Check if refresh token exists
-if (isLoggedIn()) {
-  // assume we are logged in because we have a refresh token
-}
 
 // Get access to tokens
 const accessToken = getAccessToken()
