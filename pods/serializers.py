@@ -25,7 +25,6 @@ class PodSerializer(FieldExcludableModelSerializer):
 # Private, more permissive
 class UserSerializer(ModelSerializer):
     pods = PodSerializer(many=True, read_only=True, exclude=['members'])
-
     class Meta:
         model = User
         fields = [

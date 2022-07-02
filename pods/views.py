@@ -5,7 +5,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_403_FORBIDDEN, HTTP_200
 from pods.models import Pod, User
 from pods.serializers import PodSerializer, UserSerializer
 from policies.premiums import remove_future_premiums
-
+from rest_framework_simplejwt.tokens import RefreshToken
 class PodViewSet(ModelViewSet):
     queryset = Pod.objects.all()
     serializer_class = PodSerializer
@@ -46,6 +46,17 @@ class PodViewSet(ModelViewSet):
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        user = User.objects.get(response.data['id'])
+        refresh = RefreshToken.for_user(user)
+        response.data['refresh'] = str(refresh)
+        response.data['access'] = str(refresh.access_token)
+        return response
+        
+
+
 
     
         

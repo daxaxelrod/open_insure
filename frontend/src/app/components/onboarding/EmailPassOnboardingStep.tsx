@@ -2,18 +2,38 @@ import React from 'react'
 import { Button, Checkbox, Form, Input } from 'antd';
 
 import { useWizard } from 'react-use-wizard';
-import { useDispatch } from 'react-redux';
+import { register } from '../../../redux/actions/onboarding';
+import { useAppDispatch } from '../../../redux/hooks';
 
 export default function EmailPassOnboardingStep({ }) {
 
   const { handleStep, previousStep, nextStep, isLastStep } = useWizard();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  const [form] = Form.useForm();
+  const firstName = Form.useWatch('firstName', form);
+  const lastName = Form.useWatch('lastName', form);
+  const email = Form.useWatch('email', form);
+  const password = Form.useWatch('password', form);
+
+
 
   handleStep(() => {
     // when we have multiple steps, this will just be a patch to the user
-
     alert('Going to step 2');
-  });
+  });  
+
+
+
+  const createUser = () => {
+    dispatch(register({
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      password,
+    }));
+  }
+  
 
   return (
     <Form
@@ -27,14 +47,14 @@ export default function EmailPassOnboardingStep({ }) {
     >
       <Form.Item label="Full Name" style={{ marginBottom: 0 }}>
         <Form.Item
-          name="first_name"
+          name="firstName"
           rules={[{ required: true }]}
           style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}
         >
           <Input placeholder="First name" />
         </Form.Item>
         <Form.Item
-          name="last_name"
+          name="lastName"
           rules={[{ required: true }]}
           style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: '0 8px' }}
         >
@@ -60,7 +80,7 @@ export default function EmailPassOnboardingStep({ }) {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" onClick={ isLastStep ? nextStep}>
+        <Button type="primary" onClick={isLastStep ? createUser : nextStep}>
           Submit
         </Button>
       </Form.Item>
