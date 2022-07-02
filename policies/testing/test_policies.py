@@ -90,10 +90,17 @@ class PolicyTestCase(TestCase):
         self.assertEquals(policy.pod.members.count(), 3)
         self.assertEquals(policy.premiums.count(), 36)
     
-    def test_user_can_leave_a_policy_after_it_is_activated(self):
+    @patch('django.utils.timezone.now')
+    def test_user_can_leave_a_policy_after_it_is_activated(self, mock_timezone):
         # and the premiums that are from now until the end of the policy get deleted
         # we should keep all the other premiums, even if they are unpaid
-        _, policy = create_test_policy(self.pod)
+        start_date = timezone.datetime(2022, 1, 1, tzinfo=timezone.utc)
+        mock_timezone.return_value = start_date
+
+        _, policy = create_test_policy(self.pod, start_date)
+
+        future_now = timezone.datetime(2022, 1, 2, tzinfo=timezone.utc)
+        mock_timezone.return_value = future_now
 
         client.login(username=self.member_user.username, password="password")
         response = client.post(f"/api/v1/pods/{self.pod.id}/leave/")

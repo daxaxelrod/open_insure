@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ValidationError
 from pods.models import Pod, User
 from pods.utils.custom_serializers import FieldExcludableModelSerializer
 
@@ -25,6 +25,12 @@ class PodSerializer(FieldExcludableModelSerializer):
 # Private, more permissive
 class UserSerializer(ModelSerializer):
     pods = PodSerializer(many=True, read_only=True, exclude=['members'])
+
+    def validate_email(self, value):
+        lower_email = value.lower()
+        if User.objects.filter(email__iexact=lower_email).exists():
+            raise ValidationError("Duplicate email")
+        return lower_email
     class Meta:
         model = User
         fields = [
