@@ -1,8 +1,8 @@
 import { isLoggedIn, setAuthTokens, clearAuthTokens, getAccessToken, getRefreshToken } from 'axios-jwt'
 import { axiosInstance } from './api'
 
-type ILoginRequest = {
-    email: string;
+export type LoginRequest = {
+    username: string;
     password: string;
 }
 
@@ -15,13 +15,12 @@ export type RegisterRequest = {
 }
 
 // 4. Post email and password and get tokens in return. Call setAuthTokens with the result.
-export const login = async (params: ILoginRequest) => {
-  const response = await axiosInstance.post('/auth/login', params)
-
+export const login = async (params: LoginRequest) => {
+  const response = await axiosInstance.post('/api/token/', params)
   // save tokens to storage
   setAuthTokens({
-    accessToken: response.data.access_token,
-    refreshToken: response.data.refresh_token
+    accessToken: response.data.access,
+    refreshToken: response.data.refresh
   });
   return response
 }
@@ -33,6 +32,10 @@ export const register = async (params: RegisterRequest) => {
     refreshToken: response.data.refresh
   });
   return response
+}
+
+export const getSelf = async () => {
+  return axiosInstance.get('/api/v1/users/me/')
 }
 
 // 5. Clear the auth tokens from localstorage

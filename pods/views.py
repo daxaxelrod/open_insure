@@ -55,7 +55,11 @@ class UserViewSet(ModelViewSet):
         response.data['refresh'] = str(refresh)
         response.data['access'] = str(refresh.access_token)
         return response
-        
+
+    @action(detail=False, methods=["GET"])
+    def me(self, request):
+        return Response(self.get_serializer_class()(request.user).data, status=HTTP_200_OK)
+
 
 
 

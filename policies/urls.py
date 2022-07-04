@@ -5,6 +5,7 @@ from policies.views import ClaimApprovalViewSet, ClaimViewSet, PolicyViewSet, Pr
 
 router = routers.DefaultRouter()
 router.register(r"policies", PolicyViewSet)
+
 router.register(r"claims", ClaimViewSet)
 
 urlpatterns = [

@@ -1,6 +1,7 @@
 from django.db import IntegrityError
 from django.utils import timezone
 from rest_framework import serializers
+from pods.serializers import PodSerializer
 
 from policies.models import Claim, Policy, Premium, PolicyCloseout, Claim, ClaimApproval
 
@@ -177,6 +178,7 @@ class PolicySerializer(serializers.ModelSerializer):
 
 class FullPolicySerializer(serializers.ModelSerializer):
     # meant for get, has a few nested joins
+    pod = PodSerializer(read_only=True)
     premiums = PremiumSerializer(many=True, read_only=True)
     claims = ClaimSerializer(many=True, read_only=True)
     close_out = PolicyCloseoutSerializer(many=False, read_only=True)

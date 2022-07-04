@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Col, Row, Typography } from 'antd'
+import { Button, Col, Row, Space, Typography } from 'antd'
 import Layout, { Content } from 'antd/lib/layout/layout'
 import { Link } from 'react-router-dom';
 
@@ -27,11 +27,19 @@ export default function Home() {
                   Want to know more?
                 </Paragraph>
               </Typography>
-              <Link to={"/join"}>
-                <Button type="primary" shape="round" size={"large"} >
-                  Register
-                </Button>
-              </Link>
+              <Space size={12}>
+                <Link to={"/join"}>
+                  <Button type="primary" shape="round" size={"large"} >
+                    Register
+                  </Button>
+                </Link>
+                <Link to={"/login"}>
+                  <Button type="primary" shape="round" size={"large"} >
+                    Login
+                  </Button>
+                </Link>
+              </Space>
+              
             </Col>
             
           </Row>

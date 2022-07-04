@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Input } from 'antd';
 
 import { useWizard } from 'react-use-wizard';
 import { register } from '../../../redux/actions/onboarding';
-import { useAppDispatch } from '../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { getAccessToken, isLoggedIn } from 'axios-jwt';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,12 +19,10 @@ export default function EmailPassOnboardingStep({ }) {
     alert('Going to step 2');
   });  
 
-  let accessToken = getAccessToken();
-  let navigate = useNavigate();
+  const isRegisterPending = useAppSelector(state => state.auth.registerPending);
+  const navigate = useNavigate();
 
-  const createUser = ({ firstName, lastName, email, password }:any) => {
-    console.log(firstName, lastName, email, password);
-    
+  const createUser = ({ firstName, lastName, email, password }:any) => {    
     dispatch(register({
       first_name: firstName,
       last_name: lastName,
@@ -37,7 +35,7 @@ export default function EmailPassOnboardingStep({ }) {
     if(isLoggedIn()) {
       navigate('/home')
     }
-  }, [accessToken])
+  }, [isRegisterPending])
   
   
 
@@ -87,10 +85,11 @@ export default function EmailPassOnboardingStep({ }) {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={isRegisterPending}>
           Register
         </Button>
       </Form.Item>
+      
     </Form>
   );
 };

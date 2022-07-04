@@ -1,10 +1,12 @@
 
 from django.utils import timezone
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.filters import SearchFilter
+from policies.paginators import StandardResultsSetPagination
 from policies.models import Claim, ClaimApproval, Policy, Premium
 from policies.permissions import InPolicyPod, InPodAndNotClaimant, InClaimPod
 from policies.premiums import schedule_premiums
@@ -15,7 +17,24 @@ from policies.serializers import (ClaimSerializer, PolicySerializer,
 class PolicyViewSet(ModelViewSet):
     queryset = Policy.objects.all()
     permission_classes = [IsAuthenticated&InPolicyPod]
-    
+    pagination_class = StandardResultsSetPagination
+    filter_backends = [SearchFilter]
+    search_fields = [
+        'name',
+        'description',
+        'coverage_type',
+        'premium_pool_type',
+        'governance_type',
+    ]
+
+    def get_queryset(self):
+        if where_member := self.request.query_params.get('where_member', None):
+            if where_member:
+                return Policy.objects.filter(pod__members__id=self.request.user.id)
+            else:
+                return Policy.objects.exclude(pod__members__id=self.request.user.id)
+        return Policy.objects.all()
+
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
             return FullPolicySerializer

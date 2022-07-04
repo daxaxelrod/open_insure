@@ -1,10 +1,12 @@
 import { AnyAction } from "@reduxjs/toolkit";
 import {
-  LOGIN,
   LOGOUT,
   REGISTER_PENDING,
   REGISTER_SUCCESS,
-  REGISTER_FAILURE
+  REGISTER_FAILURE,
+  LOGIN_PENDING,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
 } from '../actions/types';
 
 export interface User {
@@ -19,23 +21,38 @@ export interface User {
 
 export interface AuthState {
   currentUser?: User | null;
+  loginPending: boolean;
+  loginError?: object | null;
   registerPending: boolean;
   registrationError?: object | null;
 }
 
 const initialState: AuthState = {
   currentUser: null,
+  loginPending: false,
   registerPending: false,
   registrationError: {},
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
   switch (type) {
-
-    case LOGIN:
+    case LOGIN_PENDING:
       return {
         ...state,
-        currentUser: payload.currentUser
+        loginPending: true,
+      }
+    case LOGIN_SUCCESS:
+      
+      return {
+        ...state,
+        loginPending: false,
+        currentUser: payload
+      }
+    case LOGIN_FAILURE:
+      return {
+        ...state,
+        loginPending: false,
+        loginError: payload?.error
       }
     case LOGOUT:
       return {
@@ -59,7 +76,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
         registerPending: false,
         currentUser: null,
       }
-
+    
     default:
       return state
   }
