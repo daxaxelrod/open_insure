@@ -1,3 +1,14 @@
+export interface User {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    picture: string;
+    created_at: string;
+    updated_at: string;
+    verified_email: boolean;
+}
+
 export interface Premium {
     id: number;
     amount: number;
@@ -29,16 +40,17 @@ export interface Pod {
     created_at: string;
     updated_at: string;
     creator: number;
-    members: number[];
+    members: User[];
     max_pod_size: number;
     allow_joiners_after_policy_start: boolean;
 }
 
+export type CoverageTypes = "m_property" | "renters" | "travel" | "pet_care";
 export interface Policy {
     id: number;
     name: string;
     description?: string;
-    coverage_type: "m_property" | "renters";
+    coverage_type: CoverageTypes;
     premium_pool_type: "perpetual_pool";
     governance_type: "direct_democracy";
     coverage_start_date: string;
@@ -55,5 +67,5 @@ export interface Policy {
     updated_at: string;
     premiums: Premium[];
     claims: Claim[];
-    pod: number; // always look up the pod in the pod reducer
+    pod: Pod; // always look up the pod in the pod reducer
 }

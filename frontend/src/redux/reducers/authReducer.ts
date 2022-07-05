@@ -8,16 +8,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
 } from '../actions/types';
-
-export interface User {
-  first_name: string;
-  last_name: string;
-  email: string;
-  picture: string;
-  created_at: string;
-  updated_at: string;
-  verified_email: boolean;
-}
+import { User } from "./commonTypes";
 
 export interface AuthState {
   currentUser?: User | null;

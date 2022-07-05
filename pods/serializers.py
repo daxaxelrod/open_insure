@@ -19,7 +19,7 @@ class PodSerializer(FieldExcludableModelSerializer):
 
     class Meta:
         model = Pod
-        fields = ['id', 'name', 'description', 'created_at', 'updated_at', 'creator', 'members']
+        fields = "__all__"
 
 
 # Private, more permissive
