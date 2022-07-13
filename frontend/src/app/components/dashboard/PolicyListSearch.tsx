@@ -1,30 +1,36 @@
-import React from 'react'
-import { Col, Input, Row, Typography } from 'antd';
+import React, { useState } from 'react'
+import { Button, Col, Input, Row, Space, Typography } from 'antd';
 import { useAppSelector } from '../../../redux/hooks';
 import { Policy } from '../../../redux/reducers/commonTypes';
 import PolicyCard from '../policies/card/PolicyCard';
 import {
-  SearchOutlined,
+  PlusOutlined,
+  SearchOutlined
 } from '@ant-design/icons';
+import CreatePolicyModal from './modals/CreatePolicyModal';
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 export default function PolicyListSearch() {
 
-  const [search, setSearch] = React.useState('');
+  const [search, setSearch] = useState('');
+  const [isVisible, setIsVisible] = useState(false)
   const policies: Policy[] = useAppSelector(state => state.policies.policies);
 
   return (
     <div>
-      <Row style={{
+      <Row style={{ 
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         
       }}>
         <Title>Policies</Title>
-        <Col span={6}>
-        
+        <Col md={12} span={6} style={{flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
+          <Button style={{marginRight: 20}} 
+                  type="primary"
+                  onClick={() => setIsVisible(true)}
+                  icon={<PlusOutlined />}>Create</Button>
           <Input 
             prefix={<SearchOutlined />}
             size="large"
@@ -39,6 +45,7 @@ export default function PolicyListSearch() {
       <Row gutter={[16, 16]}>
         {policies.map(policy => <PolicyCard key={policy.id} policy={policy} />)}
       </Row>
+      <CreatePolicyModal isVisible={isVisible} setIsVisible={setIsVisible} />
     </div>
   )
 }
