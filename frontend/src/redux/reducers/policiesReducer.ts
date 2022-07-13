@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { AnyAction } from "@reduxjs/toolkit";
 
 import {
@@ -7,14 +8,14 @@ import {
 } from '../actions/types';
 import { Policy } from "./commonTypes";
 
-export interface AuthState {
+export interface PoliciesState {
     policies: Policy[]; // maybe rename this quotes?
     getPoliciesPending: boolean;
     policiesApartOf: Policy[]; // Ehhhhhhhh. Meaning policies the user is a part of.
     nextPoliciesPage: number | null; // for pagination
 }
 
-const initialState: AuthState = {
+const initialState: PoliciesState = {
     policies: [],
     getPoliciesPending: false,
     nextPoliciesPage: null,

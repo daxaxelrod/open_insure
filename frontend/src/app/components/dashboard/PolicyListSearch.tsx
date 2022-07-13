@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { Button, Col, Input, Row, Space, Typography } from 'antd';
+import { Button, Col, Input, Row, Typography } from 'antd';
+
+
 import { useAppSelector } from '../../../redux/hooks';
 import { Policy } from '../../../redux/reducers/commonTypes';
 import PolicyCard from '../policies/card/PolicyCard';
@@ -8,6 +10,7 @@ import {
   SearchOutlined
 } from '@ant-design/icons';
 import CreatePolicyModal from './modals/CreatePolicyModal';
+
 
 const { Title } = Typography;
 
@@ -33,7 +36,7 @@ export default function PolicyListSearch() {
                   icon={<PlusOutlined />}>Create</Button>
           <Input 
             prefix={<SearchOutlined />}
-            size="large"
+            
             placeholder="Search" 
             onChange={(e) => setSearch(e.target.value)}
             value={search}
