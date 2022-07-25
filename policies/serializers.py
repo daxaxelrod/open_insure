@@ -2,6 +2,7 @@ from django.db import IntegrityError
 from django.utils import timezone
 from rest_framework import serializers
 from pods.serializers import PodSerializer
+from pods.models import Pod
 
 from policies.models import Claim, Policy, Premium, PolicyCloseout, Claim, ClaimApproval
 
@@ -104,24 +105,23 @@ class ClaimSerializer(serializers.ModelSerializer):
                     attrs["amount"] = (
                         policy.lifetime_payout_limit - total_paid_out_to_user
                     )
-                    
+
             # check if a user is current on their premiums
             premiums = Premium.objects.filter(
                 policy=policy,
                 payer=self.context["request"].user,
-                due_date__lte=timezone.now()
+                due_date__lte=timezone.now(),
             )
             missed_premiums = [x for x in premiums if not x.paid]
             if len(missed_premiums):
                 raise serializers.ValidationError(
                     {
                         "premiums": {
-                            'message': f"Missed payment on {len(missed_premiums)} premiums",
-                            'missed_premiums': missed_premiums
+                            "message": f"Missed payment on {len(missed_premiums)} premiums",
+                            "missed_premiums": missed_premiums,
                         }
                     }
                 )
-
 
         return attrs
 
@@ -158,6 +158,7 @@ class PolicyCloseoutSerializer(serializers.ModelSerializer):
 
 class PolicySerializer(serializers.ModelSerializer):
     # Meant to be used for posting/patching
+    pod = serializers.PrimaryKeyRelatedField(queryset=Pod.objects.all(), required=False)
 
     # coverage start date should be immutable
     def validate_coverage_start_date(self, value):

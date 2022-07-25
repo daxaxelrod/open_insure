@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import { Button, Form, Input, Radio, Modal, Divider, Typography, InputNumber, Select, DatePicker, Space, Checkbox, Row } from 'antd';
+import { Button, Form, Input,  Modal, Divider, Typography, InputNumber, Select, DatePicker, Space, Checkbox, Row } from 'antd';
 import {
   DownSquareOutlined,
   UpSquareOutlined
@@ -8,6 +8,8 @@ import { createPod } from '../../../../redux/actions/pods';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { createPolicy } from '../../../../redux/actions/policies';
 const { Title, Paragraph } = Typography;
+const { TextArea } = Input;
+
 
 export default function CreatePolicyModal({ isVisible, setIsVisible }: { isVisible: boolean, setIsVisible: Dispatch<SetStateAction<boolean>> }) {
 
@@ -23,6 +25,9 @@ export default function CreatePolicyModal({ isVisible, setIsVisible }: { isVisib
       .then(values => {
         dispatch(createPolicy({
           ...values,
+          coverage_start_date: values.coverage_start_date.format(),
+          premium_pool_type: 'perpetual_pool',
+          governance_type: 'direct_democracy',
         }));
       })
       .catch(info => {
@@ -58,8 +63,11 @@ export default function CreatePolicyModal({ isVisible, setIsVisible }: { isVisib
         form={form}
         layout='vertical'
         onValuesChange={onFormChange}>
-        <Form.Item label="Policy Name" name="policyName" required>
+        <Form.Item label="Policy Name" name="name" required>
           <Input placeholder="Phone Insurance" />
+        </Form.Item>
+        <Form.Item label="Description" name="description" required>
+          <TextArea placeholder="A group of friends insuring themselves against..." />
         </Form.Item>
         <Form.Item label="Policy type" name="coverage_type" initialValue={'m_property'} required>
           <Select >

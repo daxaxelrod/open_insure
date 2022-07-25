@@ -37,11 +37,12 @@ export const getUserPolicies = (): ThunkAction<void, RootState, unknown, AnyActi
 export const createPolicy = (values: API.PolicyCreationPayload): ThunkAction<void, RootState, unknown, AnyAction>  => async dispatch => {
     dispatch({ type: CREATE_POLICY_PENDING });
     try {
+        debugger;
         const response = await API.createPolicy(values);
+        debugger
         dispatch({ type: CREATE_POLICY_SUCCESS, payload: response.data });
-        return response.data
     } catch (error) {
+        debugger;
         dispatch({ type: CREATE_POLICY_FAILURE, payload: error });
-        return null;
     }
 }

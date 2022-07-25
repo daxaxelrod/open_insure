@@ -59,9 +59,9 @@ class PolicyViewSet(ModelViewSet):
     def perform_create(self, serializer):
         # create the attached pod if payload doesnt have a pod id
         if not serializer.validated_data.get("pod", None):
-            pod_serializer = PodSerializer(data=request.data)
+            pod_serializer = PodSerializer(data=self.request.data)
             if pod_serializer.is_valid():
-                pod = pod_serializer.save()
+                pod = pod_serializer.save(creator=self.request.user)
                 policy = serializer.save(pod=pod)
             else:
                 raise ValidationError(
@@ -74,7 +74,6 @@ class PolicyViewSet(ModelViewSet):
             policy = serializer.save()
 
         # schedule premiums when coverage date gets set
-
         if policy.coverage_start_date:
             schedule_premiums(policy)
 
