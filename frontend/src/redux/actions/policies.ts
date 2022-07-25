@@ -14,7 +14,7 @@ import {
 } from "./types";
 
 
-export const getAvailablePolicies = (page: number, perPage: number): ThunkAction<void, RootState, unknown, AnyAction>  => async dispatch => { 
+export const getAvailablePolicies = (page: number, perPage: number): ThunkAction<void, RootState, unknown, AnyAction> => async dispatch => { 
     dispatch({ type: GET_AVAILABLE_POLICIES_PENDING });
     try {
         const response = await API.getAvailablePolicies({page, perPage});
@@ -24,7 +24,7 @@ export const getAvailablePolicies = (page: number, perPage: number): ThunkAction
     }
 }
 
-export const getUserPolicies = (): ThunkAction<void, RootState, unknown, AnyAction>  => async dispatch => {
+export const getUserPolicies = (): ThunkAction<void, RootState, unknown, AnyAction> => async dispatch => {
     dispatch({ type: GET_USER_POLICIES_PENDING });
     try {
         const response = await API.getUserPolicies();
@@ -34,15 +34,12 @@ export const getUserPolicies = (): ThunkAction<void, RootState, unknown, AnyActi
     }
 }
 
-export const createPolicy = (values: API.PolicyCreationPayload): ThunkAction<void, RootState, unknown, AnyAction>  => async dispatch => {
+export const createPolicy = (values: API.PolicyCreationPayload): ThunkAction<void, RootState, unknown, AnyAction> => async dispatch => {
     dispatch({ type: CREATE_POLICY_PENDING });
     try {
-        debugger;
         const response = await API.createPolicy(values);
-        debugger
         dispatch({ type: CREATE_POLICY_SUCCESS, payload: response.data });
     } catch (error) {
-        debugger;
         dispatch({ type: CREATE_POLICY_FAILURE, payload: error });
     }
 }

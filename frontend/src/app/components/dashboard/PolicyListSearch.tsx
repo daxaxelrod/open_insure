@@ -22,13 +22,8 @@ export default function PolicyListSearch() {
 
   return (
     <div>
-      <Row style={{ 
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        
-      }}>
-        <Title>Policies</Title>
+      <Row justify='space-between'>
+        <Title level={3}>Find a policy</Title>
         <Col md={8} lg={6} sm={12} style={{flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
           <Button style={{marginRight: 20}} 
                   type="primary"
@@ -42,8 +37,6 @@ export default function PolicyListSearch() {
             value={search}
             />
         </Col>
-        
-        
       </Row>
       <Row gutter={[16, 16]}>
         {policies.map(policy => <PolicyCard key={policy.id} policy={policy} />)}

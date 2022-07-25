@@ -4,6 +4,7 @@ import { Policy } from '../../../../redux/reducers/commonTypes'
 import {
   UserOutlined,
 } from '@ant-design/icons';
+import { maybePluralize } from '../../../utils/stringUtils';
 
 export default function Title({ policy }: { policy: Policy }) {
 
@@ -15,7 +16,7 @@ export default function Title({ policy }: { policy: Policy }) {
     }}>
       <div>{policy.name}</div>
       <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
-        <div>{policy?.pod?.members?.length} members&nbsp;</div>
+        <div>{policy?.pod?.members?.length} {maybePluralize(policy?.pod?.members?.length, 'member')}&nbsp;</div>
         <Avatar.Group
           maxCount={2}
         >

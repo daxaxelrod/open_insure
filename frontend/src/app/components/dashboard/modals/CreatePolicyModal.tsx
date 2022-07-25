@@ -1,13 +1,12 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import { Button, Form, Input,  Modal, Divider, Typography, InputNumber, Select, DatePicker, Space, Checkbox, Row } from 'antd';
+import { Form, Input,  Modal, Divider, Typography, InputNumber, Select, DatePicker, Space, Checkbox, Row } from 'antd';
 import {
   DownSquareOutlined,
   UpSquareOutlined
 } from '@ant-design/icons';
-import { createPod } from '../../../../redux/actions/pods';
 import { useAppDispatch } from '../../../../redux/hooks';
 import { createPolicy } from '../../../../redux/actions/policies';
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 const { TextArea } = Input;
 
 
@@ -46,8 +45,6 @@ export default function CreatePolicyModal({ isVisible, setIsVisible }: { isVisib
   const toggleAdvanced = () => {
     setShowAdvancedSettings(v => !v);
   }
-
-
 
 
   return (
