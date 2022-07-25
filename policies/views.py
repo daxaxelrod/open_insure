@@ -1,34 +1,41 @@
-
+from urllib import request
 from django.utils import timezone
+from pods.serializers import PodSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
 from policies.paginators import StandardResultsSetPagination
 from policies.models import Claim, ClaimApproval, Policy, Premium
 from policies.permissions import InPolicyPod, InPodAndNotClaimant, InClaimPod
 from policies.premiums import schedule_premiums
-from policies.serializers import (ClaimSerializer, PolicySerializer, 
-                                  FullPolicySerializer, PremiumSerializer, 
-                                  ClaimApprovalSerializer)
+from policies.serializers import (
+    ClaimSerializer,
+    PolicySerializer,
+    FullPolicySerializer,
+    PremiumSerializer,
+    ClaimApprovalSerializer,
+)
+
 
 class PolicyViewSet(ModelViewSet):
     queryset = Policy.objects.all()
-    permission_classes = [IsAuthenticated&InPolicyPod]
+    permission_classes = [IsAuthenticated & InPolicyPod]
     pagination_class = StandardResultsSetPagination
     filter_backends = [SearchFilter]
     search_fields = [
-        'name',
-        'description',
-        'coverage_type',
-        'premium_pool_type',
-        'governance_type',
+        "name",
+        "description",
+        "coverage_type",
+        "premium_pool_type",
+        "governance_type",
     ]
 
     def get_queryset(self):
-        if where_member := self.request.query_params.get('where_member', None):
+        if where_member := self.request.query_params.get("where_member", None):
             if where_member:
                 return Policy.objects.filter(pod__members__id=self.request.user.id)
             else:
@@ -50,11 +57,28 @@ class PolicyViewSet(ModelViewSet):
             schedule_premiums(policy)
 
     def perform_create(self, serializer):
-        policy = serializer.save()
+        # create the attached pod if payload doesnt have a pod id
+        if not serializer.validated_data.get("pod", None):
+            pod_serializer = PodSerializer(data=request.data)
+            if pod_serializer.is_valid():
+                pod = pod_serializer.save()
+                policy = serializer.save(pod=pod)
+            else:
+                raise ValidationError(
+                    {
+                        "errors": pod_serializer.errors,
+                        "message": "Could not create pod which is required for a new policy",
+                    }
+                )
+        else:
+            policy = serializer.save()
+
+        # schedule premiums when coverage date gets set
+
         if policy.coverage_start_date:
             schedule_premiums(policy)
 
-    @action(detail=True, methods=['POST'], permission_classes=[IsAuthenticated])
+    @action(detail=True, methods=["POST"], permission_classes=[IsAuthenticated])
     def join(self, request, pk=None):
         # there should be gaurdrails for a new user to join
         # namely based the risk that this user personally carries
@@ -68,25 +92,26 @@ class PolicyViewSet(ModelViewSet):
 class PremiumViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Premium.objects.all()
     serializer_class = PremiumSerializer
-    permission_classes = [IsAuthenticated&InPodAndNotClaimant]
+    permission_classes = [IsAuthenticated & InPodAndNotClaimant]
 
     # premiums are paid to the publicly available escrow account
     # available on the policy detail page
     # for now we dont handle direct debiting, just allowing the pod to keep track of it
 
+
 class ClaimViewSet(ModelViewSet):
     queryset = Claim.objects.all()
     serializer_class = ClaimSerializer
-    permission_classes = [IsAuthenticated&InClaimPod]
+    permission_classes = [IsAuthenticated & InClaimPod]
 
     def perform_create(self, serializer):
         claim = serializer.save()
 
         # side effect, send out open approvals requests
         policy_type = claim.policy.governance_type
-        if policy_type == 'direct_democracy':
+        if policy_type == "direct_democracy":
             approvals = [
-                ClaimApproval(claim=claim, approver=user) 
+                ClaimApproval(claim=claim, approver=user)
                 for user in claim.policy.pod.members.all().exclude(id=claim.claimant.id)
             ]
             ClaimApproval.objects.bulk_create(approvals)
@@ -95,6 +120,7 @@ class ClaimViewSet(ModelViewSet):
 
 class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
     serializer_class = ClaimApprovalSerializer
+
     def get_queryset(self):
         return ClaimApproval.objects.filter(approver=self.request.user)
 
@@ -111,11 +137,3 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
         policy.save()
         claim.paid_on = timezone.now()
         claim.save()
-            
-
-
-    
-    
-
-
-

@@ -29,7 +29,7 @@ export default function PolicyListSearch() {
         
       }}>
         <Title>Policies</Title>
-        <Col md={12} span={6} style={{flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
+        <Col md={8} lg={6} sm={12} style={{flexDirection: 'row', display: 'flex', alignItems: 'center'}}>
           <Button style={{marginRight: 20}} 
                   type="primary"
                   onClick={() => setIsVisible(true)}

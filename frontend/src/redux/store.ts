@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
 import authReducer from './reducers/authReducer';
 import policiesReducer from './reducers/policiesReducer';
+import podsReducer from './reducers/podsReducer';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -14,7 +15,7 @@ const persistConfig = {
 const reducers = combineReducers(
   {
     auth: authReducer,
-    // users: usersReducer,
+    pods: podsReducer,
     policies: policiesReducer,
     // claims: claimsReducer,
   }  

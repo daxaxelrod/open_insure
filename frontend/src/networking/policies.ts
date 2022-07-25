@@ -2,6 +2,13 @@ import { axiosInstance } from './api'
 import { PaginatedListViewParams } from './commonTypes';
 import { objectToQueryString } from './utils';
 
+export interface PolicyCreationPayload {
+    name: string;
+    coverage_type: string;
+    coverage_start_date: string;
+    coverage_duration: number;
+    pod: number;
+}
 
 export const getAvailablePolicies = (params: PaginatedListViewParams) => {
     return axiosInstance.get(`/api/v1/policies?${objectToQueryString(params)}`);
@@ -9,4 +16,8 @@ export const getAvailablePolicies = (params: PaginatedListViewParams) => {
 
 export const getUserPolicies = () => {
   return axiosInstance.get(`/api/v1/policies/`);
+}
+
+export const createPolicy = (values: PolicyCreationPayload) => {
+  return axiosInstance.post(`/api/v1/policies/`, values);
 }

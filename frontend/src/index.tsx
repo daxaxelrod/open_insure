@@ -7,7 +7,7 @@ import { persistStore, } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import { Layout } from 'antd';
 import Dashboard from './app/pages/Dashboard';
 import Onboarding from './app/pages/Onboarding';
