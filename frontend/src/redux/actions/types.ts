@@ -22,7 +22,7 @@ export const CREATE_POLICY_PENDING = 'policies/CREATE_POLICY_PENDING';
 export const CREATE_POLICY_SUCCESS = 'policies/CREATE_POLICY_SUCCESS';
 export const CREATE_POLICY_FAILURE = 'policies/CREATE_POLICY_FAILURE';
 
-// need to rethink this
+// Policies the user is a member of
 export const GET_USER_POLICIES_PENDING = 'policies/GET_USER_POLICIES_PENDING';
 export const GET_USER_POLICIES_SUCCESS = 'policies/GET_USER_POLICIES_SUCCESS';
 export const GET_USER_POLICIES_FAILURE = 'policies/GET_USER_POLICIES_FAILURE';

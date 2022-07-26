@@ -7,6 +7,7 @@ import PolicyIcon from './PolicyIcon';
 import PremiumDisplay from './ PremiumDisplay';
 import CoverageRow from './CoverageRow';
 
+
 const menu = ( // eh not sure if we should keep this, kinda hidden from the user
     <Menu
         items={[

@@ -4,12 +4,12 @@ import { Button, Col, Input, Row, Typography } from 'antd';
 
 import { useAppSelector } from '../../../redux/hooks';
 import { Policy } from '../../../redux/reducers/commonTypes';
-import PolicyCard from '../policies/card/PolicyCard';
 import {
   PlusOutlined,
   SearchOutlined
 } from '@ant-design/icons';
 import CreatePolicyModal from './modals/CreatePolicyModal';
+import PolicyCard from '../policies/publicCard/PolicyCard';
 
 
 const { Title } = Typography;
@@ -18,7 +18,7 @@ export default function PolicyListSearch() {
 
   const [search, setSearch] = useState('');
   const [isVisible, setIsVisible] = useState(false)
-  const policies: Policy[] = useAppSelector(state => state.policies.policies);
+  const policies: Policy[] = useAppSelector(state => state.policies.publicPolicies);
 
   return (
     <div>

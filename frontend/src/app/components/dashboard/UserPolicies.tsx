@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row, Typography, Col, Input,  } from 'antd';
 import {
   SearchOutlined
 } from '@ant-design/icons';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import UserPoliciesOpenClaimsRow from '../policies/claims/UserPoliciesOpenClaimsRow';
+import { getUserPolicies } from '../../../redux/actions/policies';
+import UserPoliciesList from '../policies/UserPoliciesList';
 
 const { Title } = Typography;
 
@@ -10,6 +14,13 @@ export default function UserPolicies() {
 
 
   const [search, setSearch] = useState('');
+  const dispatch = useAppDispatch();
+  const userPolicies = useAppSelector(state => state.policies.userPolicies);
+
+  useEffect(() => {
+    // dispatch(getUserPolicies());
+  }, [])
+  
 
   return (
     <div>
@@ -25,6 +36,8 @@ export default function UserPolicies() {
             />
         </Col>
       </Row>
+      <UserPoliciesOpenClaimsRow />
+      <UserPoliciesList policies={userPolicies} />
     </div>
   )
 }

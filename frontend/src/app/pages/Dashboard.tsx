@@ -11,7 +11,7 @@ import {
 import { Layout, Menu } from 'antd';
 import "../styles/dashboard/main.css";
 import { useAppDispatch } from '../../redux/hooks';
-import { getAvailablePolicies, getUserPolicies } from '../../redux/actions/policies';
+import { getAvailablePolicies } from '../../redux/actions/policies';
 
 const { Header, Sider, Content } = Layout;
 
@@ -31,7 +31,6 @@ export default function Home() {
       // hrm, do this here and its better for user experience, gets to see data faster
       // but do it in the sub component and it makes more sense code wise.
       dispatch(getAvailablePolicies(1, 10));
-      // dispatch(getUserPolicies());
     }
 
   }, [accessToken])

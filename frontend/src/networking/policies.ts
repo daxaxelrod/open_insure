@@ -11,11 +11,11 @@ export interface PolicyCreationPayload {
 }
 
 export const getAvailablePolicies = (params: PaginatedListViewParams) => {
-    return axiosInstance.get(`/api/v1/policies?${objectToQueryString(params)}`);
+    return axiosInstance.get(`/api/v1/policies/?${objectToQueryString(params)}`);
 }
 
 export const getUserPolicies = () => {
-  return axiosInstance.get(`/api/v1/policies/`);
+  return axiosInstance.get(`/api/v1/policies/?where_member=true`);
 }
 
 export const createPolicy = (values: PolicyCreationPayload) => {

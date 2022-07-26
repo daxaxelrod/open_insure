@@ -7,23 +7,29 @@ import {
     GET_AVAILABLE_POLICIES_FAILURE,
     CREATE_POLICY_PENDING,
     CREATE_POLICY_SUCCESS,
-    CREATE_POLICY_FAILURE
+    CREATE_POLICY_FAILURE,
+    GET_USER_POLICIES_PENDING,
+    GET_USER_POLICIES_SUCCESS,
+    GET_USER_POLICIES_FAILURE,
+    
 } from '../actions/types';
 import { Policy } from "./commonTypes";
 
 export interface PoliciesState {
-    policies: Policy[]; // maybe rename this quotes?
-    getPoliciesPending: boolean;
-    policiesApartOf: Policy[]; // Ehhhhhhhh. Meaning policies the user is a part of.
-    nextPoliciesPage: number | null; // for pagination
+    publicPolicies: Policy[];
+    nextPublicPoliciesPage: number | null; // for pagination
+    getPublicPoliciesPending: boolean;
+    userPolicies: Policy[];
+    getUserPolicysPending: boolean;
     createPolicyPending: boolean;
 }
 
 const initialState: PoliciesState = {
-    policies: [],
-    getPoliciesPending: false,
-    nextPoliciesPage: null,
-    policiesApartOf: [],
+    publicPolicies: [],
+    getPublicPoliciesPending: false,
+    nextPublicPoliciesPage: null,
+    userPolicies: [],
+    getUserPolicysPending: false,
     createPolicyPending: false,
 };
 
@@ -33,19 +39,19 @@ export default (state = initialState, { type, payload }: AnyAction) => {
         case GET_AVAILABLE_POLICIES_PENDING:
             return {
                 ...state,
-                getPoliciesPending: true,
+                getPublicPoliciesPending: true,
             }
         case GET_AVAILABLE_POLICIES_SUCCESS:
             return {
                 ...state,
-                getPoliciesPending: false,
-                policies: payload.results,
-                nextPoliciesPage: payload.next,
+                getPublicPoliciesPending: false,
+                publicPolicies: payload.results,
+                nextPublicPoliciesPage: payload.next,
             }
         case GET_AVAILABLE_POLICIES_FAILURE:
             return {
                 ...state,
-                getPoliciesPending: false,
+                getPublicPoliciesPending: false,
             }
         case CREATE_POLICY_PENDING:
             return {
@@ -55,7 +61,8 @@ export default (state = initialState, { type, payload }: AnyAction) => {
         case CREATE_POLICY_SUCCESS:
             return {
                 ...state,
-                policies: [...state.policies, payload],
+                userPolicies: [...state.userPolicies, payload],
+                publicPolicies: [...state.publicPolicies, payload], // hrm
                 createPolicyPending: false,
             }
         case CREATE_POLICY_FAILURE:
@@ -63,8 +70,29 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 createPolicyPending: false,
             }
+        case "shitboxmonetytuoke":
+            return {
+                ...state,
+                getUserPolicysPending: true,
+            }
+        
+        case GET_USER_POLICIES_SUCCESS:
+            return {
+                ...state,
+                userPolicies: payload.results,
+                getUserPolicysPending: false,
+            }
+
+        case GET_USER_POLICIES_FAILURE:
+            return {
+                ...state,
+                getUserPolicysPending: false,
+            }
 
         default:
             return state
     }
 }
+
+
+

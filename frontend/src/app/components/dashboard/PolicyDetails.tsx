@@ -9,7 +9,7 @@ const { Title } = Typography;
 export default function PolicyDetails() {
 
     let { id } = useParams();
-    let policy = useAppSelector(state => state.policies.policies.find((p: Policy) => p.id === parseInt(id || "")));
+    let policy = useAppSelector(state => state.policies.publicPolicies.find((p: Policy) => p.id === parseInt(id || "")));
 
     return (
         <div>
