@@ -20,6 +20,7 @@ import PolicyDetails from "./app/components/dashboard/PolicyDetails";
 import UserProfile from "./app/components/dashboard/UserProfile";
 import NotFound from "./app/pages/NotFound";
 import ClaimDetails from "./app/components/policies/claims/ClaimDetails";
+import PublicProfile from "./app/components/users/PublicProfile";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -54,6 +55,10 @@ root.render(
                                     element={<UserPolicies />}
                                 />
                                 <Route path="me" element={<UserProfile />} />
+                                <Route
+                                    path="/members/:id"
+                                    element={<PublicProfile />}
+                                />
                             </Route>
                             <Route path="*" element={<NotFound />} />
                         </Routes>

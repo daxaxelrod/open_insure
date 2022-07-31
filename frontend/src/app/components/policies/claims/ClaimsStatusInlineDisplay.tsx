@@ -30,7 +30,7 @@ export default function ClaimsStatusInlineDisplay({
     return (
         <div>
             <Paragraph style={{ marginBottom: 2 }}>
-                {pendingClaims.length} Pending{" "}
+                {pendingClaims.length} pending{" "}
                 {maybePluralize(pendingClaims.length, "claim")}
             </Paragraph>
             {pendingClaimsWhereUserVoteNotSubmitted.length > 0 && (
