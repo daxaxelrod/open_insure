@@ -70,7 +70,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 createPolicyPending: false,
             }
-        case "shitboxmonetytuoke":
+        case GET_USER_POLICIES_PENDING:
             return {
                 ...state,
                 getUserPolicysPending: true,

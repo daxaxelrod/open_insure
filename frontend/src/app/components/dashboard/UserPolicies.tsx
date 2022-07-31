@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Row, Typography, Col, Input } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Row, Typography, Col, Input, Space, Button } from "antd";
+import { SearchOutlined, WalletOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import UserPoliciesOpenClaimsRow from "../policies/claims/UserPoliciesOpenClaimsRow";
+import UserPoliciesOpenClaimsTable from "../policies/claims/UserPoliciesOpenClaimsTable";
 import { getUserPolicies } from "../../../redux/actions/policies";
 import UserPoliciesList from "../policies/UserPoliciesList";
 import UserPolicyCalendar from "../policies/UserPolicyCalendar";
@@ -32,19 +32,37 @@ export default function UserPolicies() {
                         alignItems: "center",
                     }}
                 >
-                    <Input
-                        prefix={<SearchOutlined />}
-                        placeholder="Search"
-                        onChange={(e) => setSearch(e.target.value)}
-                        value={search}
-                    />
+                    <Space>
+                        <Button
+                            type="primary"
+                            onClick={() => null}
+                            icon={<WalletOutlined />}
+                        >
+                            Pay Premiums
+                        </Button>
+                        <Input
+                            prefix={<SearchOutlined />}
+                            placeholder="Search"
+                            onChange={(e) => setSearch(e.target.value)}
+                            value={search}
+                        />
+                    </Space>
                 </Col>
             </Row>
             <Row>
-                <UserPoliciesList policies={userPolicies} />
-            </Row>
-            <Row>
-                <UserPolicyCalendar policies={userPolicies} />
+                <Col md={18}>
+                    <UserPoliciesList policies={userPolicies} />
+                </Col>
+                <Col md={6} style={{ marginTop: 16 }}>
+                    <Space
+                        direction="vertical"
+                        size="large"
+                        style={{ display: "flex" }}
+                    >
+                        <UserPolicyCalendar policies={userPolicies} />
+                        <UserPoliciesOpenClaimsTable />
+                    </Space>
+                </Col>
             </Row>
         </div>
     );

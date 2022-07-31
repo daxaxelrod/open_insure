@@ -1,12 +1,13 @@
 import React from "react";
 import { Policy } from "../../../redux/reducers/commonTypes";
 import type { BadgeProps } from "antd";
-import { Badge, Calendar } from "antd";
+import { Badge, Calendar, Typography } from "antd";
 import moment from "moment-timezone";
 import type { Moment } from "moment";
 import { PresetStatusColorType } from "antd/lib/_util/colors";
 import { useAppSelector } from "../../../redux/hooks";
 
+const { Title } = Typography;
 interface CalendarItem {
     type: PresetStatusColorType;
     content: string;
@@ -73,9 +74,16 @@ export default function UserPolicyCalendar({
         );
     };
 
+    const headerRender = () => null; // todo
+
     return (
         <div>
-            <Calendar dateCellRender={dateCellRender} />;
+            <Title level={3}>Scheduled Premiums</Title>
+            <Calendar
+                dateCellRender={dateCellRender}
+                fullscreen={false}
+                headerRender={headerRender}
+            />
         </div>
     );
 }

@@ -19,6 +19,17 @@ export interface Premium {
     updated_at: string;
 }
 
+export interface PolicyMemeberApprovals {
+    id: number;
+    approver: number;
+    claim: number;
+    approved: boolean;
+    approved_on: string;
+    viewed_on: string;
+    comment: string;
+    created_at: string;
+    updated_at: string;
+}
 export interface Claim {
     id: number;
     policy: number;
@@ -28,8 +39,10 @@ export interface Claim {
     amount: number;
     paid_on: string;
     is_claim_invalid: boolean;
+    is_approved: boolean;
     created_at: string;
     updated_at: string;
+    approvals: PolicyMemeberApprovals[];
 }
 
 export interface Pod {

@@ -73,6 +73,7 @@ class ClaimSerializer(serializers.ModelSerializer):
     claimant = serializers.PrimaryKeyRelatedField(
         read_only=True
     )  # serializers.hiddenfield doesnt work because it doesnt return the representation to the client
+    approvals = ClaimApprovalSerializer(many=True, read_only=True)
 
     def validate(self, attrs):
 
