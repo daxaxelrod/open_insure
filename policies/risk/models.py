@@ -21,6 +21,7 @@ class GenericProperty(models.Model):
     market_value = models.IntegerField(help_text="in cents", null=True, blank=True)
     
     class Meta:
+        app_label = 'policies'
         abstract = True
         
 

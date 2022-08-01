@@ -13,6 +13,7 @@ from policies.model_choices import (
     CLAIM_EVIDENCE_TYPE_CHOICES,
     UNDERLYING_INSURED_TYPE,
 )
+from policies.risk.models import *
 
 class Policy(models.Model):
     name = models.CharField(max_length=200)
@@ -106,7 +107,7 @@ class Risk(models.Model):
     
     # see risk/risk_scores.py for more info
     risk_score = models.DecimalField(max_digits=5, decimal_places=3, default=10, validators=[MinValueValidator(0), MaxValueValidator(100)]);
-    value_at_risk = models.PositiveIntegerField(null=True, blank=True, help_text="In cents")
+    value_at_risk = models.PositiveIntegerField(null=True, blank=True, help_text="The market value of the item at the beginning of the policy, in cents")
 
     premium_amount = models.IntegerField(
         validators=[MinValueValidator(100)], help_text="in cents",
