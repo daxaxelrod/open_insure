@@ -136,6 +136,10 @@ class PolicyTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_200_OK)
         self.assertEquals(policy.pod.members.count(), 1)
         self.assertEquals(member_user_premiums.count(), 3)
+    
+    def test_policy_cannot_start_unless_premiums_have_been_set_for_each_member(self):
+        # make sure we cant set a policy_start_date
+        self.assertTrue(False)
 
 
 def setUpModule():

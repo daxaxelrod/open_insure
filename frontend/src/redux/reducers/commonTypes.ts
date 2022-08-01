@@ -59,6 +59,7 @@ export interface Pod {
 }
 
 export type CoverageTypes = "m_property" | "renters" | "travel" | "pet_care";
+export type UnderlyingInsuredTypes = "cell_phone" | "audio_equipment"; // | "apartment" | "house" | "life" | "pet";
 export interface Policy {
     id: number;
     name: string;
@@ -81,4 +82,5 @@ export interface Policy {
     premiums: Premium[];
     claims: Claim[];
     pod: Pod; // always look up the pod in the pod reducer
+    underlying_insured_type: UnderlyingInsuredTypes;
 }

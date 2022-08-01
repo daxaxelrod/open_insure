@@ -26,6 +26,13 @@ POLICY_GOVERNANCE_TYPES = [
     # ("voluntary_commitee", "Voluntary Commitee"),
 ]
 
+# determines what questions to ask in the risk form
+# and then used to determine the risk score which is used to determine the premium a user pays
+UNDERLYING_INSURED_TYPE = [
+    ("cell_phone", "Phone"),
+    ("audio_equipment", "Audio Equipment")
+]
+
 PREMIUM_PAYMENT_FREQUENCY_CHOICES = [
     (1, "Monthly"),
     (3, "Quarterly"),

@@ -9,6 +9,7 @@ import moment from "moment-timezone";
 
 import colors from "../../constants/colors";
 import PolicyEscrowBalanceChart from "../policies/premiums/PolicyEscrowBalanceChart";
+import PolicyQuoteRequestForm from "../policies/quotes/PolicyQuoteRequestBox";
 
 const { Title, Paragraph } = Typography;
 
@@ -38,6 +39,7 @@ export default function PolicyDetails() {
                 <Paragraph style={{ color: colors.gray10, fontSize: 12 }}>
                     {hasPolicyStarted ? "Active Policy" : "In setup"}
                 </Paragraph>
+                {!isMemeber && <PolicyQuoteRequestForm policy={policy} />}
             </div>
             <Row>
                 <Col span={8} style={{ padding: 20 }}>
