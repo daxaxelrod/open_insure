@@ -5,10 +5,10 @@ import { Card, Col, Row, Avatar, Typography } from "antd";
 import { Policy, User } from "../../../redux/reducers/commonTypes";
 import { UserOutlined } from "@ant-design/icons";
 
-import { ReactComponent } from "../../../assets/images/policy-detail/undraw_visual_data_re_mxxo.svg";
 import moment from "moment-timezone";
 
 import colors from "../../constants/colors";
+import PolicyEscrowBalanceChart from "../policies/premiums/PolicyEscrowBalanceChart";
 
 const { Title, Paragraph } = Typography;
 
@@ -19,12 +19,17 @@ export default function PolicyDetails() {
             (p: Policy) => p.id === parseInt(id || "")
         )
     );
+    let currentUser = useAppSelector((state) => state.auth.currentUser);
 
     let doesPolicyHaveStartDate = policy?.coverage_start_date;
     let hasPolicyStarted = false;
     if (doesPolicyHaveStartDate) {
         hasPolicyStarted = moment().isAfter(moment(policy.coverage_start_date));
     }
+
+    let isMemeber =
+        currentUser.id &&
+        policy?.members.some((m: User) => m.id === currentUser.id);
 
     return (
         <div>
@@ -37,15 +42,16 @@ export default function PolicyDetails() {
             <Row>
                 <Col span={8} style={{ padding: 20 }}>
                     <Card
-                        title={<Title level={3}>Escrow Balance chart</Title>}
+                        title={<Title level={3}>Escrow Balance</Title>}
                         bodyStyle={{
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
                         }}
                     >
-                        <ReactComponent
-                            style={{ height: "100%", width: 140 }}
+                        <PolicyEscrowBalanceChart
+                            policy={policy}
+                            isMember={isMemeber}
                         />
                     </Card>
                 </Col>
