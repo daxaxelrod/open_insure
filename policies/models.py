@@ -5,6 +5,7 @@ from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from multiselectfield import MultiSelectField
 from policies.model_choices import (
     COVERAGE_TYPES,
     PREMIUM_POOL_TYPE,
@@ -33,6 +34,7 @@ class Policy(models.Model):
         default=12,
         help_text="Duration of policy, in months",
     )
+    underlying_insured_type = MultiSelectField(choices=UNDERLYING_INSURED_TYPE)
 
     max_pool_size = models.IntegerField(
         validators=[MinValueValidator(-1)],
@@ -102,8 +104,6 @@ class Policy(models.Model):
 class Risk(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="risks")
     user = models.ForeignKey("pods.User", related_name="risks", on_delete=models.CASCADE)
-    underlying_insured_type = models.CharField(choices=UNDERLYING_INSURED_TYPE, max_length=32)
-
     
     # see risk/risk_scores.py for more info
     risk_score = models.DecimalField(max_digits=5, decimal_places=3, default=10, validators=[MinValueValidator(0), MaxValueValidator(100)]);

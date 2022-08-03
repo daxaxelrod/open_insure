@@ -7,6 +7,4 @@ router = routers.DefaultRouter()
 router.register(r"pods", PodViewSet)
 router.register(r"users", UserViewSet)
 
-urlpatterns = [
-    path("", include(router.urls)),
-]
+urlpatterns = [] # still need for one off routes, see policies.urls

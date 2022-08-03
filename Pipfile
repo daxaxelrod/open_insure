@@ -14,6 +14,7 @@ django-apscheduler = "*"
 python-dateutil = "*"
 install = "*"
 psycopg2-binary = "*"
+django-multiselectfield = "*"
 
 [dev-packages]
 black = "*"

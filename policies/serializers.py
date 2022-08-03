@@ -1,8 +1,10 @@
 from django.db import IntegrityError
 from django.utils import timezone
 from rest_framework import serializers
+from rest_framework.fields import MultipleChoiceField
 from pods.serializers import PodSerializer
 from pods.models import Pod
+from policies.model_choices import UNDERLYING_INSURED_TYPE
 
 from policies.models import Claim, Policy, Premium, PolicyCloseout, Claim, ClaimApproval
 
@@ -160,6 +162,7 @@ class PolicyCloseoutSerializer(serializers.ModelSerializer):
 class PolicySerializer(serializers.ModelSerializer):
     # Meant to be used for posting/patching
     pod = serializers.PrimaryKeyRelatedField(queryset=Pod.objects.all(), required=False)
+    underlying_insured_type = MultipleChoiceField(choices=UNDERLYING_INSURED_TYPE)
 
     # coverage start date should be immutable
     def validate_coverage_start_date(self, value):
@@ -184,6 +187,8 @@ class FullPolicySerializer(serializers.ModelSerializer):
     premiums = PremiumSerializer(many=True, read_only=True)
     claims = ClaimSerializer(many=True, read_only=True)
     close_out = PolicyCloseoutSerializer(many=False, read_only=True)
+    underlying_insured_type = MultipleChoiceField(choices=UNDERLYING_INSURED_TYPE)
+
 
     class Meta:
         model = Policy
