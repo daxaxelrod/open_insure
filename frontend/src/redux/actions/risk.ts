@@ -25,7 +25,10 @@ export const getRisksForPolicy =
             const response = await API.getRisksForPolicy(policyId);
             dispatch({
                 type: GET_RISK_FOR_POLICY_SUCCESS,
-                payload: response.data,
+                payload: {
+                    policyId: policyId,
+                    risks: response.data,
+                },
             });
         } catch (error) {
             dispatch({ type: GET_RISK_FOR_POLICY_FAILURE, payload: error });
@@ -34,16 +37,34 @@ export const getRisksForPolicy =
 
 export const getOrCreateRisk =
     (
+        policyId: number,
         values: API.RiskCreationPayload
     ): ThunkAction<void, RootState, unknown, AnyAction> =>
     async (dispatch) => {
         dispatch({ type: CREATE_RISK_PENDING });
         try {
-            const response = await API.createRisk(values);
+            const response = await API.getOrCreateRisk(policyId, values);
             dispatch({ type: CREATE_RISK_SUCCESS, payload: response.data });
             return response.data;
         } catch (error) {
             dispatch({ type: CREATE_RISK_FAILURE, payload: error });
+            return null;
+        }
+    };
+
+export const patchRisk =
+    (
+        riskId: number,
+        payload: any
+    ): ThunkAction<void, RootState, unknown, AnyAction> =>
+    async (dispatch) => {
+        dispatch({ type: PATCH_RISK_PENDING });
+        try {
+            const response = await API.patchRisk(riskId, payload);
+            dispatch({ type: PATCH_RISK_SUCCESS, payload: response.data });
+            return response.data;
+        } catch (error) {
+            dispatch({ type: PATCH_RISK_FAILURE, payload: error });
             return null;
         }
     };

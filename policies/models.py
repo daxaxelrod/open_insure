@@ -1,3 +1,4 @@
+import black
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -15,6 +16,7 @@ from policies.model_choices import (
     UNDERLYING_INSURED_TYPE,
 )
 from policies.risk.models import *
+
 
 class Policy(models.Model):
     name = models.CharField(max_length=200)
@@ -34,7 +36,9 @@ class Policy(models.Model):
         default=12,
         help_text="Duration of policy, in months",
     )
-    underlying_insured_type = MultiSelectField(choices=UNDERLYING_INSURED_TYPE)
+    available_underlying_insured_type = MultiSelectField(
+        choices=UNDERLYING_INSURED_TYPE, null=True, blank=True
+    )
 
     max_pool_size = models.IntegerField(
         validators=[MinValueValidator(-1)],
@@ -55,7 +59,6 @@ class Policy(models.Model):
     # The escrow agent will actually manage the balance, this acts as an easily accessible mirror
     pool_balance = models.IntegerField(default=0, help_text="In cents")
 
-    
     premium_payment_frequency = models.IntegerField(
         choices=PREMIUM_PAYMENT_FREQUENCY_CHOICES,
         default=1,
@@ -101,27 +104,46 @@ class Policy(models.Model):
     def __str__(self) -> str:
         return f"{self.name} Policy ({self.pod.name} Pod)"
 
+
 class Risk(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="risks")
-    user = models.ForeignKey("pods.User", related_name="risks", on_delete=models.CASCADE)
-    
+    user = models.ForeignKey(
+        "pods.User", related_name="risks", on_delete=models.CASCADE
+    )
+
     # see risk/risk_scores.py for more info
-    risk_score = models.DecimalField(max_digits=5, decimal_places=3, default=10, validators=[MinValueValidator(0), MaxValueValidator(100)]);
-    value_at_risk = models.PositiveIntegerField(null=True, blank=True, help_text="The market value of the item at the beginning of the policy, in cents")
+    risk_score = models.DecimalField(
+        max_digits=5,
+        decimal_places=3,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    value_at_risk = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text="The market value of the item at the beginning of the policy, in cents",
+    )
 
     premium_amount = models.IntegerField(
-        validators=[MinValueValidator(100)], help_text="in cents",
-        null=True, blank=True
+        validators=[MinValueValidator(100)], help_text="in cents", null=True, blank=True
     )
 
     # the details of the underlying asset, see risk -> models.py
-    available_insured_asset_types = models.Q(app_label = 'policies', model = 'phonerisk') | models.Q(app_label = 'policies', model = 'audioequipmentrisk')
-    content_type = models.ForeignKey(ContentType,
-                                     on_delete=models.CASCADE,
-                                     limit_choices_to=available_insured_asset_types)
+    underlying_insured_type = models.CharField(
+        choices=UNDERLYING_INSURED_TYPE, max_length=32, null=True, blank=True
+    )
+    available_insured_asset_types = models.Q(
+        app_label="policies", model="phonerisk"
+    ) | models.Q(app_label="policies", model="audioequipmentrisk")
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        limit_choices_to=available_insured_asset_types,
+    )
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
-    
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
