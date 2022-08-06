@@ -84,3 +84,17 @@ export interface Policy {
     pod: Pod; // always look up the pod in the pod reducer
     underlying_insured_type: UnderlyingInsuredTypes;
 }
+
+export interface Risk {
+    policy: number;
+    user: number;
+    risk_score: number;
+    value_at_risk: number;
+    premium_amount: number;
+    available_insured_asset_types: string;
+    content_type: string;
+    object_id: number;
+    content_object: any;
+    created_at: string;
+    updated_at: string;
+}
