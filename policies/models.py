@@ -37,7 +37,11 @@ class Policy(models.Model):
         help_text="Duration of policy, in months",
     )
     available_underlying_insured_types = MultiSelectField(
-        choices=UNDERLYING_INSURED_TYPE, null=True, blank=True
+        max_length=256,  # its a charfield under the hood
+        max_choices=3,
+        choices=UNDERLYING_INSURED_TYPE,
+        null=True,
+        blank=True,
     )
 
     max_pool_size = models.IntegerField(
@@ -105,6 +109,11 @@ class Policy(models.Model):
         return f"{self.name} Policy ({self.pod.name} Pod)"
 
 
+available_insured_asset_types = models.Q(
+    app_label="policies", model="phonerisk"
+) | models.Q(app_label="policies", model="audioequipmentrisk")
+
+
 class Risk(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="risks")
     user = models.ForeignKey(
@@ -133,9 +142,7 @@ class Risk(models.Model):
     underlying_insured_type = models.CharField(
         choices=UNDERLYING_INSURED_TYPE, max_length=32, null=True, blank=True
     )
-    available_insured_asset_types = models.Q(
-        app_label="policies", model="phonerisk"
-    ) | models.Q(app_label="policies", model="audioequipmentrisk")
+
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,

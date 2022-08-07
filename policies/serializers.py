@@ -6,7 +6,16 @@ from pods.serializers import PodSerializer
 from pods.models import Pod
 from policies.model_choices import UNDERLYING_INSURED_TYPE
 
-from policies.models import Claim, Policy, Premium, PolicyCloseout, Claim, ClaimApproval
+from policies.models import (
+    Claim,
+    Policy,
+    Premium,
+    PolicyCloseout,
+    Claim,
+    ClaimApproval,
+    Risk,
+)
+from policies.risk.serializer_fields import RiskContentObjectRelatedField
 
 policy_fields = [
     "id",
@@ -195,4 +204,12 @@ class FullPolicySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Policy
+        fields = "__all__"
+
+
+class RiskSerializer(serializers.ModelSerializer):
+    content_object = RiskContentObjectRelatedField(read_only=True)
+
+    class Meta:
+        model = Risk
         fields = "__all__"

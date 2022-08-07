@@ -15,6 +15,7 @@ python-dateutil = "*"
 install = "*"
 psycopg2-binary = "*"
 django-multiselectfield = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 black = "*"

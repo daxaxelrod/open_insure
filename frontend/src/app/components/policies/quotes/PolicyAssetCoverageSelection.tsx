@@ -18,6 +18,7 @@ export default function PolicyAssetCoverageSelection({
             <Radio.Group defaultValue={types?.[0]} buttonStyle="solid">
                 {types.map((type) => (
                     <Radio.Button
+                        key={`coverage-type-${type}`}
                         onClick={() =>
                             updateRisk({
                                 underlying_insured_type: type,

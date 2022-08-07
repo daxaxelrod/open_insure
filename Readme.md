@@ -1,9 +1,10 @@
 ## Open insure
 
 Take control of your insurance
-- Browse and pick insurance policies that are right for you
-- If premiums are not paid out for claims, they get returned to you at the end of the period
-- Manage claims against your policies with a direct democracy
+- setup group insurance for you and your friends
+- Browse and pick group insurance policies that are right for you
+- 100% of unused premiums get returned to you at the end of the period
+- Manage claims against your policies with a direct democracy, opt for "jury duty" or elect representatives to manage on your behalf 
 
 #### Apps overview
 
