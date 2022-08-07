@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { Divider, Steps } from "antd";
+import { Divider, PageHeader, Spin, Steps } from "antd";
 import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
 import PolicyQuoteFormFactory from "./PolicyQuoteFormFactory";
-import { useAppDispatch } from "../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import PolicyAssetCoverageSelection from "./PolicyAssetCoverageSelection";
 import { patchRisk } from "../../../../redux/actions/risk";
-
-const { Step } = Steps;
 
 export default function PolicyQuoteForm({
     policy,
@@ -20,38 +18,37 @@ export default function PolicyQuoteForm({
         if (risk) {
             dispatch(patchRisk(risk?.id, values));
         } else {
-            console.log();
+            console.log("Error patching risk");
         }
     };
+    const riskPending = useAppSelector((state) => state.risk.modifyRiskPending);
+    let availableInsuredAssetTypes: string[] = [];
+    let hasMoreThanOneAvailableAssetClassCoverage;
 
-    let availableInsuredAssetTypes =
-        policy.available_underlying_insured_types.split(",");
-    let hasMoreThanOneAvailableAssetClassCoverage =
-        availableInsuredAssetTypes.length > 1;
+    if (policy) {
+        availableInsuredAssetTypes = policy?.available_underlying_insured_types;
+        hasMoreThanOneAvailableAssetClassCoverage =
+            availableInsuredAssetTypes?.length > 1;
+    }
 
     return (
         <div>
-            {/* <Steps progressDot current={current}>
-                <Step title="Waiting" description="This is a description." />
-                <Step
-                    title="In Progress"
-                    description="This is a description."
-                />
-                <Step title="Finished" description="This is a description." />
-            </Steps> */}
-            {hasMoreThanOneAvailableAssetClassCoverage && (
-                <PolicyAssetCoverageSelection
-                    types={availableInsuredAssetTypes}
+            <Spin spinning={riskPending}>
+                {hasMoreThanOneAvailableAssetClassCoverage && (
+                    <PolicyAssetCoverageSelection
+                        types={availableInsuredAssetTypes}
+                        risk={risk}
+                        updateRisk={updateRisk}
+                    />
+                )}
+
+                <PolicyQuoteFormFactory
+                    policy={policy}
                     risk={risk}
                     updateRisk={updateRisk}
                 />
-            )}
-
-            <PolicyQuoteFormFactory
-                policy={policy}
-                risk={risk}
-                updateRisk={updateRisk}
-            />
+                {JSON.stringify(risk)}
+            </Spin>
         </div>
     );
 }

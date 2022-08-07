@@ -63,7 +63,10 @@ export default function PolicyDetails() {
                             let memberHasName =
                                 member.first_name && member.last_name;
                             return (
-                                <Link to={`/members/${member.id}/`}>
+                                <Link
+                                    to={`/members/${member.id}/`}
+                                    key={`${member.id}-policy-member-brief`}
+                                >
                                     <Row style={{ marginBottom: ".25rem" }}>
                                         <Col span={4}>
                                             <Avatar

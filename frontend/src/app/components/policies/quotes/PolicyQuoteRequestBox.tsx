@@ -23,16 +23,18 @@ export default function PolicyQuoteRequestBox({ policy }: { policy: Policy }) {
         setIsDrawerVisible(false);
     };
 
+    console.log("PolicyQuoteRequestBox", policy);
+
     return (
         <div>
             <Drawer
                 title="Get a quote"
                 placement="right"
                 onClose={onClose}
+                width={"60%"}
                 visible={isDrawerVisible}
             >
                 <PolicyQuoteForm policy={policy} risk={focusedRisk} />
-                <PolicyQuoteFormFactory policy={policy} />
             </Drawer>
             <Button type="primary" onClick={showDrawer}>
                 <Paragraph>Get a quote</Paragraph>

@@ -162,7 +162,9 @@ class PolicyCloseoutSerializer(serializers.ModelSerializer):
 class PolicySerializer(serializers.ModelSerializer):
     # Meant to be used for posting/patching
     pod = serializers.PrimaryKeyRelatedField(queryset=Pod.objects.all(), required=False)
-    underlying_insured_type = MultipleChoiceField(choices=UNDERLYING_INSURED_TYPE)
+    available_underlying_insured_types = MultipleChoiceField(
+        choices=UNDERLYING_INSURED_TYPE
+    )
 
     # coverage start date should be immutable
     def validate_coverage_start_date(self, value):
@@ -187,8 +189,9 @@ class FullPolicySerializer(serializers.ModelSerializer):
     premiums = PremiumSerializer(many=True, read_only=True)
     claims = ClaimSerializer(many=True, read_only=True)
     close_out = PolicyCloseoutSerializer(many=False, read_only=True)
-    underlying_insured_type = MultipleChoiceField(choices=UNDERLYING_INSURED_TYPE)
-
+    available_underlying_insured_types = MultipleChoiceField(
+        choices=UNDERLYING_INSURED_TYPE
+    )
 
     class Meta:
         model = Policy

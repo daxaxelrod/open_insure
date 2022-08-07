@@ -1,16 +1,28 @@
 import React from "react";
-import { Policy } from "../../../../redux/reducers/commonTypes";
-import AudioEquipmentRiskForm from "./forms/AudioEquipmentRiskForm";
-import PhoneRiskForm from "./forms/PhoneRiskForm";
+import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
+import AudioEquipmentRiskForm from "./riskTypeForms/AudioEquipmentRiskForm";
+import PhoneRiskForm from "./riskTypeForms/PhoneRiskForm";
 
-export default function PolicyQuoteFormFactory({ policy }: { policy: Policy }) {
-    switch (policy.underlying_insured_type) {
+export default function PolicyQuoteFormFactory({
+    policy,
+    risk,
+    updateRisk,
+}: {
+    policy: Policy;
+    risk: Risk | null;
+    updateRisk: (values: any) => void;
+}) {
+    switch (risk?.underlying_insured_type) {
         case "cell_phone":
-            return <PhoneRiskForm policy={policy} />;
+            return <PhoneRiskForm policy={policy} updateRisk={updateRisk} />;
         case "audio_equipment":
-            return <AudioEquipmentRiskForm policy={policy} />;
-
+            return (
+                <AudioEquipmentRiskForm
+                    policy={policy}
+                    updateRisk={updateRisk}
+                />
+            );
         default:
-            return null;
+            return <div>Select a insured type</div>;
     }
 }
