@@ -9,7 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
 from policies.paginators import StandardResultsSetPagination
-from policies.models import Claim, ClaimApproval, Policy, Premium
+from policies.models import Claim, ClaimApproval, Policy, Premium, Risk
 from policies.permissions import InPolicyPod, InPodAndNotClaimant, InClaimPod
 from policies.premiums import schedule_premiums
 from policies.serializers import (
@@ -18,6 +18,7 @@ from policies.serializers import (
     FullPolicySerializer,
     PremiumSerializer,
     ClaimApprovalSerializer,
+    RiskSerializer,
 )
 
 
@@ -136,3 +137,10 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
         policy.save()
         claim.paid_on = timezone.now()
         claim.save()
+
+
+class RiskViewSet(ModelViewSet):
+    serializer_class = RiskSerializer
+
+    def get_queryset(self):
+        return Risk.objects.filter(policy=self.kwargs["policy_pk"])
