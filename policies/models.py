@@ -36,7 +36,7 @@ class Policy(models.Model):
         default=12,
         help_text="Duration of policy, in months",
     )
-    available_underlying_insured_type = MultiSelectField(
+    available_underlying_insured_types = MultiSelectField(
         choices=UNDERLYING_INSURED_TYPE, null=True, blank=True
     )
 

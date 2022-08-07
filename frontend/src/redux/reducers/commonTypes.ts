@@ -60,6 +60,12 @@ export interface Pod {
 
 export type CoverageTypes = "m_property" | "renters" | "travel" | "pet_care";
 export type UnderlyingInsuredTypes = "cell_phone" | "audio_equipment"; // | "apartment" | "house" | "life" | "pet";
+export type CSV_UnderlyingInsuredTypes =
+    | `${UnderlyingInsuredTypes}`
+    | `${UnderlyingInsuredTypes},${UnderlyingInsuredTypes}`
+    | `${UnderlyingInsuredTypes},${UnderlyingInsuredTypes},${UnderlyingInsuredTypes}`
+    | `${UnderlyingInsuredTypes},${UnderlyingInsuredTypes},${UnderlyingInsuredTypes},${UnderlyingInsuredTypes}`;
+
 export interface Policy {
     id: number;
     name: string;
@@ -82,10 +88,11 @@ export interface Policy {
     premiums: Premium[];
     claims: Claim[];
     pod: Pod; // always look up the pod in the pod reducer
-    underlying_insured_type: UnderlyingInsuredTypes;
+    available_underlying_insured_types: CSV_UnderlyingInsuredTypes;
 }
 
 export interface Risk {
+    id: number;
     policy: number;
     user: number;
     risk_score: number;
