@@ -38,7 +38,9 @@ class Pod(models.Model):
     allow_joiners_after_policy_start = models.BooleanField(default=True)
 
     def is_full(self):
-        return self.members.count() >= self.max_pod_size
+        return (
+            self.max_pod_size is not None and self.members.count() >= self.max_pod_size
+        )
 
     def has_policy(self):
         try:
@@ -54,22 +56,33 @@ class Pod(models.Model):
 class UserPod(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     pod = models.ForeignKey(Pod, on_delete=models.CASCADE)
-    is_user_friend_of_the_pod = models.BooleanField(default=False) # is the user trusted by the rest of the POD? IE are they friends with the other members
+    is_user_friend_of_the_pod = models.BooleanField(
+        default=False
+    )  # is the user trusted by the rest of the POD? IE are they friends with the other members
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
 
 class PodInvite(models.Model):
     email = models.EmailField()
     pod = models.ForeignKey(Pod, on_delete=models.CASCADE)
-    invitor = models.ForeignKey(User, related_name="pod_invites_sent", on_delete=models.CASCADE)
+    invitor = models.ForeignKey(
+        User, related_name="pod_invites_sent", on_delete=models.CASCADE
+    )
 
-    membership = models.ForeignKey(UserPod, related_name="pod_invites", on_delete=models.CASCADE, null=True, blank=True)
+    membership = models.ForeignKey(
+        UserPod,
+        related_name="pod_invites",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     is_accepted = models.BooleanField(default=False)
-    
+
     is_revoked_by_user = models.BooleanField(default=False)
     is_revoked_by_pod = models.BooleanField(default=False)
     is_revoked_by_admin = models.BooleanField(default=False)
@@ -77,7 +90,12 @@ class PodInvite(models.Model):
 
     @property
     def is_revoked(self):
-        return self.is_revoked_by_user or self.is_revoked_by_pod or self.is_revoked_by_admin or self.is_revoked_by_system
-    
+        return (
+            self.is_revoked_by_user
+            or self.is_revoked_by_pod
+            or self.is_revoked_by_admin
+            or self.is_revoked_by_system
+        )
+
     def __str__(self):
         return f"{self.invitor} invited {self.membership.user} to {self.pod}"
