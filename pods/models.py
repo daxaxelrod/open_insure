@@ -3,6 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from django.contrib.auth.models import AbstractUser
 
+from pods.utils.stringUtils import random_string_generator
+
 
 class User(AbstractUser):
     picture = models.URLField(null=True, blank=True)
@@ -87,6 +89,10 @@ class PodInvite(models.Model):
     is_revoked_by_pod = models.BooleanField(default=False)
     is_revoked_by_admin = models.BooleanField(default=False)
     is_revoked_by_system = models.BooleanField(default=False)
+
+    token = models.CharField(
+        max_length=64, null=True, blank=True, default=random_string_generator
+    )
 
     @property
     def is_revoked(self):

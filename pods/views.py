@@ -9,11 +9,12 @@ from rest_framework.status import (
     HTTP_200_OK,
     HTTP_400_BAD_REQUEST,
 )
-from pods.models import Pod, User
+from pods.models import Pod, PodInvite, User
 from pods.serializers import InviteSerializer, PodSerializer, UserSerializer
 from policies.premiums import remove_future_premiums
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
@@ -75,40 +76,44 @@ class PodViewSet(ModelViewSet):
         pod = self.get_object()
         user = request.user
         invite_serializer = InviteSerializer(data=request.data)
+        invite = PodInvite.objects.create(
+            pod=pod,
+            invitor=user,
+        )
         if not invite_serializer.is_valid():
             return Response(invite_serializer.errors, status=HTTP_400_BAD_REQUEST)
         if pod.is_full():
             return Response({"message": "Policy is full"}, status=HTTP_403_FORBIDDEN)
 
-        coverage_list = pod.policy.available_underlying_insured_types
-        if len(coverage_list) > 1:
-            formatted_available_underlying_insured_types = (
-                ",".join(coverage_list[:-1]) + " and " + coverage_list[-1]
-            )
-        else:
-            formatted_available_underlying_insured_types = coverage_list[0]
+        formatted_available_underlying_insured_types = (
+            pod.policy.get_available_underlying_insured_types_display()
+        )
+        subject = f"You're invited by {user.first_name} {user.last_name} to join {pod.policy.name}"
+        invite_url = f"{settings.FRONTEND_URL}/join/?invite_token={invite.token}"
 
-        subject = f"{user.first_name} {user.last_name} has invited you to join {pod.policy.name}"
         html_message = render_to_string(
             "invite_to_policy.html",
             {
-                "inviter": user,
+                "invitor": user,
                 "policy": pod.policy,
                 "formatted_available_underlying_insured_types": formatted_available_underlying_insured_types,
+                "invite_url": invite_url,
             },
         )
         plain_message = strip_tags(html_message)
         from_email = "Open Insure <noreply@openinsure.io>"
         to = invite_serializer.validated_data["email"]
 
-        send_mail(
+        message = EmailMultiAlternatives(
             subject,
             plain_message,
-            from_email,
-            [to],
-            html_message=html_message,
+            to=[to],
+            from_email=from_email,
             reply_to=[settings.ADMIN_EMAIL],
         )
+        message.attach_alternative(html_message, "text/html")
+
+        message.send()
 
         return Response({"message": "Your invite has been send!"}, status=HTTP_200_OK)
 

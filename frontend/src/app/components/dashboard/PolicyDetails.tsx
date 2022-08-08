@@ -10,6 +10,7 @@ import moment from "moment-timezone";
 import colors from "../../constants/colors";
 import PolicyEscrowBalanceChart from "../policies/premiums/PolicyEscrowBalanceChart";
 import PolicyQuoteRequestForm from "../policies/quotes/PolicyQuoteRequestBox";
+import InviteFriendToPolicy from "../policies/social/InviteFriendToPolicy";
 
 const { Title, Paragraph } = Typography;
 
@@ -29,8 +30,9 @@ export default function PolicyDetails() {
     }
 
     let isMemeber =
-        currentUser.id &&
-        policy?.members.some((m: User) => m.id === currentUser.id);
+        currentUser.id !== undefined &&
+        policy?.pod &&
+        policy.pod.members.some((m: User) => m.id === currentUser.id);
 
     return (
         <div>
@@ -40,6 +42,7 @@ export default function PolicyDetails() {
                     {hasPolicyStarted ? "Active Policy" : "In setup"}
                 </Paragraph>
                 {!isMemeber && <PolicyQuoteRequestForm policy={policy} />}
+                {isMemeber && <InviteFriendToPolicy policy={policy} />}
             </div>
             <Row>
                 <Col span={8} style={{ padding: 20 }}>
