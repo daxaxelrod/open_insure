@@ -45,6 +45,7 @@ TESTING = "test" in sys.argv
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "192.168.0.104"]
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://localhost:8000"]
 
+ADMIN_EMAIL = env("ADMIN_EMAIL")
 
 # Application definition
 
@@ -193,3 +194,12 @@ if IS_MAIN_SCHEDULER:
     APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
 
 CLAIM_APPROVAL_THRESHOLD_PERCENTAGE = env("CLAIM_APPROVAL_THRESHOLD_PERCENTAGE")
+
+if TESTING:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = env("EMAIL_HOST")
+    EMAIL_PORT = env("EMAIL_PORT")
+    EMAIL_HOST_USER = env("EMAIL_HOST_USERNAME")
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")

@@ -1,8 +1,14 @@
 from email import policy
+from django.conf import settings
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.status import HTTP_201_CREATED, HTTP_403_FORBIDDEN, HTTP_200_OK
+from rest_framework.status import (
+    HTTP_201_CREATED,
+    HTTP_403_FORBIDDEN,
+    HTTP_200_OK,
+    HTTP_400_BAD_REQUEST,
+)
 from pods.models import Pod, User
 from pods.serializers import InviteSerializer, PodSerializer, UserSerializer
 from policies.premiums import remove_future_premiums
@@ -72,7 +78,8 @@ class PodViewSet(ModelViewSet):
         if not invite_serializer.is_valid():
             return Response(invite_serializer.errors, status=HTTP_400_BAD_REQUEST)
         if pod.is_full():
-            return Response({"message": "Pod is full"}, status=HTTP_403_FORBIDDEN)
+            return Response({"message": "Policy is full"}, status=HTTP_403_FORBIDDEN)
+
         coverage_list = pod.policy.available_underlying_insured_types
         if len(coverage_list) > 1:
             formatted_available_underlying_insured_types = (
@@ -92,13 +99,18 @@ class PodViewSet(ModelViewSet):
         )
         plain_message = strip_tags(html_message)
         from_email = "Open Insure <noreply@openinsure.io>"
-        to = "to@example.com"
+        to = invite_serializer.validated_data["email"]
 
-        send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-
-        return Response(
-            {"message": "You have been invited to the pod"}, status=HTTP_200_OK
+        send_mail(
+            subject,
+            plain_message,
+            from_email,
+            [to],
+            html_message=html_message,
+            reply_to=[settings.ADMIN_EMAIL],
         )
+
+        return Response({"message": "Your invite has been send!"}, status=HTTP_200_OK)
 
 
 class UserViewSet(ModelViewSet):

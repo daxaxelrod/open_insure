@@ -76,4 +76,4 @@ class UserSerializer(ModelSerializer):
 
 
 class InviteSerializer(Serializer):
-    recipient = EmailField()
+    email = EmailField()
