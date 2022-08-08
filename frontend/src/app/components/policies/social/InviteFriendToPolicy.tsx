@@ -7,6 +7,7 @@ const { Paragraph } = Typography;
 export default function InviteFriendToPolicy({ policy }: { policy: Policy }) {
     const [visible, setVisible] = useState(false);
     const [email, setEmail] = useState("");
+    const [sendAtLeastOnce, setSendAtLeastOnce] = useState(false);
     const [pending, setPending] = useState(false);
 
     let podId = policy.pod.id;
@@ -26,6 +27,7 @@ export default function InviteFriendToPolicy({ policy }: { policy: Policy }) {
                 notification.success({
                     message: "Invitation sent",
                 });
+                setSendAtLeastOnce(true);
             } catch (error: any) {
                 setPending(false);
                 notification.error({
@@ -36,15 +38,21 @@ export default function InviteFriendToPolicy({ policy }: { policy: Policy }) {
         }
     };
 
+    const handleCancel = () => {
+        setSendAtLeastOnce(false);
+        setVisible(false);
+    };
+
     return (
         <div>
             <Modal
                 title="Invite a friend to join this policy"
                 okText="Send"
+                cancelText={sendAtLeastOnce ? "Close" : "Cancel"}
                 visible={visible}
                 onOk={handleOk}
                 confirmLoading={pending}
-                onCancel={() => setVisible(false)}
+                onCancel={handleCancel}
             >
                 <Input
                     placeholder="Email"

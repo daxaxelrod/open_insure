@@ -90,6 +90,15 @@ class PodViewSet(ModelViewSet):
         )
         subject = f"You're invited by {user.first_name} {user.last_name} to join {pod.policy.name}"
         invite_url = f"{settings.FRONTEND_URL}/join/?invite_token={invite.token}"
+        if user.gender:
+            if user.gender is "F":
+                possessive_pronoun = "her"
+            elif user.gender is "M":
+                possessive_pronoun = "his"
+            else:
+                possessive_pronoun = "their"
+        else:
+            possessive_pronoun = "their"
 
         html_message = render_to_string(
             "invite_to_policy.html",
@@ -98,6 +107,7 @@ class PodViewSet(ModelViewSet):
                 "policy": pod.policy,
                 "formatted_available_underlying_insured_types": formatted_available_underlying_insured_types,
                 "invite_url": invite_url,
+                "possessive_pronoun": possessive_pronoun,
             },
         )
         plain_message = strip_tags(html_message)

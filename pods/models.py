@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser
 
 from pods.utils.stringUtils import random_string_generator
 
+GENDER_CHOICES = (("M", "Male"), ("F", "Female"), ("O", "Other"))
+
 
 class User(AbstractUser):
     picture = models.URLField(null=True, blank=True)
@@ -12,6 +14,9 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     verified_email = models.BooleanField(default=False, null=True, blank=True)
+    gender = models.CharField(
+        max_length=1, null=True, blank=True, choices=GENDER_CHOICES
+    )
 
 
 class Pod(models.Model):
