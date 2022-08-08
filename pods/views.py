@@ -76,14 +76,13 @@ class PodViewSet(ModelViewSet):
         pod = self.get_object()
         user = request.user
         invite_serializer = InviteSerializer(data=request.data)
-        invite = PodInvite.objects.create(
-            pod=pod,
-            invitor=user,
-        )
         if not invite_serializer.is_valid():
             return Response(invite_serializer.errors, status=HTTP_400_BAD_REQUEST)
         if pod.is_full():
             return Response({"message": "Policy is full"}, status=HTTP_403_FORBIDDEN)
+        invite = PodInvite.objects.create(
+            pod=pod, invitor=user, email=invite_serializer.validated_data["email"]
+        )
 
         formatted_available_underlying_insured_types = (
             pod.policy.get_available_underlying_insured_types_display()

@@ -109,4 +109,6 @@ class PodInvite(models.Model):
         )
 
     def __str__(self):
-        return f"{self.invitor} invited {self.membership.user} to {self.pod}"
+        if self.membership:
+            return f"👏 Invite Accepted: {self.invitor} invited {self.email} to {self.pod.name}"
+        return f"{self.invitor} invited {self.email} to {self.pod.name}"

@@ -17,7 +17,7 @@ class UserAdmin(UserAdmin):
     model = User
 
     fieldsets = UserAdmin.fieldsets + (
-        (None, {"fields": ("picture", "verified_email")}),
+        (None, {"fields": ("picture", "verified_email", "gender", "birthday")}),
     )
 
 

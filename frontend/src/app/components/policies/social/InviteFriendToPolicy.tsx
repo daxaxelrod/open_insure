@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { KeyboardEvent, useState } from "react";
 import { Policy } from "../../../../redux/reducers/commonTypes";
 import { Button, Input, Modal, notification, Typography } from "antd";
 import { inviteUserToPod } from "../../../../networking/pods";
@@ -43,6 +43,12 @@ export default function InviteFriendToPolicy({ policy }: { policy: Policy }) {
         setVisible(false);
     };
 
+    const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            handleOk();
+        }
+    };
+
     return (
         <div>
             <Modal
@@ -56,8 +62,10 @@ export default function InviteFriendToPolicy({ policy }: { policy: Policy }) {
             >
                 <Input
                     placeholder="Email"
+                    type={"email"}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={onKeyDown}
                 />
             </Modal>
 
