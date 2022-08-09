@@ -54,13 +54,14 @@ export const getOrCreateRisk =
 
 export const patchRisk =
     (
+        policyId: number,
         riskId: number,
         payload: any
     ): ThunkAction<void, RootState, unknown, AnyAction> =>
     async (dispatch) => {
         dispatch({ type: PATCH_RISK_PENDING });
         try {
-            const response = await API.patchRisk(riskId, payload);
+            const response = await API.patchRisk(policyId, riskId, payload);
             dispatch({ type: PATCH_RISK_SUCCESS, payload: response.data });
             return response.data;
         } catch (error) {

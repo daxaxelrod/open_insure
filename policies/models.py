@@ -117,7 +117,9 @@ available_insured_asset_types = models.Q(
 class Risk(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="risks")
     user = models.ForeignKey(
-        "pods.User", related_name="risks", on_delete=models.CASCADE
+        "pods.User",
+        related_name="risks",
+        on_delete=models.CASCADE,
     )
 
     # see risk/risk_scores.py for more info
@@ -147,8 +149,11 @@ class Risk(models.Model):
         ContentType,
         on_delete=models.CASCADE,
         limit_choices_to=available_insured_asset_types,
+        null=True,
+        blank=True,
     )
-    object_id = models.PositiveIntegerField()
+
+    object_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey()
 
     created_at = models.DateTimeField(auto_now_add=True)

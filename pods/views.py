@@ -90,9 +90,9 @@ class PodViewSet(ModelViewSet):
         subject = f"You're invited by {user.first_name} {user.last_name} to join {pod.policy.name}"
         invite_url = f"{settings.FRONTEND_URL}/join/?invite_token={invite.token}"
         if user.gender:
-            if user.gender is "F":
+            if user.gender == "F":
                 possessive_pronoun = "her"
-            elif user.gender is "M":
+            elif user.gender == "M":
                 possessive_pronoun = "his"
             else:
                 possessive_pronoun = "their"

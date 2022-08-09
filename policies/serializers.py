@@ -210,6 +210,11 @@ class FullPolicySerializer(serializers.ModelSerializer):
 class RiskSerializer(serializers.ModelSerializer):
     content_object = RiskContentObjectRelatedField(read_only=True)
 
+    def create(self, validated_data):
+        instance, _ = Risk.objects.get_or_create(**validated_data)
+        return instance
+
     class Meta:
         model = Risk
+        read_only_fields = ("policy", "user", "content_object")
         fields = "__all__"

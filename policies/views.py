@@ -144,3 +144,15 @@ class RiskViewSet(ModelViewSet):
 
     def get_queryset(self):
         return Risk.objects.filter(policy=self.kwargs["policy_pk"])
+
+    def perform_create(self, serializer):
+        policy = Policy.objects.get(id=self.kwargs["policy_pk"])
+        underlying_insured_type = None
+        if len(policy.available_underlying_insured_types) == 1:
+            underlying_insured_type = policy.available_underlying_insured_types[0]
+        risk = serializer.save(
+            policy=policy,
+            user=self.request.user,
+            underlying_insured_type=underlying_insured_type,
+        )
+        return risk

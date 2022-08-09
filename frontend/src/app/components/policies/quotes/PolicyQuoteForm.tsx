@@ -16,9 +16,9 @@ export default function PolicyQuoteForm({
     const dispatch = useAppDispatch();
     const updateRisk = (values: any) => {
         if (risk) {
-            dispatch(patchRisk(risk?.id, values));
+            dispatch(patchRisk(policy.id, risk?.id, values));
         } else {
-            console.log("Error patching risk");
+            console.log("Error: no risk");
         }
     };
     const riskPending = useAppSelector((state) => state.risk.modifyRiskPending);
@@ -34,13 +34,11 @@ export default function PolicyQuoteForm({
     return (
         <div>
             <Spin spinning={riskPending}>
-                {hasMoreThanOneAvailableAssetClassCoverage && (
-                    <PolicyAssetCoverageSelection
-                        types={availableInsuredAssetTypes}
-                        risk={risk}
-                        updateRisk={updateRisk}
-                    />
-                )}
+                <PolicyAssetCoverageSelection
+                    types={availableInsuredAssetTypes}
+                    risk={risk}
+                    updateRisk={updateRisk}
+                />
 
                 <PolicyQuoteFormFactory
                     policy={policy}
