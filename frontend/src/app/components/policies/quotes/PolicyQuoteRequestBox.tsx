@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, Row, Space } from "antd";
 import React, { useState } from "react";
 import { Button, Drawer, Typography } from "antd";
 import { Policy } from "../../../../redux/reducers/commonTypes";
@@ -28,8 +28,9 @@ export default function PolicyQuoteRequestBox({ policy }: { policy: Policy }) {
                 title="Get a quote"
                 placement="right"
                 onClose={onClose}
-                width={"55%"}
+                width={"40%"}
                 visible={isDrawerVisible}
+                bodyStyle={{ paddingBottom: 80 }}
             >
                 <PolicyQuoteForm policy={policy} risk={focusedRisk} />
             </Drawer>

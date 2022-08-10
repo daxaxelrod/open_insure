@@ -1,4 +1,4 @@
-import { Button, Form, Input, Switch } from "antd";
+import { Button, Form, Input, Select, Switch } from "antd";
 import React from "react";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { Policy } from "../../../../../redux/reducers/commonTypes";
@@ -18,12 +18,15 @@ export default function PhoneRiskForm({
     );
 
     const onFormChange = (changedValues: any) => {
-        console.log("onFormChange", changedValues);
-        // updateRisk(changedValues);
+        updateRisk(changedValues);
     };
 
     const requestAQuote = () => {
         console.log("requestAQuote");
+    };
+
+    const areFieldsEmpty = () => {
+        return false;
     };
 
     return (
@@ -36,14 +39,22 @@ export default function PhoneRiskForm({
                 labelWrap
             >
                 <Form.Item label="Make" name={"make"}>
-                    <Input />
+                    <Input placeholder="Apple" />
                 </Form.Item>
                 <Form.Item label="Model" name={"model"}>
-                    <Input />
+                    <Input placeholder="Iphone 13" />
                 </Form.Item>
 
                 <Form.Item label="Condition" name={"condition"}>
-                    <Input />
+                    <Select showArrow>
+                        <Select.Option value={"new"}>Brand New</Select.Option>
+                        <Select.Option value={"near_perfect"}>
+                            Near Perfect
+                        </Select.Option>
+                        <Select.Option value={"great"}>Great</Select.Option>
+                        <Select.Option value={"good"}>Good</Select.Option>
+                        <Select.Option value={"ok"}>Ok</Select.Option>
+                    </Select>
                 </Form.Item>
                 <Form.Item label="Market Value" name={"market_value"}>
                     <Input type={"number"} />
@@ -67,6 +78,7 @@ export default function PhoneRiskForm({
                     type="primary"
                     htmlType="submit"
                     loading={requestQuotePending}
+                    disabled={requestQuotePending || areFieldsEmpty()}
                 >
                     Get Quote
                 </Button>

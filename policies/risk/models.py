@@ -32,3 +32,12 @@ class PhoneRisk(GenericProperty):
 
 class AudioEquipmentRisk(GenericProperty):
     pass
+
+
+def get_model_for_risk_type(risk_type):
+    if risk_type == 'cell_phone':
+        return PhoneRisk
+    elif risk_type == 'audio_equipment':
+        return AudioEquipmentRisk
+    else:
+        raise Exception('Risk type not found')

@@ -216,5 +216,5 @@ class RiskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Risk
-        read_only_fields = ("policy", "user", "content_object")
+        read_only_fields = ("id", "policy", "user", "content_object", "premium_amount", "risk_score")
         fields = "__all__"

@@ -32,8 +32,8 @@ export default function PolicyQuoteForm({
     }
     const formLayout: any = {
         labelCol: {
-            xs: { span: 3 },
-            sm: { span: 3 },
+            xs: { span: 5 },
+            sm: { span: 4 },
         },
         wrapperCol: {
             xs: { span: 14 },

@@ -1,8 +1,9 @@
-from urllib import request
+from functools import partial
 from django.utils import timezone
+from django.contrib.contenttypes.models import ContentType
 from pods.serializers import PodSerializer
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -12,6 +13,8 @@ from policies.paginators import StandardResultsSetPagination
 from policies.models import Claim, ClaimApproval, Policy, Premium, Risk
 from policies.permissions import InPolicyPod, InPodAndNotClaimant, InClaimPod
 from policies.premiums import schedule_premiums
+from policies.risk.models import PhoneRisk, get_model_for_risk_type
+from policies.risk.serializers import get_serializer_for_risk_type
 from policies.serializers import (
     ClaimSerializer,
     PolicySerializer,
@@ -139,6 +142,7 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
         claim.save()
 
 
+
 class RiskViewSet(ModelViewSet):
     serializer_class = RiskSerializer
 
@@ -147,13 +151,41 @@ class RiskViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         policy = Policy.objects.get(id=self.kwargs["policy_pk"])
-        underlying_insured_type = None
+        
+        kwargs = {
+            "underlying_insured_type": None
+        }
 
         if len(policy.available_underlying_insured_types) == 1:
-            underlying_insured_type = policy.available_underlying_insured_types[0]
+            kwargs["underlying_insured_type"] = policy.available_underlying_insured_types[0]
+            property_model = get_model_for_risk_type(policy.available_underlying_insured_types[0])
+            kwargs["content_type"] = ContentType.objects.get_for_model(property_model)
+            property_object = property_model.objects.create()
+            kwargs["object_id"] = property_object.id
+            
         risk = serializer.save(
             policy=policy,
             user=self.request.user,
-            underlying_insured_type=underlying_insured_type,
+            **kwargs
         )
         return risk
+
+    def partial_update(self, request):
+        risk: Risk = self.get_object()
+        serializer = RiskSerializer(risk, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        risk = serializer.save()
+        
+        # check if the update comes with nested property information
+        
+        existing_property = risk.content_object
+        property_serializer_class = get_serializer_for_risk_type(risk.underlying_insured_type)
+        property_serializer = property_serializer_class(instance=existing_property, data=request.data, partial=(existing_property is not None))
+        property_serializer.is_valid(raise_exception=True)
+        property_object = property_serializer.save()
+
+        if not existing_property:
+            risk.content_type = ContentType.objects.get_for_model(property_object)
+            risk.object_id = property_object.id
+            risk.save()
+        
