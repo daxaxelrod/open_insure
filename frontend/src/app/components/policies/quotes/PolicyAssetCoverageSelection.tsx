@@ -1,36 +1,44 @@
-import { Divider, Radio } from "antd";
+import { Divider, Form, Radio } from "antd";
 import React from "react";
 import { Typography } from "antd";
-const { Title, Paragraph } = Typography;
+import FormItemLabel from "antd/lib/form/FormItemLabel";
+const { Title } = Typography;
+
+function getHumanReadableRiskName(type: string) {
+    return type.charAt(0).toUpperCase() + type.slice(1).replace("_", " ");
+}
 
 export default function PolicyAssetCoverageSelection({
     types,
     risk,
     updateRisk,
+    formLayout,
 }: {
     types: string[];
     risk: any;
     updateRisk: (values: any) => void;
+    formLayout: any;
 }) {
     return (
-        <div>
-            <Title level={4}>Asset you'd like to insure</Title>
-            <Radio.Group defaultValue={types?.[0]} buttonStyle="solid">
-                {types.map((type) => (
-                    <Radio.Button
-                        key={`coverage-type-${type}`}
-                        onClick={() =>
-                            updateRisk({
-                                underlying_insured_type: type,
-                            })
-                        }
-                        value={type}
-                    >
-                        {type}
-                    </Radio.Button>
-                ))}
-            </Radio.Group>
-        </div>
+        <Form {...formLayout}>
+            <Form.Item label="Asset Type">
+                <Radio.Group defaultValue={types?.[0]} buttonStyle="solid">
+                    {types.map((type) => (
+                        <Radio.Button
+                            key={`coverage-type-${type}`}
+                            onClick={() =>
+                                updateRisk({
+                                    underlying_insured_type: type,
+                                })
+                            }
+                            value={type}
+                        >
+                            {getHumanReadableRiskName(type)}
+                        </Radio.Button>
+                    ))}
+                </Radio.Group>
+            </Form.Item>
+        </Form>
     );
 }
 

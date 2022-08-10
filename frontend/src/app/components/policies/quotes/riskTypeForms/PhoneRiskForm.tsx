@@ -6,9 +6,11 @@ import { Policy } from "../../../../../redux/reducers/commonTypes";
 export default function PhoneRiskForm({
     policy,
     updateRisk,
+    formLayout,
 }: {
     policy: Policy;
     updateRisk: (values: any) => void;
+    formLayout: any;
 }) {
     const [form] = Form.useForm();
     const requestQuotePending = useAppSelector(
@@ -27,10 +29,11 @@ export default function PhoneRiskForm({
     return (
         <div>
             <Form
+                {...formLayout}
                 form={form}
-                layout="vertical"
                 onValuesChange={onFormChange}
                 onFinish={requestAQuote}
+                labelWrap
             >
                 <Form.Item label="Make" name={"make"}>
                     <Input />
@@ -53,7 +56,7 @@ export default function PhoneRiskForm({
                     <Switch />
                 </Form.Item>
                 <Form.Item
-                    label="Has screen protector"
+                    label="Screen protector"
                     name={"has_screen_protector"}
                     valuePropName="checked"
                 >

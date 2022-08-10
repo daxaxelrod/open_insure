@@ -15,7 +15,7 @@ import { getAvailablePolicies } from "../../redux/actions/policies";
 
 const { Header, Sider, Content } = Layout;
 
-export default function Home() {
+export default function Home(props: any) {
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
     const [pageTitle, setPageTitle] = useState("Find Policies");
@@ -33,7 +33,7 @@ export default function Home() {
             // but do it in the sub component and it makes more sense code wise.
             dispatch(getAvailablePolicies(pageNum || 1, 10));
         }
-    }, [accessToken]);
+    }, [accessToken, pageNum]);
 
     return (
         <Layout>

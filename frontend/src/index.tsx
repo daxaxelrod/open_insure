@@ -21,10 +21,14 @@ import UserProfile from "./app/components/dashboard/UserProfile";
 import NotFound from "./app/pages/NotFound";
 import ClaimDetails from "./app/components/policies/claims/ClaimDetails";
 import PublicProfile from "./app/components/users/PublicProfile";
+import { isLoggedIn } from "axios-jwt";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 let persistor = persistStore(store);
+console.log(
+    "Note that strict mode is on which will cause double renders during development. Builds not affected."
+);
 
 root.render(
     <React.StrictMode>
@@ -34,9 +38,11 @@ root.render(
                     <NavBar />
                     <BrowserRouter>
                         <Routes>
-                            <Route path="/" element={<Index />} />
                             <Route path="/join" element={<Onboarding />} />
                             <Route path="/login" element={<Login />} />
+                            {!isLoggedIn() && (
+                                <Route path="/" element={<Index />} />
+                            )}
                             <Route path="/" element={<Dashboard />}>
                                 <Route
                                     path="home"

@@ -30,6 +30,16 @@ export default function PolicyQuoteForm({
         hasMoreThanOneAvailableAssetClassCoverage =
             availableInsuredAssetTypes?.length > 1;
     }
+    const formLayout: any = {
+        labelCol: {
+            xs: { span: 3 },
+            sm: { span: 3 },
+        },
+        wrapperCol: {
+            xs: { span: 14 },
+            sm: { span: 8 },
+        },
+    };
 
     return (
         <div>
@@ -38,12 +48,14 @@ export default function PolicyQuoteForm({
                     types={availableInsuredAssetTypes}
                     risk={risk}
                     updateRisk={updateRisk}
+                    formLayout={formLayout}
                 />
 
                 <PolicyQuoteFormFactory
                     policy={policy}
                     risk={risk}
                     updateRisk={updateRisk}
+                    formLayout={formLayout}
                 />
                 {JSON.stringify(risk)}
             </Spin>
