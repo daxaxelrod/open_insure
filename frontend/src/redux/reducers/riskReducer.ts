@@ -17,7 +17,6 @@ export interface RiskState {
     focusedRisk: Risk | null;
     getRisksPending: boolean;
     modifyRiskPending: boolean; // used on patch and get
-    requestQuotePending: boolean;
     policyRisks: { [policyId: number]: Risk[] };
 }
 
@@ -26,7 +25,6 @@ const initialState: RiskState = {
     focusedRisk: null,
     getRisksPending: false,
     modifyRiskPending: false,
-    requestQuotePending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {

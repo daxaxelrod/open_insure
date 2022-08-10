@@ -211,8 +211,16 @@ class RiskSerializer(serializers.ModelSerializer):
     content_object = RiskContentObjectRelatedField(read_only=True)
 
     def create(self, validated_data):
-        instance, _ = Risk.objects.get_or_create(**validated_data)
-        return instance
+        try:
+            risk = Risk.objects.get(
+                policy=validated_data.get("policy"),
+                user=validated_data.get("user")
+                ) # cant use get_or_create due to other data that comes in validated data
+        except Risk.DoesNotExist:
+            risk = Risk.objects.create(**validated_data)
+        except Risk.MultipleObjectsReturned:
+            raise serializers.ValidationError("Multiple risks found for this user and policy.")
+        return risk
 
     class Meta:
         model = Risk

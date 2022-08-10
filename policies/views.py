@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from pods.serializers import PodSerializer
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.status import HTTP_200_OK
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
@@ -13,7 +14,7 @@ from policies.paginators import StandardResultsSetPagination
 from policies.models import Claim, ClaimApproval, Policy, Premium, Risk
 from policies.permissions import InPolicyPod, InPodAndNotClaimant, InClaimPod
 from policies.premiums import schedule_premiums
-from policies.risk.models import PhoneRisk, get_model_for_risk_type
+from policies.risk.models import get_model_for_risk_type
 from policies.risk.serializers import get_serializer_for_risk_type
 from policies.serializers import (
     ClaimSerializer,
@@ -170,14 +171,13 @@ class RiskViewSet(ModelViewSet):
         )
         return risk
 
-    def partial_update(self, request):
+    def partial_update(self, request, policy_pk=None, pk=None):
         risk: Risk = self.get_object()
         serializer = RiskSerializer(risk, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         risk = serializer.save()
         
         # check if the update comes with nested property information
-        
         existing_property = risk.content_object
         property_serializer_class = get_serializer_for_risk_type(risk.underlying_insured_type)
         property_serializer = property_serializer_class(instance=existing_property, data=request.data, partial=(existing_property is not None))
@@ -188,4 +188,6 @@ class RiskViewSet(ModelViewSet):
             risk.content_type = ContentType.objects.get_for_model(property_object)
             risk.object_id = property_object.id
             risk.save()
+
+        return Response(RiskSerializer(risk).data, status=HTTP_200_OK)
         
