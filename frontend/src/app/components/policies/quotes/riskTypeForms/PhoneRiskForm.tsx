@@ -1,5 +1,5 @@
 import { Button, Form, Input, Select, Switch } from "antd";
-import React, { SyntheticEvent } from "react";
+import React from "react";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { Policy } from "../../../../../redux/reducers/commonTypes";
 
@@ -15,36 +15,56 @@ export default function PhoneRiskForm({
     const [form] = Form.useForm();
 
     const riskPending = useAppSelector((state) => state.risk.modifyRiskPending);
+    const assetRisk = useAppSelector(
+        (state) => state.risk.focusedRisk.content_object
+    );
 
-    const onFormChange = (changedValues: any) => {
-        updateRisk(changedValues); // this might be too fancy
-    };
-
-    const onBlur = (e: any) => {
-        console.log("bluring", e.target.value);
-    };
-
-    const requestAQuote = (changedValues: any) => {
-        updateRisk(changedValues);
-        // maybe pass a bool to tell it to also run the risk analysis and create a quote?
-        // or should we just do that every time the risk is updated?
-        // later is better UX
-    };
-
-    const areFieldsEmpty = () => {
-        return false;
+    const requestAQuote = () => {
+        form.validateFields()
+            .then((values) => {
+                updateRisk(values);
+            })
+            .catch((info) => {
+                console.log("Validate Failed:", info);
+            });
     };
 
     return (
-        <Form {...formLayout} form={form} onFinish={requestAQuote} labelWrap>
-            <Form.Item label="Make" name={"make"}>
-                <Input placeholder="Apple" onBlur={onBlur} />
+        <Form
+            {...formLayout}
+            form={form}
+            initialValues={assetRisk}
+            onFinish={requestAQuote}
+            requiredMark={false}
+            labelWrap
+        >
+            <Form.Item
+                label="Make"
+                name={"make"}
+                rules={[{ required: true, message: "Apple, Samsung, Google" }]}
+            >
+                <Input placeholder="Apple" />
             </Form.Item>
-            <Form.Item label="Model" name={"model"}>
-                <Input placeholder="Iphone 13" onBlur={onBlur} />
+            <Form.Item
+                label="Model"
+                name={"model"}
+                rules={[
+                    { required: true, message: "Iphone 13, Google Pixel 6" },
+                ]}
+            >
+                <Input placeholder="Iphone 13" />
             </Form.Item>
 
-            <Form.Item label="Condition" name={"condition"}>
+            <Form.Item
+                label="Condition"
+                name={"condition"}
+                rules={[
+                    {
+                        required: true,
+                        message: "Condition of the phone required",
+                    },
+                ]}
+            >
                 <Select showArrow>
                     <Select.Option value={"new"}>Brand New</Select.Option>
                     <Select.Option value={"near_perfect"}>
@@ -55,7 +75,11 @@ export default function PhoneRiskForm({
                     <Select.Option value={"ok"}>Ok</Select.Option>
                 </Select>
             </Form.Item>
-            <Form.Item label="Market Value" name={"market_value"}>
+            <Form.Item
+                label="Market Value"
+                name={"market_value"}
+                rules={[{ required: true, message: "Market Value required" }]}
+            >
                 <Input type={"number"} />
             </Form.Item>
             <Form.Item
@@ -77,7 +101,7 @@ export default function PhoneRiskForm({
                 type="primary"
                 htmlType="submit"
                 loading={riskPending}
-                disabled={riskPending || areFieldsEmpty()}
+                disabled={riskPending}
             >
                 Get Quote
             </Button>

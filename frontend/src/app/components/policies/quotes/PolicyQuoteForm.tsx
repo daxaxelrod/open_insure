@@ -23,12 +23,9 @@ export default function PolicyQuoteForm({
     };
     const riskPending = useAppSelector((state) => state.risk.modifyRiskPending);
     let availableInsuredAssetTypes: string[] = [];
-    let hasMoreThanOneAvailableAssetClassCoverage;
 
     if (policy) {
         availableInsuredAssetTypes = policy?.available_underlying_insured_types;
-        hasMoreThanOneAvailableAssetClassCoverage =
-            availableInsuredAssetTypes?.length > 1;
     }
     const formLayout: any = {
         labelCol: {
@@ -57,7 +54,6 @@ export default function PolicyQuoteForm({
                     updateRisk={updateRisk}
                     formLayout={formLayout}
                 />
-                {JSON.stringify(risk)}
             </Spin>
         </div>
     );
