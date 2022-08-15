@@ -1,5 +1,5 @@
 import { Button, Form, Input, Select, Switch } from "antd";
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { Policy } from "../../../../../redux/reducers/commonTypes";
 
@@ -20,6 +20,10 @@ export default function PhoneRiskForm({
         updateRisk(changedValues); // this might be too fancy
     };
 
+    const onBlur = (e: any) => {
+        console.log("bluring", e.target.value);
+    };
+
     const requestAQuote = (changedValues: any) => {
         updateRisk(changedValues);
         // maybe pass a bool to tell it to also run the risk analysis and create a quote?
@@ -32,18 +36,12 @@ export default function PhoneRiskForm({
     };
 
     return (
-        <Form
-            {...formLayout}
-            form={form}
-            onValuesChange={onFormChange}
-            onFinish={requestAQuote}
-            labelWrap
-        >
+        <Form {...formLayout} form={form} onFinish={requestAQuote} labelWrap>
             <Form.Item label="Make" name={"make"}>
-                <Input placeholder="Apple" />
+                <Input placeholder="Apple" onBlur={onBlur} />
             </Form.Item>
             <Form.Item label="Model" name={"model"}>
-                <Input placeholder="Iphone 13" />
+                <Input placeholder="Iphone 13" onBlur={onBlur} />
             </Form.Item>
 
             <Form.Item label="Condition" name={"condition"}>
