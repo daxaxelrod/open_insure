@@ -1,22 +1,24 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
-import { Card, Col, Row, Avatar, Typography } from "antd";
-import { Policy, User } from "../../../redux/reducers/commonTypes";
+import { Card, Col, Row, Avatar, Typography, Button } from "antd";
+import { Policy, Premium, User } from "../../../redux/reducers/commonTypes";
 import { UserOutlined } from "@ant-design/icons";
 
 import moment from "moment-timezone";
 
 import colors from "../../constants/colors";
-import PolicyEscrowBalanceChart from "../policies/premiums/PolicyEscrowBalanceChart";
-import PolicyQuoteRequestForm from "../policies/quotes/PolicyQuoteRequestBox";
-import InviteFriendToPolicy from "../policies/social/InviteFriendToPolicy";
+import PolicyEscrowBalanceChart from "../../components/policies/premiums/PolicyEscrowBalanceChart";
+import PolicyQuoteRequestForm from "../../components/policies/quotes/PolicyQuoteRequestBox";
+import InviteFriendToPolicy from "../../components/policies/social/InviteFriendToPolicy";
+import CoveredItemsTable from "../../components/dashboard/CoveredItemsTable";
+import PolicyDetailSkeleton from "../../components/dashboard/PolicyDetailSkeleton";
 
 const { Title, Paragraph } = Typography;
 
 export default function PolicyDetails() {
     let { id } = useParams();
-    let policy = useAppSelector((state) =>
+    let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
             (p: Policy) => p.id === parseInt(id || "")
         )
@@ -29,10 +31,22 @@ export default function PolicyDetails() {
         hasPolicyStarted = moment().isAfter(moment(policy.coverage_start_date));
     }
 
-    let isMemeber =
+    if (!policy) {
+        return <PolicyDetailSkeleton />;
+    }
+
+    let isMember =
         currentUser.id !== undefined &&
         policy?.pod &&
-        policy.pod.members.some((m: User) => m.id === currentUser.id);
+        policy?.pod.members.some((m: User) => m.id === currentUser.id);
+
+    let totalPremiumsPerMonth =
+        policy?.premiums.reduce(
+            (acc: number, premium: Premium) => acc + premium.amount,
+            0
+        ) /
+        policy?.coverage_duration /
+        100;
 
     return (
         <div>
@@ -41,8 +55,8 @@ export default function PolicyDetails() {
                 <Paragraph style={{ color: colors.gray10, fontSize: 12 }}>
                     {hasPolicyStarted ? "Active Policy" : "In setup"}
                 </Paragraph>
-                {!isMemeber && <PolicyQuoteRequestForm policy={policy} />}
-                {isMemeber && <InviteFriendToPolicy policy={policy} />}
+                {!isMember && <PolicyQuoteRequestForm policy={policy} />}
+                {isMember && <InviteFriendToPolicy policy={policy} />}
             </div>
             <Row>
                 <Col span={8} style={{ padding: 20 }}>
@@ -56,12 +70,25 @@ export default function PolicyDetails() {
                     >
                         <PolicyEscrowBalanceChart
                             policy={policy}
-                            isMember={isMemeber}
+                            isMember={isMember}
                         />
                     </Card>
                 </Col>
                 <Col span={8} style={{ padding: 20 }}>
-                    <Card title={<Title level={3}>Policy Members</Title>}>
+                    <Card
+                        title={
+                            <Row justify="space-between">
+                                <Title level={3}>Policy Members</Title>
+                                <Link to={`/policy/${policy.id}/members`}>
+                                    <Button type="link">
+                                        <Paragraph>
+                                            ${totalPremiumsPerMonth} total/month
+                                        </Paragraph>
+                                    </Button>
+                                </Link>
+                            </Row>
+                        }
+                    >
                         {policy?.pod?.members?.map((member: User) => {
                             let memberHasName =
                                 member.first_name && member.last_name;
@@ -102,7 +129,7 @@ export default function PolicyDetails() {
                     </Card>
                 </Col>
             </Row>
-            <div>list of insured things</div>
+            <CoveredItemsTable policy={policy} />
             <div>how much is there premium and when do i pay it</div>
             <div>List of members and what they are paying</div>
 

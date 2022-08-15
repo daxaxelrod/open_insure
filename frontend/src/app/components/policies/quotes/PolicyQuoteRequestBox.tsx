@@ -32,10 +32,14 @@ export default function PolicyQuoteRequestBox({ policy }: { policy: Policy }) {
                 visible={isDrawerVisible}
                 bodyStyle={{ paddingBottom: 80 }}
             >
-                <PolicyQuoteForm policy={policy} risk={focusedRisk} />
+                <PolicyQuoteForm
+                    policy={policy}
+                    risk={focusedRisk}
+                    closeDrawer={onClose}
+                />
             </Drawer>
             <Button type="primary" onClick={showDrawer}>
-                <Paragraph>Get a quote</Paragraph>
+                <Paragraph style={{ color: "white" }}>Get a quote</Paragraph>
             </Button>
         </div>
     );

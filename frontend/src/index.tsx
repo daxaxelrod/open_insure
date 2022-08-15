@@ -9,19 +9,21 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import "antd/dist/antd.min.css";
 import { Layout } from "antd";
-import Dashboard from "./app/pages/Dashboard";
+import Dashboard from "./app/pages/dashboard/Dashboard";
 import Onboarding from "./app/pages/Onboarding";
 import Login from "./app/pages/Login";
 import Index from "./app/pages/Home";
 import NavBar from "./app/components/NavBar";
 import PolicyListSearch from "./app/components/dashboard/PolicyListSearch";
-import UserPolicies from "./app/components/dashboard/UserPolicies";
-import PolicyDetails from "./app/components/dashboard/PolicyDetails";
-import UserProfile from "./app/components/dashboard/UserProfile";
+import UserPolicies from "./app/pages/UserPolicies";
+import PolicyDetails from "./app/pages/dashboard/PolicyDetails";
+import UserProfile from "./app/pages/UserProfile";
 import NotFound from "./app/pages/NotFound";
-import ClaimDetails from "./app/components/policies/claims/ClaimDetails";
+import ClaimDetails from "./app/pages/ClaimDetails";
+
 import PublicProfile from "./app/components/users/PublicProfile";
 import { isLoggedIn } from "axios-jwt";
+import PolicyPremiums from "./app/pages/dashboard/PolicyPremiums";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -55,6 +57,10 @@ root.render(
                                 <Route
                                     path="policy/:id/claims/:claimId"
                                     element={<ClaimDetails />}
+                                />
+                                <Route
+                                    path="policy/:id/members"
+                                    element={<PolicyPremiums />}
                                 />
                                 <Route
                                     path="policies"

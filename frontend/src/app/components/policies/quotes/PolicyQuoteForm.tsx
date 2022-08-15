@@ -9,9 +9,11 @@ import { patchRisk } from "../../../../redux/actions/risk";
 export default function PolicyQuoteForm({
     policy,
     risk,
+    closeDrawer,
 }: {
     policy: Policy;
     risk: Risk | null;
+    closeDrawer: () => void;
 }) {
     const dispatch = useAppDispatch();
     const updateRisk = (values: any) => {
@@ -53,6 +55,7 @@ export default function PolicyQuoteForm({
                     risk={risk}
                     updateRisk={updateRisk}
                     formLayout={formLayout}
+                    closeDrawer={closeDrawer}
                 />
             </Spin>
         </div>

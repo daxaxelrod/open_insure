@@ -8,11 +8,13 @@ export default function PolicyQuoteFormFactory({
     risk,
     updateRisk,
     formLayout,
+    closeDrawer,
 }: {
     policy: Policy;
     risk: Risk | null;
     updateRisk: (values: any) => void;
     formLayout: any;
+    closeDrawer: () => void;
 }) {
     switch (risk?.underlying_insured_type) {
         case "cell_phone":
@@ -21,6 +23,7 @@ export default function PolicyQuoteFormFactory({
                     policy={policy}
                     updateRisk={updateRisk}
                     formLayout={formLayout}
+                    closeDrawer={closeDrawer}
                 />
             );
         case "audio_equipment":
@@ -29,6 +32,7 @@ export default function PolicyQuoteFormFactory({
                     policy={policy}
                     updateRisk={updateRisk}
                     formLayout={formLayout}
+                    closeDrawer={closeDrawer}
                 />
             );
         default:

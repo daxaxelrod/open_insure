@@ -1,5 +1,6 @@
-import { Button, Form, Input, Select, Switch } from "antd";
+import { Button, Form, Input, Row, Select, Space, Switch } from "antd";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { Policy } from "../../../../../redux/reducers/commonTypes";
 
@@ -7,22 +8,37 @@ export default function PhoneRiskForm({
     policy,
     updateRisk,
     formLayout,
+    closeDrawer,
 }: {
     policy: Policy;
     updateRisk: (values: any) => void;
     formLayout: any;
+    closeDrawer: () => void;
 }) {
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     const riskPending = useAppSelector((state) => state.risk.modifyRiskPending);
-    const assetRisk = useAppSelector(
-        (state) => state.risk.focusedRisk.content_object
-    );
+    const risk = useAppSelector((state) => state.risk.focusedRisk);
+    const assetRisk = risk.content_object;
+
+    const saveForLater = () => {
+        form.validateFields()
+            .then((values) => {
+                updateRisk(values);
+                closeDrawer();
+            })
+            .catch((info) => {
+                console.log("Validate Failed:", info);
+            });
+    };
 
     const requestAQuote = () => {
         form.validateFields()
             .then((values) => {
                 updateRisk(values);
+                navigate(`/policy/${risk.policy}/members`);
+                closeDrawer();
             })
             .catch((info) => {
                 console.log("Validate Failed:", info);
@@ -97,14 +113,29 @@ export default function PhoneRiskForm({
                 <Switch />
             </Form.Item>
 
-            <Button
-                type="primary"
-                htmlType="submit"
-                loading={riskPending}
-                disabled={riskPending}
-            >
-                Get Quote
-            </Button>
+            <Row>
+                <Space size={"middle"}>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        loading={riskPending}
+                        disabled={riskPending}
+                    >
+                        Get Quote
+                    </Button>
+                    <Button
+                        type="link"
+                        // declare const ButtonTypes: ["default", "primary", "ghost", "dashed", "link", "text"];
+
+                        htmlType="button"
+                        loading={riskPending}
+                        disabled={false}
+                        onClick={saveForLater}
+                    >
+                        Save for later
+                    </Button>
+                </Space>
+            </Row>
         </Form>
     );
 }

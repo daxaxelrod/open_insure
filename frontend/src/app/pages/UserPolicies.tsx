@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Row, Typography, Col, Input, Space, Button } from "antd";
 import { SearchOutlined, WalletOutlined } from "@ant-design/icons";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import UserPoliciesOpenClaimsTable from "../policies/claims/UserPoliciesOpenClaimsTable";
-import { getUserPolicies } from "../../../redux/actions/policies";
-import UserPoliciesList from "../policies/UserPoliciesList";
-import UserPolicyCalendar from "../policies/UserPolicyCalendar";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import UserPoliciesOpenClaimsTable from "../components/policies/claims/UserPoliciesOpenClaimsTable";
+import { getUserPolicies } from "../../redux/actions/policies";
+import UserPoliciesList from "../components/policies/UserPoliciesList";
+import UserPolicyCalendar from "../components/policies/UserPolicyCalendar";
 
 const { Title } = Typography;
 

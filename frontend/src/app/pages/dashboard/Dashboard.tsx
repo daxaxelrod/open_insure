@@ -1,6 +1,6 @@
 import { getAccessToken, isLoggedIn } from "axios-jwt";
 import React, { useEffect, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -9,9 +9,9 @@ import {
     SearchOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import "../styles/dashboard/main.css";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAvailablePolicies } from "../../redux/actions/policies";
+import "../../styles/dashboard/main.css";
+import { getAvailablePolicies } from "../../../redux/actions/policies";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 const { Header, Sider, Content } = Layout;
 
@@ -24,6 +24,7 @@ export default function Home(props: any) {
     );
     const dispatch = useAppDispatch();
     const accessToken = getAccessToken();
+    const location = useLocation();
 
     useEffect(() => {
         if (!isLoggedIn()) {
@@ -32,6 +33,9 @@ export default function Home(props: any) {
             // hrm, do this here and its better for user experience, gets to see data faster
             // but do it in the sub component and it makes more sense code wise.
             dispatch(getAvailablePolicies(pageNum || 1, 10));
+            if (location.pathname === "/") {
+                navigate("/home");
+            }
         }
     }, [accessToken, pageNum]);
 
