@@ -19,6 +19,10 @@ class GenericProperty(models.Model):
     model = models.CharField(max_length=128, null=True, blank=True)
     condition = models.CharField(max_length=64, choices=CONDITION_CHOICES, null=True, blank=True)
     market_value = models.IntegerField(help_text="in cents", null=True, blank=True)
+
+    # override if a model has more text fields
+    def is_filled_out(self):
+        return self.make and self.model and self.condition and self.market_value
     
     class Meta:
         app_label = 'policies'

@@ -1,5 +1,5 @@
 import { Typography } from "antd";
-import React from "react";
+import React, { useMemo } from "react";
 import colors from "../../../constants/colors";
 import { maybePluralize } from "../../../utils/stringUtils";
 
@@ -12,6 +12,11 @@ export default function PremiumDisplay({
     amount: number;
     frequency: number;
 }) {
+    let averagePremium = useMemo(
+        () => Math.round(Math.random() * 1000) / 100,
+        []
+    );
+
     return (
         <div
             style={{
@@ -22,7 +27,7 @@ export default function PremiumDisplay({
             }}
         >
             <Title level={2} style={{ lineHeight: 1, marginBottom: 6 }}>
-                ${amount / 100}
+                ${amount}
             </Title>
             <Title level={5} style={{ lineHeight: 1, color: colors.gray9 }}>
                 &nbsp;/per {frequency === 1 ? "" : `${frequency} `}{" "}

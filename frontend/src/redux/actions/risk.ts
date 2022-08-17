@@ -13,6 +13,9 @@ import {
     PATCH_RISK_PENDING,
     PATCH_RISK_SUCCESS,
     PATCH_RISK_FAILURE,
+    GET_QUOTE_PENDING,
+    GET_QUOTE_SUCCESS,
+    GET_QUOTE_FAILURE,
 } from "./types";
 
 export const getRisksForPolicy =
@@ -67,5 +70,20 @@ export const patchRisk =
         } catch (error) {
             dispatch({ type: PATCH_RISK_FAILURE, payload: error });
             return null;
+        }
+    };
+
+export const getQuote =
+    (
+        policyId: number,
+        riskId: number
+    ): ThunkAction<void, RootState, unknown, AnyAction> =>
+    async (dispatch) => {
+        dispatch({ type: GET_QUOTE_PENDING });
+        try {
+            const response = await API.getQuote(policyId, riskId);
+            dispatch({ type: GET_QUOTE_SUCCESS, payload: response.data });
+        } catch (error) {
+            dispatch({ type: GET_QUOTE_FAILURE, payload: error });
         }
     };

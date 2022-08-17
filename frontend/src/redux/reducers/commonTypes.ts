@@ -59,8 +59,8 @@ export interface Pod {
 }
 
 export type CoverageTypes = "m_property" | "renters" | "travel" | "pet_care";
-export type UnderlyingInsuredTypes = "cell_phone" | "audio_equipment"; // | "apartment" | "house" | "life" | "pet";
-export type CSV_UnderlyingInsuredTypes = UnderlyingInsuredTypes[];
+export type UnderlyingInsuredType = "cell_phone" | "audio_equipment"; // | "apartment" | "house" | "life" | "pet";
+export type UnderlyingInsuredTypes = UnderlyingInsuredType[];
 
 export interface Policy {
     id: number;
@@ -84,7 +84,16 @@ export interface Policy {
     premiums: Premium[];
     claims: Claim[];
     pod: Pod; // always look up the pod in the pod reducer
-    available_underlying_insured_types: CSV_UnderlyingInsuredTypes;
+    available_underlying_insured_types: UnderlyingInsuredTypes;
+}
+
+export interface GenericProperty {
+    id: number;
+    make: string;
+    model: string;
+    picture?: string;
+    condition: string;
+    market_value: number;
 }
 
 export interface Risk {
@@ -94,10 +103,10 @@ export interface Risk {
     risk_score: number;
     value_at_risk: number;
     premium_amount: number;
-    underlying_insured_type: string;
+    underlying_insured_type: UnderlyingInsuredType;
     content_type: string;
+    content_object: GenericProperty;
     object_id: number;
-    content_object: any;
     created_at: string;
     updated_at: string;
 }

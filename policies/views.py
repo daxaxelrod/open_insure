@@ -1,4 +1,4 @@
-from functools import partial
+import logging
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from pods.serializers import PodSerializer
@@ -15,6 +15,7 @@ from policies.models import Claim, ClaimApproval, Policy, Premium, Risk
 from policies.permissions import InPolicyPod, InPodAndNotClaimant, InClaimPod
 from policies.premiums import schedule_premiums
 from policies.risk.models import get_model_for_risk_type
+from policies.risk.risk_scores import compute_premium_amount, compute_risk_score
 from policies.risk.serializers import get_serializer_for_risk_type
 from policies.serializers import (
     ClaimSerializer,
@@ -25,6 +26,7 @@ from policies.serializers import (
     RiskSerializer,
 )
 
+logger = logging.getLogger(__name__)
 
 class PolicyViewSet(ModelViewSet):
     queryset = Policy.objects.all()
@@ -151,6 +153,7 @@ class RiskViewSet(ModelViewSet):
         return Risk.objects.filter(policy=self.kwargs["policy_pk"])
 
     def perform_create(self, serializer):
+
         policy = Policy.objects.get(id=self.kwargs["policy_pk"])
         
         kwargs = {
@@ -184,10 +187,33 @@ class RiskViewSet(ModelViewSet):
         property_serializer.is_valid(raise_exception=True)
         property_object = property_serializer.save()
 
+        risk.premium_amount = None # reset premium amount on every update
+
         if not existing_property:
             risk.content_type = ContentType.objects.get_for_model(property_object)
             risk.object_id = property_object.id
-            risk.save()
+        
+        risk.save()
 
         return Response(RiskSerializer(risk).data, status=HTTP_200_OK)
+        
+    @action(detail=True, methods=["GET"], permission_classes=[IsAuthenticated])
+    def quote(self, *args, **kwargs):
+        risk: Risk = self.get_object()
+        # make sure the risk's content_object is filled out
+        if not risk.content_object or not risk.content_object.is_filled_out():
+            raise ValidationError("Property risk is not filled out")
+        
+        if risk.premium_amount:
+            # already quoted (doesnt allow for a new price)
+            return Response(self.get_serializer(risk).data, status=HTTP_200_OK)
+
+        risk.risk_score = compute_risk_score(risk)
+        risk.premium_amount = compute_premium_amount(risk)
+        risk.value_at_risk = risk.risk_score * risk.content_object.market_value
+        logger.info(f"Risk {risk.id} has a premium of {risk.premium_amount}")
+        risk.save()
+        return Response(self.get_serializer(risk).data, status=HTTP_200_OK)
+
+
         

@@ -4,6 +4,7 @@ from django.utils.html import format_html
 from django.contrib.contenttypes.models import ContentType
 from policies.models import (
     Policy,
+    PolicyRiskSettings,
     Premium,
     Claim,
     PolicyCloseout,
@@ -41,3 +42,4 @@ admin.site.register(ClaimApproval)
 admin.site.register(Risk, RiskAdmin)
 admin.site.register(PhoneRisk)
 admin.site.register(AudioEquipmentRisk)
+admin.site.register(PolicyRiskSettings)

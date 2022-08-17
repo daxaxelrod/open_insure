@@ -10,6 +10,9 @@ import {
     PATCH_RISK_PENDING,
     PATCH_RISK_SUCCESS,
     PATCH_RISK_FAILURE,
+    GET_QUOTE_PENDING,
+    GET_QUOTE_SUCCESS,
+    GET_QUOTE_FAILURE,
 } from "../actions/types";
 import { Risk } from "./commonTypes";
 
@@ -17,6 +20,7 @@ export interface RiskState {
     focusedRisk: Risk | null;
     getRisksPending: boolean;
     modifyRiskPending: boolean; // used on patch and get
+    getQuotePending: boolean;
     policyRisks: { [policyId: number]: Risk[] };
 }
 
@@ -25,6 +29,7 @@ const initialState: RiskState = {
     focusedRisk: null,
     getRisksPending: false,
     modifyRiskPending: false,
+    getQuotePending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
@@ -81,6 +86,22 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 getRisksPending: false,
+            };
+        case GET_QUOTE_PENDING:
+            return {
+                ...state,
+                getQuotePending: true,
+            };
+        case GET_QUOTE_SUCCESS:
+            return {
+                ...state,
+                getQuotePending: false,
+                focusedRisk: payload,
+            };
+        case GET_QUOTE_FAILURE:
+            return {
+                ...state,
+                getQuotePending: false,
             };
 
         default:

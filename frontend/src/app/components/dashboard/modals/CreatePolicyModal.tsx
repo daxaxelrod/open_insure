@@ -65,7 +65,7 @@ export default function CreatePolicyModal({
             confirmLoading={createPolicyPending}
             onCancel={handleCancel}
         >
-            <Form form={form} layout="vertical">
+            <Form form={form} layout="vertical" requiredMark={false}>
                 <Form.Item label="Policy Name" name="name" required>
                     <Input placeholder="Phone Insurance" />
                 </Form.Item>

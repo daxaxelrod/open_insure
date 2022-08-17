@@ -18,6 +18,7 @@ from policies.model_choices import (
 from policies.risk.models import *
 
 
+
 class Policy(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -133,7 +134,7 @@ class Risk(models.Model):
     value_at_risk = models.PositiveIntegerField(
         null=True,
         blank=True,
-        help_text="The market value of the item at the beginning of the policy, in cents",
+        help_text="The expected dollar amount loss for a given item computed at the beginning of the policy, in cents",
     )
 
     premium_amount = models.IntegerField(
@@ -162,6 +163,13 @@ class Risk(models.Model):
     def __str__(self) -> str:
         return f"{self.user}'s' Risk - ({self.policy.name} Policy)"
 
+class PolicyRiskSettings(models.Model):
+    policy = models.OneToOneField(Policy, on_delete=models.CASCADE, related_name="risk_settings")
+    conservative_factor = models.IntegerField(default=1, help_text="how much do you want to pad the risk score by. The higher it is the more premiums everyone pays")
+    # todo JSON field with the risk settings for each risk type
+
+    def __str__(self) -> str:
+        return f"{self.policy.name} Risk Settings -- Conservative Factor: {self.conservative_factor}%"
 
 class Premium(models.Model):
     policy = models.ForeignKey(

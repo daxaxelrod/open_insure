@@ -1,9 +1,10 @@
+import React, { useEffect } from "react";
 import { Card } from "antd";
-import React from "react";
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "../../../redux/hooks";
+import { getOrCreateRisk } from "../../../redux/actions/risk";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { Policy, User } from "../../../redux/reducers/commonTypes";
-import PremiumsTable from "../../components/policies/members/PremiumsTable";
+import RisksTable from "../../components/policies/members/RisksTable";
 import UserMainPremiumObligation from "../../components/policies/members/UserMainPremiumObligation";
 import UserPolicyQuote from "../../components/policies/members/UserPolicyQuote";
 import { isPolicyMember } from "../../utils/policyUtils";
@@ -16,19 +17,28 @@ export default function PolicyPremiums() {
             (p: Policy) => p.id === parseInt(id || "")
         )
     );
+    const dispatch = useAppDispatch();
     let currentUser: User = useAppSelector((state) => state.auth.currentUser);
+    let risk = useAppSelector((state) => state.risk.focusedRisk);
+
+    useEffect(() => {
+        // if there is no risk, go and get it
+        if (!risk && policy) {
+            dispatch(getOrCreateRisk(policy.id, {}));
+        }
+    }, [risk, policy]);
 
     let isMember: boolean = isPolicyMember(currentUser, policy);
     return (
         <div>
+            <RisksTable policy={policy} />
+            <Card>
+                {isMember ? <UserMainPremiumObligation /> : <UserPolicyQuote />}
+            </Card>
             <div>
                 this page should answer the question how much is there premium
                 and when do i pay it. Inspired by Julius G
             </div>
-            <Card>
-                {isMember ? <UserMainPremiumObligation /> : <UserPolicyQuote />}
-            </Card>
-            <PremiumsTable policy={policy} />
         </div>
     );
 }

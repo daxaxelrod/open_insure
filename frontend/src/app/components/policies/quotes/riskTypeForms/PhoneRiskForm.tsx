@@ -121,7 +121,7 @@ export default function PhoneRiskForm({
                         loading={riskPending}
                         disabled={riskPending}
                     >
-                        Get Quote
+                        Find your premium
                     </Button>
                     <Button
                         type="link"

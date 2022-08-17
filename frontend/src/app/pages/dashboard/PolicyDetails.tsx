@@ -55,32 +55,18 @@ export default function PolicyDetails() {
                 <Paragraph style={{ color: colors.gray10, fontSize: 12 }}>
                     {hasPolicyStarted ? "Active Policy" : "In setup"}
                 </Paragraph>
-                {!isMember && <PolicyQuoteRequestForm policy={policy} />}
-                {isMember && <InviteFriendToPolicy policy={policy} />}
+                <Paragraph style={{ color: colors.gray10, fontSize: 12 }}>
+                    {policy.description}
+                </Paragraph>
             </div>
             <Row>
-                <Col span={8} style={{ padding: 20 }}>
-                    <Card
-                        title={<Title level={3}>Escrow Balance</Title>}
-                        bodyStyle={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                    >
-                        <PolicyEscrowBalanceChart
-                            policy={policy}
-                            isMember={isMember}
-                        />
-                    </Card>
-                </Col>
-                <Col span={8} style={{ padding: 20 }}>
+                <Col span={12} style={{ padding: 20 }}>
                     <Card
                         title={
                             <Row justify="space-between">
                                 <Title level={3}>Policy Members</Title>
                                 <Link to={`/policy/${policy.id}/members`}>
-                                    <Button type="link">
+                                    <Button type="dashed">
                                         <Paragraph>
                                             ${totalPremiumsPerMonth} total/month
                                         </Paragraph>
@@ -98,14 +84,14 @@ export default function PolicyDetails() {
                                     key={`${member.id}-policy-member-brief`}
                                 >
                                     <Row style={{ marginBottom: ".25rem" }}>
-                                        <Col span={4}>
+                                        <Col span={2}>
                                             <Avatar
                                                 key={member?.id}
                                                 src={member?.picture}
                                                 icon={<UserOutlined />}
                                             />
                                         </Col>
-                                        <Col span={20}>
+                                        <Col span={4}>
                                             {memberHasName ? (
                                                 <Paragraph key={member.id}>
                                                     {member.first_name}{" "}
@@ -121,11 +107,30 @@ export default function PolicyDetails() {
                                 </Link>
                             );
                         })}
+                        <Row justify="end">
+                            {!isMember && (
+                                <PolicyQuoteRequestForm policy={policy} />
+                            )}
+                            {isMember && (
+                                <InviteFriendToPolicy policy={policy} />
+                            )}
+                        </Row>
                     </Card>
                 </Col>
+
                 <Col span={8} style={{ padding: 20 }}>
-                    <Card title={<Title level={3}>Risk level</Title>}>
-                        Risk graphs will be here
+                    <Card
+                        title={<Title level={3}>Pool Balance</Title>}
+                        bodyStyle={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <PolicyEscrowBalanceChart
+                            policy={policy}
+                            isMember={isMember}
+                        />
                     </Card>
                 </Col>
             </Row>

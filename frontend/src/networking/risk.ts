@@ -14,3 +14,8 @@ export function patchRisk(policyId: number, riskId: number, payload: any) {
         payload
     );
 }
+export function getQuote(policyId: number, riskId: number) {
+    return axiosInstance.get(
+        `/api/v1/policies/${policyId}/risk/${riskId}/quote/`
+    );
+}
