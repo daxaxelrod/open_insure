@@ -8,12 +8,18 @@ import {
     UserOutlined,
     SearchOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Breadcrumb } from "antd";
 import "../../styles/dashboard/main.css";
 import { getAvailablePolicies } from "../../../redux/actions/policies";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 const { Header, Sider, Content } = Layout;
+
+// function getPageNameFromLocation(path: string) {
+//     return [
+
+//     ]
+// }
 
 export default function Home(props: any) {
     const navigate = useNavigate();
@@ -25,6 +31,12 @@ export default function Home(props: any) {
     const dispatch = useAppDispatch();
     const accessToken = getAccessToken();
     const location = useLocation();
+
+    // useEffect(() => {
+    //     console.log("location", location.pathname);
+    //     let pageComponents = getPageNameFromLocation(location.pathname)
+    //     setPageTitle(pageComponents)
+    // }, [location]);
 
     useEffect(() => {
         if (!isLoggedIn()) {

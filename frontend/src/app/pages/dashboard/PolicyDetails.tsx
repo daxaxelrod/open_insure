@@ -27,6 +27,7 @@ export default function PolicyDetails() {
         )
     );
     let currentUser = useAppSelector((state) => state.auth.currentUser);
+    let focusedRisk = useAppSelector((state) => state.risk.focusedRisk);
 
     let doesPolicyHaveStartDate = policy?.coverage_start_date;
     let hasPolicyStarted = false;
@@ -42,6 +43,11 @@ export default function PolicyDetails() {
         currentUser.id !== undefined &&
         policy?.pod &&
         policy?.pod.members.some((m: User) => m.id === currentUser.id);
+
+    let memberHasFilledOutRisk =
+        currentUser?.id !== undefined && focusedRisk?.premium_amount;
+
+    console.log({ focusedRisk });
 
     return (
         <div>
@@ -67,7 +73,10 @@ export default function PolicyDetails() {
             </div>
             <Row>
                 <Col span={8} style={{ padding: 10 }}>
-                    <UserPolicyPremiumBox isMember={isMember} />
+                    <UserPolicyPremiumBox
+                        isMember={isMember}
+                        memberHasFilledOutRisk={memberHasFilledOutRisk}
+                    />
                 </Col>
                 <Col span={8} style={{ padding: 10 }}>
                     <PolicyDetailMemberList policy={policy} />
