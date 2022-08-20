@@ -70,7 +70,9 @@ export default function InviteFriendToPolicy({ policy }: { policy: Policy }) {
             </Modal>
 
             <Button type="primary" onClick={openModal}>
-                <Paragraph>Invite a friend</Paragraph>
+                <Paragraph style={{ color: "white" }}>
+                    Invite a friend
+                </Paragraph>
             </Button>
         </div>
     );

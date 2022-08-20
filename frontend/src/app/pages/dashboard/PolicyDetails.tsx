@@ -13,6 +13,9 @@ import PolicyQuoteRequestForm from "../../components/policies/quotes/PolicyQuote
 import InviteFriendToPolicy from "../../components/policies/social/InviteFriendToPolicy";
 import CoveredItemsTable from "../../components/dashboard/CoveredItemsTable";
 import PolicyDetailSkeleton from "../../components/dashboard/PolicyDetailSkeleton";
+import PolicyDetailMemberList from "../../components/policies/members/PolicyDetailMemberList";
+import UserPolicyPremiumBox from "../../components/policies/premiums/UserPolicyPremiumBox";
+import PolicyDescriptionRow from "../../components/policies/detail/PolicyDescriptionRow";
 
 const { Title, Paragraph } = Typography;
 
@@ -40,85 +43,37 @@ export default function PolicyDetails() {
         policy?.pod &&
         policy?.pod.members.some((m: User) => m.id === currentUser.id);
 
-    let totalPremiumsPerMonth =
-        policy?.premiums.reduce(
-            (acc: number, premium: Premium) => acc + premium.amount,
-            0
-        ) /
-        policy?.coverage_duration /
-        100;
-
     return (
         <div>
             <div>
-                <Title style={{ marginBottom: 0 }}>{policy?.name}</Title>
-                <Paragraph style={{ color: colors.gray10, fontSize: 12 }}>
-                    {hasPolicyStarted ? "Active Policy" : "In setup"}
-                </Paragraph>
-                <Paragraph style={{ color: colors.gray10, fontSize: 12 }}>
-                    {policy.description}
-                </Paragraph>
+                <Row align="middle">
+                    <Col span={21}>
+                        <Title style={{ marginBottom: 0 }}>
+                            {policy?.name}
+                        </Title>
+                        <Paragraph
+                            style={{ color: colors.gray10, fontSize: 12 }}
+                        >
+                            {hasPolicyStarted ? "Active Policy" : "In setup"}
+                        </Paragraph>
+                    </Col>
+                    <Col span={2} style={{ marginRight: 30 }}>
+                        {!isMember && (
+                            <PolicyQuoteRequestForm policy={policy} />
+                        )}
+                        {isMember && <InviteFriendToPolicy policy={policy} />}
+                    </Col>
+                </Row>
             </div>
             <Row>
-                <Col span={12} style={{ padding: 20 }}>
-                    <Card
-                        title={
-                            <Row justify="space-between">
-                                <Title level={3}>Policy Members</Title>
-                                <Link to={`/policy/${policy.id}/members`}>
-                                    <Button type="dashed">
-                                        <Paragraph>
-                                            ${totalPremiumsPerMonth} total/month
-                                        </Paragraph>
-                                    </Button>
-                                </Link>
-                            </Row>
-                        }
-                    >
-                        {policy?.pod?.members?.map((member: User) => {
-                            let memberHasName =
-                                member.first_name && member.last_name;
-                            return (
-                                <Link
-                                    to={`/members/${member.id}/`}
-                                    key={`${member.id}-policy-member-brief`}
-                                >
-                                    <Row style={{ marginBottom: ".25rem" }}>
-                                        <Col span={2}>
-                                            <Avatar
-                                                key={member?.id}
-                                                src={member?.picture}
-                                                icon={<UserOutlined />}
-                                            />
-                                        </Col>
-                                        <Col span={4}>
-                                            {memberHasName ? (
-                                                <Paragraph key={member.id}>
-                                                    {member.first_name}{" "}
-                                                    {member.last_name}
-                                                </Paragraph>
-                                            ) : (
-                                                <Paragraph key={member.id}>
-                                                    {member.email}
-                                                </Paragraph>
-                                            )}
-                                        </Col>
-                                    </Row>
-                                </Link>
-                            );
-                        })}
-                        <Row justify="end">
-                            {!isMember && (
-                                <PolicyQuoteRequestForm policy={policy} />
-                            )}
-                            {isMember && (
-                                <InviteFriendToPolicy policy={policy} />
-                            )}
-                        </Row>
-                    </Card>
+                <Col span={8} style={{ padding: 10 }}>
+                    <UserPolicyPremiumBox isMember={isMember} />
+                </Col>
+                <Col span={8} style={{ padding: 10 }}>
+                    <PolicyDetailMemberList policy={policy} />
                 </Col>
 
-                <Col span={8} style={{ padding: 20 }}>
+                <Col span={8} style={{ padding: 10 }}>
                     <Card
                         title={<Title level={3}>Pool Balance</Title>}
                         bodyStyle={{
@@ -134,6 +89,7 @@ export default function PolicyDetails() {
                     </Card>
                 </Col>
             </Row>
+            <PolicyDescriptionRow policy={policy} />
             <CoveredItemsTable policy={policy} />
             <div>how much is there premium and when do i pay it</div>
             <div>List of members and what they are paying</div>

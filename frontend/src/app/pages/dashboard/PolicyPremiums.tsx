@@ -31,10 +31,8 @@ export default function PolicyPremiums() {
     let isMember: boolean = isPolicyMember(currentUser, policy);
     return (
         <div>
+            <div>Members of the policy </div>
             <RisksTable policy={policy} />
-            <Card>
-                {isMember ? <UserMainPremiumObligation /> : <UserPolicyQuote />}
-            </Card>
             <div>
                 this page should answer the question how much is there premium
                 and when do i pay it. Inspired by Julius G
