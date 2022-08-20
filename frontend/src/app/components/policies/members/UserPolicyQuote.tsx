@@ -42,6 +42,7 @@ export default function UserPolicyQuote() {
         <div>
             <Row>
                 <Col span={12}>
+                    <span>starting at</span>
                     <Title style={{ marginTop: 0 }}>
                         ${risk?.premium_amount / 100} / month
                     </Title>

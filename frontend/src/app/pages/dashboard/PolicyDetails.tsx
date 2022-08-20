@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
 import { Card, Col, Row, Avatar, Typography, Button } from "antd";
 import { Policy, Premium, User } from "../../../redux/reducers/commonTypes";
@@ -21,6 +21,7 @@ const { Title, Paragraph } = Typography;
 
 export default function PolicyDetails() {
     let { id } = useParams();
+    let navigation = useNavigate();
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
             (p: Policy) => p.id === parseInt(id || "")
@@ -47,14 +48,16 @@ export default function PolicyDetails() {
     let memberHasFilledOutRisk =
         currentUser?.id !== undefined && focusedRisk?.premium_amount;
 
-    console.log({ focusedRisk });
+    const goToEscrowDetail = () => {
+        navigation("pool");
+    };
 
     return (
         <div>
             <div>
                 <Row align="middle">
                     <Col span={21}>
-                        <Title style={{ marginBottom: 0 }}>
+                        <Title style={{ marginBottom: 0 }} level={2}>
                             {policy?.name}
                         </Title>
                         <Paragraph
@@ -84,7 +87,12 @@ export default function PolicyDetails() {
 
                 <Col span={8} style={{ padding: 10 }}>
                     <Card
-                        title={<Title level={3}>Pool Balance</Title>}
+                        title={
+                            <Row justify="space-between">
+                                <Title level={3}>Pool Balance</Title>
+                                <Button onClick={goToEscrowDetail}>More</Button>
+                            </Row>
+                        }
                         bodyStyle={{
                             display: "flex",
                             justifyContent: "center",
@@ -100,7 +108,6 @@ export default function PolicyDetails() {
             </Row>
             <PolicyDescriptionRow policy={policy} />
             <CoveredItemsTable policy={policy} />
-            <div>how much is there premium and when do i pay it</div>
             <div>List of members and what they are paying</div>
 
             {/* <div>{JSON.stringify(policy)}</div> */}

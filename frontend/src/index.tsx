@@ -24,6 +24,7 @@ import ClaimDetails from "./app/pages/ClaimDetails";
 import PublicProfile from "./app/components/users/PublicProfile";
 import { isLoggedIn } from "axios-jwt";
 import PolicyPremiums from "./app/pages/dashboard/PolicyPremiums";
+import PolicyPoolDetails from "./app/pages/dashboard/PolicyPoolDetails";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -61,6 +62,10 @@ root.render(
                                 <Route
                                     path="policy/:id/members"
                                     element={<PolicyPremiums />}
+                                />
+                                <Route
+                                    path="policy/:id/pool"
+                                    element={<PolicyPoolDetails />}
                                 />
                                 <Route
                                     path="policies"

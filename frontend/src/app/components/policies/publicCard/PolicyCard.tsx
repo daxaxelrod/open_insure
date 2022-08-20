@@ -1,37 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Dropdown, Menu, Row } from "antd";
 import { Policy } from "../../../../redux/reducers/commonTypes";
 import { Link } from "react-router-dom";
 import Title from "./Title";
 import PolicyIcon from "./PolicyIcon";
-import PremiumDisplay from "./ PremiumDisplay";
+import LowestPremiumDisplay from "./LowestPremiumDisplay";
 import CoverageRow from "./CoverageRow";
-
-const menu = // eh not sure if we should keep this, kinda hidden from the user
-    (
-        <Menu
-            items={[
-                {
-                    label: "Share Link (Not Implemented)",
-                    key: "1",
-                    onClick: () => {
-                        console.log("Share Link");
-                        return true;
-                    },
-                },
-                {
-                    label: "Join Group (Not implemented)",
-                    key: "2",
-                    onClick: () => {
-                        console.log("Join Group");
-                        return true;
-                    },
-                },
-            ]}
-        />
-    );
+import { useAppSelector } from "../../../../redux/hooks";
+import { determineLowestPremium } from "../utils/riskUtils";
 
 export default function PolicyCard({ policy }: { policy: Policy }) {
+    const policyRisks = useAppSelector(
+        (state) => state.risk.policyRisks?.[policy.id]
+    );
+    const risksPending = useAppSelector((state) => state.risk.getRisksPending);
+    let lowestPremiumInPolicy = determineLowestPremium(policyRisks);
+
     return (
         <Col span={8}>
             <div
@@ -59,9 +43,10 @@ export default function PolicyCard({ policy }: { policy: Policy }) {
                                 <PolicyIcon type={policy.coverage_type} />
                             </Col>
                             <Col span={18}>
-                                <PremiumDisplay
-                                    amount={policy.premium_amount}
+                                <LowestPremiumDisplay
+                                    amount={lowestPremiumInPolicy}
                                     frequency={policy.premium_payment_frequency}
+                                    risksPending={risksPending}
                                 />
                             </Col>
                         </Row>

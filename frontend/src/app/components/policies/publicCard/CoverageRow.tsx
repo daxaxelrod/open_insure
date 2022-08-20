@@ -1,19 +1,24 @@
-import { Row, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import moment from "moment-timezone";
 import React from "react";
 import { Policy } from "../../../../redux/reducers/commonTypes";
 import { dateFormat } from "../../../constants/moment";
 import { grey } from "@ant-design/colors";
+import colors from "../../../constants/colors";
+import { isPolicyMember } from "../../../utils/policyUtils";
+import { useAppSelector } from "../../../../redux/hooks";
 
 const { Paragraph, Title } = Typography;
 
 export default function CoverageRow({ policy }: { policy: Policy }) {
     let hasStartDate = !!policy.coverage_start_date;
     let hasPolicyStarted = moment().isAfter(moment(policy.coverage_start_date));
+    let currentUser = useAppSelector((state) => state.auth.currentUser);
+    let isMember = isPolicyMember(currentUser, policy);
 
     return (
         <Row justify="space-between" style={{ flex: 1 }}>
-            <div>
+            <Col>
                 <p style={{ color: "F5F5F5", fontSize: 10, marginBottom: 0 }}>
                     Starts:
                 </p>
@@ -25,21 +30,22 @@ export default function CoverageRow({ policy }: { policy: Policy }) {
                 <Paragraph style={{ color: grey.primary, marginLeft: 4 }}>
                     Duration: {policy.coverage_duration} months
                 </Paragraph>
-            </div>
-            <div
+            </Col>
+            <Col
                 style={{
-                    textAlign: "center",
                     display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                    alignItems: "flex-end",
                 }}
             >
-                <Paragraph>
-                    {hasPolicyStarted
-                        ? "Coverage already started"
-                        : "Coverage Active"}
+                <Paragraph style={{ fontSize: ".75rem" }}>
+                    {hasPolicyStarted ? "Started" : "Inactive"}
                 </Paragraph>
-            </div>
+                <Paragraph style={{ fontSize: ".75rem", color: colors.gray8 }}>
+                    {isMember ? "Member" : null}
+                </Paragraph>
+            </Col>
         </Row>
     );
 }

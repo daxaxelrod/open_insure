@@ -13,5 +13,6 @@ export default {
     gray12: "#141414",
     gray13: "#000000",
     warning1: "#ff7a45",
-    alert1: "#f5222d"
-}
+    alert1: "#f5222d",
+    good: "#52c41a",
+};

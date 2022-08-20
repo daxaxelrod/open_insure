@@ -46,6 +46,11 @@ export default function PolicyDetailMemberList({ policy }: { policy: Policy }) {
                         <Row style={{ marginBottom: ".25rem" }} align="middle">
                             <Col span={3}>
                                 <Avatar
+                                    size={{
+                                        xs: 24,
+                                        sm: 32,
+                                        md: 40,
+                                    }}
                                     key={member?.id}
                                     src={member?.picture}
                                     icon={<UserOutlined />}
