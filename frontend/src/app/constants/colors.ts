@@ -15,4 +15,5 @@ export default {
     warning1: "#ff7a45",
     alert1: "#f5222d",
     good: "#52c41a",
+    lightGood: "##64E392",
 };

@@ -9,8 +9,6 @@ import ClaimsStatusInlineDisplay from "./claims/ClaimsStatusInlineDisplay";
 import SummaryPolicyMembersDisplay from "./members/SummaryPolicyMembersDisplay";
 import EscrowPoolAddressInlineDisplay from "./premiums/EscrowPoolAddressInlineDisplay";
 
-import PolicyQuickViewCard from "./userCard/PolicyQuickViewCard";
-
 export default function UserPoliciesList({ policies }: { policies: Policy[] }) {
     let navigate = useNavigate();
 

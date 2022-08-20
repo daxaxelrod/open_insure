@@ -42,7 +42,9 @@ export default function CoverageRow({ policy }: { policy: Policy }) {
                 <Paragraph style={{ fontSize: ".75rem" }}>
                     {hasPolicyStarted ? "Started" : "Inactive"}
                 </Paragraph>
-                <Paragraph style={{ fontSize: ".75rem", color: colors.gray8 }}>
+                <Paragraph
+                    style={{ fontSize: ".75rem", color: colors.lightGood }}
+                >
                     {isMember ? "Member" : null}
                 </Paragraph>
             </Col>
