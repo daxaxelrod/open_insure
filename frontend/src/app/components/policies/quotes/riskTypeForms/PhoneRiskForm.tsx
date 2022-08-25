@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { Policy } from "../../../../../redux/reducers/commonTypes";
+import PropertyImageForm from "./PropertyImageForm";
 
 export default function PhoneRiskForm({
     policy,
@@ -112,6 +113,7 @@ export default function PhoneRiskForm({
             >
                 <Switch />
             </Form.Item>
+            <PropertyImageForm risk={risk} />
 
             <Row>
                 <Space size={"middle"}>

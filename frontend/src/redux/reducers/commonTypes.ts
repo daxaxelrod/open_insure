@@ -87,6 +87,12 @@ export interface Policy {
     available_underlying_insured_types: UnderlyingInsuredTypes;
 }
 
+export interface Image {
+    id: string;
+    image: string;
+    created_at: string;
+    updated_at: string;
+}
 export interface GenericProperty {
     id: number;
     make: string;
@@ -94,6 +100,7 @@ export interface GenericProperty {
     picture?: string;
     condition: string;
     market_value: number;
+    album: Image[];
 }
 
 export interface Risk {
