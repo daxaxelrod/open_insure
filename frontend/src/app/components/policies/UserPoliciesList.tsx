@@ -1,7 +1,7 @@
-import { Col, Table } from "antd";
-import { ColumnsType } from "antd/lib/table";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Table } from "antd";
+import { ColumnsType } from "antd/lib/table";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
 import { Policy } from "../../../redux/reducers/commonTypes";
 import { getCoverageTypeHumanReadable } from "../../utils/policyUtils";

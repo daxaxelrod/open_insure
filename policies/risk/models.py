@@ -21,6 +21,20 @@ class ImageAlbum(models.Model):
     def thumbnails(self):
         return self.images.filter(width__lt=100, length_lt=100)
 
+    def __str__(self) -> str:
+        risk_id = None
+        try:
+            if self.audio_equipment:
+                risk_id = self.audio_equipment.id
+        except:
+            pass
+        try:
+            if self.cell_phone:
+                risk_id = self.cell_phone.id
+        except:
+            pass
+        return f"Risk photo album for risk #{risk_id}"
+
 
 class PropertyImage(models.Model):
     image = models.ImageField(upload_to="property_images")

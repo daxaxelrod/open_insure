@@ -9,6 +9,9 @@ from rest_framework_simplejwt.views import (
 from pods.urls import router as pods_router
 from policies.urls import router as policy_router
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 router = DefaultRouter()
 router.registry.extend(pods_router.registry)
@@ -27,3 +30,10 @@ urlpatterns = [
     path("api/v1/settings/", views.get_instance_settings, name="instance_settings"),
     path("admin/", admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns = (
+        urlpatterns
+        + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+        + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    )
