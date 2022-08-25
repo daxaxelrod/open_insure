@@ -113,7 +113,7 @@ export default function PhoneRiskForm({
             >
                 <Switch />
             </Form.Item>
-            <PropertyImageForm risk={risk} />
+            <PropertyImageForm risk={risk} policy={policy} />
 
             <Row>
                 <Space size={"middle"}>

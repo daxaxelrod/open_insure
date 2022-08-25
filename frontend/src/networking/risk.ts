@@ -19,3 +19,17 @@ export function getQuote(policyId: number, riskId: number) {
         `/api/v1/policies/${policyId}/risk/${riskId}/quote/`
     );
 }
+
+// Can upload just one or multiple, api dont care
+export function uploadRiskImage(
+    policyId: number,
+    riskId: number,
+    formData: any,
+    config: any
+) {
+    return axiosInstance.post(
+        `/api/v1/policies/${policyId}/risk/${riskId}/upload_image/`,
+        formData,
+        config
+    );
+}

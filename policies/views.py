@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from pods.serializers import PodSerializer
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.status import HTTP_200_OK
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
@@ -16,7 +16,11 @@ from policies.permissions import InPolicyPod, InPodAndNotClaimant, InClaimPod
 from policies.premiums import schedule_premiums
 from policies.risk.models import get_model_for_risk_type
 from policies.risk.risk_scores import compute_premium_amount, compute_risk_score
-from policies.risk.serializers import get_serializer_for_risk_type
+from policies.risk.serializers import (
+    AlbumSerializer,
+    ImageSerializer,
+    get_serializer_for_risk_type,
+)
 from policies.serializers import (
     ClaimSerializer,
     PolicySerializer,
@@ -27,6 +31,7 @@ from policies.serializers import (
 )
 
 logger = logging.getLogger(__name__)
+
 
 class PolicyViewSet(ModelViewSet):
     queryset = Policy.objects.all()
@@ -145,7 +150,6 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
         claim.save()
 
 
-
 class RiskViewSet(ModelViewSet):
     serializer_class = RiskSerializer
 
@@ -155,23 +159,21 @@ class RiskViewSet(ModelViewSet):
     def perform_create(self, serializer):
 
         policy = Policy.objects.get(id=self.kwargs["policy_pk"])
-        
-        kwargs = {
-            "underlying_insured_type": None
-        }
+
+        kwargs = {"underlying_insured_type": None}
 
         if len(policy.available_underlying_insured_types) == 1:
-            kwargs["underlying_insured_type"] = policy.available_underlying_insured_types[0]
-            property_model = get_model_for_risk_type(policy.available_underlying_insured_types[0])
+            kwargs[
+                "underlying_insured_type"
+            ] = policy.available_underlying_insured_types[0]
+            property_model = get_model_for_risk_type(
+                policy.available_underlying_insured_types[0]
+            )
             kwargs["content_type"] = ContentType.objects.get_for_model(property_model)
             property_object = property_model.objects.create()
             kwargs["object_id"] = property_object.id
-            
-        risk = serializer.save(
-            policy=policy,
-            user=self.request.user,
-            **kwargs
-        )
+
+        risk = serializer.save(policy=policy, user=self.request.user, **kwargs)
         return risk
 
     def partial_update(self, request, policy_pk=None, pk=None):
@@ -179,31 +181,37 @@ class RiskViewSet(ModelViewSet):
         serializer = RiskSerializer(risk, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         risk = serializer.save()
-        
+
         # check if the update comes with nested property information
         existing_property = risk.content_object
-        property_serializer_class = get_serializer_for_risk_type(risk.underlying_insured_type)
-        property_serializer = property_serializer_class(instance=existing_property, data=request.data, partial=(existing_property is not None))
+        property_serializer_class = get_serializer_for_risk_type(
+            risk.underlying_insured_type
+        )
+        property_serializer = property_serializer_class(
+            instance=existing_property,
+            data=request.data,
+            partial=(existing_property is not None),
+        )
         property_serializer.is_valid(raise_exception=True)
         property_object = property_serializer.save()
 
-        risk.premium_amount = None # reset premium amount on every update
+        risk.premium_amount = None  # reset premium amount on every update
 
         if not existing_property:
             risk.content_type = ContentType.objects.get_for_model(property_object)
             risk.object_id = property_object.id
-        
+
         risk.save()
 
         return Response(RiskSerializer(risk).data, status=HTTP_200_OK)
-        
+
     @action(detail=True, methods=["GET"], permission_classes=[IsAuthenticated])
     def quote(self, *args, **kwargs):
         risk: Risk = self.get_object()
         # make sure the risk's content_object is filled out
         if not risk.content_object or not risk.content_object.is_filled_out():
             raise ValidationError("Property risk is not filled out")
-        
+
         if risk.premium_amount:
             # already quoted (doesnt allow for a new price)
             return Response(self.get_serializer(risk).data, status=HTTP_200_OK)
@@ -215,5 +223,16 @@ class RiskViewSet(ModelViewSet):
         risk.save()
         return Response(self.get_serializer(risk).data, status=HTTP_200_OK)
 
+    @action(detail=True, methods=["POST"], permission_classes=[IsAuthenticated])
+    def upload_image(self, *args, **kwargs):
+        risk: Risk = self.get_object()
+        if not risk.content_object:
+            raise ValidationError("Risk doesnt have a content form")
 
-        
+        album = risk.content_object.album
+        image_serializer = ImageSerializer(data=self.request.data)
+        image_serializer.is_valid(raise_exception=True)
+        image_serializer.save(album=album)
+
+        # we want to return the whole album so the client has the most recent photo set
+        return Response(AlbumSerializer(album.images).data, status=HTTP_201_CREATED)

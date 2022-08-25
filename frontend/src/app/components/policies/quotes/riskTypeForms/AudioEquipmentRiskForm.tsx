@@ -87,7 +87,7 @@ export default function AudioEquipmentRiskForm({
                     <Select.Option value={"ok"}>Ok</Select.Option>
                 </Select>
             </Form.Item>
-            <PropertyImageForm risk={risk} />
+            <PropertyImageForm risk={risk} policy={policy} />
         </Form>
     );
 }

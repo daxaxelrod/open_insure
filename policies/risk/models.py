@@ -23,17 +23,20 @@ class ImageAlbum(models.Model):
 
     def __str__(self) -> str:
         risk_id = None
+        risk_name = None
         try:
             if self.audio_equipment:
                 risk_id = self.audio_equipment.id
+                risk_name = "Audio Equipment"
         except:
             pass
         try:
             if self.cell_phone:
                 risk_id = self.cell_phone.id
+                risk_name = "Cell phone"
         except:
             pass
-        return f"Risk photo album for risk #{risk_id}"
+        return f"Risk photo album for risk #{risk_id} {risk_name}"
 
 
 class PropertyImage(models.Model):
@@ -61,6 +64,9 @@ class GenericProperty(models.Model):
     def is_filled_out(self):
         return self.make and self.model and self.condition and self.market_value
 
+    def __str__(self) -> str:
+        return f"{self.make} {self.model} {self.condition} condition"
+
     class Meta:
         app_label = "policies"
         abstract = True
@@ -77,6 +83,9 @@ class PhoneRisk(GenericProperty):
     has_screen_protector = models.BooleanField(default=False)
     has_case = models.BooleanField(default=False)
 
+    def __str__(self) -> str:
+        return super().__str__() + " Phone Risk"
+
 
 class AudioEquipmentRisk(GenericProperty):
     album = models.OneToOneField(
@@ -86,6 +95,9 @@ class AudioEquipmentRisk(GenericProperty):
         related_name="audio_equipment",
         on_delete=models.CASCADE,
     )
+
+    def __str__(self) -> str:
+        return f"Audio Equipment Risk #{self.id}"
 
 
 def get_model_for_risk_type(risk_type):

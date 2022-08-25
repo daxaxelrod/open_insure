@@ -1,7 +1,7 @@
-from policies.risk.models import PhoneRisk, AudioEquipmentRisk
+from policies.risk.models import PhoneRisk, AudioEquipmentRisk, PropertyImage
 
 from policies.risk.serializers import PhoneRiskSerializer, AudioEquipmentRiskSerializer
-from rest_framework.serializers import RelatedField
+from rest_framework.serializers import RelatedField, ModelSerializer
 
 
 class RiskContentObjectRelatedField(RelatedField):

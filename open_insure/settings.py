@@ -45,6 +45,7 @@ TESTING = "test" in sys.argv
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "192.168.0.104"]
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://localhost:8000"]
 
+
 ADMIN_EMAIL = env("ADMIN_EMAIL")
 
 # Application definition

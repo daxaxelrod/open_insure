@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import reverse
-from django.utils.html import format_html_join, mark_safe
+from django.utils.html import format_html, mark_safe
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from policies.models import (
