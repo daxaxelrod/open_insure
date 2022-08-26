@@ -1,4 +1,4 @@
-import { Form, Input, Select } from "antd";
+import { Button, Form, Input, Row, Select, Space } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../../../redux/hooks";
@@ -19,6 +19,8 @@ export default function AudioEquipmentRiskForm({
     const [form] = Form.useForm();
 
     const risk = useAppSelector((state) => state.risk.focusedRisk);
+    const riskPending = useAppSelector((state) => state.risk.modifyRiskPending);
+
     const navigate = useNavigate();
 
     const saveForLater = () => {
@@ -88,6 +90,29 @@ export default function AudioEquipmentRiskForm({
                 </Select>
             </Form.Item>
             <PropertyImageForm risk={risk} policy={policy} />
+            <Row style={{ marginTop: 10 }}>
+                <Space size={"middle"}>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        loading={riskPending}
+                        disabled={riskPending}
+                    >
+                        Find your premium
+                    </Button>
+                    <Button
+                        type="link"
+                        // declare const ButtonTypes: ["default", "primary", "ghost", "dashed", "link", "text"];
+
+                        htmlType="button"
+                        loading={riskPending}
+                        disabled={false}
+                        onClick={saveForLater}
+                    >
+                        Save for later
+                    </Button>
+                </Space>
+            </Row>
         </Form>
     );
 }

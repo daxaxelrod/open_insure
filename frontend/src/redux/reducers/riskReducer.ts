@@ -13,6 +13,7 @@ import {
     GET_QUOTE_PENDING,
     GET_QUOTE_SUCCESS,
     GET_QUOTE_FAILURE,
+    UPDATE_RISK_ALBUM,
 } from "../actions/types";
 import { Risk } from "./commonTypes";
 
@@ -50,6 +51,26 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 modifyRiskPending: false,
                 focusedRisk: null,
+            };
+        case UPDATE_RISK_ALBUM:
+            // this isnt great
+            let focusedRisk = state.focusedRisk;
+            let contentObject = focusedRisk?.content_object;
+            if (contentObject) {
+                contentObject = {
+                    ...contentObject,
+                    album: payload,
+                };
+            }
+
+            return {
+                ...state,
+                focusedRisk: {
+                    ...focusedRisk,
+                    content_object: {
+                        ...contentObject,
+                    },
+                },
             };
 
         case PATCH_RISK_PENDING:

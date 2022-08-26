@@ -1,4 +1,5 @@
 from django.db import models
+from pods.models import User
 
 # Data representing the underlying assets that a user wants to insure.
 # there are differnt bits of information that are needed for each type of item
@@ -36,11 +37,11 @@ class ImageAlbum(models.Model):
                 risk_name = "Cell phone"
         except:
             pass
-        return f"Risk photo album for risk #{risk_id} {risk_name}"
+        return f"{self.images.count()} photos - Risk photo album for risk #{risk_id} {risk_name}"
 
 
 class PropertyImage(models.Model):
-    image = models.ImageField(upload_to="property_images")
+    image = models.ImageField(upload_to="property_images", max_length=264)
     default = models.BooleanField(default=False)
     album = models.ForeignKey(
         ImageAlbum,
@@ -48,6 +49,13 @@ class PropertyImage(models.Model):
         on_delete=models.CASCADE,
     )
 
+    owner = models.ForeignKey(
+        User,
+        related_name="risk_photos",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -78,7 +86,7 @@ class PhoneRisk(GenericProperty):
         blank=True,
         null=True,
         related_name="cell_phone",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
     )
     has_screen_protector = models.BooleanField(default=False)
     has_case = models.BooleanField(default=False)
@@ -93,7 +101,7 @@ class AudioEquipmentRisk(GenericProperty):
         blank=True,
         null=True,
         related_name="audio_equipment",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
     )
 
     def __str__(self) -> str:

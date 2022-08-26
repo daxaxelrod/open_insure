@@ -8,8 +8,12 @@ import { UploadRequestOption } from "rc-upload/lib/interface";
 import { RcFile, UploadFile } from "antd/lib/upload/interface";
 import { getBase64 } from "../../utils/photoUtils";
 import { getAssetTypeName } from "../../../../utils/riskUtils";
-import { axiosInstance } from "../../../../../networking/api";
-import { uploadRiskImage } from "../../../../../networking/risk";
+import {
+    deleteRiskPhoto,
+    uploadRiskImage,
+} from "../../../../../networking/risk";
+import { useAppDispatch } from "../../../../../redux/hooks";
+import { updatePhotoSet } from "../../../../../redux/actions/risk";
 const { Paragraph } = Typography;
 
 // auto upload image to risk, dont rely on the parent form
@@ -25,6 +29,7 @@ export default function PropertyImageForm({
     const [previewTitle, setPreviewTitle] = useState("");
     const { content_object } = risk;
     const album = content_object?.album;
+    const dispatch = useAppDispatch();
 
     console.log({ album });
 
@@ -42,21 +47,32 @@ export default function PropertyImageForm({
         );
     };
 
-    const handleChange: UploadProps["onChange"] = ({
+    const handleChange: UploadProps["onChange"] = async ({
         fileList: newFileList,
     }) => {
-        console.log("do something with the file", fileList);
+        let removedItems = newFileList.filter(
+            (file: UploadFile) => file.status === "removed"
+        );
+        let justRemovedItemIds = removedItems.map((item) => item.uid);
+        let remainingItems = album.filter(
+            (image) => justRemovedItemIds.indexOf(image.id) === -1
+        );
+        if (removedItems.length === 1) {
+            await deleteRiskPhoto(parseInt(removedItems[0].uid));
+            dispatch(updatePhotoSet(remainingItems));
+        }
     };
 
-    const fileList: UploadFile<any>[] =
-        album?.map((image: Image) => {
-            return {
-                uid: image.id,
-                name: "image.png",
-                status: "done",
-                url: image.image,
-            };
-        }) || [];
+    const fileList: UploadFile<any>[] = Array.isArray(album)
+        ? album?.map((image: Image) => {
+              return {
+                  uid: image.id,
+                  name: "image.png",
+                  status: "done",
+                  url: process.env.REACT_APP_BACKEND_URL + image.image,
+              };
+          })
+        : [] || [];
 
     const uploadButton = (
         <div>
@@ -88,20 +104,20 @@ export default function PropertyImageForm({
                 fmData,
                 config
             );
+            dispatch(updatePhotoSet(res.data));
             onSuccess("Ok");
-            console.log("server res: ", res);
         } catch (err: any) {
-            console.log("Eroor: ", err);
-            const error = new Error("Some error");
-            // onError({ err });
+            onError({
+                name: "error logging",
+                message: err,
+                status: 400,
+            });
         }
     };
 
     return (
         <>
-            <Paragraph>
-                Upload at least 1 image of your {getAssetTypeName(risk)}
-            </Paragraph>
+            <Paragraph>Photos</Paragraph>
             <Upload
                 listType="picture-card"
                 customRequest={uploadImage}

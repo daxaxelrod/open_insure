@@ -115,7 +115,7 @@ export default function PhoneRiskForm({
             </Form.Item>
             <PropertyImageForm risk={risk} policy={policy} />
 
-            <Row>
+            <Row style={{ marginTop: 10 }}>
                 <Space size={"middle"}>
                     <Button
                         type="primary"

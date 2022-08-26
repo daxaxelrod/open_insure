@@ -54,3 +54,5 @@ export const PATCH_RISK_FAILURE = "risk/PATCH_RISK_FAILURE";
 export const GET_QUOTE_PENDING = "risk/GET_QUOTE_PENDING";
 export const GET_QUOTE_SUCCESS = "risk/GET_QUOTE_SUCCESS";
 export const GET_QUOTE_FAILURE = "risk/GET_QUOTE_FAILURE";
+
+export const UPDATE_RISK_ALBUM = "risk/UPDATE_RISK_ALBUM";

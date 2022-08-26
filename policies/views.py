@@ -10,11 +10,17 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
+from rest_framework.decorators import api_view, permission_classes
 from policies.paginators import StandardResultsSetPagination
 from policies.models import Claim, ClaimApproval, Policy, Premium, Risk
-from policies.permissions import InPolicyPod, InPodAndNotClaimant, InClaimPod
+from policies.permissions import (
+    InPolicyPod,
+    InPodAndNotClaimant,
+    InClaimPod,
+    IsPhotoOwner,
+)
 from policies.premiums import schedule_premiums
-from policies.risk.models import get_model_for_risk_type
+from policies.risk.models import PropertyImage, get_model_for_risk_type
 from policies.risk.risk_scores import compute_premium_amount, compute_risk_score
 from policies.risk.serializers import (
     AlbumSerializer,
@@ -232,7 +238,14 @@ class RiskViewSet(ModelViewSet):
         album = risk.content_object.album
         image_serializer = ImageSerializer(data=self.request.data)
         image_serializer.is_valid(raise_exception=True)
-        image_serializer.save(album=album)
+        image_serializer.save(album=album, owner=self.request.user)
 
         # we want to return the whole album so the client has the most recent photo set
         return Response(AlbumSerializer(album.images).data, status=HTTP_201_CREATED)
+
+
+class RiskMediaViewSet(RetrieveUpdateDestroyAPIView):
+    queryset = PropertyImage.objects.all()
+    serializer_class = ImageSerializer
+    permission_classes = [IsAuthenticated & IsPhotoOwner]
+    lookup_url_kwarg = "photo_id"

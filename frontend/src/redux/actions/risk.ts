@@ -16,6 +16,7 @@ import {
     GET_QUOTE_PENDING,
     GET_QUOTE_SUCCESS,
     GET_QUOTE_FAILURE,
+    UPDATE_RISK_ALBUM,
 } from "./types";
 
 export const getRisksForPolicy =
@@ -72,6 +73,14 @@ export const patchRisk =
             return null;
         }
     };
+
+// updates the focused risk
+export const updatePhotoSet = (photos: any) => {
+    return {
+        type: UPDATE_RISK_ALBUM,
+        payload: photos,
+    };
+};
 
 export const getQuote =
     (

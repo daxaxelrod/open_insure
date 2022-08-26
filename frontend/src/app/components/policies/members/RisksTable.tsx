@@ -122,7 +122,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
     ];
     return (
         <>
-            <Title>Whos in it</Title>
+            <Title>Covered Items</Title>
             <Table dataSource={risks} columns={columns} />
         </>
     );

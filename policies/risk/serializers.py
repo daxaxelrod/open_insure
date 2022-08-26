@@ -25,7 +25,7 @@ class AlbumSerializer(ModelSerializer):
 
 class AlbumField(RelatedField):
     def to_representation(self, value):
-        return ImageSerializer(value.images, many=True).data
+        return ImageSerializer(value.images.all(), many=True).data
 
 
 class PhoneRiskSerializer(ModelSerializer):

@@ -11,11 +11,11 @@ import colors from "../../constants/colors";
 import PolicyEscrowBalanceChart from "../../components/policies/premiums/PolicyEscrowBalanceChart";
 import PolicyQuoteRequestForm from "../../components/policies/quotes/PolicyQuoteRequestBox";
 import InviteFriendToPolicy from "../../components/policies/social/InviteFriendToPolicy";
-import CoveredItemsTable from "../../components/dashboard/CoveredItemsTable";
 import PolicyDetailSkeleton from "../../components/dashboard/PolicyDetailSkeleton";
 import PolicyDetailMemberList from "../../components/policies/members/PolicyDetailMemberList";
 import UserPolicyPremiumBox from "../../components/policies/premiums/UserPolicyPremiumBox";
 import PolicyDescriptionRow from "../../components/policies/detail/PolicyDescriptionRow";
+import RiskTable from "../../components/policies/members/RisksTable";
 
 const { Title, Paragraph } = Typography;
 
@@ -107,7 +107,8 @@ export default function PolicyDetails() {
                 </Col>
             </Row>
             <PolicyDescriptionRow policy={policy} />
-            <CoveredItemsTable policy={policy} />
+
+            <RiskTable policy={policy} />
             <div>List of members and what they are paying</div>
 
             {/* <div>{JSON.stringify(policy)}</div> */}

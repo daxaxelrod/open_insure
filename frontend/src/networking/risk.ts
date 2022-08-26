@@ -20,7 +20,6 @@ export function getQuote(policyId: number, riskId: number) {
     );
 }
 
-// Can upload just one or multiple, api dont care
 export function uploadRiskImage(
     policyId: number,
     riskId: number,
@@ -32,4 +31,8 @@ export function uploadRiskImage(
         formData,
         config
     );
+}
+
+export function deleteRiskPhoto(photoId: number) {
+    return axiosInstance.delete(`/api/v1/media/riskPhoto/${photoId}`);
 }
