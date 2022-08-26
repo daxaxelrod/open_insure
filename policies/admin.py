@@ -21,6 +21,7 @@ from policies.risk.models import (
     PropertyImage,
 )
 
+from policies.perils.models import Peril
 
 class PropertyImageInline(admin.TabularInline):
     model = PropertyImage
@@ -71,3 +72,4 @@ admin.site.register(PhoneRisk)
 admin.site.register(AudioEquipmentRisk)
 admin.site.register(PolicyRiskSettings)
 admin.site.register(ImageAlbum, AlbumAdmin)
+admin.site.register(Peril)

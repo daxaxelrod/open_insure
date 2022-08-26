@@ -89,14 +89,18 @@ export default function RiskTable({ policy }: { policy: Policy }) {
         },
         {
             title: "Picture",
-            render: (text, record) => (
+            render: (text, record: Risk) => (
                 <>
-                    <Image
-                        onClick={() => setPhotoPreviewVisible(true)}
-                        style={{ height: 40, width: 40, borderRadius: 10 }}
-                        src={"https://picsum.photos/200/300"}
-                        alt={record.underlying_insured_type}
-                    />
+                    {record.content_object.album?.[0].image ? (
+                        <Image
+                            onClick={() => setPhotoPreviewVisible(true)}
+                            style={{ height: 40, width: 40, borderRadius: 10 }}
+                            src={record.content_object.album?.[0].image}
+                            alt={record.underlying_insured_type}
+                        />
+                    ) : (
+                        <>No Images</>
+                    )}
                     {/* <div style={{ display: "none" }}>
                         <Image.PreviewGroup
                             preview={{
@@ -122,7 +126,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
     ];
     return (
         <>
-            <Title>Covered Items</Title>
+            <Title level={4}>Covered Items</Title>
             <Table dataSource={risks} columns={columns} />
         </>
     );

@@ -16,6 +16,7 @@ from policies.model_choices import (
     UNDERLYING_INSURED_TYPE,
 )
 from policies.risk.models import *
+from policies.perils.models import *
 
 
 
@@ -69,6 +70,7 @@ class Policy(models.Model):
         default=1,
         help_text="How often premiums are due, in months. 1 means monthly, 3 means quarterly, etc.",
     )
+    
 
     # an interface to some financial provider setup with settings/config
     # actually might be better to have an injected provider, one per instance of the app
@@ -92,6 +94,9 @@ class Policy(models.Model):
     # Cons:
     #       Complicates claims process
     #       Encourages claim inflation
+
+    claim_approval_threshold_percentage = models.IntegerField(default=50, help_text="Percentage of members that must vote yes to approve a claim")
+    perils = models.ManyToManyField(Peril, blank=True, related_name="policies")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

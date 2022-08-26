@@ -90,6 +90,9 @@ class PolicyTestCase(TestCase):
         self.assertEquals(policy.pod.members.count(), 3)
         self.assertEquals(policy.premiums.count(), 36)
     
+    def test_user_gets_confirmation_email_after_joining_policy(self):
+        self.assertTrue(False)
+    
     @patch('django.utils.timezone.now')
     def test_user_can_leave_a_policy_after_it_is_activated(self, mock_timezone):
         # and the premiums that are from now until the end of the policy get deleted

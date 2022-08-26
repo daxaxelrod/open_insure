@@ -22,7 +22,10 @@ export default function PolicyAssetCoverageSelection({
     return (
         <Form {...formLayout}>
             <Form.Item label="Asset Type">
-                <Radio.Group defaultValue={types?.[0]} buttonStyle="solid">
+                <Radio.Group
+                    defaultValue={risk?.underlying_insured_type}
+                    buttonStyle="solid"
+                >
                     {types.map((type) => (
                         <Radio.Button
                             key={`coverage-type-${type}`}

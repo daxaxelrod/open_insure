@@ -8,7 +8,7 @@ import { Policy } from "../../../../redux/reducers/commonTypes";
 
 const { Title, Paragraph } = Typography;
 
-export default function UserPolicyQuote() {
+export default function UserPolicyQuotePrompt() {
     let { id } = useParams();
     const dispatch = useAppDispatch();
     let policy: Policy = useAppSelector((state) =>
@@ -40,7 +40,7 @@ export default function UserPolicyQuote() {
 
     return (
         <div>
-            <Row>
+            <Row align="middle">
                 <Col span={12}>
                     <span>starting at</span>
                     <Title style={{ marginTop: 0 }}>
@@ -49,7 +49,11 @@ export default function UserPolicyQuote() {
                     <Paragraph style={{ color: "gray" }}>Your quote</Paragraph>
                 </Col>
                 <Col>
-                    <Button onClick={joinPolicy} type={"primary"}>
+                    <Button
+                        onClick={joinPolicy}
+                        type={"primary"}
+                        size={"large"}
+                    >
                         <Paragraph style={{ color: "white" }}>
                             Join Policy
                         </Paragraph>

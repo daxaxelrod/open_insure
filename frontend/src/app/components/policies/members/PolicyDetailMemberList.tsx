@@ -2,25 +2,13 @@ import React from "react";
 import { Avatar, Button, Card, Col, Row, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { UserOutlined, InsuranceOutlined } from "@ant-design/icons";
-import { Policy, Premium, User } from "../../../../redux/reducers/commonTypes";
-import { useAppSelector } from "../../../../redux/hooks";
+import { Policy, User } from "../../../../redux/reducers/commonTypes";
+import { getPremiumsPerMonth } from "../../../utils/policyUtils";
 
 const { Title, Paragraph } = Typography;
 
 export default function PolicyDetailMemberList({ policy }: { policy: Policy }) {
-    let totalPremiumsPerMonth =
-        policy?.premiums.reduce(
-            (acc: number, premium: Premium) => acc + premium.amount,
-            0
-        ) /
-        policy?.coverage_duration /
-        100;
-    let policyRisks = useAppSelector(
-        (state) => state.risk.policyRisks?.[policy?.id]
-    );
-
-    console.log({ policyRisks });
-
+    const totalPremiumsPerMonth = getPremiumsPerMonth(policy);
     return (
         <Card
             title={
@@ -29,7 +17,8 @@ export default function PolicyDetailMemberList({ policy }: { policy: Policy }) {
                     <Link to={`/policy/${policy.id}/members`}>
                         <Button type="dashed">
                             <Paragraph>
-                                ${totalPremiumsPerMonth} total/month
+                                ${totalPremiumsPerMonth} total/
+                                {policy.premium_payment_frequency} months
                             </Paragraph>
                         </Button>
                     </Link>

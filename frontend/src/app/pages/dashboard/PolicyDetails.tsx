@@ -15,7 +15,10 @@ import PolicyDetailSkeleton from "../../components/dashboard/PolicyDetailSkeleto
 import PolicyDetailMemberList from "../../components/policies/members/PolicyDetailMemberList";
 import UserPolicyPremiumBox from "../../components/policies/premiums/UserPolicyPremiumBox";
 import PolicyDescriptionRow from "../../components/policies/detail/PolicyDescriptionRow";
-import RiskTable from "../../components/policies/members/RisksTable";
+import RiskTable from "../../components/policies/quotes/RisksTable";
+import PolicyPoolStats from "../../components/policies/premiums/PolicyPoolStats";
+import MembersTable from "../../components/policies/members/MembersTable";
+import PolicyClaimsBriefCard from "../../components/policies/claims/PolicyClaimsBriefCard";
 
 const { Title, Paragraph } = Typography;
 
@@ -74,44 +77,62 @@ export default function PolicyDetails() {
                     </Col>
                 </Row>
             </div>
-            <Row>
-                <Col span={8} style={{ padding: 10 }}>
+            <Row align="stretch">
+                <Col
+                    span={8}
+                    style={{
+                        padding: 10,
+                        background: "red",
+                        display: "flex",
+                        alignItems: "stretch",
+                        flexDirection: "column",
+                    }}
+                >
                     <UserPolicyPremiumBox
+                        policy={policy}
                         isMember={isMember}
                         memberHasFilledOutRisk={memberHasFilledOutRisk}
                     />
                 </Col>
-                <Col span={8} style={{ padding: 10 }}>
-                    <PolicyDetailMemberList policy={policy} />
+                <Col
+                    span={8}
+                    style={{
+                        padding: 10,
+                        background: "red",
+                        display: "flex",
+                        alignItems: "stretch",
+                        flexDirection: "column",
+                    }}
+                >
+                    <PolicyClaimsBriefCard policy={policy} />
                 </Col>
 
-                <Col span={8} style={{ padding: 10 }}>
+                <Col
+                    span={8}
+                    style={{
+                        padding: 10,
+                        background: "red",
+                        display: "flex",
+                        alignItems: "stretch",
+                        flexDirection: "column",
+                    }}
+                >
                     <Card
                         title={
                             <Row justify="space-between">
-                                <Title level={3}>Pool Balance</Title>
+                                <Title level={3}>Pool Info</Title>
                                 <Button onClick={goToEscrowDetail}>More</Button>
                             </Row>
                         }
-                        bodyStyle={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
                     >
-                        <PolicyEscrowBalanceChart
-                            policy={policy}
-                            isMember={isMember}
-                        />
+                        <PolicyPoolStats policy={policy} />
                     </Card>
                 </Col>
             </Row>
             <PolicyDescriptionRow policy={policy} />
 
             <RiskTable policy={policy} />
-            <div>List of members and what they are paying</div>
-
-            {/* <div>{JSON.stringify(policy)}</div> */}
+            <MembersTable policy={policy} />
         </div>
     );
 }
