@@ -1,7 +1,10 @@
 import React from "react";
 import { Col, Row, Statistic } from "antd";
 import { Policy } from "../../../../redux/reducers/commonTypes";
-import { getGovernanceTypeHumanReadable } from "../../../utils/policyUtils";
+import {
+    getGovernanceTypeHumanReadable,
+    getPremiumsPerMonth,
+} from "../../../utils/policyUtils";
 
 export default function PolicyPoolStats({ policy }: { policy: Policy }) {
     const premiumsPerMonth = getPremiumsPerMonth(policy);

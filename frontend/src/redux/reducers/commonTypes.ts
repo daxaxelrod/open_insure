@@ -76,6 +76,7 @@ export interface Policy {
     pool_balance: number;
     premium_amount: number;
     premium_payment_frequency: number; // in # of months
+    claim_approval_threshold_percentage: number;
     claim_payout_limit: number;
     lifetime_payout_limit: number;
     estimated_risk: number;

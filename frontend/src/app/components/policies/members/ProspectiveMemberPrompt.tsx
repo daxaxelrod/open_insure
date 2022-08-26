@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Row, Statistic, Typography } from "antd";
+import { Button, Col, Row, Space, Statistic, Typography } from "antd";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
 import { getHumanReadablePaymentFrequencyForPolicy } from "../utils/riskUtils";
@@ -7,14 +7,20 @@ const { Title, Paragraph } = Typography;
 
 export default function ProspectiveMemberPrompt({
     policy,
+    openRiskDrawer,
 }: {
     policy: Policy;
+    openRiskDrawer: () => void;
 }) {
     const focusedRisk: Risk = useAppSelector((state) => state.risk.focusedRisk);
 
+    const joinPolicy = () => {
+        console.log("join policy", policy.id);
+    };
+
     return (
         <div>
-            <Row>
+            <Row justify="space-between" align="middle">
                 <Col>
                     <Statistic
                         title="Your payment would be"
@@ -22,7 +28,6 @@ export default function ProspectiveMemberPrompt({
                         formatter={(val) => `$${val}`}
                     />
                 </Col>
-                <Button onClick={joinPolicy}>Join Policy</Button>
             </Row>
             <Paragraph>
                 Due {getHumanReadablePaymentFrequencyForPolicy(policy)}
@@ -31,6 +36,26 @@ export default function ProspectiveMemberPrompt({
                 You've done the hard part of getting a quote. You can now decide
                 if you'd like to join or not.
             </Paragraph>
+            <Row justify="end" align="middle">
+                <Col>
+                    <Space size={16}>
+                        <Button
+                            onClick={openRiskDrawer}
+                            type={"dashed"}
+                            size={"large"}
+                        >
+                            <Paragraph>Modify Covered asset</Paragraph>
+                        </Button>
+                        <Button
+                            onClick={joinPolicy}
+                            type="primary"
+                            size={"large"}
+                        >
+                            Join Policy
+                        </Button>
+                    </Space>
+                </Col>
+            </Row>
         </div>
     );
 }

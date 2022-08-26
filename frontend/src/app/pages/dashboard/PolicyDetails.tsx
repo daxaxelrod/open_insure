@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { Card, Col, Row, Avatar, Typography, Button } from "antd";
 import { Policy, Premium, User } from "../../../redux/reducers/commonTypes";
 import { UserOutlined } from "@ant-design/icons";
@@ -9,7 +9,9 @@ import moment from "moment-timezone";
 
 import colors from "../../constants/colors";
 import PolicyEscrowBalanceChart from "../../components/policies/premiums/PolicyEscrowBalanceChart";
-import PolicyQuoteRequestForm from "../../components/policies/quotes/PolicyQuoteRequestBox";
+import PolicyQuoteRequestForm, {
+    PolicyQuoteRequestBoxRefType,
+} from "../../components/policies/quotes/PolicyQuoteRequestBox";
 import InviteFriendToPolicy from "../../components/policies/social/InviteFriendToPolicy";
 import PolicyDetailSkeleton from "../../components/dashboard/PolicyDetailSkeleton";
 import PolicyDetailMemberList from "../../components/policies/members/PolicyDetailMemberList";
@@ -19,19 +21,28 @@ import RiskTable from "../../components/policies/quotes/RisksTable";
 import PolicyPoolStats from "../../components/policies/premiums/PolicyPoolStats";
 import MembersTable from "../../components/policies/members/MembersTable";
 import PolicyClaimsBriefCard from "../../components/policies/claims/PolicyClaimsBriefCard";
+import { getOrCreateRisk } from "../../../redux/actions/risk";
 
 const { Title, Paragraph } = Typography;
 
 export default function PolicyDetails() {
     let { id } = useParams();
     let navigation = useNavigate();
+    let dispatch = useAppDispatch();
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
             (p: Policy) => p.id === parseInt(id || "")
         )
     );
+    let policyQuoteDrawerFormRef = useRef<PolicyQuoteRequestBoxRefType>(null);
     let currentUser = useAppSelector((state) => state.auth.currentUser);
     let focusedRisk = useAppSelector((state) => state.risk.focusedRisk);
+
+    useEffect(() => {
+        if (policy && policy?.id) {
+            dispatch(getOrCreateRisk(policy?.id, {}));
+        }
+    }, [policy]);
 
     let doesPolicyHaveStartDate = policy?.coverage_start_date;
     let hasPolicyStarted = false;
@@ -59,7 +70,7 @@ export default function PolicyDetails() {
         <div>
             <div>
                 <Row align="middle">
-                    <Col span={21}>
+                    <Col span={22}>
                         <Title style={{ marginBottom: 0 }} level={2}>
                             {policy?.name}
                         </Title>
@@ -69,9 +80,12 @@ export default function PolicyDetails() {
                             {hasPolicyStarted ? "Active Policy" : "In setup"}
                         </Paragraph>
                     </Col>
-                    <Col span={2} style={{ marginRight: 30 }}>
+                    <Col span={2} style={{ marginRight: 0 }}>
                         {!isMember && (
-                            <PolicyQuoteRequestForm policy={policy} />
+                            <PolicyQuoteRequestForm
+                                policy={policy}
+                                ref={policyQuoteDrawerFormRef}
+                            />
                         )}
                         {isMember && <InviteFriendToPolicy policy={policy} />}
                     </Col>
@@ -82,26 +96,21 @@ export default function PolicyDetails() {
                     span={8}
                     style={{
                         padding: 10,
-                        background: "red",
-                        display: "flex",
-                        alignItems: "stretch",
-                        flexDirection: "column",
                     }}
                 >
                     <UserPolicyPremiumBox
                         policy={policy}
                         isMember={isMember}
                         memberHasFilledOutRisk={memberHasFilledOutRisk}
+                        openRiskDrawer={() =>
+                            policyQuoteDrawerFormRef?.current?.open()
+                        }
                     />
                 </Col>
                 <Col
                     span={8}
                     style={{
                         padding: 10,
-                        background: "red",
-                        display: "flex",
-                        alignItems: "stretch",
-                        flexDirection: "column",
                     }}
                 >
                     <PolicyClaimsBriefCard policy={policy} />
@@ -111,12 +120,9 @@ export default function PolicyDetails() {
                     span={8}
                     style={{
                         padding: 10,
-                        background: "red",
-                        display: "flex",
-                        alignItems: "stretch",
-                        flexDirection: "column",
                     }}
                 >
+                    {/* <EscrowBalanceCard policy={policy}/> */}
                     <Card
                         title={
                             <Row justify="space-between">
