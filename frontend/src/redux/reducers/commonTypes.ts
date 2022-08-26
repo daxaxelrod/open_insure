@@ -58,6 +58,13 @@ export interface Pod {
     allow_joiners_after_policy_start: boolean;
 }
 
+export interface Peril {
+    id: number;
+    name: string;
+    description: string;
+    icon_name: string;
+}
+
 export type CoverageTypes = "m_property" | "renters" | "travel" | "pet_care";
 export type UnderlyingInsuredType = "cell_phone" | "audio_equipment"; // | "apartment" | "house" | "life" | "pet";
 export type UnderlyingInsuredTypes = UnderlyingInsuredType[];
@@ -84,6 +91,7 @@ export interface Policy {
     updated_at: string;
     premiums: Premium[];
     claims: Claim[];
+    perils: Peril[];
     pod: Pod; // always look up the pod in the pod reducer
     available_underlying_insured_types: UnderlyingInsuredTypes;
 }

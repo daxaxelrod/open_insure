@@ -22,12 +22,12 @@ import PolicyPoolStats from "../../components/policies/premiums/PolicyPoolStats"
 import MembersTable from "../../components/policies/members/MembersTable";
 import PolicyClaimsBriefCard from "../../components/policies/claims/PolicyClaimsBriefCard";
 import { getOrCreateRisk } from "../../../redux/actions/risk";
+import EscrowBalanceCard from "../../components/policies/premiums/EscrowBalanceCard";
 
 const { Title, Paragraph } = Typography;
 
 export default function PolicyDetails() {
     let { id } = useParams();
-    let navigation = useNavigate();
     let dispatch = useAppDispatch();
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
@@ -61,10 +61,6 @@ export default function PolicyDetails() {
 
     let memberHasFilledOutRisk =
         currentUser?.id !== undefined && focusedRisk?.premium_amount;
-
-    const goToEscrowDetail = () => {
-        navigation("pool");
-    };
 
     return (
         <div>
@@ -122,17 +118,7 @@ export default function PolicyDetails() {
                         padding: 10,
                     }}
                 >
-                    {/* <EscrowBalanceCard policy={policy}/> */}
-                    <Card
-                        title={
-                            <Row justify="space-between">
-                                <Title level={3}>Pool Info</Title>
-                                <Button onClick={goToEscrowDetail}>More</Button>
-                            </Row>
-                        }
-                    >
-                        <PolicyPoolStats policy={policy} />
-                    </Card>
+                    <EscrowBalanceCard policy={policy} />
                 </Col>
             </Row>
             <PolicyDescriptionRow policy={policy} />
