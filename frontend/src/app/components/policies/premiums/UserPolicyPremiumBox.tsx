@@ -17,7 +17,12 @@ export default function UserPolicyPremiumBox({
     openRiskDrawer: () => void;
 }) {
     return (
-        <Card>
+        <Card
+            style={{
+                display: "flex",
+                flex: 1,
+            }}
+        >
             {isMember ? (
                 <UserMainPremiumObligation />
             ) : memberHasFilledOutRisk ? (

@@ -6,7 +6,6 @@ import { Policy, Premium, User } from "../../../redux/reducers/commonTypes";
 import { UserOutlined } from "@ant-design/icons";
 
 import moment from "moment-timezone";
-
 import colors from "../../constants/colors";
 import PolicyEscrowBalanceChart from "../../components/policies/premiums/PolicyEscrowBalanceChart";
 import PolicyQuoteRequestForm, {
@@ -62,6 +61,7 @@ export default function PolicyDetails() {
     let memberHasFilledOutRisk =
         currentUser?.id !== undefined && focusedRisk?.premium_amount;
 
+    const PolicyDetailCol = Col;
     return (
         <div>
             <div>
@@ -88,10 +88,13 @@ export default function PolicyDetails() {
                 </Row>
             </div>
             <Row align="stretch">
-                <Col
+                <PolicyDetailCol
                     span={8}
                     style={{
                         padding: 10,
+                        display: "flex",
+                        alignItems: "stretch",
+                        width: "100%",
                     }}
                 >
                     <UserPolicyPremiumBox
@@ -102,24 +105,30 @@ export default function PolicyDetails() {
                             policyQuoteDrawerFormRef?.current?.open()
                         }
                     />
-                </Col>
-                <Col
+                </PolicyDetailCol>
+                <PolicyDetailCol
                     span={8}
                     style={{
                         padding: 10,
+                        display: "flex",
+                        alignItems: "stretch",
+                        width: "100%",
                     }}
                 >
                     <PolicyClaimsBriefCard policy={policy} />
-                </Col>
+                </PolicyDetailCol>
 
-                <Col
+                <PolicyDetailCol
                     span={8}
                     style={{
                         padding: 10,
+                        display: "flex",
+                        alignItems: "stretch",
+                        width: "100%",
                     }}
                 >
                     <EscrowBalanceCard policy={policy} />
-                </Col>
+                </PolicyDetailCol>
             </Row>
             <PolicyDescriptionRow policy={policy} />
 
@@ -128,3 +137,10 @@ export default function PolicyDetails() {
         </div>
     );
 }
+
+// const PolicyDetailCol = styled(Col)({
+//     padding: 10,
+//     display: "flex",
+//     alignItems: "stretch",
+//     width: "100%",
+// });

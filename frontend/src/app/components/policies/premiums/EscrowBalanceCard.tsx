@@ -13,14 +13,12 @@ export default function EscrowBalanceCard({ policy }: { policy: Policy }) {
     };
 
     return (
-        <Card
-            title={
-                <Row justify="space-between">
-                    <Title level={3}>Pool Info</Title>
-                    <Button onClick={goToEscrowDetail}>More</Button>
-                </Row>
-            }
-        >
+        <Card style={{ display: "flex", flex: 1, flexDirection: "column" }}>
+            <Row justify="space-between">
+                <Title level={4}>Pool Info</Title>
+                <Button onClick={goToEscrowDetail}>More</Button>
+            </Row>
+
             <PolicyPoolStats policy={policy} />
         </Card>
     );

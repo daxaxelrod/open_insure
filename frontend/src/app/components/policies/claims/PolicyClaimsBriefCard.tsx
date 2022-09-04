@@ -10,7 +10,17 @@ export default function PolicyClaimsBriefCard({ policy }: { policy: Policy }) {
             claim.approvals.length < policy.claim_approval_threshold_percentage
     ).length;
     return (
-        <Card>
+        <Card
+            style={{
+                display: "flex",
+                flex: 1,
+            }}
+            bodyStyle={{
+                display: "flex",
+                flexDirection: "column",
+                flex: 1,
+            }}
+        >
             <Title level={4}>Claims</Title>
             <Row>
                 <Col span={12}>

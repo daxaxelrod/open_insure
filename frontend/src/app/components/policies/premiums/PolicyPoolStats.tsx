@@ -23,6 +23,7 @@ export default function PolicyPoolStats({ policy }: { policy: Policy }) {
                     value={getGovernanceTypeHumanReadable(
                         policy.governance_type
                     )}
+                    valueStyle={{ fontSize: "1.2rem" }}
                 />
             </Col>
             <Col span={12}>
