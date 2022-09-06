@@ -24,6 +24,9 @@
     background-color: #fff;
   }
 
+  .ant-layout-header {
+    padding: 0 20px;
+  }
   .ant-layout-header .trigger {
     padding: 20px;
   }

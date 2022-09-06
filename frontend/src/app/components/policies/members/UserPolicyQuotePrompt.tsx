@@ -8,7 +8,11 @@ import { Policy } from "../../../../redux/reducers/commonTypes";
 
 const { Title, Paragraph } = Typography;
 
-export default function UserPolicyQuotePrompt() {
+export default function UserPolicyQuotePrompt({
+    openRiskDrawer,
+}: {
+    openRiskDrawer: () => void;
+}) {
     let { id } = useParams();
     const dispatch = useAppDispatch();
     let policy: Policy = useAppSelector((state) =>
@@ -32,30 +36,33 @@ export default function UserPolicyQuotePrompt() {
         }
     }, [riskPending, risk, policy, retrievedQuote]);
 
-    const joinPolicy = () => {};
-
     if (getQuotePending) {
         return <Skeleton />;
     }
 
+    // prompt to fill out their information and get a quote
+    // needs more love
+
     return (
-        <div>
-            <Row align="middle">
+        <div style={{ flex: 1 }}>
+            <Title level={4}>Get a quote</Title>
+            <Row align="middle" justify="space-between">
                 <Col span={12}>
                     <span>starting at</span>
-                    <Title style={{ marginTop: 0 }}>
-                        ${risk?.premium_amount / 100} / month
+                    <Title style={{ marginTop: 0 }} level={5}>
+                        {risk?.premium_amount
+                            ? `${risk?.premium_amount / 100} / month`
+                            : "- / month"}
                     </Title>
-                    <Paragraph style={{ color: "gray" }}>Your quote</Paragraph>
                 </Col>
-                <Col>
+                <Col span={12}>
                     <Button
-                        onClick={joinPolicy}
+                        onClick={openRiskDrawer}
                         type={"primary"}
                         size={"large"}
                     >
                         <Paragraph style={{ color: "white" }}>
-                            Join Policy
+                            Get a quote
                         </Paragraph>
                     </Button>
                 </Col>

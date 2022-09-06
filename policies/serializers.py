@@ -15,6 +15,8 @@ from policies.models import (
     ClaimApproval,
     Risk,
 )
+from policies.perils.models import Peril
+
 from policies.risk.serializer_fields import RiskContentObjectRelatedField
 
 policy_fields = [
@@ -168,6 +170,12 @@ class PolicyCloseoutSerializer(serializers.ModelSerializer):
         fields = ["id", "reason", "premiums_returned_amount"]
 
 
+class PerilSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Peril
+        fields = "__all__"
+
+
 class PolicySerializer(serializers.ModelSerializer):
     # Meant to be used for posting/patching
     pod = serializers.PrimaryKeyRelatedField(queryset=Pod.objects.all(), required=False)
@@ -201,6 +209,7 @@ class FullPolicySerializer(serializers.ModelSerializer):
     available_underlying_insured_types = MultipleChoiceField(
         choices=UNDERLYING_INSURED_TYPE
     )
+    perils = PerilSerializer(many=True, read_only=True)
 
     class Meta:
         model = Policy

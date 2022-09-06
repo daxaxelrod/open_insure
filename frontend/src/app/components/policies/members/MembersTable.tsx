@@ -4,6 +4,7 @@ import { Avatar, Table, Typography } from "antd";
 import { Policy, Risk, User } from "../../../../redux/reducers/commonTypes";
 import { ColumnsType } from "antd/lib/table";
 import { useAppSelector } from "../../../../redux/hooks";
+import { Link } from "react-router-dom";
 const { Title } = Typography;
 
 interface MemberRowType extends User {
@@ -25,7 +26,7 @@ export default function MembersTable({ policy }: { policy: Policy }) {
             title: "Name",
             width: "15rem",
             render: (text, record: MemberRowType) => (
-                <div>
+                <Link to={`/members/${record.id}`}>
                     {record.picture && (
                         <Avatar
                             src={record.picture}
@@ -36,7 +37,7 @@ export default function MembersTable({ policy }: { policy: Policy }) {
                     <span>
                         {record.first_name} {record.last_name}
                     </span>
-                </div>
+                </Link>
             ),
         },
         {

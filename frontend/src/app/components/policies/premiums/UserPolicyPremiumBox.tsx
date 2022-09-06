@@ -40,7 +40,7 @@ export default function UserPolicyPremiumBox({
                     openRiskDrawer={openRiskDrawer}
                 />
             ) : (
-                <UserPolicyQuotePrompt />
+                <UserPolicyQuotePrompt openRiskDrawer={openRiskDrawer} />
             )}
         </Card>
     );

@@ -1,6 +1,11 @@
 import React from "react";
 import { Peril } from "../../../../redux/reducers/commonTypes";
-import { MehOutlined, AlertOutlined, CrownOutlined } from "@ant-design/icons";
+import {
+    MehOutlined,
+    AlertOutlined,
+    CrownOutlined,
+    ThunderboltOutlined,
+} from "@ant-design/icons";
 import { Col, Row, Tooltip, Typography } from "antd";
 
 const { Title } = Typography;
@@ -13,6 +18,8 @@ const getIconForPeril = (peril: Peril) => {
             return <MehOutlined style={{ fontSize: "2rem" }} />;
         case "crown":
             return <CrownOutlined style={{ fontSize: "2rem" }} />;
+        case "ThunderboltOutlined":
+            return <ThunderboltOutlined style={{ fontSize: "2rem" }} />;
         default:
             return null;
     }

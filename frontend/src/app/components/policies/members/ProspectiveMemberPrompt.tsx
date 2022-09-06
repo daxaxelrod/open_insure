@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Row, Space, Statistic, Typography } from "antd";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
 import { getHumanReadablePaymentFrequencyForPolicy } from "../utils/riskUtils";
+import Confetti, { ConfettiConfig } from "react-dom-confetti";
 const { Title, Paragraph } = Typography;
 
 export default function ProspectiveMemberPrompt({
@@ -13,9 +14,27 @@ export default function ProspectiveMemberPrompt({
     openRiskDrawer: () => void;
 }) {
     const focusedRisk: Risk = useAppSelector((state) => state.risk.focusedRisk);
+    const [isConfettiActive, setIsConfettiActive] = useState(false);
 
     const joinPolicy = () => {
         console.log("join policy", policy.id);
+        setIsConfettiActive(true);
+        setTimeout(() => {
+            setIsConfettiActive(false);
+        }, 500);
+    };
+
+    const confettiConfig: ConfettiConfig = {
+        angle: 126,
+        spread: 160,
+        startVelocity: 40,
+        elementCount: 62,
+        dragFriction: 0.12,
+        duration: 3000,
+        stagger: 3,
+        width: "10px",
+        height: "10px",
+        colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
     };
 
     return (
@@ -53,6 +72,10 @@ export default function ProspectiveMemberPrompt({
                         >
                             Join Policy
                         </Button>
+                        <Confetti
+                            active={isConfettiActive}
+                            config={confettiConfig}
+                        />
                     </Space>
                 </Col>
             </Row>
