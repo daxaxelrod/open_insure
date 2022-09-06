@@ -25,3 +25,20 @@ export function getHumanReadablePaymentFrequencyForPolicy(policy: Policy) {
     }
     return "every " + policy.premium_payment_frequency + " months";
 }
+
+export function getHumanReadableCondition(name: string) {
+    switch (name) {
+        case "new":
+            return "Brand New";
+        case "near_perfect":
+            return "Near Perfect";
+        case "great":
+            return "Great";
+        case "good":
+            return "Good";
+        case "ok":
+            return "Ok";
+        default:
+            break;
+    }
+}

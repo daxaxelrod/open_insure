@@ -1,6 +1,6 @@
 import React, { KeyboardEvent, useState } from "react";
 import { Policy } from "../../../../redux/reducers/commonTypes";
-import { Button, Input, Modal, notification, Typography } from "antd";
+import { Button, Input, Modal, notification, Row, Typography } from "antd";
 import { inviteUserToPod } from "../../../../networking/pods";
 const { Paragraph } = Typography;
 
@@ -50,7 +50,7 @@ export default function InviteFriendToPolicy({ policy }: { policy: Policy }) {
     };
 
     return (
-        <div>
+        <Row justify="end" align="middle">
             <Modal
                 title="Invite a friend to join this policy"
                 okText="Send"
@@ -74,6 +74,6 @@ export default function InviteFriendToPolicy({ policy }: { policy: Policy }) {
                     Invite a friend
                 </Paragraph>
             </Button>
-        </div>
+        </Row>
     );
 }

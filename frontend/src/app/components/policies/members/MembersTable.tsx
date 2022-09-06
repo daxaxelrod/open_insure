@@ -1,8 +1,9 @@
 import React from "react";
-import { Table, Typography } from "antd";
+import { Avatar, Table, Typography } from "antd";
 
-import { Policy, User } from "../../../../redux/reducers/commonTypes";
+import { Policy, Risk, User } from "../../../../redux/reducers/commonTypes";
 import { ColumnsType } from "antd/lib/table";
+import { useAppSelector } from "../../../../redux/hooks";
 const { Title } = Typography;
 
 interface MemberRowType extends User {
@@ -10,8 +11,40 @@ interface MemberRowType extends User {
 }
 
 export default function MembersTable({ policy }: { policy: Policy }) {
-    const memebers: MemberRowType[] = [];
-    const columns: ColumnsType<MemberRowType> = [];
+    const policyRisks = useAppSelector(
+        (state) => state.risk.policyRisks?.[policy.id]
+    );
+
+    const memebers: MemberRowType[] = policy.pod.members.map((m) => ({
+        ...m,
+        key: m.id,
+    }));
+
+    const columns: ColumnsType<MemberRowType> = [
+        {
+            title: "Name",
+            width: "15rem",
+            render: (text, record: MemberRowType) => (
+                <div>
+                    {record.picture && (
+                        <Avatar
+                            src={record.picture}
+                            size={"default"}
+                            style={{ marginRight: 6 }}
+                        />
+                    )}
+                    <span>
+                        {record.first_name} {record.last_name}
+                    </span>
+                </div>
+            ),
+        },
+        {
+            title: "Email",
+
+            render: (text, record) => record.email,
+        },
+    ];
     return (
         <>
             <Title level={4}>Policy Members</Title>

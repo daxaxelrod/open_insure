@@ -6,9 +6,16 @@ import {
     UnderlyingInsuredType,
     Risk,
 } from "../../../../redux/reducers/commonTypes";
-import { MobileOutlined, CustomerServiceOutlined } from "@ant-design/icons";
+import {
+    MobileOutlined,
+    CustomerServiceOutlined,
+    WarningOutlined,
+} from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { Image, Table, Tooltip, Typography } from "antd";
+import { getHumanReadableCondition } from "../utils/riskUtils";
+import { Link } from "react-router-dom";
+import colors from "../../../constants/colors";
 
 interface RiskRowType extends Risk {
     key: React.Key;
@@ -52,13 +59,31 @@ export default function RiskTable({ policy }: { policy: Policy }) {
     const columns: ColumnsType<RiskRowType> = [
         {
             title: "Item",
-            render: (text, record: RiskRowType) => record.content_object.model,
+            render: (text, record: RiskRowType) => {
+                return (
+                    <div>
+                        {record.content_object.model}
+                        {record.content_object.album?.[0].image ? (
+                            <Image
+                                onClick={() => setPhotoPreviewVisible(true)}
+                                style={{
+                                    height: 40,
+                                    width: 40,
+                                    borderRadius: 10,
+                                }}
+                                src={record.content_object.album?.[0].image}
+                                alt={record.underlying_insured_type}
+                            />
+                        ) : null}
+                    </div>
+                );
+            },
             dataIndex: "model",
             key: "model",
         },
         {
             title: "Premium",
-            render: (text) => <Title level={3}>${text / 100}</Title>,
+            render: (text) => <Title level={5}>${text / 100}</Title>,
             dataIndex: "premium_amount",
             key: "premium_amount",
         },
@@ -70,7 +95,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
         {
             title: "Market Value",
             render: (text, record: RiskRowType) =>
-                record.content_object.market_value,
+                `$${record.content_object.market_value}`,
             key: "market_value",
         },
 
@@ -83,43 +108,36 @@ export default function RiskTable({ policy }: { policy: Policy }) {
         },
         {
             title: "Condition",
-            render: (text) => text,
-            dataIndex: "name",
-            key: "name",
+            render: (text, record: RiskRowType) =>
+                getHumanReadableCondition(record.content_object.condition),
+            dataIndex: "condition",
+            key: "condition",
         },
         {
-            title: "Picture",
-            render: (text, record: Risk) => (
-                <>
-                    {record.content_object.album?.[0].image ? (
-                        <Image
-                            onClick={() => setPhotoPreviewVisible(true)}
-                            style={{ height: 40, width: 40, borderRadius: 10 }}
-                            src={record.content_object.album?.[0].image}
-                            alt={record.underlying_insured_type}
-                        />
-                    ) : (
-                        <>No Images</>
-                    )}
-                    {/* <div style={{ display: "none" }}>
-                        <Image.PreviewGroup
-                            preview={{
-                                visible: photoPreviewVisible,
-                                onVisibleChange: (vis) => {
-                                    console.log(vis);
-                                    setPhotoPreviewVisible(vis);
-                                },
-                                closeIcon: <div>Close</div>,
-                            }}
-                        >
-                            <Image src="https://picsum.photos/200/300" />
-                            <Image src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp" />
-                            <Image src="https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp" />
-                            <Image src="https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp" />
-                        </Image.PreviewGroup>
-                    </div> */}
-                </>
-            ),
+            title: "Member",
+            render: (text, record: Risk) => {
+                const user = policy.pod.members.find(
+                    (member) => member.id === record.user
+                );
+                if (user) {
+                    const userName = user?.first_name + " " + user?.last_name;
+                    return (
+                        <Link to={`/members/${record.user}`}>{userName}</Link>
+                    );
+                } else {
+                    return (
+                        <div>
+                            <WarningOutlined
+                                style={{
+                                    marginRight: 4,
+                                    color: colors.warning1,
+                                }}
+                            />
+                            <i>Not found</i>
+                        </div>
+                    );
+                }
+            },
             dataIndex: "name",
             key: "name",
         },

@@ -13,7 +13,7 @@ export default function PolicyPoolStats({ policy }: { policy: Policy }) {
             <Col span={12}>
                 <Statistic
                     title="Escrow Balance"
-                    value={policy.pool_balance}
+                    value={policy.pool_balance / 100}
                     formatter={(val) => `$${val}`}
                 />
             </Col>
@@ -30,6 +30,7 @@ export default function PolicyPoolStats({ policy }: { policy: Policy }) {
                 <Statistic
                     title="Premiums per month"
                     value={premiumsPerMonth}
+                    formatter={(val) => `$${val}`}
                 />
             </Col>
         </Row>

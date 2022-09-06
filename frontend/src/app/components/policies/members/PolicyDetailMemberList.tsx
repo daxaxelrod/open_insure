@@ -7,13 +7,14 @@ import { getPremiumsPerMonth } from "../../../utils/policyUtils";
 
 const { Title, Paragraph } = Typography;
 
+// not used at the moment
 export default function PolicyDetailMemberList({ policy }: { policy: Policy }) {
     const totalPremiumsPerMonth = getPremiumsPerMonth(policy);
     return (
         <Card
             title={
                 <Row justify="space-between">
-                    <Title level={3}>Policy Members</Title>
+                    <Title level={5}>Policy Members</Title>
                     <Link to={`/policy/${policy.id}/members`}>
                         <Button type="dashed">
                             <Paragraph>

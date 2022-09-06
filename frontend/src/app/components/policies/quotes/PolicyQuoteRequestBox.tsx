@@ -32,7 +32,7 @@ const PolicyQuoteRequestBox = forwardRef(({ policy }: props, ref) => {
     }));
 
     return (
-        <div>
+        <Row justify="end" align="middle">
             <Drawer
                 title={title}
                 placement="right"
@@ -59,7 +59,7 @@ const PolicyQuoteRequestBox = forwardRef(({ policy }: props, ref) => {
                     {title}
                 </Paragraph>
             </Button>
-        </div>
+        </Row>
     );
 });
 

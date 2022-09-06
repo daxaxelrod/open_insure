@@ -29,7 +29,14 @@ export default function Title({ policy }: { policy: Policy }) {
                             icon={<UserOutlined />}
                         />
                     ))}
-                    <div>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: 12,
+                        }}
+                    >
+                        &nbsp;
                         {policy?.pod?.members?.length}{" "}
                         {maybePluralize(policy?.pod?.members?.length, "member")}
                         &nbsp;

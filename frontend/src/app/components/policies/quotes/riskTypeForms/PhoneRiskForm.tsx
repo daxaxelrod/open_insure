@@ -38,7 +38,7 @@ export default function PhoneRiskForm({
         form.validateFields()
             .then((values) => {
                 updateRisk(values);
-                navigate(`/policy/${risk.policy}/members`);
+                navigate(`/policy/${risk.policy}`);
                 closeDrawer();
             })
             .catch((info) => {

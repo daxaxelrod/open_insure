@@ -1,7 +1,7 @@
 import React from "react";
 import { Peril } from "../../../../redux/reducers/commonTypes";
 import { MehOutlined, AlertOutlined, CrownOutlined } from "@ant-design/icons";
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Tooltip, Typography } from "antd";
 
 const { Title } = Typography;
 
@@ -21,11 +21,15 @@ const getIconForPeril = (peril: Peril) => {
 export default function PerilGridDisplay({ peril }: { peril: Peril }) {
     let icon = getIconForPeril(peril);
     return (
-        <Row>
-            <Col span={4}>{icon}</Col>
-            <Col>
-                <Title level={5}>{peril.name}</Title>
-            </Col>
-        </Row>
+        <Tooltip title={peril.description}>
+            <Row>
+                <Col span={4}>{icon}</Col>
+                <Col style={{ display: "flex", alignItems: "center" }}>
+                    <Title level={5} style={{ marginBottom: 0 }}>
+                        {peril.name}
+                    </Title>
+                </Col>
+            </Row>
+        </Tooltip>
     );
 }

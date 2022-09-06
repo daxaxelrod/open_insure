@@ -21,25 +21,36 @@ const mockPerils: Peril[] = [
     },
     {
         id: 3,
-        name: "Just cause",
-        description: "Whatever other reason people want to cover",
+        name: "All others",
+        description:
+            "This is an extrememly liberal policy. Make your case to the group and let them decide",
         icon_name: "crown",
     },
 ];
 
 export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
     return (
-        <div style={{ marginTop: "1rem" }}>
+        <div style={{ marginTop: "2rem", marginBottom: "1rem" }}>
             <Title level={4}>Description</Title>
             <Row>
                 <Col span={12}>{policy.description}</Col>
                 <Col span={12}>
                     <Row>
                         {policy.perils.map((peril) => (
-                            <PerilGridDisplay peril={peril} />
+                            <Col
+                                span={12}
+                                style={{ padding: "2rem" }}
+                                key={peril.id}
+                            >
+                                <PerilGridDisplay peril={peril} />
+                            </Col>
                         ))}
                         {mockPerils.map((peril) => (
-                            <Col span={12} style={{ padding: "1rem" }}>
+                            <Col
+                                span={12}
+                                style={{ padding: "2rem" }}
+                                key={`${peril.id}-mock`}
+                            >
                                 <PerilGridDisplay peril={peril} />
                             </Col>
                         ))}

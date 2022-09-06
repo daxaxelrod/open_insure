@@ -26,7 +26,13 @@ export default function LowestPremiumDisplay({
             }}
         >
             {amount ? (
-                <>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "end",
+                    }}
+                >
                     <span
                         style={{
                             textAlign: "right",
@@ -36,17 +42,23 @@ export default function LowestPremiumDisplay({
                     >
                         Starting at
                     </span>
-                    <Title level={2} style={{ lineHeight: 1, marginBottom: 6 }}>
-                        ${amount}
+                    <Title level={1} style={{ lineHeight: 1, marginBottom: 6 }}>
+                        ${amount / 100}
                     </Title>
                     <Title
                         level={5}
-                        style={{ lineHeight: 1, color: colors.gray9 }}
+                        style={{
+                            lineHeight: 1,
+                            color: colors.gray7,
+                            marginTop: "-0.25rem",
+                            fontSize: ".8rem",
+                            fontWeight: "normal",
+                        }}
                     >
                         &nbsp;/per {frequency === 1 ? "" : `${frequency} `}{" "}
                         {maybePluralize(frequency, "month")}
                     </Title>
-                </>
+                </div>
             ) : risksPending ? (
                 <Skeleton />
             ) : (

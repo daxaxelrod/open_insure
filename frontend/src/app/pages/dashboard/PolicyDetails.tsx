@@ -1,23 +1,19 @@
 import React, { useEffect, useRef } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Card, Col, Row, Avatar, Typography, Button } from "antd";
-import { Policy, Premium, User } from "../../../redux/reducers/commonTypes";
-import { UserOutlined } from "@ant-design/icons";
+import { Col, Row, Typography } from "antd";
+import { Policy, User } from "../../../redux/reducers/commonTypes";
 
 import moment from "moment-timezone";
 import colors from "../../constants/colors";
-import PolicyEscrowBalanceChart from "../../components/policies/premiums/PolicyEscrowBalanceChart";
 import PolicyQuoteRequestForm, {
     PolicyQuoteRequestBoxRefType,
 } from "../../components/policies/quotes/PolicyQuoteRequestBox";
 import InviteFriendToPolicy from "../../components/policies/social/InviteFriendToPolicy";
 import PolicyDetailSkeleton from "../../components/dashboard/PolicyDetailSkeleton";
-import PolicyDetailMemberList from "../../components/policies/members/PolicyDetailMemberList";
 import UserPolicyPremiumBox from "../../components/policies/premiums/UserPolicyPremiumBox";
 import PolicyDescriptionRow from "../../components/policies/detail/PolicyDescriptionRow";
 import RiskTable from "../../components/policies/quotes/RisksTable";
-import PolicyPoolStats from "../../components/policies/premiums/PolicyPoolStats";
 import MembersTable from "../../components/policies/members/MembersTable";
 import PolicyClaimsBriefCard from "../../components/policies/claims/PolicyClaimsBriefCard";
 import { getOrCreateRisk } from "../../../redux/actions/risk";
@@ -66,7 +62,7 @@ export default function PolicyDetails() {
         <div>
             <div>
                 <Row align="middle">
-                    <Col span={22}>
+                    <Col span={21}>
                         <Title style={{ marginBottom: 0 }} level={2}>
                             {policy?.name}
                         </Title>
@@ -76,7 +72,7 @@ export default function PolicyDetails() {
                             {hasPolicyStarted ? "Active Policy" : "In setup"}
                         </Paragraph>
                     </Col>
-                    <Col span={2} style={{ marginRight: 0 }}>
+                    <Col span={3}>
                         {!isMember && (
                             <PolicyQuoteRequestForm
                                 policy={policy}
@@ -91,7 +87,7 @@ export default function PolicyDetails() {
                 <PolicyDetailCol
                     span={8}
                     style={{
-                        padding: 10,
+                        paddingRight: 10,
                         display: "flex",
                         alignItems: "stretch",
                         width: "100%",
@@ -109,7 +105,8 @@ export default function PolicyDetails() {
                 <PolicyDetailCol
                     span={8}
                     style={{
-                        padding: 10,
+                        paddingRight: 10,
+                        paddingLeft: 10,
                         display: "flex",
                         alignItems: "stretch",
                         width: "100%",
@@ -121,7 +118,7 @@ export default function PolicyDetails() {
                 <PolicyDetailCol
                     span={8}
                     style={{
-                        padding: 10,
+                        paddingLeft: 10,
                         display: "flex",
                         alignItems: "stretch",
                         width: "100%",

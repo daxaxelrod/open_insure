@@ -20,7 +20,10 @@ export default function PolicyCard({ policy }: { policy: Policy }) {
         <Col span={8}>
             <div
                 style={{
-                    padding: 20,
+                    paddingTop: 20,
+                    paddingBottom: 10,
+                    paddingLeft: 10,
+                    paddingRight: 10,
                 }}
             >
                 <Link to={`/policy/${policy.id}`}>
