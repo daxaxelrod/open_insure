@@ -1,6 +1,6 @@
-import { axiosInstance } from './api'
-import { PaginatedListViewParams } from './commonTypes';
-import { objectToQueryString } from './utils';
+import { axiosInstance } from "./api";
+import { PaginatedListViewParams } from "./commonTypes";
+import { objectToQueryString } from "./utils";
 
 export interface PolicyCreationPayload {
     name: string;
@@ -11,13 +11,19 @@ export interface PolicyCreationPayload {
 }
 
 export const getAvailablePolicies = (params: PaginatedListViewParams) => {
-    return axiosInstance.get(`/api/v1/policies/?${objectToQueryString(params)}`);
-}
+    return axiosInstance.get(
+        `/api/v1/policies/?${objectToQueryString(params)}`
+    );
+};
 
 export const getUserPolicies = () => {
-  return axiosInstance.get(`/api/v1/policies/?where_member=true`);
-}
+    return axiosInstance.get(`/api/v1/policies/?where_member=true`);
+};
 
 export const createPolicy = (values: PolicyCreationPayload) => {
-  return axiosInstance.post(`/api/v1/policies/`, values);
-}
+    return axiosInstance.post(`/api/v1/policies/`, values);
+};
+
+export const joinPolicy = (policyId: number) => {
+    return axiosInstance.post(`/api/v1/policies/${policyId}/join/`);
+};

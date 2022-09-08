@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Button, Col, Row, Space, Statistic, Typography } from "antd";
-import { useAppSelector } from "../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
 import { getHumanReadablePaymentFrequencyForPolicy } from "../utils/riskUtils";
 import Confetti, { ConfettiConfig } from "react-dom-confetti";
+import { joinPolicy } from "../../../../redux/actions/policies";
 const { Title, Paragraph } = Typography;
 
 export default function ProspectiveMemberPrompt({
@@ -15,13 +16,16 @@ export default function ProspectiveMemberPrompt({
 }) {
     const focusedRisk: Risk = useAppSelector((state) => state.risk.focusedRisk);
     const [isConfettiActive, setIsConfettiActive] = useState(false);
+    const dispatch = useAppDispatch();
 
-    const joinPolicy = () => {
-        console.log("join policy", policy.id);
-        setIsConfettiActive(true);
-        setTimeout(() => {
-            setIsConfettiActive(false);
-        }, 500);
+    const handleJoinPolicy = async () => {
+        const onSuccess = () => {
+            setIsConfettiActive(true);
+            setTimeout(() => {
+                setIsConfettiActive(false);
+            }, 500);
+        };
+        dispatch(joinPolicy(policy.id, onSuccess));
     };
 
     const confettiConfig: ConfettiConfig = {
@@ -66,7 +70,7 @@ export default function ProspectiveMemberPrompt({
                             <Paragraph>Modify Covered asset</Paragraph>
                         </Button>
                         <Button
-                            onClick={joinPolicy}
+                            onClick={handleJoinPolicy}
                             type="primary"
                             size={"large"}
                         >

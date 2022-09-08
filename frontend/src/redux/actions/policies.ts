@@ -11,6 +11,9 @@ import {
     CREATE_POLICY_PENDING,
     CREATE_POLICY_SUCCESS,
     CREATE_POLICY_FAILURE,
+    JOIN_POLICY_PENDING,
+    JOIN_POLICY_SUCCESS,
+    JOIN_POLICY_FAILURE,
 } from "./types";
 import { getRisksForPolicy } from "./risk";
 
@@ -67,5 +70,21 @@ export const createPolicy =
             dispatch({ type: CREATE_POLICY_SUCCESS, payload: response.data });
         } catch (error) {
             dispatch({ type: CREATE_POLICY_FAILURE, payload: error });
+        }
+    };
+
+export const joinPolicy =
+    (
+        policyId: number,
+        onSuccess: () => void
+    ): ThunkAction<void, RootState, unknown, AnyAction> =>
+    async (dispatch) => {
+        dispatch({ type: JOIN_POLICY_PENDING });
+        try {
+            const response = await API.joinPolicy(policyId);
+            dispatch({ type: JOIN_POLICY_SUCCESS, payload: response.data });
+            onSuccess();
+        } catch (error) {
+            dispatch({ type: JOIN_POLICY_FAILURE, payload: error });
         }
     };

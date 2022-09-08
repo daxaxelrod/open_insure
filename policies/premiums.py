@@ -4,7 +4,7 @@ from typing import List
 
 from django.utils import timezone
 from pods.models import User
-from policies.models import Policy, Premium
+from policies.models import Policy, Premium, Risk
 from dateutil.relativedelta import relativedelta
 from escrow.apps import agent
 
@@ -29,10 +29,17 @@ def schedule_premiums(policy: Policy, for_users: List[User]=None):
 
     premium_frequency = policy.premium_payment_frequency # num months between payments
     for user in users:
+        try:
+            import pdb; pdb.set_trace()
+            user_risk: Risk = user.risks.get(policy=policy)
+        except Risk.DoesNotExist:
+            logger.error(f"User {user.id} has no risk for policy {policy.id}. This should not happen.")
+            continue
+        
         premiums_schedule = [
             Premium(policy=policy, 
                     payer=user, 
-                    amount=policy.premium_amount, 
+                    amount=user_risk.premium_amount, 
                     due_date=policy.coverage_start_date + relativedelta(months=premium_frequency * i))
             for i in range(int(policy.coverage_duration / premium_frequency))
         ]

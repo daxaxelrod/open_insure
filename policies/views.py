@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from pods.serializers import PodSerializer
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_403_FORBIDDEN
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
@@ -101,9 +101,32 @@ class PolicyViewSet(ModelViewSet):
         # namely based the risk that this user personally carries
         # but for now, let them in.
         policy = self.get_object()
+        pod = policy.pod
+        if (
+            policy.is_policy_active()
+            and not pod.allow_joiners_after_policy_start
+        ):
+            return Response(
+                {
+                    "message": "Policy is active and does not allow for new memebers after policy start"
+                },
+                status=HTTP_403_FORBIDDEN,
+            )
+        if pod.is_full():
+            return Response({"message": "Pod is full"}, status=HTTP_403_FORBIDDEN)
         policy.pod.members.add(request.user)
         schedule_premiums(policy, for_users=[request.user])
-        return Response(FullPolicySerializer(policy).data, status=201)
+        
+        spots_remaining = -1
+        if pod.max_pod_size and pod.max_pod_size > 0:
+            spots_remaining = pod.max_pod_size - pod.members.count()
+        return Response(
+            {
+                **FullPolicySerializer(policy).data,
+                "spots_remaining": spots_remaining,
+            },
+            status=HTTP_201_CREATED,
+        )
 
 
 class PremiumViewSet(RetrieveUpdateDestroyAPIView):

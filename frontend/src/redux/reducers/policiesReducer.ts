@@ -7,6 +7,9 @@ import {
     CREATE_POLICY_PENDING,
     CREATE_POLICY_SUCCESS,
     CREATE_POLICY_FAILURE,
+    JOIN_POLICY_PENDING,
+    JOIN_POLICY_SUCCESS,
+    JOIN_POLICY_FAILURE,
     GET_USER_POLICIES_PENDING,
     GET_USER_POLICIES_SUCCESS,
     GET_USER_POLICIES_FAILURE,
@@ -20,6 +23,7 @@ export interface PoliciesState {
     userPolicies: Policy[];
     getUserPolicysPending: boolean;
     createPolicyPending: boolean;
+    joinPolicyPending: boolean;
 }
 
 const initialState: PoliciesState = {
@@ -29,6 +33,7 @@ const initialState: PoliciesState = {
     userPolicies: [],
     getUserPolicysPending: false,
     createPolicyPending: false,
+    joinPolicyPending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
@@ -84,6 +89,28 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 getUserPolicysPending: false,
+            };
+        case JOIN_POLICY_PENDING:
+            return {
+                ...state,
+                joinPolicyPending: true,
+            };
+        case JOIN_POLICY_SUCCESS:
+            return {
+                ...state,
+                userPolicies: [...state.userPolicies, payload],
+                publicPolicies: state.publicPolicies.map((policy) => {
+                    if (policy.id === payload.id) {
+                        return payload;
+                    }
+                    return policy;
+                }),
+                joinPolicyPending: false,
+            };
+        case JOIN_POLICY_FAILURE:
+            return {
+                ...state,
+                joinPolicyPending: false,
             };
 
         default:

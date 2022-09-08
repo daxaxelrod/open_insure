@@ -23,35 +23,6 @@ class PodViewSet(ModelViewSet):
     queryset = Pod.objects.all()
     serializer_class = PodSerializer
 
-    @action(detail=True, methods=["POST"])
-    def join(self, request, **kwargs):
-        pod = self.get_object()
-        user = request.user
-        if pod.has_policy():
-            if (
-                pod.policy.is_policy_active()
-                and not pod.allow_joiners_after_policy_start
-            ):
-                return Response(
-                    {
-                        "message": "Policy is active and does not allow for new memebers after policy start"
-                    },
-                    status=HTTP_403_FORBIDDEN,
-                )
-        if pod.is_full():
-            return Response({"message": "Pod is full"}, status=HTTP_403_FORBIDDEN)
-        pod.members.add(user)
-        spots_remaining = -1
-        if pod.max_pod_size > 0:
-            spots_remaining = pod.max_pod_size - pod.members.count()
-        return Response(
-            {
-                **self.get_serializer_class()(pod).data,
-                "spots_remaining": spots_remaining,
-            },
-            status=HTTP_201_CREATED,
-        )
-
     # Leaving a pod should be allowed
     #   - gives people flexibility if they cant pay premiums anymore for example
     # Just conflicted on what to do with the already paid premiums
