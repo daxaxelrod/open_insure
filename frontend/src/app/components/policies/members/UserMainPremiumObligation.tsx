@@ -9,7 +9,7 @@ export default function UserMainPremiumObligation() {
         <Row>
             <Col>
                 <Title level={4}>You Premium</Title>
-                <Statistic value={"$20"} />
+                
                 <Paragraph>
                     {hasNextPayment ? "Next payment due Jan blah blah" : null}
                 </Paragraph>

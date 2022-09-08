@@ -63,7 +63,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                 return (
                     <div>
                         {record.content_object.model}
-                        {record.content_object.album?.[0].image ? (
+                        {record.content_object.album?.[0]?.image ? (
                             <Image
                                 onClick={() => setPhotoPreviewVisible(true)}
                                 style={{
