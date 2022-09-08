@@ -42,3 +42,24 @@ export function getPremiumsPerMonth(policy: Policy): number {
         100
     );
 }
+
+export function getAvailableUnderlyingInsuredTypesForPolicyType(
+    policyType: string
+) {
+    switch (policyType) {
+        case "m_property":
+            return [
+                { label: "Cell Phones", value: "cell_phone" },
+                { label: "Audio Equipment", value: "audio_equipment" },
+            ];
+        case "renters":
+            return [
+                { label: "Apartment", value: "apartment" },
+                { label: "Condo", value: "condo" },
+                { label: "Multi Family", value: "multi_family" },
+            ];
+
+        default:
+            return [];
+    }
+}

@@ -15,6 +15,7 @@ import {
 import { DownSquareOutlined, UpSquareOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { createPolicy } from "../../../../redux/actions/policies";
+import { getAvailableUnderlyingInsuredTypesForPolicyType } from "../../../utils/policyUtils";
 const { Title } = Typography;
 const { TextArea } = Input;
 
@@ -40,6 +41,12 @@ export default function CreatePolicyModal({
                             values.coverage_start_date.format(),
                         premium_pool_type: "perpetual_pool",
                         governance_type: "direct_democracy",
+                        ...(!values.available_underlying_insured_types && {
+                            available_underlying_insured_types: [
+                                "cell_phone",
+                                "audio_equipment",
+                            ],
+                        }),
                     })
                 );
             })
@@ -82,7 +89,7 @@ export default function CreatePolicyModal({
                         <Select.Option value="m_property">
                             Minor Property
                         </Select.Option>
-                        <Select.Option value="renters">
+                        <Select.Option value="renters" disabled>
                             Renter's Insurance
                         </Select.Option>
                     </Select>
@@ -133,6 +140,17 @@ export default function CreatePolicyModal({
                 </Row>
                 {showAdvancedSettings && (
                     <div>
+                        <Form.Item
+                            label="Insurable Items"
+                            name="available_underlying_insured_types"
+                        >
+                            <Checkbox.Group
+                                defaultValue={["cell_phone", "audio_equipment"]}
+                                options={getAvailableUnderlyingInsuredTypesForPolicyType(
+                                    "m_property" // come back to this, needs to be dynamic based on policy type
+                                )}
+                            />
+                        </Form.Item>
                         <Form.Item
                             label="Governance Type"
                             name="governance_type"

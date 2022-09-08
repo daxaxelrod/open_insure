@@ -7,6 +7,7 @@ export interface PolicyCreationPayload {
     coverage_type: string;
     coverage_start_date: string;
     coverage_duration: number;
+    available_underlying_insured_types: string[];
     pod: number;
 }
 

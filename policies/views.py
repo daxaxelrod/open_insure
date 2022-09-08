@@ -65,22 +65,13 @@ class PolicyViewSet(ModelViewSet):
             return FullPolicySerializer
         return PolicySerializer
 
-    def perform_update(self, serializer):
-        # schedule first premiums when coverage date gets set
-        coverage_start_date = serializer.instance.coverage_start_date
-        policy = serializer.save()
-
-        # when the policy gets activated, schedule all premiums
-        if not coverage_start_date and policy.coverage_start_date:
-            schedule_premiums(policy)
-
     def perform_create(self, serializer):
         # create the attached pod if payload doesnt have a pod id
         if not serializer.validated_data.get("pod", None):
             pod_serializer = PodSerializer(data=self.request.data)
             if pod_serializer.is_valid():
                 pod = pod_serializer.save(creator=self.request.user)
-                policy = serializer.save(pod=pod)
+                serializer.save(pod=pod)
             else:
                 raise ValidationError(
                     {
@@ -88,12 +79,6 @@ class PolicyViewSet(ModelViewSet):
                         "message": "Could not create pod which is required for a new policy",
                     }
                 )
-        else:
-            policy = serializer.save()
-
-        # schedule premiums when coverage date gets set
-        if policy.coverage_start_date:
-            schedule_premiums(policy)
 
     @action(detail=True, methods=["POST"], permission_classes=[IsAuthenticated])
     def join(self, request, pk=None):
