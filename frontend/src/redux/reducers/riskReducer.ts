@@ -1,9 +1,13 @@
 import { AnyAction } from "@reduxjs/toolkit";
+import { merge } from "../../app/utils/iterUtils";
 
 import {
     GET_RISK_FOR_POLICY_PENDING,
     GET_RISK_FOR_POLICY_SUCCESS,
     GET_RISK_FOR_POLICY_FAILURE,
+    GET_RISKS_FOR_USER_PENDING,
+    GET_RISKS_FOR_USER_SUCCESS,
+    GET_RISKS_FOR_USER_FAILURE,
     CREATE_RISK_PENDING,
     CREATE_RISK_SUCCESS,
     CREATE_RISK_FAILURE,
@@ -108,6 +112,42 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 getRisksPending: false,
             };
+
+        case GET_RISKS_FOR_USER_PENDING:
+            return {
+                ...state,
+                getRisksPending: true,
+            };
+        case GET_RISKS_FOR_USER_SUCCESS:
+            // mergegetRisksForUsergetRisksForUser the two similarly shaped objs based on risk id
+            let mergedPolicyRisks: any = { ...state.policyRisks };
+
+            Object.keys(payload).forEach((policyId: string) => {
+                let userPolicyRisks = payload[policyId];
+                if (
+                    mergedPolicyRisks?.[policyId] &&
+                    Array.isArray(mergedPolicyRisks?.[policyId])
+                ) {
+                    mergedPolicyRisks[policyId] = merge(
+                        mergedPolicyRisks[policyId],
+                        userPolicyRisks,
+                        "id"
+                    );
+                } else {
+                    mergedPolicyRisks[policyId] = userPolicyRisks;
+                }
+            });
+            return {
+                ...state,
+                getRisksPending: false,
+                policyRisks: mergedPolicyRisks,
+            };
+        case GET_RISKS_FOR_USER_FAILURE:
+            return {
+                ...state,
+                getRisksPending: false,
+            };
+
         case GET_QUOTE_PENDING:
             return {
                 ...state,

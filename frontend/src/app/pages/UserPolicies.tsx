@@ -6,6 +6,7 @@ import UserPoliciesOpenClaimsTable from "../components/policies/claims/UserPolic
 import { getUserPolicies } from "../../redux/actions/policies";
 import UserPoliciesList from "../components/policies/UserPoliciesList";
 import UserPolicyCalendar from "../components/policies/UserPolicyCalendar";
+import { getUserRisks } from "../../redux/actions/risk";
 
 const { Title } = Typography;
 
@@ -16,6 +17,7 @@ export default function UserPolicies() {
 
     useEffect(() => {
         dispatch(getUserPolicies());
+        dispatch(getUserRisks());
     }, [dispatch]);
 
     return (

@@ -7,6 +7,9 @@ import {
     GET_RISK_FOR_POLICY_PENDING,
     GET_RISK_FOR_POLICY_SUCCESS,
     GET_RISK_FOR_POLICY_FAILURE,
+    GET_RISKS_FOR_USER_PENDING,
+    GET_RISKS_FOR_USER_SUCCESS,
+    GET_RISKS_FOR_USER_FAILURE,
     CREATE_RISK_PENDING,
     CREATE_RISK_SUCCESS,
     CREATE_RISK_FAILURE,
@@ -18,6 +21,7 @@ import {
     GET_QUOTE_FAILURE,
     UPDATE_RISK_ALBUM,
 } from "./types";
+import { Risk } from "../reducers/commonTypes";
 
 export const getRisksForPolicy =
     (policyId: number): ThunkAction<void, RootState, unknown, AnyAction> =>
@@ -94,5 +98,31 @@ export const getQuote =
             dispatch({ type: GET_QUOTE_SUCCESS, payload: response.data });
         } catch (error) {
             dispatch({ type: GET_QUOTE_FAILURE, payload: error });
+        }
+    };
+
+export const getUserRisks =
+    (): ThunkAction<void, RootState, unknown, AnyAction> =>
+    async (dispatch) => {
+        dispatch({ type: GET_RISKS_FOR_USER_PENDING });
+        try {
+            const response = await API.getRisksForUser();
+            // reshare to {[policyId]: [risks]}
+            const risksByPolicy = response.data.reduce(
+                (acc: any, risk: Risk) => {
+                    if (!acc[risk.policy]) {
+                        acc[risk.policy] = [];
+                    }
+                    acc[risk.policy].push(risk);
+                    return acc;
+                },
+                {}
+            );
+            dispatch({
+                type: GET_RISKS_FOR_USER_SUCCESS,
+                payload: risksByPolicy,
+            });
+        } catch (error) {
+            dispatch({ type: GET_RISKS_FOR_USER_FAILURE, payload: error });
         }
     };

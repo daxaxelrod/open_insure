@@ -36,3 +36,7 @@ export function uploadRiskImage(
 export function deleteRiskPhoto(photoId: number) {
     return axiosInstance.delete(`/api/v1/media/riskPhoto/${photoId}`);
 }
+
+export function getRisksForUser() {
+    return axiosInstance.get(`/api/v1/risk/`); // currently gets all risks for all policies, even ones that the user hasnt joined (aka just got a quote but didnt follow through)
+}

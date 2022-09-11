@@ -3,7 +3,7 @@ import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
-import { Policy } from "../../../redux/reducers/commonTypes";
+import { Policy, Risk } from "../../../redux/reducers/commonTypes";
 import { getCoverageTypeHumanReadable } from "../../utils/policyUtils";
 import ClaimsStatusInlineDisplay from "./claims/ClaimsStatusInlineDisplay";
 import SummaryPolicyMembersDisplay from "./members/SummaryPolicyMembersDisplay";
@@ -13,6 +13,7 @@ export default function UserPoliciesList({ policies }: { policies: Policy[] }) {
     let navigate = useNavigate();
 
     let currentUser = useAppSelector((state) => state.auth.currentUser);
+    const risks = useAppSelector((state) => state.risk.policyRisks);
 
     const columns: ColumnsType<Policy> = [
         {
@@ -24,8 +25,12 @@ export default function UserPoliciesList({ policies }: { policies: Policy[] }) {
             title: "Premium",
             dataIndex: "premium_amount",
             key: "premium_amount",
-            render(value) {
-                return `$${value / 100}`;
+            render(value, record) {
+                const risksForPolicy = risks?.[record.id];
+                const userPremium = risksForPolicy?.find(
+                    (r: Risk) => r.user === currentUser?.id
+                )?.premium_amount;
+                return userPremium ? `$${userPremium / 100}` : "-";
             },
         },
         {

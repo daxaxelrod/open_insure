@@ -7,6 +7,9 @@ from policies.views import (
     ClaimViewSet,
     PolicyViewSet,
     PremiumViewSet,
+
+    # risk
+    PolicyRiskViewSet,
     RiskViewSet,
     RiskMediaViewSet,
 )
@@ -14,9 +17,10 @@ from policies.views import (
 router = routers.DefaultRouter()
 router.register(r"policies", PolicyViewSet)
 router.register(r"claims", ClaimViewSet)
+router.register(r"risk", RiskViewSet, basename="risk")
 
 risk_router = routers.NestedSimpleRouter(router, r"policies", lookup="policy")
-risk_router.register(r"risk", RiskViewSet, basename="policy-risks")
+risk_router.register(r"risk", PolicyRiskViewSet, basename="policy-risks")
 
 urlpatterns = [
     path("premiums/<int:pk>/", PremiumViewSet.as_view(), name="premium_detail"),

@@ -21,6 +21,7 @@ from policies.permissions import (
 )
 from policies.premiums import schedule_premiums
 from policies.risk.models import PropertyImage, get_model_for_risk_type
+from policies.risk.permissions import IsRiskOwner
 from policies.risk.risk_scores import compute_premium_amount, compute_risk_score
 from policies.risk.serializers import (
     AlbumSerializer,
@@ -164,7 +165,7 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
         claim.save()
 
 
-class RiskViewSet(ModelViewSet):
+class PolicyRiskViewSet(ModelViewSet):
     serializer_class = RiskSerializer
 
     def get_queryset(self):
@@ -257,3 +258,10 @@ class RiskMediaViewSet(RetrieveUpdateDestroyAPIView):
     serializer_class = ImageSerializer
     permission_classes = [IsAuthenticated & IsPhotoOwner]
     lookup_url_kwarg = "photo_id"
+
+class RiskViewSet(ModelViewSet):
+    serializer_class = RiskSerializer
+    permission_classes = [IsAuthenticated & IsRiskOwner]
+
+    def get_queryset(self):
+        return Risk.objects.filter(user=self.request.user)

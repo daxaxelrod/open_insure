@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Card, Col, Row, Typography } from "antd";
+import { Alert, Card, Col, Row, Typography } from "antd";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -45,6 +45,13 @@ export default function PolicyPoolDetails() {
     return (
         <>
             <AntTitle level={3}>Escrow Pool</AntTitle>
+            <Alert
+                message="This page is under construction"
+                type="error"
+                style={{ marginBottom: 20 }}
+                showIcon
+                closable
+            />
             <Row gutter={18}>
                 <Col span={16}>
                     <Line datasetIdKey="id" data={data} />
