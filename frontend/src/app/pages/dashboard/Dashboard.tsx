@@ -15,11 +15,9 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 const { Header, Sider, Content } = Layout;
 
-// function getPageNameFromLocation(path: string) {
-//     return [
-
-//     ]
-// }
+function getPageNameFromLocation(path: string) {
+    // /policy/;
+}
 
 export default function Home(props: any) {
     const navigate = useNavigate();
@@ -34,8 +32,8 @@ export default function Home(props: any) {
 
     // useEffect(() => {
     //     console.log("location", location.pathname);
-    //     let pageComponents = getPageNameFromLocation(location.pathname)
-    //     setPageTitle(pageComponents)
+    //     // let pageComponents = getPageNameFromLocation(location.pathname);
+    //     // setPageTitle(pageComponents);
     // }, [location]);
 
     useEffect(() => {
@@ -59,6 +57,7 @@ export default function Home(props: any) {
                     theme="light"
                     mode="inline"
                     defaultSelectedKeys={["1"]}
+                    // selectedKeys={["1"]} // have to manage it yourself if you want to change based on url location
                     items={[
                         {
                             key: "1",
