@@ -30,7 +30,7 @@ export default function UserPoliciesList({ policies }: { policies: Policy[] }) {
                 const userPremium = risksForPolicy?.find(
                     (r: Risk) => r.user === currentUser?.id
                 )?.premium_amount;
-                return userPremium ? `$${userPremium / 100}` : "-";
+                return userPremium ? `$${userPremium / 100}` : "";
             },
         },
         {
