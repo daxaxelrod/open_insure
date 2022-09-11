@@ -97,9 +97,15 @@ export default function PolicyDetails() {
                         policy={policy}
                         isMember={isMember}
                         memberHasFilledOutRisk={memberHasFilledOutRisk}
-                        openRiskDrawer={() =>
-                            policyQuoteDrawerFormRef?.current?.open()
-                        }
+                        openRiskDrawer={() => {
+                            console.log("====================================");
+                            console.log(
+                                "openRiskDrawer",
+                                policyQuoteDrawerFormRef
+                            );
+                            console.log("====================================");
+                            policyQuoteDrawerFormRef?.current?.open();
+                        }}
                     />
                 </PolicyDetailCol>
                 <PolicyDetailCol

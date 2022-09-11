@@ -3,7 +3,9 @@ from django.urls import reverse
 from django.utils.html import format_html, mark_safe
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
-from pods.models import Pod
+from django.utils import timezone
+from django import forms
+
 from policies.models import (
     Policy,
     PolicyRiskSettings,
@@ -62,9 +64,34 @@ class PolicyAdmin(admin.ModelAdmin):
     inlines = [RiskInline]
 
 
+
+class PremiumChangeForm(forms.ModelForm):
+    class Meta:
+        model = Premium
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(PremiumChangeForm, self).__init__(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        if self.cleaned_data['paid']:
+            self.instance.paid_date = timezone.now()
+            self.instance.save() # have to do it this way because the model form changed fields cant be edited after the form is created
+        return super(PremiumChangeForm, self).save(*args, **kwargs)
+
+
+class PremiumAdmin(admin.ModelAdmin):
+    list_editable = ('paid',)
+    list_display = ('policy', 'payer', 'amount', 'paid', 'due_date', 'paid_date')
+
+    def get_changelist_form(self, request, **kwargs):
+        return PremiumChangeForm
+
+
+
 admin.site.register(Policy, PolicyAdmin)
 admin.site.register(Claim)
-admin.site.register(Premium)
+admin.site.register(Premium, PremiumAdmin)
 admin.site.register(PolicyCloseout)
 admin.site.register(ClaimEvidence)
 admin.site.register(ClaimApproval)

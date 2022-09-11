@@ -190,6 +190,7 @@ class Premium(models.Model):
         null=False, blank=False, help_text="Date premiums are due"
     )
     paid = models.BooleanField(default=False)
+    paid_date = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
