@@ -53,7 +53,13 @@ export default function RiskTable({ policy }: { policy: Policy }) {
         }
     }, [policy]);
 
-    let risks: RiskRowType[] = policyRisks?.[policy?.id] || [];
+    let risks: RiskRowType[] =
+        policyRisks?.[policy?.id]?.map((risk: Risk, index: number) => {
+            return {
+                ...risk,
+                key: `risk-${risk.id}-${index}`,
+            };
+        }) || [];
     risks = risks.filter((r) => r?.premium_amount);
 
     const columns: ColumnsType<RiskRowType> = [
@@ -62,7 +68,6 @@ export default function RiskTable({ policy }: { policy: Policy }) {
             render: (text, record: RiskRowType) => {
                 return (
                     <div>
-                        {record.content_object.model}
                         {record.content_object.album?.[0]?.image ? (
                             <Image
                                 onClick={() => setPhotoPreviewVisible(true)}
@@ -70,11 +75,17 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                                     height: 40,
                                     width: 40,
                                     borderRadius: 10,
+                                    marginRight: 10,
                                 }}
-                                src={record.content_object.album?.[0].image}
+                                src={
+                                    process.env.REACT_APP_BACKEND_URL +
+                                    record.content_object.album?.[0].image
+                                }
                                 alt={record.underlying_insured_type}
                             />
                         ) : null}
+
+                        {record.content_object.model}
                     </div>
                 );
             },
@@ -103,8 +114,8 @@ export default function RiskTable({ policy }: { policy: Policy }) {
             title: "Type",
             render: (text, record: RiskRowType) =>
                 get_icon_for_insured_asset_type(record.underlying_insured_type),
-            dataIndex: "name",
-            key: "name",
+            dataIndex: "type",
+            key: "type",
         },
         {
             title: "Condition",
@@ -138,8 +149,8 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                     );
                 }
             },
-            dataIndex: "name",
-            key: "name",
+            dataIndex: "member",
+            key: "member_name",
         },
     ];
     return (

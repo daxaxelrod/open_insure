@@ -161,7 +161,19 @@ class ClaimSerializer(serializers.ModelSerializer):
 class PremiumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Premium
-        fields = ["id", "policy", "amount", "payer", "paid", "created_at", "updated_at"]
+        fields = [
+            "id",
+            "policy",
+            "amount",
+            "payer",
+            "paid",
+            "due_date",
+            "created_at",
+            "updated_at",
+        ]
+
+        class Meta:
+            ordering = ["-due_date"]
 
 
 class PolicyCloseoutSerializer(serializers.ModelSerializer):

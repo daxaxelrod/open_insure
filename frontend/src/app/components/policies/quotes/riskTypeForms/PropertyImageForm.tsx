@@ -31,8 +31,6 @@ export default function PropertyImageForm({
     const album = content_object?.album;
     const dispatch = useAppDispatch();
 
-    console.log({ album });
-
     const handleCancel = () => setPreviewVisible(false);
 
     const handlePreview = async (file: UploadFile) => {

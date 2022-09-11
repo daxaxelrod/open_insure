@@ -49,7 +49,7 @@ export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
                             mockPerils.map((peril) => (
                                 <Col
                                     span={12}
-                                    style={{ padding: "2rem" }}
+                                    style={{ padding: "0 0 3rem 3rem" }}
                                     key={`${peril.id}-mock`}
                                 >
                                     <PerilGridDisplay peril={peril} />

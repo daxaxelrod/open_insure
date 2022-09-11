@@ -1,19 +1,95 @@
-import { Col, Row, Statistic, Typography } from "antd";
+import { Badge, Col, Row, Statistic, Typography } from "antd";
+import moment from "moment-timezone";
 import React from "react";
+import styled from "styled-components";
+import { useAppSelector } from "../../../../redux/hooks";
+import { Policy } from "../../../../redux/reducers/commonTypes";
+import { ConditionalWrapper } from "../../../utils/componentUtils";
 
 const { Title, Paragraph } = Typography;
 
-export default function UserMainPremiumObligation() {
-    let hasNextPayment = true;
+export default function UserMainPremiumObligation({
+    policy,
+}: {
+    policy: Policy;
+}) {
+    const focusedRisk = useAppSelector((state) => state.risk.focusedRisk);
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
+    const userPremiums = policy.premiums.filter(
+        (p) => p.payer === currentUser.id
+    );
+
+    const totalPremiumsPaidToPolicy: number = userPremiums
+        .filter((p) => p.paid)
+        .reduce((accumulator, value) => {
+            return accumulator + value.amount;
+        }, 0);
+
+    let nextPaymentDue;
+    let isNextPaymentLate = false;
+    let now = moment();
+    const unpaidPremiums = userPremiums.filter((p) => !p.paid);
+    if (unpaidPremiums.length > 0) {
+        nextPaymentDue = moment(unpaidPremiums[0].due_date);
+        if (now.isAfter(nextPaymentDue)) {
+            isNextPaymentLate = true;
+        }
+    }
+    const userPremiumObligation = focusedRisk?.premium_amount;
     return (
-        <Row>
-            <Col>
-                <Title level={4}>You Premium</Title>
-                
-                <Paragraph>
-                    {hasNextPayment ? "Next payment due Jan blah blah" : null}
-                </Paragraph>
-            </Col>
-        </Row>
+        <Container>
+            <ConditionalWrapper
+                condition={unpaidPremiums.length === 0}
+                wrapper={(children: any) => (
+                    <Badge.Ribbon text="Paid in full!">{children}</Badge.Ribbon>
+                )}
+            >
+                <Row style={{ flex: 1 }}>
+                    <Col>
+                        <Title level={4}>Your Premium</Title>
+                        <Title style={{ marginTop: 0 }}>
+                            ${userPremiumObligation / 100}
+                        </Title>
+                    </Col>
+                </Row>
+                <Row justify="space-between">
+                    <Col>
+                        <Statistic
+                            title="Premiums Paid to Policy"
+                            value={totalPremiumsPaidToPolicy / 100}
+                            prefix="$"
+                        />
+                    </Col>
+                    <Col>
+                        {nextPaymentDue && (
+                            <div>
+                                <Statistic
+                                    title="Next Payment Due"
+                                    value={nextPaymentDue.format(
+                                        "dddd, MMMM Do YYYY"
+                                    )}
+                                />
+                                {isNextPaymentLate ? (
+                                    <Paragraph type="danger">
+                                        Payment is late!
+                                    </Paragraph>
+                                ) : (
+                                    <Paragraph>
+                                        In {nextPaymentDue.toNow()}
+                                    </Paragraph>
+                                )}
+                            </div>
+                        )}
+                    </Col>
+                </Row>
+            </ConditionalWrapper>
+        </Container>
     );
 }
+
+const Container = styled.div({
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+});
