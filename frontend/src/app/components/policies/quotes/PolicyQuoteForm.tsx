@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Divider, PageHeader, Spin, Steps } from "antd";
+import React from "react";
+import { Spin } from "antd";
 import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
 import PolicyQuoteFormFactory from "./PolicyQuoteFormFactory";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
@@ -7,16 +7,21 @@ import PolicyAssetCoverageSelection from "./PolicyAssetCoverageSelection";
 import { patchRisk } from "../../../../redux/actions/risk";
 
 export default function PolicyQuoteForm({
+    editable = true,
     policy,
     risk,
     closeDrawer,
 }: {
+    editable?: boolean;
     policy: Policy;
     risk: Risk | null;
     closeDrawer: () => void;
 }) {
     const dispatch = useAppDispatch();
     const updateRisk = (values: any) => {
+        if (!editable) {
+            return;
+        }
         if (risk) {
             dispatch(patchRisk(policy.id, risk?.id, values));
         } else {
@@ -44,6 +49,7 @@ export default function PolicyQuoteForm({
         <div>
             <Spin spinning={riskPending}>
                 <PolicyAssetCoverageSelection
+                    editable={editable}
                     types={availableInsuredAssetTypes}
                     risk={risk}
                     updateRisk={updateRisk}
@@ -51,6 +57,7 @@ export default function PolicyQuoteForm({
                 />
 
                 <PolicyQuoteFormFactory
+                    editable={editable}
                     policy={policy}
                     risk={risk}
                     updateRisk={updateRisk}

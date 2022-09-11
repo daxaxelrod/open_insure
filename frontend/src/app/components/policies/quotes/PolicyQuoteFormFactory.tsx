@@ -4,12 +4,14 @@ import AudioEquipmentRiskForm from "./riskTypeForms/AudioEquipmentRiskForm";
 import PhoneRiskForm from "./riskTypeForms/PhoneRiskForm";
 
 export default function PolicyQuoteFormFactory({
+    editable = true,
     policy,
     risk,
     updateRisk,
     formLayout,
     closeDrawer,
 }: {
+    editable: boolean;
     policy: Policy;
     risk: Risk | null;
     updateRisk: (values: any) => void;
@@ -20,6 +22,7 @@ export default function PolicyQuoteFormFactory({
         case "cell_phone":
             return (
                 <PhoneRiskForm
+                    editable={editable}
                     policy={policy}
                     updateRisk={updateRisk}
                     formLayout={formLayout}
@@ -29,6 +32,7 @@ export default function PolicyQuoteFormFactory({
         case "audio_equipment":
             return (
                 <AudioEquipmentRiskForm
+                    editable={editable}
                     policy={policy}
                     updateRisk={updateRisk}
                     formLayout={formLayout}

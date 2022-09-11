@@ -9,18 +9,20 @@ function getHumanReadableRiskName(type: string) {
 }
 
 export default function PolicyAssetCoverageSelection({
+    editable = true,
     types,
     risk,
     updateRisk,
     formLayout,
 }: {
+    editable: boolean;
     types: string[];
     risk: any;
     updateRisk: (values: any) => void;
     formLayout: any;
 }) {
     return (
-        <Form {...formLayout}>
+        <Form {...formLayout} disabled={!editable}>
             <Form.Item label="Asset Type">
                 <Radio.Group
                     defaultValue={risk?.underlying_insured_type}

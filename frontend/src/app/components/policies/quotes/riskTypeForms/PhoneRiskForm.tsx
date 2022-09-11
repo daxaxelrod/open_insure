@@ -6,11 +6,13 @@ import { Policy } from "../../../../../redux/reducers/commonTypes";
 import PropertyImageForm from "./PropertyImageForm";
 
 export default function PhoneRiskForm({
+    editable,
     policy,
     updateRisk,
     formLayout,
     closeDrawer,
 }: {
+    editable: boolean;
     policy: Policy;
     updateRisk: (values: any) => void;
     formLayout: any;
@@ -54,6 +56,7 @@ export default function PhoneRiskForm({
             onFinish={requestAQuote}
             requiredMark={false}
             labelWrap
+            disabled={!editable}
         >
             <Form.Item
                 label="Make"
@@ -113,31 +116,36 @@ export default function PhoneRiskForm({
             >
                 <Switch />
             </Form.Item>
-            <PropertyImageForm risk={risk} policy={policy} />
+            <PropertyImageForm
+                risk={risk}
+                policy={policy}
+                editable={editable}
+            />
+            {editable && (
+                <Row style={{ marginTop: 10 }}>
+                    <Space size={"middle"}>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            loading={riskPending}
+                            disabled={riskPending}
+                        >
+                            Find your premium
+                        </Button>
+                        <Button
+                            type="link"
+                            // declare const ButtonTypes: ["default", "primary", "ghost", "dashed", "link", "text"];
 
-            <Row style={{ marginTop: 10 }}>
-                <Space size={"middle"}>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        loading={riskPending}
-                        disabled={riskPending}
-                    >
-                        Find your premium
-                    </Button>
-                    <Button
-                        type="link"
-                        // declare const ButtonTypes: ["default", "primary", "ghost", "dashed", "link", "text"];
-
-                        htmlType="button"
-                        loading={riskPending}
-                        disabled={false}
-                        onClick={saveForLater}
-                    >
-                        Save for later
-                    </Button>
-                </Space>
-            </Row>
+                            htmlType="button"
+                            loading={riskPending}
+                            disabled={false}
+                            onClick={saveForLater}
+                        >
+                            Save for later
+                        </Button>
+                    </Space>
+                </Row>
+            )}
         </Form>
     );
 }

@@ -18,9 +18,11 @@ const { Paragraph } = Typography;
 
 // auto upload image to risk, dont rely on the parent form
 export default function PropertyImageForm({
+    editable = true,
     risk,
     policy,
 }: {
+    editable: boolean;
     risk: Risk;
     policy: Policy;
 }) {
@@ -122,6 +124,7 @@ export default function PropertyImageForm({
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
+                disabled={!editable}
             >
                 {fileList.length >= 8 ? null : uploadButton}
             </Upload>

@@ -27,8 +27,6 @@ const PolicyQuoteRequestBox = forwardRef(({ policy }: props, ref) => {
 
     useImperativeHandle(ref, () => ({
         open() {
-            console.log("opening drawer");
-
             showDrawer();
         },
     }));

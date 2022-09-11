@@ -98,12 +98,6 @@ export default function PolicyDetails() {
                         isMember={isMember}
                         memberHasFilledOutRisk={memberHasFilledOutRisk}
                         openRiskDrawer={() => {
-                            console.log("====================================");
-                            console.log(
-                                "openRiskDrawer",
-                                policyQuoteDrawerFormRef
-                            );
-                            console.log("====================================");
                             policyQuoteDrawerFormRef?.current?.open();
                         }}
                     />

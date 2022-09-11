@@ -57,7 +57,10 @@ export default function UserMainPremiumObligation({
                         <Statistic
                             title="Premiums Paid to Policy"
                             value={totalPremiumsPaidToPolicy / 100}
-                            prefix="$"
+                            formatter={(val) => `$${val}`}
+                            valueStyle={{
+                                fontSize: "1.2rem",
+                            }}
                         />
                     </Col>
                     <Col>
@@ -68,14 +71,17 @@ export default function UserMainPremiumObligation({
                                     value={nextPaymentDue.format(
                                         "dddd, MMMM Do YYYY"
                                     )}
+                                    valueStyle={{
+                                        fontSize: "1.2rem",
+                                    }}
                                 />
                                 {isNextPaymentLate ? (
-                                    <Paragraph type="danger">
+                                    <Paragraph style={{ fontSize: ".8rem" }}>
                                         Payment is late!
                                     </Paragraph>
                                 ) : (
-                                    <Paragraph>
-                                        In {nextPaymentDue.toNow()}
+                                    <Paragraph style={{ fontSize: ".8rem" }}>
+                                        {nextPaymentDue.fromNow()}
                                     </Paragraph>
                                 )}
                             </div>

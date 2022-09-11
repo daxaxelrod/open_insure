@@ -12,10 +12,12 @@ import {
     WarningOutlined,
 } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { Image, Table, Tooltip, Typography } from "antd";
+import { Alert, Drawer, Image, Table, Tooltip, Typography } from "antd";
 import { getHumanReadableCondition } from "../utils/riskUtils";
 import { Link } from "react-router-dom";
 import colors from "../../../constants/colors";
+import { ConditionalWrapper } from "../../../utils/componentUtils";
+import PolicyQuoteForm from "./PolicyQuoteForm";
 
 interface RiskRowType extends Risk {
     key: React.Key;
@@ -45,6 +47,9 @@ function get_icon_for_insured_asset_type(type: UnderlyingInsuredType) {
 export default function RiskTable({ policy }: { policy: Policy }) {
     const dispatch = useAppDispatch();
     const policyRisks = useAppSelector((state) => state.risk.policyRisks);
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
+    const focusedRisk = useAppSelector((state) => state.risk.focusedRisk);
+    const [riskViewDrawerOpen, setRiskViewDrawerOpen] = useState(false);
     const [photoPreviewVisible, setPhotoPreviewVisible] = useState(false);
 
     useEffect(() => {
@@ -66,6 +71,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
         {
             title: "Item",
             render: (text, record: RiskRowType) => {
+                const isRiskOwnedByUser = record?.user === currentUser.id;
                 return (
                     <div>
                         {record.content_object.album?.[0]?.image ? (
@@ -84,8 +90,62 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                                 alt={record.underlying_insured_type}
                             />
                         ) : null}
-
-                        {record.content_object.model}
+                        <ConditionalWrapper
+                            condition={isRiskOwnedByUser}
+                            wrapper={(children: any) => (
+                                <>
+                                    <Drawer
+                                        title={"My Data"}
+                                        placement="right"
+                                        onClose={() =>
+                                            setRiskViewDrawerOpen(false)
+                                        }
+                                        width={"45%"}
+                                        visible={riskViewDrawerOpen}
+                                        bodyStyle={{ paddingBottom: 80 }}
+                                    >
+                                        <Alert
+                                            message="Once you've joined a policy, you can't
+                                        edit your covered item. Speak with an
+                                        admin if you need to make changes."
+                                            type="warning"
+                                            showIcon
+                                            icon={
+                                                <WarningOutlined
+                                                    style={{
+                                                        color: colors.warning1,
+                                                    }}
+                                                />
+                                            }
+                                            style={{ marginBottom: "1.5rem" }}
+                                        />
+                                        <PolicyQuoteForm
+                                            editable={false}
+                                            policy={policy}
+                                            risk={focusedRisk}
+                                            closeDrawer={() =>
+                                                setRiskViewDrawerOpen(false)
+                                            }
+                                        />
+                                    </Drawer>
+                                    <div
+                                        style={{
+                                            textDecoration: "underline",
+                                            color: "#1a0dab",
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={() => {
+                                            setRiskViewDrawerOpen(true);
+                                        }}
+                                    >
+                                        {children}
+                                    </div>
+                                </>
+                            )}
+                        >
+                            {isRiskOwnedByUser ? "My " : ""}
+                            {record.content_object.model}
+                        </ConditionalWrapper>
                     </div>
                 );
             },
