@@ -1,8 +1,9 @@
 import React from "react";
 import { Avatar, Table, Typography } from "antd";
 
-import { Policy, Risk, User } from "../../../../redux/reducers/commonTypes";
+import { Policy, User } from "../../../../redux/reducers/commonTypes";
 import { ColumnsType } from "antd/lib/table";
+import { CheckOutlined } from "@ant-design/icons";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Link } from "react-router-dom";
 const { Title } = Typography;
@@ -16,7 +17,7 @@ export default function MembersTable({ policy }: { policy: Policy }) {
         (state) => state.risk.policyRisks?.[policy.id]
     );
 
-    const memebers: MemberRowType[] = policy.pod.members.map((m) => ({
+    const members: MemberRowType[] = policy.pod.members.map((m) => ({
         ...m,
         key: m.id,
     }));
@@ -24,7 +25,7 @@ export default function MembersTable({ policy }: { policy: Policy }) {
     const columns: ColumnsType<MemberRowType> = [
         {
             title: "Name",
-            width: "15rem",
+            width: "20rem",
             render: (text, record: MemberRowType) => (
                 <Link to={`/members/${record.id}`}>
                     {record.picture && (
@@ -42,14 +43,19 @@ export default function MembersTable({ policy }: { policy: Policy }) {
         },
         {
             title: "Email",
-
+            width: "20rem",
             render: (text, record) => record.email,
+        },
+        {
+            title: "Verified Email",
+            dataIndex: "verified_email",
+            render: (text) => <div>{text ? <CheckOutlined /> : null}</div>,
         },
     ];
     return (
         <>
             <Title level={4}>Policy Members</Title>
-            <Table dataSource={memebers} columns={columns} />
+            <Table dataSource={members} columns={columns} />
         </>
     );
 }

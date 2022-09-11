@@ -26,14 +26,18 @@ export default function PhoneRiskForm({
     const assetRisk = risk.content_object;
 
     const saveForLater = () => {
-        form.validateFields()
-            .then((values) => {
-                updateRisk(values);
-                closeDrawer();
-            })
-            .catch((info) => {
-                console.log("Validate Failed:", info);
-            });
+        if (form.isFieldsTouched()) {
+            form.validateFields()
+                .then((values) => {
+                    updateRisk(values);
+                    closeDrawer();
+                })
+                .catch((info) => {
+                    console.log("Validate Failed:", info);
+                });
+        } else {
+            closeDrawer();
+        }
     };
 
     const requestAQuote = () => {

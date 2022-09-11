@@ -128,7 +128,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                                             }
                                         />
                                     </Drawer>
-                                    <div
+                                    <span
                                         style={{
                                             textDecoration: "underline",
                                             color: "#1a0dab",
@@ -139,7 +139,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                                         }}
                                     >
                                         {children}
-                                    </div>
+                                    </span>
                                 </>
                             )}
                         >

@@ -112,7 +112,11 @@ export default function CreatePolicyModal({
                             name="coverage_duration"
                             initialValue={12}
                         >
-                            <InputNumber min={3} max={36} />
+                            <InputNumber
+                                min={3}
+                                max={36}
+                                placeholder="Months"
+                            />
                         </Form.Item>
                     </Space>
                 </div>

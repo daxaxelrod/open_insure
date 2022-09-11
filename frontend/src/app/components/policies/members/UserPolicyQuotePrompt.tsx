@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Skeleton, Typography } from "antd";
 import { useParams } from "react-router-dom";
 import { getQuote } from "../../../../redux/actions/risk";
+import { ToTopOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 
 import { Policy } from "../../../../redux/reducers/commonTypes";
@@ -44,28 +45,36 @@ export default function UserPolicyQuotePrompt({
     // needs more love
 
     return (
-        <div style={{ flex: 1 }}>
+        <div
+            style={{
+                flex: 1,
+                justifyContent: "space-around",
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
             <Title level={4}>Get a quote</Title>
             <Row align="middle" justify="space-between">
-                <Col span={12}>
-                    <span>starting at</span>
-                    <Title style={{ marginTop: 0 }} level={5}>
-                        {risk?.premium_amount
-                            ? `${risk?.premium_amount / 100} / month`
-                            : "- / month"}
-                    </Title>
-                </Col>
-                <Col span={12}>
-                    <Button
-                        onClick={openRiskDrawer}
-                        type={"primary"}
-                        size={"large"}
-                    >
-                        <Paragraph style={{ color: "white" }}>
-                            Get a quote
+                <Col span={18}>
+                    <span>
+                        <Paragraph style={{ marginTop: 0 }}>
+                            {risk?.premium_amount
+                                ? `${risk?.premium_amount / 100} / month`
+                                : `You'll be the first one to get a quote for the ${policy.name} policy!`}
                         </Paragraph>
-                    </Button>
+                    </span>
                 </Col>
+            </Row>
+            <Row justify="end">
+                <Button
+                    onClick={openRiskDrawer}
+                    type={"primary"}
+                    size={"large"}
+                >
+                    <Paragraph style={{ color: "white" }}>
+                        Get a quote
+                    </Paragraph>
+                </Button>
             </Row>
         </div>
     );

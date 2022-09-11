@@ -28,7 +28,7 @@ export function isPolicyMember(currentUser: User, policy: Policy): boolean {
     return (
         currentUser.id !== undefined &&
         policy?.pod &&
-        policy?.pod.members.some((m: User) => m.id === currentUser.id)
+        policy?.pod?.members?.some((m: User) => m.id === currentUser.id)
     );
 }
 

@@ -4,6 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Policy } from "../../../../redux/reducers/commonTypes";
+import colors from "../../../constants/colors";
 import { ConditionalWrapper } from "../../../utils/componentUtils";
 
 const { Title, Paragraph } = Typography;
@@ -53,9 +54,9 @@ export default function UserMainPremiumObligation({
                     </Col>
                 </Row>
                 <Row justify="space-between">
-                    <Col>
+                    <Col span={12}>
                         <Statistic
-                            title="Premiums Paid to Policy"
+                            title="Total premiums you've paid"
                             value={totalPremiumsPaidToPolicy / 100}
                             formatter={(val) => `$${val}`}
                             valueStyle={{
@@ -63,7 +64,7 @@ export default function UserMainPremiumObligation({
                             }}
                         />
                     </Col>
-                    <Col>
+                    <Col span={12}>
                         {nextPaymentDue && (
                             <div>
                                 <Statistic
@@ -76,7 +77,12 @@ export default function UserMainPremiumObligation({
                                     }}
                                 />
                                 {isNextPaymentLate ? (
-                                    <Paragraph style={{ fontSize: ".8rem" }}>
+                                    <Paragraph
+                                        style={{
+                                            fontSize: ".8rem",
+                                            color: colors.alert1,
+                                        }}
+                                    >
                                         Payment is late!
                                     </Paragraph>
                                 ) : (

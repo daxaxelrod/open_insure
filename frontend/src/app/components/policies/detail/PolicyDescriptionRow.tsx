@@ -30,7 +30,7 @@ const mockPerils: Peril[] = [
 
 export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
     return (
-        <div style={{ marginTop: "2rem", marginBottom: "1rem" }}>
+        <div style={{ marginTop: "3rem", marginBottom: "2rem" }}>
             <Title level={4}>Description</Title>
             <Row>
                 <Col span={12}>{policy.description}</Col>
@@ -39,7 +39,7 @@ export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
                         {policy.perils.map((peril) => (
                             <Col
                                 span={12}
-                                style={{ padding: "2rem" }}
+                                style={{ padding: "0 0 3rem 3rem" }}
                                 key={peril.id}
                             >
                                 <PerilGridDisplay peril={peril} />

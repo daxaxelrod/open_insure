@@ -40,13 +40,20 @@ export default function CoverageRow({ policy }: { policy: Policy }) {
                 }}
             >
                 <Paragraph style={{ fontSize: ".75rem" }}>
-                    {hasPolicyStarted ? "Started" : "Inactive"}
+                    {hasPolicyStarted ? "Started" : "In setup"}
                 </Paragraph>
-                <Paragraph
-                    style={{ fontSize: ".75rem", color: colors.lightGood }}
-                >
-                    {isMember ? "Member" : null}
-                </Paragraph>
+                {isMember && (
+                    <Paragraph
+                        style={{
+                            fontSize: ".75rem",
+                            padding: "2px 4px",
+                            borderRadius: 8,
+                            background: colors.lightGood,
+                        }}
+                    >
+                        Member
+                    </Paragraph>
+                )}
             </Col>
         </Row>
     );
