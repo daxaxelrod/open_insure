@@ -74,7 +74,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                 const isRiskOwnedByUser = record?.user === currentUser.id;
                 return (
                     <div>
-                        {record.content_object.album?.[0]?.image ? (
+                        {record.content_object?.album?.[0]?.image ? (
                             <Image
                                 onClick={() => setPhotoPreviewVisible(true)}
                                 style={{
@@ -85,7 +85,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                                 }}
                                 src={
                                     process.env.REACT_APP_BACKEND_URL +
-                                    record.content_object.album?.[0].image
+                                    record.content_object?.album?.[0].image
                                 }
                                 alt={record.underlying_insured_type}
                             />
@@ -144,7 +144,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                             )}
                         >
                             {isRiskOwnedByUser ? "My " : ""}
-                            {record.content_object.model}
+                            {record.content_object?.model}
                         </ConditionalWrapper>
                     </div>
                 );
@@ -160,13 +160,13 @@ export default function RiskTable({ policy }: { policy: Policy }) {
         },
         {
             title: "Make",
-            render: (text, record: RiskRowType) => record.content_object.make,
+            render: (text, record: RiskRowType) => record.content_object?.make,
             key: "make",
         },
         {
             title: "Market Value",
             render: (text, record: RiskRowType) =>
-                `$${record.content_object.market_value}`,
+                `$${record.content_object?.market_value}`,
             key: "market_value",
         },
 
@@ -180,7 +180,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
         {
             title: "Condition",
             render: (text, record: RiskRowType) =>
-                getHumanReadableCondition(record.content_object.condition),
+                getHumanReadableCondition(record.content_object?.condition),
             dataIndex: "condition",
             key: "condition",
         },

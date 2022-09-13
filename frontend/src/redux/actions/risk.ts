@@ -64,17 +64,19 @@ export const patchRisk =
     (
         policyId: number,
         riskId: number,
-        payload: any
+        payload: any,
+        fetchQuote: boolean = false
     ): ThunkAction<void, RootState, unknown, AnyAction> =>
     async (dispatch) => {
         dispatch({ type: PATCH_RISK_PENDING });
         try {
             const response = await API.patchRisk(policyId, riskId, payload);
             dispatch({ type: PATCH_RISK_SUCCESS, payload: response.data });
-            return response.data;
+            if (fetchQuote) {
+                dispatch(getQuote(policyId, riskId));
+            }
         } catch (error) {
             dispatch({ type: PATCH_RISK_FAILURE, payload: error });
-            return null;
         }
     };
 

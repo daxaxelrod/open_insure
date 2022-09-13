@@ -44,6 +44,7 @@ class AlbumAdmin(admin.ModelAdmin):
 
 class RiskAdmin(admin.ModelAdmin):
     readonly_fields = ("get_property_model",)
+    list_display = ("__str__", "underlying_insured_type", "get_premium_amount")
 
     def get_property_model(self, obj):
         content_type = ContentType.objects.get_for_model(obj.content_object._meta.model)
@@ -52,6 +53,11 @@ class RiskAdmin(admin.ModelAdmin):
             args=(obj.object_id,),
         )
         return format_html("<a href='{url}'>{url}</a>", url=url)
+
+    def get_premium_amount(self, obj):
+        if obj.premium_amount:
+            return obj.premium_amount/100
+        return "Not Quoted"
 
 
 class RiskInline(admin.TabularInline):
@@ -86,8 +92,6 @@ class PremiumAdmin(admin.ModelAdmin):
 
     def get_changelist_form(self, request, **kwargs):
         return PremiumChangeForm
-
-
 
 admin.site.register(Policy, PolicyAdmin)
 admin.site.register(Claim)

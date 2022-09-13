@@ -18,12 +18,12 @@ export default function PolicyQuoteForm({
     closeDrawer: () => void;
 }) {
     const dispatch = useAppDispatch();
-    const updateRisk = (values: any) => {
+    const updateRisk = (values: any, fetchQuote?: boolean) => {
         if (!editable) {
             return;
         }
         if (risk) {
-            dispatch(patchRisk(policy.id, risk?.id, values));
+            dispatch(patchRisk(policy.id, risk?.id, values, fetchQuote));
         } else {
             console.log("Error: no risk");
         }

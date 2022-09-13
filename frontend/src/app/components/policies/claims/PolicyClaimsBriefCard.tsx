@@ -5,7 +5,7 @@ import { Policy } from "../../../../redux/reducers/commonTypes";
 const Title = Typography.Title;
 
 export default function PolicyClaimsBriefCard({ policy }: { policy: Policy }) {
-    let numPendingClaims = policy.claims.filter(
+    let numPendingClaims = policy?.claims?.filter(
         (claim) =>
             claim.approvals.length < policy.claim_approval_threshold_percentage
     ).length;
@@ -26,7 +26,7 @@ export default function PolicyClaimsBriefCard({ policy }: { policy: Policy }) {
                 <Col span={12}>
                     <Statistic
                         title="Number of claims"
-                        value={policy.claims.length}
+                        value={policy?.claims?.length}
                     />
                 </Col>
                 <Col>

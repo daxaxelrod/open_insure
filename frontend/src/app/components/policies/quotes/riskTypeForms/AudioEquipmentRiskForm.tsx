@@ -14,7 +14,7 @@ export default function AudioEquipmentRiskForm({
 }: {
     editable: boolean;
     policy: Policy;
-    updateRisk: (values: any) => void;
+    updateRisk: (values: any, fetchQuote?: boolean) => void;
     formLayout: any;
     closeDrawer: () => void;
 }) {
@@ -22,8 +22,6 @@ export default function AudioEquipmentRiskForm({
 
     const risk = useAppSelector((state) => state.risk.focusedRisk);
     const riskPending = useAppSelector((state) => state.risk.modifyRiskPending);
-
-    const navigate = useNavigate();
 
     const saveForLater = () => {
         form.validateFields()
@@ -39,8 +37,7 @@ export default function AudioEquipmentRiskForm({
     const requestAQuote = () => {
         form.validateFields()
             .then((values) => {
-                updateRisk(values);
-                navigate(`/policy/${risk.policy}`);
+                updateRisk(values, true);
                 closeDrawer();
             })
             .catch((info) => {

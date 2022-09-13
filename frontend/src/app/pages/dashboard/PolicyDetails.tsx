@@ -73,7 +73,7 @@ export default function PolicyDetails() {
                         </Paragraph>
                     </Col>
                     <Col span={3}>
-                        {!isMember && (
+                        {(!isMember || !memberHasFilledOutRisk) && (
                             <PolicyQuoteRequestForm
                                 policy={policy}
                                 ref={policyQuoteDrawerFormRef}

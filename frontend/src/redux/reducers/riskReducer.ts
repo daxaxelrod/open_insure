@@ -8,6 +8,7 @@ import {
     GET_RISKS_FOR_USER_PENDING,
     GET_RISKS_FOR_USER_SUCCESS,
     GET_RISKS_FOR_USER_FAILURE,
+    CLEAR_FOCUSED_RISK,
     CREATE_RISK_PENDING,
     CREATE_RISK_SUCCESS,
     CREATE_RISK_FAILURE,
@@ -164,7 +165,11 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 getQuotePending: false,
             };
-
+        case CLEAR_FOCUSED_RISK:
+            return {
+                ...state,
+                focusedRisk: null,
+            };
         default:
             return state;
     }

@@ -14,7 +14,7 @@ export default function PolicyQuoteFormFactory({
     editable: boolean;
     policy: Policy;
     risk: Risk | null;
-    updateRisk: (values: any) => void;
+    updateRisk: (values: any, fetchQuote?: boolean) => void;
     formLayout: any;
     closeDrawer: () => void;
 }) {

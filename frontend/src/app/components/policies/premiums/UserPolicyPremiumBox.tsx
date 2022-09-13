@@ -32,7 +32,7 @@ export default function UserPolicyPremiumBox({
         >
             {riskPending ? (
                 <Skeleton />
-            ) : isMember ? (
+            ) : isMember && memberHasFilledOutRisk ? (
                 <UserMainPremiumObligation policy={policy} />
             ) : memberHasFilledOutRisk ? (
                 <ProspectiveMemberPrompt

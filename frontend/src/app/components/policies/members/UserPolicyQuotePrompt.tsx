@@ -15,27 +15,15 @@ export default function UserPolicyQuotePrompt({
     openRiskDrawer: () => void;
 }) {
     let { id } = useParams();
-    const dispatch = useAppDispatch();
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
             (p: Policy) => p.id === parseInt(id || "")
         )
     );
     const risk = useAppSelector((state) => state.risk.focusedRisk);
-    const riskPending = useAppSelector((state) => state.risk.modifyRiskPending);
     const getQuotePending = useAppSelector(
         (state) => state.risk.getQuotePending
     );
-
-    const [retrievedQuote, setRetrievedQuote] = useState(false);
-
-    useEffect(() => {
-        // should this rely on risk?
-        if (risk && risk?.id && policy?.id && !retrievedQuote) {
-            dispatch(getQuote(policy.id, risk.id));
-            setRetrievedQuote(true);
-        }
-    }, [riskPending, risk, policy, retrievedQuote]);
 
     if (getQuotePending) {
         return <Skeleton />;
