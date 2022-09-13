@@ -5,6 +5,7 @@ import {
     Policy,
     UnderlyingInsuredType,
     Risk,
+    User,
 } from "../../../../redux/reducers/commonTypes";
 import {
     MobileOutlined,
@@ -65,7 +66,11 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                 key: `risk-${risk.id}-${index}`,
             };
         }) || [];
-    risks = risks.filter((r) => r?.premium_amount);
+    risks = risks.filter(
+        (r) =>
+            r?.premium_amount &&
+            policy?.pod?.members?.some((m: User) => m.id === r.user)
+    );
 
     const columns: ColumnsType<RiskRowType> = [
         {

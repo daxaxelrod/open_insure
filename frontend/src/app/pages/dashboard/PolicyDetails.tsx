@@ -34,10 +34,10 @@ export default function PolicyDetails() {
     let focusedRisk = useAppSelector((state) => state.risk.focusedRisk);
 
     useEffect(() => {
-        if (policy && policy?.id) {
+        if (policy && policy?.id && focusedRisk === null) {
             dispatch(getOrCreateRisk(policy?.id, {}));
         }
-    }, [policy]);
+    }, [policy, focusedRisk]);
 
     let doesPolicyHaveStartDate = policy?.coverage_start_date;
     let hasPolicyStarted = false;

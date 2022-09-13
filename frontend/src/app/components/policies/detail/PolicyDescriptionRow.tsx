@@ -1,9 +1,11 @@
 import React from "react";
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Space, Statistic, Typography } from "antd";
 import { Peril, Policy } from "../../../../redux/reducers/commonTypes";
 import PerilGridDisplay from "./PerilGridDisplay";
+import { CalendarOutlined } from "@ant-design/icons";
+import moment from "moment-timezone";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 const mockPerils: Peril[] = [
     {
@@ -33,7 +35,34 @@ export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
         <div style={{ marginTop: "3rem", marginBottom: "2rem" }}>
             <Title level={4}>Description</Title>
             <Row>
-                <Col span={12}>{policy.description}</Col>
+                <Col
+                    span={12}
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                    }}
+                >
+                    <Paragraph>{policy.description}</Paragraph>
+                    <Row justify="start">
+                        <Space size={50}>
+                            <Statistic
+                                title="Starts"
+                                value={moment(
+                                    policy.coverage_start_date
+                                ).format("MMMM Do YYYY")}
+                                valueStyle={{ fontSize: 14 }}
+                                prefix={<CalendarOutlined />}
+                            />
+                            <Statistic
+                                title="Duration"
+                                value={policy.coverage_duration}
+                                valueStyle={{ fontSize: 14 }}
+                                suffix={"Months"}
+                            />
+                        </Space>
+                    </Row>
+                </Col>
                 <Col span={12}>
                     <Row>
                         {policy.perils.map((peril) => (

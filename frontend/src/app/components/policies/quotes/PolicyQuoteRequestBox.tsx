@@ -1,9 +1,8 @@
-import { Col, Row, Space } from "antd";
+import { Row } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { Button, Drawer, Typography } from "antd";
 import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { getOrCreateRisk } from "../../../../redux/actions/risk";
+import { useAppSelector } from "../../../../redux/hooks";
 import PolicyQuoteForm from "./PolicyQuoteForm";
 
 const { Paragraph } = Typography;
@@ -11,12 +10,10 @@ type props = { policy: Policy };
 
 const PolicyQuoteRequestBox = forwardRef(({ policy }: props, ref) => {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-    const dispatch = useAppDispatch();
     const focusedRisk: Risk = useAppSelector((state) => state.risk.focusedRisk);
 
     const showDrawer = () => {
         setIsDrawerVisible(true);
-        dispatch(getOrCreateRisk(policy.id, {}));
     };
 
     const onClose = () => {

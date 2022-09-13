@@ -40,7 +40,9 @@ export default function UserMainPremiumObligation({
     return (
         <Container>
             <ConditionalWrapper
-                condition={unpaidPremiums.length === 0}
+                condition={
+                    userPremiums.length > 0 && unpaidPremiums.length === 0
+                }
                 wrapper={(children: any) => (
                     <Badge.Ribbon text="Paid in full!">{children}</Badge.Ribbon>
                 )}

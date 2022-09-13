@@ -1,13 +1,14 @@
 import React from "react";
 import { Typography, Layout, Row } from "antd";
 import { useAppSelector } from "../../redux/hooks";
-import { Link } from "react-router-dom";
+import { isLoggedIn } from "axios-jwt";
 const { Header } = Layout;
 
 const { Title } = Typography;
 
 export default function NavBar() {
     const currentUser = useAppSelector((state) => state.auth.currentUser);
+    const loggedIn = isLoggedIn();
 
     return (
         <Header
@@ -20,10 +21,17 @@ export default function NavBar() {
                 flex: 1,
             }}
         >
-            <Row align="middle" justify="space-between" style={{ flex: 1 }}>
-                <Title level={4} style={{ margin: 0 }}>
-                    &nbsp;Hi {currentUser.first_name}
-                </Title>
+            <Row
+                align="middle"
+                justify={loggedIn ? "space-between" : "start"}
+                style={{ flex: 1 }}
+            >
+                {loggedIn && (
+                    <Title level={4} style={{ margin: 0 }}>
+                        &nbsp;Hi {currentUser?.first_name}
+                    </Title>
+                )}
+
                 <a href="/">
                     <Title level={4} style={{ margin: 0 }}>
                         Open Insure&nbsp;

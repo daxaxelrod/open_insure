@@ -30,9 +30,12 @@ export default function PerilGridDisplay({ peril }: { peril: Peril }) {
     return (
         <Tooltip title={peril.description}>
             <Row>
-                <Col span={4}>{icon}</Col>
+                {icon}
                 <Col style={{ display: "flex", alignItems: "center" }}>
-                    <Title level={5} style={{ marginBottom: 0 }}>
+                    <Title
+                        level={5}
+                        style={{ marginBottom: 0, marginLeft: 15 }}
+                    >
                         {peril.name}
                     </Title>
                 </Col>
