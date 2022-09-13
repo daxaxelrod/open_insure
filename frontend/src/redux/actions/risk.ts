@@ -98,6 +98,7 @@ export const getQuote =
         try {
             const response = await API.getQuote(policyId, riskId);
             dispatch({ type: GET_QUOTE_SUCCESS, payload: response.data });
+            dispatch(getRisksForPolicy(policyId));
         } catch (error) {
             dispatch({ type: GET_QUOTE_FAILURE, payload: error });
         }
