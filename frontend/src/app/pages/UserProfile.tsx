@@ -6,12 +6,13 @@ import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import moment from "moment-timezone";
 import { logout } from "../../networking/auth";
 import { useAppSelector } from "../../redux/hooks";
+import { User } from "../../redux/reducers/commonTypes";
 
 const { Title, Paragraph } = Typography;
 
 export default function UserProfile() {
     const navigate = useNavigate();
-    const user = useAppSelector((state) => state.auth.currentUser);
+    const user: User = useAppSelector((state) => state.auth.currentUser);
 
     const logoutHandler = () => {
         logout();
@@ -25,7 +26,10 @@ export default function UserProfile() {
                     <Image
                         width={200}
                         style={{ borderRadius: 14 }}
-                        src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
+                        src={
+                            user?.picture ||
+                            `https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`
+                        }
                     />
                 </Col>
                 <Col span={16}>
