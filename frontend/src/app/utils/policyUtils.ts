@@ -33,26 +33,26 @@ export function isPolicyMember(currentUser: User, policy: Policy): boolean {
     );
 }
 
-export function getPremiumsPerMonth(policy: Policy): number {
+export function getPremiumsPaidThisMonth(policy: Policy): number {
     let currentMonth = moment().startOf("month");
+    let premiumsDueThisMonth = policy?.premiums.filter((premium) => {
+        let isPremiumDuringCurrentMonth = moment(premium.due_date).isSame(
+            currentMonth,
+            "month"
+        );
+        return (
+            policy?.pod?.members?.some(
+                (member) => member.id === premium.payer
+            ) &&
+            premium.paid === true &&
+            isPremiumDuringCurrentMonth
+        );
+    });
     return (
-        policy?.premiums
-            .filter((premium) => {
-                let isPremiumDuringCurrentMonth = moment(
-                    premium.due_date
-                ).isSame(currentMonth, "month");
-                return (
-                    policy?.pod?.members?.some(
-                        (member) => member.id === premium.payer
-                    ) &&
-                    premium.paid === true &&
-                    isPremiumDuringCurrentMonth
-                );
-            })
-            .reduce(
-                (acc: number, premium: Premium) => acc + premium.amount,
-                0
-            ) / 100
+        premiumsDueThisMonth.reduce(
+            (acc: number, premium: Premium) => acc + premium.amount,
+            0
+        ) / 100
     );
 }
 

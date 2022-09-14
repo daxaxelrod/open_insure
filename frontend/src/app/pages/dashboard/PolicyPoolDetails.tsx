@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Alert, Card, Col, Row, Typography } from "antd";
+import { Alert, Card, Col, Row, Table, Typography } from "antd";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -62,6 +62,10 @@ export default function PolicyPoolDetails() {
                     </Card>
                     <Card>Latest claims info</Card>
                 </Col>
+            </Row>
+            <Row>
+                <AntTitle level={3}>Premiums</AntTitle>
+                <Table />
             </Row>
         </>
     );

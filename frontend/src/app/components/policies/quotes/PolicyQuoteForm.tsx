@@ -32,8 +32,11 @@ export default function PolicyQuoteForm({
     let availableInsuredAssetTypes: string[] = [];
 
     if (policy) {
-        availableInsuredAssetTypes = policy?.available_underlying_insured_types;
+        let policyAssetTypes = policy?.available_underlying_insured_types;
+        policyAssetTypes.reverse(); // nothing more than me wanting cell_phone to be first
+        availableInsuredAssetTypes = policyAssetTypes;
     }
+
     const formLayout: any = {
         labelCol: {
             xs: { span: 5 },
