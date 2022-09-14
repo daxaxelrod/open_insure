@@ -1,3 +1,4 @@
+import moment from "moment-timezone";
 import { Policy, Premium, User } from "../../redux/reducers/commonTypes";
 
 export function getCoverageTypeHumanReadable(coverageType: string): string {
@@ -33,13 +34,25 @@ export function isPolicyMember(currentUser: User, policy: Policy): boolean {
 }
 
 export function getPremiumsPerMonth(policy: Policy): number {
+    let currentMonth = moment().startOf("month");
     return (
-        policy?.premiums.reduce(
-            (acc: number, premium: Premium) => acc + premium.amount,
-            0
-        ) /
-        policy?.coverage_duration /
-        100
+        policy?.premiums
+            .filter((premium) => {
+                let isPremiumDuringCurrentMonth = moment(
+                    premium.due_date
+                ).isSame(currentMonth, "month");
+                return (
+                    policy?.pod?.members?.some(
+                        (member) => member.id === premium.payer
+                    ) &&
+                    premium.paid === true &&
+                    isPremiumDuringCurrentMonth
+                );
+            })
+            .reduce(
+                (acc: number, premium: Premium) => acc + premium.amount,
+                0
+            ) / 100
     );
 }
 

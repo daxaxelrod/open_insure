@@ -96,7 +96,7 @@ export interface Policy {
 }
 
 export interface Image {
-    id: string;
+    id: number;
     image: string;
     created_at: string;
     updated_at: string;

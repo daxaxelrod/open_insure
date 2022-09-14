@@ -8,6 +8,7 @@ import {
 
 export default function PolicyPoolStats({ policy }: { policy: Policy }) {
     const premiumsPerMonth = getPremiumsPerMonth(policy);
+
     return (
         <Row gutter={16}>
             <Col span={12}>
@@ -28,9 +29,9 @@ export default function PolicyPoolStats({ policy }: { policy: Policy }) {
             </Col>
             <Col span={12}>
                 <Statistic
-                    title="Premiums per month"
+                    title="Premiums this month"
                     value={premiumsPerMonth}
-                    formatter={(val) => `$${val}`}
+                    formatter={(val) => `+$${val}`}
                 />
             </Col>
         </Row>

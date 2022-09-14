@@ -250,7 +250,7 @@ class PolicyRiskViewSet(ModelViewSet):
         image_serializer.save(album=album, owner=self.request.user)
 
         # we want to return the whole album so the client has the most recent photo set
-        return Response(AlbumSerializer(album.images).data, status=HTTP_201_CREATED)
+        return Response(AlbumSerializer(album).data, status=HTTP_201_CREATED)
 
 
 class RiskMediaViewSet(RetrieveUpdateDestroyAPIView):

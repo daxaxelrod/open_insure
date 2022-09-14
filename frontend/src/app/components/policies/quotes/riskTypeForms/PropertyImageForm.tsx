@@ -30,7 +30,7 @@ export default function PropertyImageForm({
     const [previewImage, setPreviewImage] = useState("");
     const [previewTitle, setPreviewTitle] = useState("");
     const { content_object } = risk;
-    const album = content_object?.album;
+    const album: Image[] = content_object?.album;
     const dispatch = useAppDispatch();
 
     const handleCancel = () => setPreviewVisible(false);
@@ -50,23 +50,47 @@ export default function PropertyImageForm({
     const handleChange: UploadProps["onChange"] = async ({
         fileList: newFileList,
     }) => {
+        // sometimes newFileList has a .status ==='removed'
+        // othger times it just removes it completely, then check against the original album which is in state
         let removedItems = newFileList.filter(
             (file: UploadFile) => file.status === "removed"
         );
         let justRemovedItemIds = removedItems.map((item) => item.uid);
-        let remainingItems = album.filter(
-            (image) => justRemovedItemIds.indexOf(image.id) === -1
+        let remainingItems = album?.filter(
+            (image) => justRemovedItemIds.indexOf(image.id.toString()) === -1
         );
+
         if (removedItems.length === 1) {
             await deleteRiskPhoto(parseInt(removedItems[0].uid));
             dispatch(updatePhotoSet(remainingItems));
+        } else if (
+            removedItems.length === 0 &&
+            album.length &&
+            newFileList.length !== album.length
+        ) {
+            // find the removed items
+            let existingIds = newFileList.map((file) => file.uid);
+            let imagesToRemove: Image[] = album.filter(
+                (image) => existingIds.indexOf(image.id.toString()) === -1
+            );
+            for (let image of imagesToRemove) {
+                await deleteRiskPhoto(image.id);
+            }
+            dispatch(
+                updatePhotoSet(
+                    album.filter(
+                        (image) =>
+                            existingIds.indexOf(image.id.toString()) !== -1
+                    )
+                )
+            );
         }
     };
 
     const fileList: UploadFile<any>[] = Array.isArray(album)
         ? album?.map((image: Image) => {
               return {
-                  uid: image.id,
+                  uid: image.id.toString(),
                   name: "image.png",
                   status: "done",
                   url: process.env.REACT_APP_BACKEND_URL + image.image,
@@ -104,7 +128,7 @@ export default function PropertyImageForm({
                 fmData,
                 config
             );
-            dispatch(updatePhotoSet(res.data));
+            dispatch(updatePhotoSet(res.data.images));
             onSuccess("Ok");
         } catch (err: any) {
             onError({

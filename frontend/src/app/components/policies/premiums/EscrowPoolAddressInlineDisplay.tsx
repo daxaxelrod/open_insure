@@ -17,6 +17,7 @@ export default function EscrowPoolAddressInlineDisplay({
     if (isValidBtcAddress) {
         return (
             <a
+                target={"_blank"}
                 onClick={(event) => event.stopPropagation()}
                 href={`https://www.blockchain.com/btc/address/${address}`}
             >
@@ -26,6 +27,7 @@ export default function EscrowPoolAddressInlineDisplay({
     } else {
         return (
             <a
+                target={"_blank"}
                 onClick={(event) => event.stopPropagation()}
                 href={`https://account.venmo.com/u/${address}`}
             >
