@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Avatar, Table, Typography } from "antd";
+import { Avatar, Button, Row, Table, Typography, notification } from "antd";
 
 import { Policy, User } from "../../../../redux/reducers/commonTypes";
 import { ColumnsType } from "antd/lib/table";
@@ -20,6 +20,7 @@ export default function MembersTable({ policy }: { policy: Policy }) {
             (pod) => [policy.pod?.id, policy?.pod].indexOf(pod.id) > -1
         )
     );
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
 
     useEffect(() => {
         if (policy && typeof policy.pod === "number") {
@@ -27,6 +28,19 @@ export default function MembersTable({ policy }: { policy: Policy }) {
             dispatch(getPodById(policy.pod));
         }
     }, [policy]);
+
+    const emailEveryone = () => {
+        let emails = members.map((m) => m.email);
+
+        // mailto is unreliable, so we'll use a copy to clipboard + alert
+        // let mailLink = `mailto:to=${emails.join("&to=");}`;
+        // window.open(mailLink, "_blank");
+        navigator.clipboard.writeText(emails.join(";"));
+
+        notification.success({
+            message: "Invitation sent",
+        });
+    };
 
     const members: MemberRowType[] =
         policy?.pod?.members?.map((m) => ({
@@ -38,6 +52,10 @@ export default function MembersTable({ policy }: { policy: Policy }) {
             key: m.id,
         })) ||
         [];
+
+    const isMember = members?.find((member) => {
+        return member.id === currentUser.id;
+    });
 
     const columns: ColumnsType<MemberRowType> = [
         {
@@ -71,7 +89,12 @@ export default function MembersTable({ policy }: { policy: Policy }) {
     ];
     return (
         <>
-            <Title level={4}>Policy Members</Title>
+            <Row justify="space-between">
+                <Title level={4}>Policy Members</Title>
+                {isMember && (
+                    <Button onClick={emailEveryone}>Email Eveyone</Button>
+                )}
+            </Row>
             <Table dataSource={members} columns={columns} />
         </>
     );
