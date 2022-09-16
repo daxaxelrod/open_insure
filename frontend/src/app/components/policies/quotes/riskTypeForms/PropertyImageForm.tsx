@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { UploadProps } from "antd";
+import { Col, Row, UploadProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Typography, message, Upload, Modal } from "antd";
 
@@ -141,29 +141,44 @@ export default function PropertyImageForm({
 
     return (
         <>
-            <Paragraph>Photos</Paragraph>
-            <Upload
-                listType="picture-card"
-                customRequest={uploadImage}
-                fileList={fileList}
-                onPreview={handlePreview}
-                onChange={handleChange}
-                disabled={!editable}
-            >
-                {fileList.length >= 8 ? null : uploadButton}
-            </Upload>
-            <Modal
-                visible={previewVisible}
-                title={previewTitle}
-                footer={null}
-                onCancel={handleCancel}
-            >
-                <img
-                    alt="example"
-                    style={{ width: "100%" }}
-                    src={previewImage}
-                />
-            </Modal>
+            <Row>
+                <Col
+                    sm={4}
+                    xs={5}
+                    style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        paddingRight: 10,
+                    }}
+                >
+                    <Paragraph>Photos: </Paragraph>
+                </Col>
+                <Col sm={10} xs={16}>
+                    <Upload
+                        listType="picture-card"
+                        customRequest={uploadImage}
+                        fileList={fileList}
+                        onPreview={handlePreview}
+                        onChange={handleChange}
+                        disabled={!editable}
+                    >
+                        {fileList.length >= 8 ? null : uploadButton}
+                    </Upload>
+                </Col>
+
+                <Modal
+                    visible={previewVisible}
+                    title={previewTitle}
+                    footer={null}
+                    onCancel={handleCancel}
+                >
+                    <img
+                        alt="example"
+                        style={{ width: "100%" }}
+                        src={previewImage}
+                    />
+                </Modal>
+            </Row>
         </>
     );
 }

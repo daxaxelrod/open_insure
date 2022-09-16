@@ -46,5 +46,3 @@ export default function PolicyAssetCoverageSelection({
         </Form>
     );
 }
-
-const PolicyAssetCoverageSelectionItem = () => {};

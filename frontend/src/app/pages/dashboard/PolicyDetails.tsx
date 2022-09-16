@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Space, Typography } from "antd";
 import { Policy, User } from "../../../redux/reducers/commonTypes";
 
 import moment from "moment-timezone";
@@ -62,7 +62,7 @@ export default function PolicyDetails() {
         <div>
             <div>
                 <Row align="middle">
-                    <Col span={21}>
+                    <Col span={19}>
                         <Title style={{ marginBottom: 0 }} level={2}>
                             {policy?.name}
                         </Title>
@@ -72,14 +72,18 @@ export default function PolicyDetails() {
                             {hasPolicyStarted ? "Active Policy" : "In setup"}
                         </Paragraph>
                     </Col>
-                    <Col span={3}>
-                        {(!isMember || !memberHasFilledOutRisk) && (
-                            <PolicyQuoteRequestForm
-                                policy={policy}
-                                ref={policyQuoteDrawerFormRef}
-                            />
-                        )}
-                        {isMember && <InviteFriendToPolicy policy={policy} />}
+                    <Col span={5}>
+                        <Space>
+                            {(!isMember || !memberHasFilledOutRisk) && (
+                                <PolicyQuoteRequestForm
+                                    policy={policy}
+                                    ref={policyQuoteDrawerFormRef}
+                                />
+                            )}
+                            {isMember && (
+                                <InviteFriendToPolicy policy={policy} />
+                            )}
+                        </Space>
                     </Col>
                 </Row>
             </div>

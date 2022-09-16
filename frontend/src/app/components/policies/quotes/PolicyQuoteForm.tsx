@@ -43,8 +43,8 @@ export default function PolicyQuoteForm({
             sm: { span: 4 },
         },
         wrapperCol: {
-            xs: { span: 14 },
-            sm: { span: 8 },
+            xs: { span: 16 },
+            sm: { span: 10 },
         },
     };
 
