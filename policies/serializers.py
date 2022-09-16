@@ -238,15 +238,16 @@ class RiskSerializer(serializers.ModelSerializer):
                 policy=validated_data.get("policy"), user=validated_data.get("user")
             )  # cant use get_or_create due to other data that comes in validated data
         except Risk.DoesNotExist:
+            print("creating risk for user", validated_data.get("user"))
             risk = Risk.objects.create(**validated_data)
         except Risk.MultipleObjectsReturned:
-            # maybe instead of raising an error, delete all risks except the most recent one
-            # risks = Risk.objects.filter(
-            #     policy=validated_data.get("policy"), user=validated_data.get("user")
-            # ).order_by("-created_at")
-            raise serializers.ValidationError(
-                "Multiple risks found for this user and policy."
-            )
+            # this should never happen
+            risks = Risk.objects.filter(
+                policy=validated_data.get("policy"), user=validated_data.get("user")
+            ).order_by("-created_at")
+            risk = risks[0]
+            for r in risks[1:]:
+                r.delete()
         return risk
 
     class Meta:

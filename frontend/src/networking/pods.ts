@@ -11,11 +11,11 @@ export interface PodInvitePayload {
 }
 
 export const getPodById = (id: number) => {
-    return axiosInstance.get(`/api/v1/pods/${id}`);
+    return axiosInstance.get(`/api/v1/pods/${id}/`);
 };
 
 export const createPod = (values: PodCreationPayload) => {
-    return axiosInstance.post("/api/v1/pods", values);
+    return axiosInstance.post("/api/v1/pods/", values);
 };
 
 export const inviteUserToPod = (podId: number, values: PodInvitePayload) => {

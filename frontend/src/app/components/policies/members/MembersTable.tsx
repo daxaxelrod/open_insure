@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Avatar, Table, Typography } from "antd";
 
 import { Policy, User } from "../../../../redux/reducers/commonTypes";
 import { ColumnsType } from "antd/lib/table";
 import { CheckOutlined } from "@ant-design/icons";
-import { useAppSelector } from "../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { Link } from "react-router-dom";
+import { getPodById } from "../../../../redux/actions/pods";
 const { Title } = Typography;
 
 interface MemberRowType extends User {
@@ -13,14 +14,30 @@ interface MemberRowType extends User {
 }
 
 export default function MembersTable({ policy }: { policy: Policy }) {
-    const policyRisks = useAppSelector(
-        (state) => state.risk.policyRisks?.[policy.id]
+    const dispatch = useAppDispatch();
+    const pod = useAppSelector((state) =>
+        state.pods.pods.find(
+            (pod) => [policy.pod?.id, policy?.pod].indexOf(pod.id) > -1
+        )
     );
 
-    const members: MemberRowType[] = policy.pod.members.map((m) => ({
-        ...m,
-        key: m.id,
-    }));
+    useEffect(() => {
+        if (policy && typeof policy.pod === "number") {
+            // get the pod for the policy
+            dispatch(getPodById(policy.pod));
+        }
+    }, [policy]);
+
+    const members: MemberRowType[] =
+        policy?.pod?.members?.map((m) => ({
+            ...m,
+            key: m.id,
+        })) ||
+        pod?.members?.map((m: User) => ({
+            ...m,
+            key: m.id,
+        })) ||
+        [];
 
     const columns: ColumnsType<MemberRowType> = [
         {

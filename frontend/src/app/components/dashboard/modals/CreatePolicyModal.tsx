@@ -49,6 +49,7 @@ export default function CreatePolicyModal({
                         }),
                     })
                 );
+                setIsVisible(false);
             })
             .catch((info) => {
                 console.log("Validate Failed:", info);

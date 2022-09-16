@@ -2,49 +2,57 @@
 import { AnyAction } from "@reduxjs/toolkit";
 
 import {
-  CREATE_POD_PENDING,
-  CREATE_POD_SUCCESS,
-  CREATE_POD_FAILURE
-} from '../actions/types';
+    CREATE_POD_PENDING,
+    CREATE_POD_SUCCESS,
+    CREATE_POD_FAILURE,
+    GET_SINGLE_POD_SUCCESS,
+} from "../actions/types";
 import { Pod } from "./commonTypes";
 
 export interface PodsState {
-  pods: Pod[];
-  getPodsPending: boolean;
-  createPodPending: boolean;
-  podCreationErrors: any[];
+    pods: Pod[];
+    getPodsPending: boolean;
+    createPodPending: boolean;
+    podCreationErrors: any[];
 }
 
 const initialState: PodsState = {
-  pods: [],
-  getPodsPending: false,
-  createPodPending: false,
-  podCreationErrors: []
+    pods: [],
+    getPodsPending: false,
+    createPodPending: false,
+    podCreationErrors: [],
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
-  switch (type) {
+    switch (type) {
+        case CREATE_POD_PENDING:
+            return {
+                ...state,
+                createPodPending: true,
+            };
+        case CREATE_POD_SUCCESS:
+            return {
+                ...state,
+                createPodPending: false,
+                pods: [...state.pods, payload],
+                podCreationErrors: [],
+            };
+        case CREATE_POD_FAILURE:
+            return {
+                ...state,
+                createPodPending: false,
+                podCreationErrors: payload,
+            };
+        case GET_SINGLE_POD_SUCCESS:
+            return {
+                ...state,
+                pods: [
+                    ...state.pods.filter((pod) => pod.id !== payload.id),
+                    payload,
+                ],
+            };
 
-    case CREATE_POD_PENDING:
-      return {
-        ...state,
-        createPodPending: true,
-      }
-    case CREATE_POD_SUCCESS:
-      return {
-        ...state,
-        createPodPending: false,
-        pods: [...state.pods, payload],
-        podCreationErrors: [],
-      }
-    case CREATE_POD_FAILURE:
-      return {
-        ...state,
-        createPodPending: false,
-        podCreationErrors: payload
-      }
-
-    default:
-      return state
-  }
-}
+        default:
+            return state;
+    }
+};
