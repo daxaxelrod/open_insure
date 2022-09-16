@@ -15,7 +15,7 @@ ARG APP_PORT=${APP_PORT}
 
 WORKDIR /var/app
 COPY . ${PROJECT_DIR}
-RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy --system
 
 
 EXPOSE 8000 8000

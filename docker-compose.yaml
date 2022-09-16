@@ -1,7 +1,6 @@
 version: "3.2"
 services:
   project:
-    restart: always
     container_name: back
     command : bash -c "python manage.py migrate &&
                       python manage.py runserver 0.0.0.0:8000"
@@ -14,7 +13,6 @@ services:
       - "8000:8000"
 
   frontend:
-    restart: always
     container_name: front
     env_file:
       - ./frontend/.env
