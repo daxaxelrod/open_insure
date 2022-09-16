@@ -88,7 +88,7 @@ export default function MembersTable({ policy }: { policy: Policy }) {
         },
     ];
     return (
-        <>
+        <div style={{ marginBottom: ".5rem" }}>
             <Row justify="space-between">
                 <Title level={4}>Policy Members</Title>
                 {isMember && (
@@ -96,6 +96,6 @@ export default function MembersTable({ policy }: { policy: Policy }) {
                 )}
             </Row>
             <Table dataSource={members} columns={columns} />
-        </>
+        </div>
     );
 }

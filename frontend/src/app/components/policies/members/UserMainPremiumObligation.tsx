@@ -71,9 +71,7 @@ export default function UserMainPremiumObligation({
                             <div>
                                 <Statistic
                                     title="Next Payment Due"
-                                    value={nextPaymentDue.format(
-                                        "dddd, MMMM Do YYYY"
-                                    )}
+                                    value={nextPaymentDue.format("M/D/YY")}
                                     valueStyle={{
                                         fontSize: "1.2rem",
                                     }}

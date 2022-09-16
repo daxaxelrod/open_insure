@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Col, Row, Tooltip, Typography } from "antd";
 
-const { Title } = Typography;
+const { Paragraph } = Typography;
 
 const getIconForPeril = (peril: Peril) => {
     switch (peril.icon_name) {
@@ -32,12 +32,9 @@ export default function PerilGridDisplay({ peril }: { peril: Peril }) {
             <Row>
                 {icon}
                 <Col style={{ display: "flex", alignItems: "center" }}>
-                    <Title
-                        level={5}
-                        style={{ marginBottom: 0, marginLeft: 15 }}
-                    >
+                    <Paragraph style={{ marginBottom: 0, marginLeft: 15 }}>
                         {peril.name}
-                    </Title>
+                    </Paragraph>
                 </Col>
             </Row>
         </Tooltip>

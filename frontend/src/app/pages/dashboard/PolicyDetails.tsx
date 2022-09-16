@@ -69,10 +69,15 @@ export default function PolicyDetails() {
                         <Paragraph
                             style={{ color: colors.gray10, fontSize: 12 }}
                         >
-                            {hasPolicyStarted ? "Active Policy" : "In setup"}
+                            {hasPolicyStarted
+                                ? "Active Policy"
+                                : "In setup phase"}
                         </Paragraph>
                     </Col>
-                    <Col span={5}>
+                    <Col
+                        span={5}
+                        style={{ display: "flex", justifyContent: "flex-end" }}
+                    >
                         <Space>
                             {(!isMember || !memberHasFilledOutRisk) && (
                                 <PolicyQuoteRequestForm
@@ -106,8 +111,16 @@ export default function PolicyDetails() {
                         }}
                     />
                 </PolicyDetailCol>
+                <PolicyDetailCol span={16}>
+                    <PolicyDescriptionRow policy={policy} />
+                </PolicyDetailCol>
+            </Row>
+
+            <RiskTable policy={policy} />
+            <MembersTable policy={policy} />
+            <Row>
                 <PolicyDetailCol
-                    span={8}
+                    span={12}
                     style={{
                         paddingRight: 10,
                         paddingLeft: 10,
@@ -120,7 +133,7 @@ export default function PolicyDetails() {
                 </PolicyDetailCol>
 
                 <PolicyDetailCol
-                    span={8}
+                    span={12}
                     style={{
                         paddingLeft: 10,
                         display: "flex",
@@ -131,17 +144,6 @@ export default function PolicyDetails() {
                     <EscrowBalanceCard policy={policy} />
                 </PolicyDetailCol>
             </Row>
-            <PolicyDescriptionRow policy={policy} />
-
-            <RiskTable policy={policy} />
-            <MembersTable policy={policy} />
         </div>
     );
 }
-
-// const PolicyDetailCol = styled(Col)({
-//     padding: 10,
-//     display: "flex",
-//     alignItems: "stretch",
-//     width: "100%",
-// });

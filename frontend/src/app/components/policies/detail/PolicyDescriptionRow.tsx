@@ -32,8 +32,11 @@ const mockPerils: Peril[] = [
 
 export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
     return (
-        <div style={{ marginTop: "3rem", marginBottom: "2rem" }}>
-            <Title level={4}>Description</Title>
+        <div
+            style={{
+                margin: "24px 0px 2rem 3rem",
+            }}
+        >
             <Row>
                 <Col
                     span={12}
@@ -41,8 +44,10 @@ export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-between",
+                        paddingRight: "1.5rem",
                     }}
                 >
+                    <Title level={4}>Description</Title>
                     <Paragraph>{policy.description}</Paragraph>
                     <Row justify="start">
                         <Space size={50}>
@@ -64,21 +69,26 @@ export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
                     </Row>
                 </Col>
                 <Col span={12}>
+                    <Title level={4} style={{ textAlign: "center" }}>
+                        Covered Events
+                    </Title>
                     <Row>
-                        {policy.perils.map((peril) => (
-                            <Col
-                                span={12}
-                                style={{ padding: "0 0 3rem 3rem" }}
-                                key={peril.id}
-                            >
-                                <PerilGridDisplay peril={peril} />
-                            </Col>
-                        ))}
+                        {policy.perils
+                            .map((peril) => (
+                                <Col
+                                    span={12}
+                                    style={{ padding: "2rem 0 2rem 0" }}
+                                    key={peril.id}
+                                >
+                                    <PerilGridDisplay peril={peril} />
+                                </Col>
+                            ))
+                            .slice(0, 4)}
                         {policy.perils.length === 0 &&
                             mockPerils.map((peril) => (
                                 <Col
                                     span={12}
-                                    style={{ padding: "0 0 3rem 3rem" }}
+                                    style={{ padding: "1rem 0 2rem 0" }}
                                     key={`${peril.id}-mock`}
                                 >
                                     <PerilGridDisplay peril={peril} />

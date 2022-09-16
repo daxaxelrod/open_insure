@@ -40,7 +40,7 @@ export default function CoverageRow({ policy }: { policy: Policy }) {
                 }}
             >
                 <Paragraph style={{ fontSize: ".75rem" }}>
-                    {hasPolicyStarted ? "Started" : "In setup"}
+                    {hasPolicyStarted ? "Started" : "In setup mode"}
                 </Paragraph>
                 {isMember && (
                     <Paragraph
