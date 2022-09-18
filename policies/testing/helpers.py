@@ -9,27 +9,9 @@ from policies.premiums import schedule_premiums
 from policies.risk.models import AudioEquipmentRisk, PhoneRisk
 
 
-def create_test_policy(
-    pod: Pod, start_date: datetime = timezone.datetime(2022, 5, 29, tzinfo=timezone.utc)
-) -> Tuple[datetime, Policy]:
-    policy = Policy.objects.create(
-        name="$10 Small electronics policy",
-        description="No pool cap, $500 claim payout limit",
-        pod=pod,
-        coverage_type="m_property",
-        premium_pool_type="perpetual_pool",
-        governance_type="direct_democracy",
-        available_underlying_insured_types=[UNDERLYING_INSURED_TYPE[0][0]],
-        premium_payment_frequency=1,  # 1 means monthly
-        coverage_duration=12,  # months
-        coverage_start_date=start_date,
-    )
-    schedule_premiums(policy)
-
-    return start_date, policy
-
-
-def create_user_risk_for_policy(policy: Policy, user: User, risk_type="cell_phone"):
+def create_test_user_risk_for_policy(
+    policy: Policy, user: User, risk_type="cell_phone"
+):
 
     create_kwargs = {
         "make": "Apple",
@@ -76,3 +58,33 @@ def prepay_all_premiums_for_user(user, policy):
     for premium in policy.premiums.filter(payer=user):
         premium.paid = True
         premium.save()
+
+
+def create_test_risks_for_policy_members(policy: Policy):
+    for user in policy.pod.members.all():
+        existing_risk: Risk = user.risks.filter(policy=policy)
+        if existing_risk.count() > 0:
+            continue
+        else:
+            create_test_user_risk_for_policy(policy, user)
+
+
+def create_test_policy(
+    pod: Pod, start_date: datetime = timezone.datetime(2022, 5, 29, tzinfo=timezone.utc)
+) -> Tuple[datetime, Policy]:
+    policy = Policy.objects.create(
+        name="$10 Small electronics policy",
+        description="No pool cap, $500 claim payout limit",
+        pod=pod,
+        coverage_type="m_property",
+        premium_pool_type="perpetual_pool",
+        governance_type="direct_democracy",
+        available_underlying_insured_types=[UNDERLYING_INSURED_TYPE[0][0]],
+        premium_payment_frequency=1,  # 1 means monthly
+        coverage_duration=12,  # months
+        coverage_start_date=start_date,
+    )
+    create_test_risks_for_policy_members(policy)
+    schedule_premiums(policy)
+
+    return start_date, policy

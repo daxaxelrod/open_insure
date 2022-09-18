@@ -88,10 +88,7 @@ class PolicyViewSet(ModelViewSet):
         # but for now, let them in.
         policy = self.get_object()
         pod = policy.pod
-        if (
-            policy.is_policy_active()
-            and not pod.allow_joiners_after_policy_start
-        ):
+        if policy.is_policy_active() and not pod.allow_joiners_after_policy_start:
             return Response(
                 {
                     "message": "Policy is active and does not allow for new memebers after policy start"
@@ -102,8 +99,8 @@ class PolicyViewSet(ModelViewSet):
             return Response({"message": "Pod is full"}, status=HTTP_403_FORBIDDEN)
         policy.pod.members.add(request.user)
         schedule_premiums(policy, for_users=[request.user])
-        
-        spots_remaining = -1
+
+        spots_remaining = -1  # unlimited, except where theres a max_pod_size
         if pod.max_pod_size and pod.max_pod_size > 0:
             spots_remaining = pod.max_pod_size - pod.members.count()
         return Response(
@@ -258,6 +255,7 @@ class RiskMediaViewSet(RetrieveUpdateDestroyAPIView):
     serializer_class = ImageSerializer
     permission_classes = [IsAuthenticated & IsPhotoOwner]
     lookup_url_kwarg = "photo_id"
+
 
 class RiskViewSet(ModelViewSet):
     serializer_class = RiskSerializer

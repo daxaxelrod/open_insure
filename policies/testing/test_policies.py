@@ -9,7 +9,10 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_2
 
 from pods.models import Pod, User
 from policies.models import Premium
-from policies.testing.helpers import create_test_policy
+from policies.testing.helpers import (
+    create_test_policy,
+    create_test_user_risk_for_policy,
+)
 
 # initialize the APIClient app
 client = Client()
@@ -30,6 +33,7 @@ class PolicyTestCase(TestCase):
         # premiums are created when risk gets created.
         # if coverage_start_date gets populated or changes, premiums should update to match the new start date
         now = timezone.datetime(2022, 5, 29)
+        create_test_policy()
         self.assertTrue(False)
 
     def test_coverage_start_date_cant_change_after_policy_starts(self):
@@ -73,13 +77,15 @@ class PolicyTestCase(TestCase):
             policy.coverage_start_date.timetuple(), new_start_date.timetuple()
         )
 
-    def test_user_joins_a_policy_after_it_is_activated_that_premiums_get_created_for_new_member(
+    def test_that_premiums_get_created_for_new_user_when_user_joins_a_policy_after_it_is_has_started(
         self,
     ):
         _, policy = create_test_policy(self.pod)
         new_user = User.objects.create_user(
             "interested_user@gmail.com", password="password"
         )
+        create_test_user_risk_for_policy(policy, new_user)
+
         client.login(username=new_user.username, password="password")
         response = client.post(
             f"/api/v1/policies/{policy.id}/join/",
@@ -142,10 +148,6 @@ class PolicyTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_200_OK)
         self.assertEquals(policy.pod.members.count(), 1)
         self.assertEquals(member_user_premiums.count(), 3)
-
-    def test_policy_cannot_start_unless_premiums_have_been_set_for_each_member(self):
-        # make sure we cant set a policy_start_date
-        self.assertTrue(False)
 
 
 def setUpModule():
