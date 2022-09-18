@@ -202,9 +202,10 @@ class PolicySerializer(serializers.ModelSerializer):
             self.instance
             and self.instance.coverage_start_date
             and value != self.instance.coverage_start_date
+            and self.instance.coverage_start_date <= timezone.now()
         ):
             raise serializers.ValidationError(
-                "Cannot change coverage start date once a policy has been activated."
+                "Cannot change coverage start date once a policy has been started."
             )
         return value
 
