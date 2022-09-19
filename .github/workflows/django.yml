@@ -24,7 +24,7 @@ env:
     EMAIL_HOST_PASSWORD: "abc123"
     EMAIL_HOST: "smtp.provider.com"
     EMAIL_PORT: 587
-    FRONTEND_URL: "https://localhost:3000"
+    FRONTEND_URL: "http://localhost:3000"
 
 jobs:
     build:

@@ -36,6 +36,7 @@ from policies.serializers import (
     ClaimApprovalSerializer,
     RiskSerializer,
 )
+from policies.utils import send_user_welcome_email
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +104,9 @@ class PolicyViewSet(ModelViewSet):
         spots_remaining = -1  # unlimited, except where theres a max_pod_size
         if pod.max_pod_size and pod.max_pod_size > 0:
             spots_remaining = pod.max_pod_size - pod.members.count()
+
+        send_user_welcome_email(request.user, policy)
+
         return Response(
             {
                 **FullPolicySerializer(policy).data,

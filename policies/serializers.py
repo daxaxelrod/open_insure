@@ -16,6 +16,7 @@ from policies.models import (
     Risk,
 )
 from policies.perils.models import Peril
+from policies.premiums import schedule_premiums
 
 from policies.risk.serializer_fields import RiskContentObjectRelatedField
 
@@ -208,6 +209,21 @@ class PolicySerializer(serializers.ModelSerializer):
                 "Cannot change coverage start date once a policy has been started."
             )
         return value
+
+    def update(self, instance, validated_data):
+        # if the policy start date gets changed, we need to update the premium due dates
+        coverage_start_date_before_update = instance.coverage_start_date
+        policy = super().update(instance, validated_data)
+        if (
+            coverage_start_date_before_update
+            and validated_data.get("coverage_start_date")
+            and validated_data.get("coverage_start_date")
+            != coverage_start_date_before_update
+        ):
+            policy.premiums.all().delete()
+            schedule_premiums(policy)
+
+        return policy
 
     class Meta:
         model = Policy

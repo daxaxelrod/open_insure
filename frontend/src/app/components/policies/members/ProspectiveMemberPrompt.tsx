@@ -16,6 +16,9 @@ export default function ProspectiveMemberPrompt({
 }) {
     const focusedRisk: Risk = useAppSelector((state) => state.risk.focusedRisk);
     const [isConfettiActive, setIsConfettiActive] = useState(false);
+    const joinPolicyPending = useAppSelector(
+        (state) => state.policies.joinPolicyPending
+    );
     const dispatch = useAppDispatch();
 
     const handleJoinPolicy = async () => {
@@ -23,7 +26,7 @@ export default function ProspectiveMemberPrompt({
             setIsConfettiActive(true);
             setTimeout(() => {
                 setIsConfettiActive(false);
-            }, 500);
+            }, 500); // TODO, fix. Confetti doesnt show because component unmounts and gets switched to the switched to UserPolicyQuotePrompt
         };
         dispatch(joinPolicy(policy.id, onSuccess));
     };
@@ -73,6 +76,7 @@ export default function ProspectiveMemberPrompt({
                             onClick={handleJoinPolicy}
                             type="primary"
                             size={"large"}
+                            loading={joinPolicyPending}
                         >
                             Join Policy
                         </Button>

@@ -1,8 +1,8 @@
 import logging
 from unittest.mock import patch
+from django.core import mail
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.models import ContentType
-from django.test import TestCase, override_settings, Client
+from django.test import TestCase, Client
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_200_OK
@@ -20,9 +20,11 @@ client = Client()
 
 class PolicyTestCase(TestCase):
     def setUp(self):
-        self.main_user = User.objects.create_user("main@gmail.com", password="password")
+        self.main_user = User.objects.create_user(
+            "main@gmail.com", password="password", email="main@gmail.com"
+        )
         self.member_user = User.objects.create_user(
-            "member@gmail.com", password="password"
+            "member@gmail.com", password="password", email="member@gmail.com"
         )
         self.pod = Pod.objects.create(name="Test Pod", creator=self.main_user)
         self.pod.members.add(self.member_user)
@@ -32,9 +34,45 @@ class PolicyTestCase(TestCase):
     def test_premiums_get_updated_when_the_policy_start_date_changes(self):
         # premiums are created when risk gets created.
         # if coverage_start_date gets populated or changes, premiums should update to match the new start date
-        now = timezone.datetime(2022, 5, 29)
-        create_test_policy()
-        self.assertTrue(False)
+        now = timezone.now()
+        thirty_days_from_now = now + timezone.timedelta(days=30)
+        start_date, policy = create_test_policy(self.pod, thirty_days_from_now)
+
+        delayed_start_date = now + timezone.timedelta(days=90)
+
+        # someone says, "hey actually lets start about 60 days later"
+        payload = {"coverage_start_date": delayed_start_date}
+        response = client.patch(
+            f"/api/v1/policies/{policy.id}/",
+            data=payload,
+            content_type="application/json",
+        )
+
+        policy.refresh_from_db()
+
+        self.assertEquals(response.status_code, HTTP_200_OK)
+        self.assertEquals(
+            policy.coverage_start_date.timetuple(), delayed_start_date.timetuple()
+        )
+
+        for user in policy.pod.members.all():
+            # this might become tricky if the user prepaid some of their premiums, shouldnt generally be allowed though. Can be handled in the admin and give the user a refund/credit for months already paid
+            user_premiums = Premium.objects.filter(policy=policy, payer=user).order_by(
+                "due_date"
+            )
+            expected_premium_count = (
+                policy.coverage_duration / policy.premium_payment_frequency
+            )
+            self.assertEquals(
+                expected_premium_count,
+                policy.coverage_duration / policy.premium_payment_frequency,
+            )
+            for index, premium in enumerate(user_premiums):
+                next_due_date = delayed_start_date + relativedelta(
+                    months=policy.premium_payment_frequency * index
+                )
+                self.assertEquals(premium.due_date, next_due_date.date())
+                # should be ordered already, assert that all the due dates are delayed_start_date + n
 
     def test_coverage_start_date_cant_change_after_policy_starts(self):
         # we dont want the policy coverage to move underneith people once they commit.
@@ -98,7 +136,28 @@ class PolicyTestCase(TestCase):
         self.assertEquals(policy.premiums.count(), 36)
 
     def test_user_gets_confirmation_email_after_joining_policy(self):
-        self.assertTrue(False)
+        self.assertEquals(len(mail.outbox), 0)  # make sure no emails have been sent yet
+
+        _, policy = create_test_policy(
+            self.pod, timezone.now() + timezone.timedelta(days=30)
+        )
+        new_user = User.objects.create_user(
+            "interested_user@gmail.com",
+            password="password",
+            email="interested_user@gmail.com",
+        )
+
+        create_test_user_risk_for_policy(policy, new_user)
+
+        client.login(username=new_user.username, password="password")
+        response = client.post(
+            f"/api/v1/policies/{policy.id}/join/",
+            data={},
+            content_type="application/json",
+        )
+
+        self.assertEquals(response.status_code, HTTP_201_CREATED)
+        self.assertEquals(len(mail.outbox), 1)
 
     @patch("django.utils.timezone.now")
     def test_user_can_leave_a_policy_after_it_is_activated(self, mock_timezone):

@@ -39,6 +39,12 @@ def schedule_premiums(policy: Policy, for_users: List[User] = None):
                 f"User {user.id} has no risk for policy {policy.id}. This should not happen."
             )
             continue
+        except Risk.MultipleObjectsReturned:
+            logger.error(
+                f"User {user.id} has multiple risks for policy {policy.id}. This should not happen."
+            )
+            user_risk = user.risks.get(policy=policy)[0]
+            continue
 
         premiums_schedule = [
             Premium(
