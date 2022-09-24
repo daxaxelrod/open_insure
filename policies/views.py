@@ -4,13 +4,12 @@ from django.contrib.contenttypes.models import ContentType
 from pods.serializers import PodSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_403_FORBIDDEN
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
-from rest_framework.decorators import api_view, permission_classes
 from policies.paginators import StandardResultsSetPagination
 from policies.models import Claim, ClaimApproval, Policy, PolicyRiskSettings, Premium, Risk
 from policies.permissions import (
@@ -18,6 +17,7 @@ from policies.permissions import (
     InPodAndNotClaimant,
     InClaimPod,
     IsPhotoOwner,
+    InRiskSettingsPolicyPod
 )
 from policies.premiums import schedule_premiums
 from policies.risk.models import PropertyImage, get_model_for_risk_type
@@ -126,12 +126,13 @@ class PremiumViewSet(RetrieveUpdateDestroyAPIView):
     # available on the policy detail page
     # for now we dont handle direct debiting, just allowing the pod to keep track of it
 
-class RiskSettingsViewSet(ModelViewSet):
-    permission_classes = [IsAuthenticated & InPolicyPod]
+class RiskSettingsViewSet(RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated & InRiskSettingsPolicyPod]
     serializer_class = PolicyRiskSettingsSerializer
+    lookup_url_kwarg = "policy_id"
     
     def get_queryset(self):
-        return PolicyRiskSettings.objects.get(policy__id=self.kwargs["policy_id"])
+        return PolicyRiskSettings.objects.filter(policy__id=self.kwargs["policy_id"])
 
 class ClaimViewSet(ModelViewSet):
     queryset = Claim.objects.all()
