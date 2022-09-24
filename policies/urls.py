@@ -7,6 +7,7 @@ from policies.views import (
     ClaimViewSet,
     PolicyViewSet,
     PremiumViewSet,
+    RiskSettingsViewSet,
 
     # risk
     PolicyRiskViewSet,
@@ -18,6 +19,7 @@ router = routers.DefaultRouter()
 router.register(r"policies", PolicyViewSet)
 router.register(r"claims", ClaimViewSet)
 router.register(r"risk", RiskViewSet, basename="risk")
+router.register(r"policies/(?P<policy_id>\d+)/risk_settings", RiskSettingsViewSet, basename="premium")
 
 risk_router = routers.NestedSimpleRouter(router, r"policies", lookup="policy")
 risk_router.register(r"risk", PolicyRiskViewSet, basename="policy-risks")

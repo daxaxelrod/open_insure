@@ -28,3 +28,14 @@ export const createPolicy = (values: PolicyCreationPayload) => {
 export const joinPolicy = (policyId: number) => {
     return axiosInstance.post(`/api/v1/policies/${policyId}/join/`);
 };
+
+export const getPolicyRiskSettings = (policyId: number) => {
+    return axiosInstance.get(`/api/v1/policies/${policyId}/risk_settings/`);
+};
+
+export const modifyPolicyRiskSettings = (policyId: number, values: any) => {
+    return axiosInstance.patch(
+        `/api/v1/policies/${policyId}/risk_settings/`,
+        values
+    );
+};

@@ -17,6 +17,7 @@
     "axios": "^0.27.2",
     "axios-jwt": "^1.8.0",
     "chart.js": "^3.8.2",
+    "gaussian": "^1.2.0",
     "moment-timezone": "^0.5.34",
     "react": "^18.2.0",
     "react-chartjs-2": "^4.3.1",

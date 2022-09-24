@@ -5,6 +5,9 @@ import {
     GET_AVAILABLE_POLICIES_PENDING,
     GET_AVAILABLE_POLICIES_SUCCESS,
     GET_AVAILABLE_POLICIES_FAILURE,
+    GET_POLICY_RISK_SETTINGS_PENDING,
+    GET_POLICY_RISK_SETTINGS_SUCCESS,
+    GET_POLICY_RISK_SETTINGS_FAILURE,
     GET_USER_POLICIES_PENDING,
     GET_USER_POLICIES_SUCCESS,
     GET_USER_POLICIES_FAILURE,
@@ -86,5 +89,23 @@ export const joinPolicy =
             onSuccess();
         } catch (error) {
             dispatch({ type: JOIN_POLICY_FAILURE, payload: error });
+        }
+    };
+
+export const getPolicyRiskSettings =
+    (policyId: number): ThunkAction<void, RootState, unknown, AnyAction> =>
+    async (dispatch) => {
+        dispatch({ type: GET_POLICY_RISK_SETTINGS_PENDING });
+        try {
+            const response = await API.getPolicyRiskSettings(policyId);
+            dispatch({
+                type: GET_POLICY_RISK_SETTINGS_SUCCESS,
+                payload: response.data,
+            });
+        } catch (error) {
+            dispatch({
+                type: GET_POLICY_RISK_SETTINGS_FAILURE,
+                payload: error,
+            });
         }
     };

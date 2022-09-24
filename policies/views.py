@@ -12,7 +12,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
 from rest_framework.decorators import api_view, permission_classes
 from policies.paginators import StandardResultsSetPagination
-from policies.models import Claim, ClaimApproval, Policy, Premium, Risk
+from policies.models import Claim, ClaimApproval, Policy, PolicyRiskSettings, Premium, Risk
 from policies.permissions import (
     InPolicyPod,
     InPodAndNotClaimant,
@@ -30,6 +30,7 @@ from policies.risk.serializers import (
 )
 from policies.serializers import (
     ClaimSerializer,
+    PolicyRiskSettingsSerializer,
     PolicySerializer,
     FullPolicySerializer,
     PremiumSerializer,
@@ -125,6 +126,12 @@ class PremiumViewSet(RetrieveUpdateDestroyAPIView):
     # available on the policy detail page
     # for now we dont handle direct debiting, just allowing the pod to keep track of it
 
+class RiskSettingsViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated & InPolicyPod]
+    serializer_class = PolicyRiskSettingsSerializer
+    
+    def get_queryset(self):
+        return PolicyRiskSettings.objects.get(policy__id=self.kwargs["policy_id"])
 
 class ClaimViewSet(ModelViewSet):
     queryset = Claim.objects.all()

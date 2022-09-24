@@ -18,6 +18,7 @@ import MembersTable from "../../components/policies/members/MembersTable";
 import PolicyClaimsBriefCard from "../../components/policies/claims/PolicyClaimsBriefCard";
 import { getOrCreateRisk } from "../../../redux/actions/risk";
 import EscrowBalanceCard from "../../components/policies/premiums/EscrowBalanceCard";
+import PolicySettingsModal from "../../components/policies/premiums/settings/PolicySettingsModal";
 
 const { Title, Paragraph } = Typography;
 
@@ -88,6 +89,7 @@ export default function PolicyDetails() {
                             {isMember && (
                                 <InviteFriendToPolicy policy={policy} />
                             )}
+                            {isMember && <PolicySettingsModal />}
                         </Space>
                     </Col>
                 </Row>

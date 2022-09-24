@@ -9,6 +9,7 @@ from policies.model_choices import UNDERLYING_INSURED_TYPE
 from policies.models import (
     Claim,
     Policy,
+    PolicyRiskSettings,
     Premium,
     PolicyCloseout,
     Claim,
@@ -277,4 +278,9 @@ class RiskSerializer(serializers.ModelSerializer):
             "premium_amount",
             "risk_score",
         )
+        fields = "__all__"
+
+class PolicyRiskSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PolicyRiskSettings
         fields = "__all__"
