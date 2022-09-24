@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Modal, Row, Typography, Slider } from "antd";
 import {
     SettingOutlined,
@@ -8,22 +8,24 @@ import {
 
 import { useAppDispatch } from "../../../../../redux/hooks";
 import colors from "../../../../constants/colors";
+import { getPolicyRiskSettings } from "../../../../../redux/actions/policies";
+import { Policy } from "../../../../../redux/reducers/commonTypes";
 
 const { Paragraph } = Typography;
 
 const min = 1;
 const max = 100;
 
-export default function PolicySettingsModal() {
+export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     const [visible, setVisible] = useState(false);
     const dispatch = useAppDispatch();
     const [form] = Form.useForm();
 
     useEffect(() => {
         if (visible) {
-            dispatch(getPolicyRiskSettings());
+            dispatch(getPolicyRiskSettings(policy?.id));
         }
-    }, [visible]);
+    }, [visible, policy?.id]);
 
     const handleOk = () => {
         setVisible(false);
@@ -33,8 +35,8 @@ export default function PolicySettingsModal() {
     };
 
     const mid = Number(((max - min) / 2).toFixed(5));
-    const preColorCls = value >= mid ? "" : "icon-wrapper-active";
-    const nextColorCls = value >= mid ? "icon-wrapper-active" : "";
+    // const preColorCls = value >= mid ? "" : "icon-wrapper-active";
+    // const nextColorCls = value >= mid ? "icon-wrapper-active" : "";
 
     return (
         <Row justify="end" align="middle">

@@ -89,7 +89,9 @@ export default function PolicyDetails() {
                             {isMember && (
                                 <InviteFriendToPolicy policy={policy} />
                             )}
-                            {isMember && <PolicySettingsModal />}
+                            {isMember && (
+                                <PolicySettingsModal policy={policy} />
+                            )}
                         </Space>
                     </Col>
                 </Row>
