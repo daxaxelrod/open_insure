@@ -34,7 +34,9 @@ export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
     return (
         <div
             style={{
-                margin: "24px 0px 2rem 3rem",
+                padding: "24px 0px 2rem 3rem",
+                marginLeft: "1rem",
+                border: "1px solid #f0f0f0",
             }}
         >
             <Row>

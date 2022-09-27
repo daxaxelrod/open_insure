@@ -22,6 +22,7 @@ export default function AudioEquipmentRiskForm({
 
     const risk = useAppSelector((state) => state.risk.focusedRisk);
     const riskPending = useAppSelector((state) => state.risk.modifyRiskPending);
+    const assetRisk = risk.content_object;
 
     const saveForLater = () => {
         form.validateFields()
@@ -44,11 +45,12 @@ export default function AudioEquipmentRiskForm({
                 console.log("Validate Failed:", info);
             });
     };
+
     return (
         <Form
             {...formLayout}
             form={form}
-            initialValues={risk}
+            initialValues={assetRisk}
             onFinish={requestAQuote}
             requiredMark={false}
             labelWrap
@@ -59,14 +61,16 @@ export default function AudioEquipmentRiskForm({
                 name={"make"}
                 rules={[{ required: true, message: "Apple, Bose" }]}
             >
-                <Input placeholder="Apple" />
+                <Input placeholder="Bose" />
             </Form.Item>
             <Form.Item
                 label="Model"
                 name={"model"}
-                rules={[{ required: true, message: "Apple Airpods" }]}
+                rules={[
+                    { required: true, message: "QuietComfort 45, Airpod Max" },
+                ]}
             >
-                <Input placeholder="Bose QuietComfort 45" />
+                <Input placeholder="QuietComfort 45" />
             </Form.Item>
 
             <Form.Item
@@ -88,6 +92,13 @@ export default function AudioEquipmentRiskForm({
                     <Select.Option value={"good"}>Good</Select.Option>
                     <Select.Option value={"ok"}>Ok</Select.Option>
                 </Select>
+            </Form.Item>
+            <Form.Item
+                label="Market Value"
+                name={"market_value"}
+                rules={[{ required: true, message: "Market Value required" }]}
+            >
+                <Input type={"number"} />
             </Form.Item>
             <PropertyImageForm
                 risk={risk}
