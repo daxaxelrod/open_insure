@@ -28,7 +28,7 @@ export default function EmailPassOnboardingStep({}) {
             register({
                 first_name: firstName,
                 last_name: lastName,
-                email,
+                email: email.toLowerCase(),
                 password,
             })
         );

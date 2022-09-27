@@ -2,11 +2,10 @@ from unittest.mock import patch
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.utils import timezone
-from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN, HTTP_201_CREATED
+from rest_framework.status import HTTP_403_FORBIDDEN, HTTP_201_CREATED
 
-from policies.testing.helpers import create_test_policy
+from policies.testing.helpers import create_test_policy, create_test_user_risk_for_policy
 from pods.models import Pod, User
-from policies.models import Policy
 
 # initialize the APIClient app
 client = Client()
@@ -36,11 +35,13 @@ class PodTestCase(TestCase):
         pod = Pod.objects.create(
             name="Test Pod", creator=self.main_user, max_pod_size=2
         )
+        _, policy = create_test_policy(pod)
         pod.members.add(self.member_user)
         new_user = User.objects.create_user(username="interested_user", password="password")
+        user_risk = create_test_user_risk_for_policy(policy, new_user)
         client.login(username=new_user.username, password="password")
 
-        response = client.post(f"/api/v1/pods/{pod.id}/join/", {})
+        response = client.post(f"/api/v1/policies/{policy.id}/join/", {}, content_type="application/json")
 
         self.assertEquals(response.status_code, HTTP_403_FORBIDDEN)
         self.assertEquals(pod.members.count(), 2)
@@ -50,11 +51,14 @@ class PodTestCase(TestCase):
         self.pod = Pod.objects.create(
             name="Test Pod", creator=self.main_user, max_pod_size=10
         )
+        _, policy = create_test_policy(self.pod)
+
         self.pod.members.add(self.member_user)
 
         new_user = User.objects.create_user(username="interested_user", password="password")
+        create_test_user_risk_for_policy(policy, new_user)
         client.login(username=new_user.username, password="password")
-        response = client.post(f"/api/v1/pods/{self.pod.id}/join/", {})
+        response = client.post(f"/api/v1/policies/{policy.id}/join/", {})
         
         self.assertEquals(response.status_code, HTTP_201_CREATED)
         self.assertEquals(self.pod.members.count(), 3)
@@ -62,7 +66,7 @@ class PodTestCase(TestCase):
 
 
     # And the award for the worst test name goes to...
-    def test_should_block_new_member_if_policy_started_if_pod_blocks_that(self):
+    def test_should_block_new_member_if_policy_started_if_pod_doesnt_allow_late_joiners(self):
         # policy started in the past, new user tries to join 3 months after
         # but the pod doesnt allow for that
         pod = Pod.objects.create(
@@ -77,9 +81,11 @@ class PodTestCase(TestCase):
 
         
         new_user = User.objects.create_user(username="interested_user", password="password")
+        create_test_user_risk_for_policy(policy, new_user)
+
         client.login(username=new_user.username, password="password")
         with patch.object(timezone, 'now', return_value=timezone.datetime(2022, 3, 1, tzinfo=timezone.utc)):
-            response = client.post(f"/api/v1/pods/{pod.id}/join/", {})
+            response = client.post(f"/api/v1/policies/{policy.id}/join/", {})
             
             self.assertEquals(response.status_code, HTTP_403_FORBIDDEN)
             self.assertEquals(policy.is_policy_active(), True)
