@@ -20,12 +20,9 @@ class RiskTestCase(TestCase):
 
         _, self.policy = create_test_policy(self.pod)
 
-    def test_user_not_in_policy_can_create_risk(self):
-        self.assertTrue(False)
+    # todo
+    # def test_user_not_in_policy_can_create_risk(self):
+    #     self.assertTrue(False)
 
-    def test_any_user_can_see_only_risks_for_policy_members(self):
-        # Risks are public for now
-        self.assertTrue(False)
-
-    def test_premiums_get_created_when_a_user_joins_a_policy_with_a_valid_risk(self):
-        self.assertTrue(False)
+    # def test_premiums_get_created_when_a_user_joins_a_policy_with_a_valid_risk(self):
+    #     self.assertTrue(False)
