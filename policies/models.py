@@ -128,13 +128,12 @@ class Risk(models.Model):
         on_delete=models.CASCADE,
     )
 
-    # see risk/risk_scores.py for more info
-    risk_score = models.DecimalField(
-        max_digits=5,
-        decimal_places=3,
+    # the percent chance that a complete loss will happen for the duration of the policy
+    risk_score = models.IntegerField(
         null=True,
         blank=True,
-        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        help_text="In basis points. The percent chance that a complete loss will happen in the period",
+        validators=[MinValueValidator(1)],
     )
     value_at_risk = models.PositiveIntegerField(
         null=True,
@@ -170,8 +169,16 @@ class Risk(models.Model):
 
 class PolicyRiskSettings(models.Model):
     policy = models.OneToOneField(Policy, on_delete=models.CASCADE, related_name="risk_settings")
-    conservative_factor = models.IntegerField(default=1, help_text="how much do you want to pad the risk score by. The higher it is the more premiums everyone pays")
+
+    conservative_factor = models.IntegerField(default=0, help_text="how much do you want to pad the risk score by. The higher it is the more premiums everyone pays")
+    
     # todo JSON field with the risk settings for each risk type
+    # want to punt on JSON field bc sqlite doesn't support it
+    cell_phone_peril_rate = models.IntegerField(default=10, help_text="cell_phone base peril rate", validators=[MinValueValidator(1), MaxValueValidator(100)])
+    audio_equipment_peril_rate = models.IntegerField(default=15, help_text="audio_equipment base peril rate", validators=[MinValueValidator(1), MaxValueValidator(100)])
+
+    annual_discount_rate = models.IntegerField(default=0, help_text="Annual interest rate that escrow balance could be invested at, in basis points. 100 = 1%")
+    
 
     def __str__(self) -> str:
         return f"{self.policy.name} Risk Settings -- Conservative Factor: {self.conservative_factor}%"
