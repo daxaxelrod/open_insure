@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Typography, Col, Input, Space, Button } from "antd";
+import { Row, Typography, Col, Input, Space, Button, Tabs } from "antd";
 import { SearchOutlined, WalletOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import UserPoliciesOpenClaimsTable from "../components/policies/claims/UserPoliciesOpenClaimsTable";
@@ -7,6 +7,7 @@ import { getUserPolicies } from "../../redux/actions/policies";
 import UserPoliciesList from "../components/policies/UserPoliciesList";
 import UserPolicyCalendar from "../components/policies/UserPolicyCalendar";
 import { getUserRisks } from "../../redux/actions/risk";
+import { Content } from "antd/lib/layout/layout";
 
 const { Title } = Typography;
 
@@ -14,6 +15,7 @@ export default function UserPolicies() {
     const [search, setSearch] = useState("");
     const dispatch = useAppDispatch();
     const userPolicies = useAppSelector((state) => state.policies.userPolicies);
+    const [activeTab, setActiveTab] = useState("Policies");
 
     useEffect(() => {
         dispatch(getUserPolicies());
@@ -51,19 +53,19 @@ export default function UserPolicies() {
                     </Space>
                 </Col>
             </Row>
-            <Row>
-                <Col md={18}>
-                    <UserPoliciesList policies={userPolicies} />
-                </Col>
-                <Col md={6} style={{ marginTop: 16 }}>
-                    <Space
-                        direction="vertical"
-                        size="large"
-                        style={{ display: "flex" }}
-                    >
-                        <UserPolicyCalendar policies={userPolicies} />
-                        <UserPoliciesOpenClaimsTable />
-                    </Space>
+            <Row style={{ marginBottom: ".5rem" }}>
+                <Col style={{ display: "flex" }}>
+                    <Tabs>
+                        <Tabs.TabPane tab="Policies" key="1">
+                            <UserPoliciesList policies={userPolicies} />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="Schedule" key="2">
+                            <UserPolicyCalendar policies={userPolicies} />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="Claims" key="3">
+                            <UserPoliciesOpenClaimsTable />
+                        </Tabs.TabPane>
+                    </Tabs>
                 </Col>
             </Row>
         </div>
