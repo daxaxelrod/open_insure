@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Row, Typography, Col, Input, Space, Button, Tabs, Badge } from "antd";
+import {
+    Row,
+    Typography,
+    Col,
+    Input,
+    Space,
+    Button,
+    Tabs,
+    Badge,
+    notification,
+} from "antd";
 import { SearchOutlined, WalletOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import UserPoliciesOpenClaimsTable from "../components/policies/claims/UserPoliciesOpenClaimsTable";
@@ -50,7 +60,13 @@ export default function UserPolicies() {
                     <Space>
                         <Button
                             type="primary"
-                            onClick={() => null}
+                            onClick={() =>
+                                notification.info({
+                                    message: "Web payments are not built yet.",
+                                    description:
+                                        "Chat with your policy's escrow manager to pay premiums.",
+                                })
+                            }
                             icon={<WalletOutlined />}
                         >
                             Pay Premiums
