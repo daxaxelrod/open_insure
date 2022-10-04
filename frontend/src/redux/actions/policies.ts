@@ -105,7 +105,10 @@ export const getPolicyRiskSettings =
         } catch (error) {
             dispatch({
                 type: GET_POLICY_RISK_SETTINGS_FAILURE,
-                payload: error,
+                payload: {
+                    error,
+                    policy: policyId,
+                },
             });
         }
     };

@@ -174,7 +174,10 @@ class PolicyRiskSettings(models.Model):
     
     # todo JSON field with the risk settings for each risk type
     # want to punt on JSON field bc sqlite doesn't support it
-    cell_phone_peril_rate = models.IntegerField(default=10, help_text="cell_phone base peril rate", validators=[MinValueValidator(1), MaxValueValidator(100)])
+    # or at least some kind of polymorphic thing where we can have a different risk settings for each risk type
+    cell_phone_peril_rate = models.IntegerField(default=10, help_text="cell_phone base peril rate, percent per year", validators=[MinValueValidator(1), MaxValueValidator(100)])
+    cell_phone_case_discount = models.IntegerField(default=100, help_text="cell_phone case discount, absolute basis points",)
+    cell_phone_screen_protector_discount = models.IntegerField(default=100, help_text="cell_phone case discount, absolute basis points")
     audio_equipment_peril_rate = models.IntegerField(default=15, help_text="audio_equipment base peril rate", validators=[MinValueValidator(1), MaxValueValidator(100)])
 
     annual_discount_rate = models.IntegerField(default=0, help_text="Annual interest rate that escrow balance could be invested at, in basis points. 100 = 1%")

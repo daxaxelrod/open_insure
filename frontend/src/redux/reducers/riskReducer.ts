@@ -8,6 +8,9 @@ import {
     GET_RISKS_FOR_USER_PENDING,
     GET_RISKS_FOR_USER_SUCCESS,
     GET_RISKS_FOR_USER_FAILURE,
+    GET_POLICY_RISK_SETTINGS_PENDING,
+    GET_POLICY_RISK_SETTINGS_SUCCESS,
+    GET_POLICY_RISK_SETTINGS_FAILURE,
     CLEAR_FOCUSED_RISK,
     CREATE_RISK_PENDING,
     CREATE_RISK_SUCCESS,
@@ -20,7 +23,7 @@ import {
     GET_QUOTE_FAILURE,
     UPDATE_RISK_ALBUM,
 } from "../actions/types";
-import { Risk } from "./commonTypes";
+import { Risk, RiskSettings } from "./commonTypes";
 
 export interface RiskState {
     focusedRisk: Risk | null;
@@ -28,6 +31,8 @@ export interface RiskState {
     modifyRiskPending: boolean; // used on patch and get
     getQuotePending: boolean;
     policyRisks: { [policyId: number]: Risk[] };
+    policyRiskSettings: { [policyId: number]: RiskSettings };
+    getPolicyRiskSettingsPending: boolean;
 }
 
 const initialState: RiskState = {
@@ -36,6 +41,8 @@ const initialState: RiskState = {
     getRisksPending: false,
     modifyRiskPending: false,
     getQuotePending: false,
+    policyRiskSettings: {},
+    getPolicyRiskSettingsPending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
@@ -169,6 +176,21 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 focusedRisk: null,
+            };
+        case GET_POLICY_RISK_SETTINGS_PENDING:
+            return {
+                ...state,
+                getPolicyRiskSettingsPending: true,
+            };
+        case GET_POLICY_RISK_SETTINGS_SUCCESS:
+        case GET_POLICY_RISK_SETTINGS_FAILURE:
+            return {
+                ...state,
+                policyRiskSettings: {
+                    ...state.policyRiskSettings,
+                    [payload.policy]: payload,
+                },
+                getPolicyRiskSettingsPending: false,
             };
         default:
             return state;

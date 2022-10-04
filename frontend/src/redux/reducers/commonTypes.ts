@@ -125,3 +125,13 @@ export interface Risk {
     created_at: string;
     updated_at: string;
 }
+
+export interface RiskSettings {
+    policy: number;
+    conservative_factor: number;
+    cell_phone_peril_rate: number;
+    cell_phone_case_discount: number;
+    cell_phone_screen_protector_discount: number;
+    audio_equipment_peril_rate: number;
+    annual_discount_rate: number;
+}

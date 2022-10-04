@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Modal, Row, Typography, Slider } from "antd";
+import {
+    Button,
+    Form,
+    Modal,
+    Row,
+    Typography,
+    Slider,
+    Input,
+    Spin,
+} from "antd";
 import {
     SettingOutlined,
     FrownOutlined,
     SmileOutlined,
 } from "@ant-design/icons";
 
-import { useAppDispatch } from "../../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import colors from "../../../../constants/colors";
 import { getPolicyRiskSettings } from "../../../../../redux/actions/policies";
-import { Policy } from "../../../../../redux/reducers/commonTypes";
+import {
+    Policy,
+    RiskSettings,
+} from "../../../../../redux/reducers/commonTypes";
 
 const { Paragraph } = Typography;
 
@@ -19,6 +31,12 @@ const max = 100;
 export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     const [visible, setVisible] = useState(false);
     const dispatch = useAppDispatch();
+    const getRiskSettingsPending = useAppSelector(
+        (state) => state.risk.getPolicyRiskSettingsPending
+    );
+    const riskSettings: RiskSettings = useAppSelector(
+        (state) => state.risk.policyRiskSettings?.[policy.id]
+    );
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -34,14 +52,20 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         setVisible(false);
     };
 
-    const mid = Number(((max - min) / 2).toFixed(5));
-    // const preColorCls = value >= mid ? "" : "icon-wrapper-active";
-    // const nextColorCls = value >= mid ? "icon-wrapper-active" : "";
+    // audio_equipment_peril_rate: 20;
+    // cell_phone_case_discount: 100;
+    // cell_phone_peril_rate: 15;
+    // cell_phone_screen_protector_discount: 100;
+
+    const policyHasCellPhoneEnabled =
+        policy.available_underlying_insured_types.includes("cell_phone");
+    const policyHasAudioEquipmentEnabled =
+        policy.available_underlying_insured_types.includes("audio_equipment");
 
     return (
         <Row justify="end" align="middle">
             <Modal
-                title="Policy Settings"
+                title="Policy Premiums Settings"
                 okText="Update"
                 cancelText={"Close"}
                 visible={visible}
@@ -49,10 +73,33 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                 confirmLoading={false}
                 onCancel={handleCancel}
             >
-                <Form form={form}>
-                    <Form.Item label="Policy Name"></Form.Item>
-                </Form>
-                Some gears for changing the policy settings
+                <Spin spinning={getRiskSettingsPending}>
+                    <Form form={form}>
+                        <Form.Item label="Conservative Level">
+                            <Input
+                                defaultValue={riskSettings.conservative_factor}
+                            />
+                        </Form.Item>
+                        {policyHasCellPhoneEnabled && (
+                            <>
+                                <Form.Item label="Cell Phone Loss Rate">
+                                    <Input />
+                                </Form.Item>
+                                <Form.Item label="Cell Phone Screen Protector Discount">
+                                    <Input />
+                                </Form.Item>
+                                <Form.Item label="Cell Phone Case Discount">
+                                    <Input />
+                                </Form.Item>
+                            </>
+                        )}
+                        {policyHasAudioEquipmentEnabled && (
+                            <Form.Item label="Cell Phone Peril Rate">
+                                <Input />
+                            </Form.Item>
+                        )}
+                    </Form>
+                </Spin>
             </Modal>
 
             <Button type="dashed" onClick={() => setVisible(true)}>
