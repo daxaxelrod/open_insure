@@ -15,7 +15,6 @@ export default function UserPolicies() {
     const [search, setSearch] = useState("");
     const dispatch = useAppDispatch();
     const userPolicies = useAppSelector((state) => state.policies.userPolicies);
-    const [activeTab, setActiveTab] = useState("Policies");
 
     useEffect(() => {
         dispatch(getUserPolicies());
@@ -59,10 +58,10 @@ export default function UserPolicies() {
                         <Tabs.TabPane tab="Policies" key="1">
                             <UserPoliciesList policies={userPolicies} />
                         </Tabs.TabPane>
-                        <Tabs.TabPane tab="Schedule" key="2">
+                        <Tabs.TabPane tab="My Premiums" key="2">
                             <UserPolicyCalendar policies={userPolicies} />
                         </Tabs.TabPane>
-                        <Tabs.TabPane tab="Claims" key="3">
+                        <Tabs.TabPane tab="Policy Claims" key="3">
                             <UserPoliciesOpenClaimsTable />
                         </Tabs.TabPane>
                     </Tabs>
