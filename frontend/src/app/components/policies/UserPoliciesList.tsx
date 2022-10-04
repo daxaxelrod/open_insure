@@ -81,7 +81,6 @@ export default function UserPoliciesList({ policies }: { policies: Policy[] }) {
 
     return (
         <Table
-            style={{ marginRight: "1rem" }}
             rowClassName="cursor-pointer"
             dataSource={policies}
             columns={columns}

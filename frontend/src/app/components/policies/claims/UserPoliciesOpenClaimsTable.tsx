@@ -11,7 +11,7 @@ interface ClaimRowType extends Claim {
     key: React.Key;
 }
 
-export default function UserPoliciesOpenClaimsRow() {
+export default function UserPoliciesOpenClaimsTable() {
     const userPolicies = useAppSelector((state) => state.policies.userPolicies);
     const allOpenClaims = userPolicies
         .reduce(
@@ -50,9 +50,9 @@ export default function UserPoliciesOpenClaimsRow() {
     ];
 
     return (
-        <>
+        <div style={{ width: "100%" }}>
             <Title level={3}>Claims</Title>
             <Table dataSource={allOpenClaims} columns={columns} />
-        </>
+        </div>
     );
 }
