@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Typography, Col, Input, Space, Button, Tabs } from "antd";
+import { Row, Typography, Col, Input, Space, Button, Tabs, Badge } from "antd";
 import { SearchOutlined, WalletOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import UserPoliciesOpenClaimsTable from "../components/policies/claims/UserPoliciesOpenClaimsTable";
@@ -7,7 +7,7 @@ import { getUserPolicies } from "../../redux/actions/policies";
 import UserPoliciesList from "../components/policies/UserPoliciesList";
 import UserPolicyCalendar from "../components/policies/UserPolicyCalendar";
 import { getUserRisks } from "../../redux/actions/risk";
-import { Content } from "antd/lib/layout/layout";
+import { Claim, Policy } from "../../redux/reducers/commonTypes";
 
 const { Title } = Typography;
 
@@ -15,6 +15,18 @@ export default function UserPolicies() {
     const [search, setSearch] = useState("");
     const dispatch = useAppDispatch();
     const userPolicies = useAppSelector((state) => state.policies.userPolicies);
+
+    const numOutstandingClaims = userPolicies
+        .reduce(
+            (previousValue: Policy[], policy: Policy) => [
+                ...previousValue,
+                ...policy.claims,
+            ],
+            []
+        )
+        .filter(
+            (claim: Claim) => !claim.is_claim_invalid && !claim.paid_on
+        ).length;
 
     useEffect(() => {
         dispatch(getUserPolicies());
@@ -53,7 +65,7 @@ export default function UserPolicies() {
                 </Col>
             </Row>
             <Row style={{ marginBottom: ".5rem" }}>
-                <Col style={{ display: "flex" }}>
+                <Col span={24}>
                     <Tabs>
                         <Tabs.TabPane tab="Policies" key="1">
                             <UserPoliciesList policies={userPolicies} />
@@ -61,7 +73,10 @@ export default function UserPolicies() {
                         <Tabs.TabPane tab="My Premiums" key="2">
                             <UserPolicyCalendar policies={userPolicies} />
                         </Tabs.TabPane>
-                        <Tabs.TabPane tab="Policy Claims" key="3">
+                        <Tabs.TabPane
+                            tab={<ClaimsTab count={numOutstandingClaims} />}
+                            key="3"
+                        >
                             <UserPoliciesOpenClaimsTable />
                         </Tabs.TabPane>
                     </Tabs>
@@ -70,3 +85,11 @@ export default function UserPolicies() {
         </div>
     );
 }
+
+const ClaimsTab = ({ count }: { count: number }) => {
+    return (
+        <Badge count={count} className="ant-tabs-tab-btn">
+            <div style={{ margin: "0 1rem" }}>Claims</div>
+        </Badge>
+    );
+};
