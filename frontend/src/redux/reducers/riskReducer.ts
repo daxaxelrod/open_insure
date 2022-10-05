@@ -33,6 +33,7 @@ export interface RiskState {
     policyRisks: { [policyId: number]: Risk[] };
     policyRiskSettings: { [policyId: number]: RiskSettings };
     getPolicyRiskSettingsPending: boolean;
+    patchPolicyRiskSettingsPending: boolean;
 }
 
 const initialState: RiskState = {
@@ -43,6 +44,7 @@ const initialState: RiskState = {
     getQuotePending: false,
     policyRiskSettings: {},
     getPolicyRiskSettingsPending: false,
+    patchPolicyRiskSettingsPending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {

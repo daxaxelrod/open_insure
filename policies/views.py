@@ -58,9 +58,9 @@ class PolicyViewSet(ModelViewSet):
     def get_queryset(self):
         if where_member := self.request.query_params.get("where_member", None):
             if where_member:
-                return Policy.objects.filter(pod__members__id=self.request.user.id)
+                return Policy.objects.filter(pod__members__id=self.request.user.id).order_by('-created_at')
             else:
-                return Policy.objects.exclude(pod__members__id=self.request.user.id)
+                return Policy.objects.exclude(pod__members__id=self.request.user.id).order_by('-created_at')
         return Policy.objects.all()
 
     def get_serializer_class(self):

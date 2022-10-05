@@ -8,25 +8,24 @@ import {
     Slider,
     Input,
     Spin,
+    Table,
+    Popconfirm,
+    InputNumber,
+    Col,
 } from "antd";
-import {
-    SettingOutlined,
-    FrownOutlined,
-    SmileOutlined,
-} from "@ant-design/icons";
+import { SettingOutlined } from "@ant-design/icons";
+import { ColumnsType } from "antd/lib/table";
 
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import colors from "../../../../constants/colors";
 import { getPolicyRiskSettings } from "../../../../../redux/actions/policies";
 import {
+    Risk,
     Policy,
     RiskSettings,
 } from "../../../../../redux/reducers/commonTypes";
 
 const { Paragraph } = Typography;
-
-const min = 1;
-const max = 100;
 
 export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     const [visible, setVisible] = useState(false);
@@ -37,6 +36,16 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     const riskSettings: RiskSettings = useAppSelector(
         (state) => state.risk.policyRiskSettings?.[policy.id]
     );
+    const patchPolicyRiskSettingsPending = useAppSelector(
+        (state) => state.risk.patchPolicyRiskSettingsPending
+    );
+    const policyRisks: Risk[] = useAppSelector(
+        (state) => state.risk.policyRisks?.[policy.id]
+    );
+    const pricedRisks = policyRisks?.filter(
+        (r: Risk) => r.premium_amount !== null
+    );
+
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -62,6 +71,28 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     const policyHasAudioEquipmentEnabled =
         policy.available_underlying_insured_types.includes("audio_equipment");
 
+    const columns = [
+        {
+            title: "Name",
+            render: (text: string, record: Risk) => {
+                const user = policy.pod.members.find(
+                    (member) => member.id === record.user
+                );
+                if (user) {
+                    const userName = user?.first_name + " " + user?.last_name;
+                    return userName;
+                }
+            },
+            key: "name",
+        },
+        {
+            title: "Premium",
+            dataIndex: "premium_amount",
+            render: (text: string) => `$${parseInt(text) / 100}`,
+            key: "premium_amount",
+        },
+    ];
+
     return (
         <Row justify="end" align="middle">
             <Modal
@@ -70,15 +101,59 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                 cancelText={"Close"}
                 visible={visible}
                 onOk={handleOk}
+                footer={[
+                    <Button key="back" onClick={handleCancel}>
+                        Return
+                    </Button>,
+                    <Popconfirm
+                        title="This will update the premiums for all members of this policy. Are you sure? All members will be emailed about the change."
+                        onConfirm={handleOk}
+                        onCancel={() => {}}
+                        okButtonProps={{
+                            loading: patchPolicyRiskSettingsPending,
+                        }}
+                        okText="Yes, update"
+                        cancelText="No"
+                    >
+                        <Button key="submit">Submit</Button>
+                    </Popconfirm>,
+                ]}
                 confirmLoading={false}
                 onCancel={handleCancel}
             >
                 <Spin spinning={getRiskSettingsPending}>
                     <Form form={form}>
-                        <Form.Item label="Conservative Level">
+                        <Form.Item
+                            label="Conservative Level"
+                            name={"conservative_value"}
+                        >
                             <Input
-                                defaultValue={riskSettings.conservative_factor}
+                                defaultValue={riskSettings?.conservative_factor}
                             />
+                            <Row>
+                                <Col span={12}>
+                                    <Slider
+                                        min={1}
+                                        max={100}
+                                        value={form.getFieldValue(
+                                            "conservative_value"
+                                        )}
+                                        defaultValue={
+                                            riskSettings?.conservative_factor
+                                        }
+                                    />
+                                </Col>
+                                <Col span={4}>
+                                    <InputNumber
+                                        min={1}
+                                        max={20}
+                                        style={{ margin: "0 16px" }}
+                                        value={form.getFieldValue(
+                                            "conservative_value"
+                                        )}
+                                    />
+                                </Col>
+                            </Row>
                         </Form.Item>
                         {policyHasCellPhoneEnabled && (
                             <>
@@ -100,6 +175,12 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                         )}
                     </Form>
                 </Spin>
+
+                <Table
+                    dataSource={pricedRisks}
+                    columns={columns}
+                    pagination={{ hideOnSinglePage: true }}
+                />
             </Modal>
 
             <Button type="dashed" onClick={() => setVisible(true)}>
