@@ -88,5 +88,4 @@ Build command `docker build -t insure .`
 ## Code Review Process
 
 1. Create and push a new branch
-2. Make sure tests pass, frontend: `npm run test` api: not configured yet
-3. Create new Pull Request in Github
+2. Create new Pull Request in Github

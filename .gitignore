@@ -8,6 +8,4 @@ media
 property_images/
 misc/
 **/.DS_Store
-node_modules/
-frontend/.env.example
-.env.example
+
