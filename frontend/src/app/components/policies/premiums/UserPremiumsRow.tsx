@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function UserPremiumsRow() {
-  return (
-    <div>UserPremiumsRow</div>
-  )
+    return <div>UserPremiumsRow</div>;
 }
