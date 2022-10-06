@@ -81,6 +81,10 @@ export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include -I/opt/homebrew/opt/lib
 pipenv install
 ```
 
+### Docker
+
+Build command `docker build -t insure .`
+
 ## Code Review Process
 
 1. Create and push a new branch
