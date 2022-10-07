@@ -6,11 +6,25 @@ import { Policy } from "../../../../../redux/reducers/commonTypes";
 const { InlineMath, BlockMath } = require("react-katex");
 const { Title } = Typography;
 
-export default function PremiumFormulaDisplay({ policy }: { policy: Policy }) {
+export default function PremiumFormulaDisplay({
+    policy,
+    draggingConvservative,
+    draggingCellPhonePerilRate,
+}: {
+    policy: Policy;
+    draggingConvservative: boolean;
+    draggingCellPhonePerilRate: boolean;
+}) {
     return (
         <div>
             <Title level={5}>Premium Formula</Title>
-            <BlockMath math={`\\colorbox{aqua}{$F=ma$}`} />
+            <BlockMath
+                math={`P = V \\times (${
+                    draggingCellPhonePerilRate ? `\\colorbox{aqua}{$P$}` : "P"
+                } + ${draggingConvservative ? `\\colorbox{aqua}{$C$}` : "C"})
+                
+            `}
+            />
 
             <Divider
                 orientation="right"

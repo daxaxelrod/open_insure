@@ -49,6 +49,14 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
 
     const [form] = Form.useForm();
 
+    const [draggingValue, setDraggingValue] = useState<any>({
+        conservative_factor: false,
+        cell_phone_peril_rate: false,
+        cell_phone_case_discount: false,
+        cell_phone_screen_protector_discount: false,
+        audio_equipment_peril_rate: false,
+    });
+
     useEffect(() => {
         if (visible) {
             dispatch(getPolicyRiskSettings(policy?.id));
@@ -95,11 +103,21 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     ];
 
     const conservativeValue =
-        Form.useWatch("conservative_value", form) ||
+        Form.useWatch("conservative_factor", form) ||
         riskSettings?.conservative_factor;
 
-    const conservativeSliderOnChange = (value: number) => {
-        form.setFieldsValue({ conservative_value: value });
+    const cellPhonePerilRate =
+        Form.useWatch("cell_phone_peril_rate", form) ||
+        riskSettings?.cell_phone_peril_rate;
+
+    const sliderOnChange = (value: number, identifier: string) => {
+        form.setFieldsValue({ [identifier]: value });
+        if (!draggingValue?.[identifier]) {
+            setDraggingValue({
+                ...draggingValue,
+                [identifier]: true,
+            });
+        }
     };
 
     return (
@@ -130,21 +148,38 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                 confirmLoading={false}
                 onCancel={handleCancel}
             >
-                <PremiumFormulaDisplay policy={policy} />
+                <PremiumFormulaDisplay
+                    policy={policy}
+                    draggingConvservative={draggingValue?.conservative_factor}
+                    draggingCellPhonePerilRate={
+                        draggingValue.cell_phone_peril_rate
+                    }
+                />
                 <Spin spinning={getRiskSettingsPending}>
                     <Form form={form}>
                         <Form.Item
                             label="Conservative Level"
-                            name={"conservative_value"}
+                            name={"conservative_factor"}
                         >
                             <Row>
                                 <Col span={14}>
                                     <Slider
                                         min={1}
                                         max={100}
-                                        onChange={conservativeSliderOnChange}
+                                        onChange={(val) =>
+                                            sliderOnChange(
+                                                val,
+                                                "conservative_factor"
+                                            )
+                                        }
                                         defaultValue={
                                             riskSettings?.conservative_factor
+                                        }
+                                        onAfterChange={() =>
+                                            setDraggingValue({
+                                                ...draggingValue,
+                                                conservative_factor: false,
+                                            })
                                         }
                                     />
                                 </Col>
@@ -162,8 +197,46 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                         </Form.Item>
                         {policyHasCellPhoneEnabled && (
                             <>
-                                <Form.Item label="Cell Phone Loss Rate">
-                                    <Input />
+                                <Form.Item
+                                    label="Cell Phone Loss Rate"
+                                    name={"cell_phone_peril_rate"}
+                                >
+                                    <Row>
+                                        <Col span={14}>
+                                            <Slider
+                                                min={1}
+                                                max={100}
+                                                onChange={(val) =>
+                                                    sliderOnChange(
+                                                        val,
+                                                        "cell_phone_peril_rate"
+                                                    )
+                                                }
+                                                defaultValue={
+                                                    riskSettings?.cell_phone_peril_rate
+                                                }
+                                                onAfterChange={() =>
+                                                    setDraggingValue({
+                                                        ...draggingValue,
+                                                        cell_phone_peril_rate:
+                                                            false,
+                                                    })
+                                                }
+                                            />
+                                        </Col>
+                                        <Col
+                                            span={10}
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <Paragraph>
+                                                {cellPhonePerilRate}%
+                                            </Paragraph>
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                                 <Form.Item label="Cell Phone Screen Protector Discount">
                                     <Input />
