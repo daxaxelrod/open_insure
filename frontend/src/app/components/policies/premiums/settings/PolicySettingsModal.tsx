@@ -24,6 +24,7 @@ import {
     Policy,
     RiskSettings,
 } from "../../../../../redux/reducers/commonTypes";
+import PremiumFormulaDisplay from "./PremiumFormulaDisplay";
 
 const { Paragraph } = Typography;
 
@@ -93,6 +94,14 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         },
     ];
 
+    const conservativeValue =
+        Form.useWatch("conservative_value", form) ||
+        riskSettings?.conservative_factor;
+
+    const conservativeSliderOnChange = (value: number) => {
+        form.setFieldsValue({ conservative_value: value });
+    };
+
     return (
         <Row justify="end" align="middle">
             <Modal
@@ -121,37 +130,33 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                 confirmLoading={false}
                 onCancel={handleCancel}
             >
+                <PremiumFormulaDisplay policy={policy} />
                 <Spin spinning={getRiskSettingsPending}>
                     <Form form={form}>
                         <Form.Item
                             label="Conservative Level"
                             name={"conservative_value"}
                         >
-                            <Input
-                                defaultValue={riskSettings?.conservative_factor}
-                            />
                             <Row>
-                                <Col span={12}>
+                                <Col span={14}>
                                     <Slider
                                         min={1}
                                         max={100}
-                                        value={form.getFieldValue(
-                                            "conservative_value"
-                                        )}
+                                        onChange={conservativeSliderOnChange}
                                         defaultValue={
                                             riskSettings?.conservative_factor
                                         }
                                     />
                                 </Col>
-                                <Col span={4}>
-                                    <InputNumber
-                                        min={1}
-                                        max={20}
-                                        style={{ margin: "0 16px" }}
-                                        value={form.getFieldValue(
-                                            "conservative_value"
-                                        )}
-                                    />
+                                <Col
+                                    span={10}
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <Paragraph>{conservativeValue}%</Paragraph>
                                 </Col>
                             </Row>
                         </Form.Item>
