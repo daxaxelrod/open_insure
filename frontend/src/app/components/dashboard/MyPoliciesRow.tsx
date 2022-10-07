@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function MyPoliciesRow() {
-  return (
-    <div>MyPoliciesRow</div>
-  )
+    return <div>MyPoliciesRow</div>;
 }
