@@ -5,17 +5,13 @@ import {
     Modal,
     Row,
     Typography,
-    Slider,
-    Input,
     Spin,
     Table,
     Popconfirm,
-    InputNumber,
-    Col,
     Radio,
+    RadioChangeEvent,
 } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
-import { ColumnsType } from "antd/lib/table";
 
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import colors from "../../../../constants/colors";
@@ -76,8 +72,29 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         setVisible(false);
     };
 
-    const setPresetOption = (thing: any) => {
-        setChosenPreset(thing.target.value);
+    const setPresetOption = (option: RadioChangeEvent) => {
+        let preset = option.target.value;
+        setChosenPreset(preset);
+        // is there a cleaner way to do this?
+        // definitely a better way
+        let conservative_factor =
+            preset === "low" ? 50 : preset === "medium" ? 20 : 0;
+        let cell_phone_peril_rate =
+            preset === "low" ? 30 : preset === "medium" ? 20 : 10;
+        let audio_equipment_peril_rate =
+            preset === "low" ? 30 : preset === "medium" ? 20 : 10;
+        let cell_phone_case_discount =
+            preset === "low" ? 0 : preset === "medium" ? 100 : 300;
+        let cell_phone_screen_protector_discount =
+            preset === "low" ? 0 : preset === "medium" ? 100 : 300;
+
+        form.setFieldsValue({
+            conservative_factor,
+            cell_phone_peril_rate,
+            cell_phone_case_discount,
+            cell_phone_screen_protector_discount,
+            audio_equipment_peril_rate,
+        });
     };
 
     const policyHasCellPhoneEnabled =
@@ -187,9 +204,9 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                             </Paragraph>
                             <Radio.Group
                                 options={[
-                                    { label: "Low Risk", value: "Apple" },
-                                    { label: "Medium", value: "Pear" },
-                                    { label: "High Risk", value: "Orange" },
+                                    { label: "Low Risk", value: "low" },
+                                    { label: "Medium", value: "medium" },
+                                    { label: "High Risk", value: "high" },
                                 ]}
                                 onChange={setPresetOption}
                                 value={chosenPreset}
@@ -228,7 +245,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                             </Form.Item>
                         )}
                         <Form.Item
-                            label="Conservative Level"
+                            label="Conservative Factor"
                             name={"conservative_factor"}
                         >
                             <SlidablePolicyRiskSetting
