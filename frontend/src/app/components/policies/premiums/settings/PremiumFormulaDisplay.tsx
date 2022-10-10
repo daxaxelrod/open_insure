@@ -6,6 +6,7 @@ import {
     Risk,
     RiskSettings,
 } from "../../../../../redux/reducers/commonTypes";
+import colors from "../../../../constants/colors";
 
 const { InlineMath, BlockMath } = require("react-katex");
 const { Title, Paragraph } = Typography;
@@ -58,7 +59,7 @@ export default function PremiumFormulaDisplay({
                 <Row style={{ marginBottom: ".5rem" }}>
                     <InlineMath
                         math={`P = ${
-                            userRisk.content_type === "cell_phone"
+                            userRisk.underlying_insured_type === "cell_phone"
                                 ? riskSettings.cell_phone_peril_rate
                                 : riskSettings.audio_equipment_peril_rate
                         }\\% `}
@@ -72,22 +73,61 @@ export default function PremiumFormulaDisplay({
                     </Paragraph>
                 </Row>
                 <div>
-                    "D" stands for discount. There are{" "}
-                    {userRisk.content_type === "cell_phone" ? "2" : "0"}{" "}
-                    discounts that are available for{" "}
-                    {userRisk.content_type === "cell_phone"
-                        ? "cell phones"
-                        : "audio equipment"}
-                    .
+                    <Paragraph
+                        style={{
+                            fontSize: "1.2rem",
+                            color: colors.gray9,
+                            textDecoration: "underline",
+                            textUnderlineOffset: "2px",
+                        }}
+                    >
+                        Discounts
+                    </Paragraph>
+                    <Paragraph style={{ marginBottom: ".75rem" }}>
+                        There are{" "}
+                        {userRisk.underlying_insured_type === "cell_phone"
+                            ? "2"
+                            : "0"}{" "}
+                        discounts that are available for{" "}
+                        {userRisk.underlying_insured_type === "cell_phone"
+                            ? "cell phones"
+                            : "audio equipment"}
+                        . Discounts are represented as the percent less likely
+                        you are to have a full loss a year.
+                        {userRisk.underlying_insured_type === "audio_equipment"
+                            ? `There are 2 discounts available to those who insure their cell phones. A discount for having a screen protector and another for having a case`
+                            : ""}
+                    </Paragraph>
                 </div>
-                {userRisk?.content_type === "cell_phone" ? (
+                {userRisk?.underlying_insured_type === "cell_phone" ? (
                     <>
-                        <InlineMath
-                            math={`D1 = ${riskSettings.cell_phone_screen_protector_discount} You're ${riskSettings.cell_phone_screen_protector_discount}% less likely to break your phone in a given year if you have a screen protector`}
-                        />
-                        <InlineMath
-                            math={`D2 = ${riskSettings.cell_phone_case_discount} You're ${riskSettings.cell_phone_case_discount}% less likely to break your phone in a given year if you have a phone case`}
-                        />
+                        <Row style={{ marginBottom: ".5rem" }}>
+                            <InlineMath
+                                math={`D1 = ${
+                                    riskSettings.cell_phone_screen_protector_discount /
+                                    100
+                                }\\% `}
+                            />
+                            <Paragraph>
+                                &nbsp;&nbsp;You are $
+                                {
+                                    riskSettings.cell_phone_screen_protector_discount
+                                }
+                                % less likely if you have a screen protector
+                            </Paragraph>
+                        </Row>
+                        <Row style={{ marginBottom: ".5rem" }}>
+                            <InlineMath
+                                math={`D2 = ${
+                                    riskSettings.cell_phone_case_discount / 100
+                                }\\%`}
+                            />
+                            <Paragraph>
+                                &nbsp;&nbsp;You are $
+                                {riskSettings.cell_phone_case_discount}% less
+                                likely if you have a phone case
+                            </Paragraph>
+                        </Row>
                     </>
                 ) : null}
             </div>
