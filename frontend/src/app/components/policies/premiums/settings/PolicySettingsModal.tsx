@@ -12,6 +12,7 @@ import {
     Popconfirm,
     InputNumber,
     Col,
+    Radio,
 } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/lib/table";
@@ -25,6 +26,7 @@ import {
     RiskSettings,
 } from "../../../../../redux/reducers/commonTypes";
 import PremiumFormulaDisplay from "./PremiumFormulaDisplay";
+import SlidablePolicyRiskSetting from "./SlidablePolicyRiskSetting";
 
 const { Paragraph } = Typography;
 
@@ -43,9 +45,13 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     const policyRisks: Risk[] = useAppSelector(
         (state) => state.risk.policyRisks?.[policy.id]
     );
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
+    const [chosenPreset, setChosenPreset] = useState("");
+
     const pricedRisks = policyRisks?.filter(
         (r: Risk) => r.premium_amount !== null
     );
+    const userRisk = policyRisks?.find((r: Risk) => r.user === currentUser.id);
 
     const [form] = Form.useForm();
 
@@ -70,10 +76,9 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         setVisible(false);
     };
 
-    // audio_equipment_peril_rate: 20;
-    // cell_phone_case_discount: 100;
-    // cell_phone_peril_rate: 15;
-    // cell_phone_screen_protector_discount: 100;
+    const setPresetOption = (thing: any) => {
+        setChosenPreset(thing.target.value);
+    };
 
     const policyHasCellPhoneEnabled =
         policy.available_underlying_insured_types.includes("cell_phone");
@@ -103,12 +108,24 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     ];
 
     const conservativeValue =
-        Form.useWatch("conservative_factor", form) ||
+        Form.useWatch("conservative_factor", form) ??
         riskSettings?.conservative_factor;
 
     const cellPhonePerilRate =
-        Form.useWatch("cell_phone_peril_rate", form) ||
+        Form.useWatch("cell_phone_peril_rate", form) ??
         riskSettings?.cell_phone_peril_rate;
+
+    const cellPhoneCaseDiscount =
+        Form.useWatch("cell_phone_case_discount", form) ??
+        riskSettings?.cell_phone_case_discount;
+
+    const cellPhoneScreenProtectorDiscount =
+        Form.useWatch("cell_phone_screen_protector_discount", form) ??
+        riskSettings?.cell_phone_screen_protector_discount;
+
+    const audioEquipmentPerilRate =
+        Form.useWatch("audio_equipment_peril_rate", form) ??
+        riskSettings?.audio_equipment_peril_rate;
 
     const sliderOnChange = (value: number, identifier: string) => {
         form.setFieldsValue({ [identifier]: value });
@@ -127,10 +144,11 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                 okText="Update"
                 cancelText={"Close"}
                 visible={visible}
+                width={"50%"}
                 onOk={handleOk}
                 footer={[
                     <Button key="back" onClick={handleCancel}>
-                        Return
+                        Do nothing & Close
                     </Button>,
                     <Popconfirm
                         title="This will update the premiums for all members of this policy. Are you sure? All members will be emailed about the change."
@@ -142,114 +160,118 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                         okText="Yes, update"
                         cancelText="No"
                     >
-                        <Button key="submit">Submit</Button>
+                        <Button key="submit" type="primary">
+                            Submit
+                        </Button>
                     </Popconfirm>,
                 ]}
                 confirmLoading={false}
                 onCancel={handleCancel}
             >
                 <PremiumFormulaDisplay
-                    policy={policy}
-                    draggingConvservative={draggingValue?.conservative_factor}
-                    draggingCellPhonePerilRate={
-                        draggingValue.cell_phone_peril_rate
-                    }
+                    riskSettings={riskSettings}
+                    userRisk={userRisk}
+                    {...draggingValue}
                 />
                 <Spin spinning={getRiskSettingsPending}>
+                    <Row
+                        style={{
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            marginBottom: "1rem",
+                        }}
+                    >
+                        <div>
+                            <Paragraph style={{ color: colors.gray7 }}>
+                                Presets:
+                            </Paragraph>
+                            <Radio.Group
+                                options={[
+                                    { label: "Low Risk", value: "Apple" },
+                                    { label: "Medium", value: "Pear" },
+                                    { label: "High Risk", value: "Orange" },
+                                ]}
+                                onChange={setPresetOption}
+                                value={chosenPreset}
+                                optionType="button"
+                                buttonStyle="solid"
+                            />
+                        </div>
+                    </Row>
                     <Form form={form}>
+                        {policyHasCellPhoneEnabled && (
+                            <Form.Item
+                                label="Cell Phone Loss Rate"
+                                name={"cell_phone_peril_rate"}
+                            >
+                                <SlidablePolicyRiskSetting
+                                    sliderOnChange={sliderOnChange}
+                                    setDraggingValue={setDraggingValue}
+                                    draggingValue={draggingValue}
+                                    identifier={"cell_phone_peril_rate"}
+                                    initialValue={cellPhonePerilRate}
+                                />
+                            </Form.Item>
+                        )}
+                        {policyHasAudioEquipmentEnabled && (
+                            <Form.Item
+                                label="Audio Equipment Claim Probability"
+                                name={"audio_equipment_peril_rate"}
+                            >
+                                <SlidablePolicyRiskSetting
+                                    sliderOnChange={sliderOnChange}
+                                    setDraggingValue={setDraggingValue}
+                                    draggingValue={draggingValue}
+                                    identifier={"audio_equipment_peril_rate"}
+                                    initialValue={audioEquipmentPerilRate}
+                                />
+                            </Form.Item>
+                        )}
                         <Form.Item
                             label="Conservative Level"
                             name={"conservative_factor"}
                         >
-                            <Row>
-                                <Col span={14}>
-                                    <Slider
-                                        min={1}
-                                        max={100}
-                                        onChange={(val) =>
-                                            sliderOnChange(
-                                                val,
-                                                "conservative_factor"
-                                            )
-                                        }
-                                        defaultValue={
-                                            riskSettings?.conservative_factor
-                                        }
-                                        onAfterChange={() =>
-                                            setDraggingValue({
-                                                ...draggingValue,
-                                                conservative_factor: false,
-                                            })
-                                        }
-                                    />
-                                </Col>
-                                <Col
-                                    span={10}
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                    }}
-                                >
-                                    <Paragraph>{conservativeValue}%</Paragraph>
-                                </Col>
-                            </Row>
+                            <SlidablePolicyRiskSetting
+                                sliderOnChange={sliderOnChange}
+                                setDraggingValue={setDraggingValue}
+                                draggingValue={draggingValue}
+                                identifier={"conservative_factor"}
+                                initialValue={conservativeValue}
+                            />
                         </Form.Item>
                         {policyHasCellPhoneEnabled && (
                             <>
                                 <Form.Item
-                                    label="Cell Phone Loss Rate"
-                                    name={"cell_phone_peril_rate"}
+                                    label="Screen Protector Discount"
+                                    name={
+                                        "cell_phone_screen_protector_discount"
+                                    }
                                 >
-                                    <Row>
-                                        <Col span={14}>
-                                            <Slider
-                                                min={1}
-                                                max={100}
-                                                onChange={(val) =>
-                                                    sliderOnChange(
-                                                        val,
-                                                        "cell_phone_peril_rate"
-                                                    )
-                                                }
-                                                defaultValue={
-                                                    riskSettings?.cell_phone_peril_rate
-                                                }
-                                                onAfterChange={() =>
-                                                    setDraggingValue({
-                                                        ...draggingValue,
-                                                        cell_phone_peril_rate:
-                                                            false,
-                                                    })
-                                                }
-                                            />
-                                        </Col>
-                                        <Col
-                                            span={10}
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                            }}
-                                        >
-                                            <Paragraph>
-                                                {cellPhonePerilRate}%
-                                            </Paragraph>
-                                        </Col>
-                                    </Row>
+                                    <SlidablePolicyRiskSetting
+                                        sliderOnChange={sliderOnChange}
+                                        setDraggingValue={setDraggingValue}
+                                        draggingValue={draggingValue}
+                                        identifier={
+                                            "cell_phone_screen_protector_discount"
+                                        }
+                                        initialValue={
+                                            cellPhoneScreenProtectorDiscount
+                                        }
+                                    />
                                 </Form.Item>
-                                <Form.Item label="Cell Phone Screen Protector Discount">
-                                    <Input />
-                                </Form.Item>
-                                <Form.Item label="Cell Phone Case Discount">
-                                    <Input />
+                                <Form.Item
+                                    label="Case Discount"
+                                    name={"cell_phone_case_discount"}
+                                >
+                                    <SlidablePolicyRiskSetting
+                                        sliderOnChange={sliderOnChange}
+                                        setDraggingValue={setDraggingValue}
+                                        draggingValue={draggingValue}
+                                        identifier={"cell_phone_case_discount"}
+                                        initialValue={cellPhoneCaseDiscount}
+                                    />
                                 </Form.Item>
                             </>
-                        )}
-                        {policyHasAudioEquipmentEnabled && (
-                            <Form.Item label="Cell Phone Peril Rate">
-                                <Input />
-                            </Form.Item>
                         )}
                     </Form>
                 </Spin>

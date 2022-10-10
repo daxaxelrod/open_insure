@@ -119,7 +119,7 @@ export interface Risk {
     value_at_risk: number;
     premium_amount: number;
     underlying_insured_type: UnderlyingInsuredType;
-    content_type: string;
+    content_type: "cell_phone" | "audio_equipment";
     content_object: GenericProperty;
     object_id: number;
     created_at: string;

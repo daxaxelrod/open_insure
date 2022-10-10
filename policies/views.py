@@ -131,8 +131,13 @@ class RiskSettingsViewSet(RetrieveUpdateAPIView):
     serializer_class = PolicyRiskSettingsSerializer
     lookup_url_kwarg = "policy_id"
     
-    def get_queryset(self):
-        return PolicyRiskSettings.objects.filter(policy__id=self.kwargs["policy_id"])
+    def get_object(self):
+        try:
+            return PolicyRiskSettings.objects.get(policy__id=self.kwargs["policy_id"])
+        except PolicyRiskSettings.DoesNotExist:
+            raise ValidationError({
+                "message": "Risk settings not found"
+                })
 
 class ClaimViewSet(ModelViewSet):
     queryset = Claim.objects.all()
