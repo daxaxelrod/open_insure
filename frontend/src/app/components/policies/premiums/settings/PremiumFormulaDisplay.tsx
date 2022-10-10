@@ -60,8 +60,8 @@ export default function PremiumFormulaDisplay({
                     <InlineMath
                         math={`P = ${
                             userRisk.underlying_insured_type === "cell_phone"
-                                ? riskSettings.cell_phone_peril_rate
-                                : riskSettings.audio_equipment_peril_rate
+                                ? riskSettings?.cell_phone_peril_rate
+                                : riskSettings?.audio_equipment_peril_rate
                         }\\% `}
                         /** now of course there are different probs for different loss events. 
                         A battery replacement is more likely than a total loss.
@@ -71,6 +71,15 @@ export default function PremiumFormulaDisplay({
                         &nbsp;&nbsp;The chance your asset has of being damaged
                         in a year
                     </Paragraph>
+                </Row>
+                <Row style={{ marginBottom: ".5rem" }}>
+                    <InlineMath
+                        math={`C = ${riskSettings?.conservative_factor}\\% `}
+                        /** now of course there are different probs for different loss events. 
+                        A battery replacement is more likely than a total loss.
+                        But as long as people view this as a blended weighted average, the math works out to be the same */
+                    />
+                    <Paragraph>&nbsp;&nbsp;Conservative Factor</Paragraph>
                 </Row>
                 <div>
                     <Paragraph
@@ -104,28 +113,27 @@ export default function PremiumFormulaDisplay({
                         <Row style={{ marginBottom: ".5rem" }}>
                             <InlineMath
                                 math={`D1 = ${
-                                    riskSettings.cell_phone_screen_protector_discount /
+                                    riskSettings?.cell_phone_screen_protector_discount /
                                     100
                                 }\\% `}
                             />
                             <Paragraph>
-                                &nbsp;&nbsp;You are $
-                                {
-                                    riskSettings.cell_phone_screen_protector_discount
-                                }
+                                &nbsp;&nbsp;You are
+                                {riskSettings?.cell_phone_screen_protector_discount /
+                                    100}
                                 % less likely if you have a screen protector
                             </Paragraph>
                         </Row>
                         <Row style={{ marginBottom: ".5rem" }}>
                             <InlineMath
                                 math={`D2 = ${
-                                    riskSettings.cell_phone_case_discount / 100
+                                    riskSettings?.cell_phone_case_discount / 100
                                 }\\%`}
                             />
                             <Paragraph>
-                                &nbsp;&nbsp;You are $
-                                {riskSettings.cell_phone_case_discount}% less
-                                likely if you have a phone case
+                                &nbsp;&nbsp;You are{" "}
+                                {riskSettings?.cell_phone_case_discount / 100}%
+                                less likely if you have a phone case
                             </Paragraph>
                         </Row>
                     </>
