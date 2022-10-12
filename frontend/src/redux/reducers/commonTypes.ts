@@ -126,7 +126,7 @@ export interface Risk {
     updated_at: string;
 }
 
-export interface RiskSettings {
+export interface RiskSettings extends Record<string, any> {
     policy: number;
     conservative_factor: number;
     cell_phone_peril_rate: number;

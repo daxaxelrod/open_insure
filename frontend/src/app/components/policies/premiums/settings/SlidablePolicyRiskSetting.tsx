@@ -1,6 +1,5 @@
 import React from "react";
 import { Col, Row, Slider, Typography } from "antd";
-import { RiskSettings } from "../../../../../redux/reducers/commonTypes";
 
 const { Paragraph } = Typography;
 
@@ -9,7 +8,10 @@ interface props {
     setDraggingValue: React.Dispatch<any>;
     identifier: string;
     draggingValue: any;
-    initialValue: any;
+    value: number;
+    min?: number;
+    max?: number;
+    stepSize?: number;
 }
 
 export default function SlidablePolicyRiskSetting({
@@ -17,16 +19,20 @@ export default function SlidablePolicyRiskSetting({
     setDraggingValue,
     draggingValue,
     identifier,
-    initialValue,
+    value,
+    min = 1,
+    max = 100,
+    stepSize = 1,
 }: props) {
     return (
         <Row>
             <Col span={14}>
                 <Slider
-                    min={1}
-                    max={100}
+                    min={min}
+                    max={max}
+                    step={stepSize}
                     onChange={(val) => sliderOnChange(val, identifier)}
-                    defaultValue={initialValue}
+                    value={value}
                     onAfterChange={() =>
                         setDraggingValue({
                             ...draggingValue,
@@ -43,7 +49,7 @@ export default function SlidablePolicyRiskSetting({
                     alignItems: "center",
                 }}
             >
-                <Paragraph>{initialValue}%</Paragraph>
+                <Paragraph>{value}%</Paragraph>
             </Col>
         </Row>
     );

@@ -28,7 +28,7 @@ const getIconForPeril = (peril: Peril) => {
 export default function PerilGridDisplay({ peril }: { peril: Peril }) {
     let icon = getIconForPeril(peril);
     return (
-        <Tooltip title={peril.description}>
+        <Tooltip title={peril.description} color="black">
             <Row>
                 {icon}
                 <Col style={{ display: "flex", alignItems: "center" }}>

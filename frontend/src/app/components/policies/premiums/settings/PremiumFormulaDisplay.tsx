@@ -1,6 +1,6 @@
 import React from "react";
 import "katex/dist/katex.min.css";
-import { Divider, Row, Typography } from "antd";
+import { Divider, Row, Tooltip, Typography } from "antd";
 import {
     Policy,
     Risk,
@@ -49,12 +49,22 @@ export default function PremiumFormulaDisplay({
             `}
             />
             <div>
+                <Paragraph
+                    style={{
+                        fontSize: "1.2rem",
+                        color: colors.gray9,
+                        textDecoration: "underline",
+                        textUnderlineOffset: "2px",
+                        marginBottom: ".5rem",
+                    }}
+                >
+                    Fundamentals
+                </Paragraph>
                 <Row style={{ marginBottom: ".5rem" }}>
-                    <InlineMath math={`V =  `} />
-                    <Paragraph>
-                        &nbsp;&nbsp;${userRisk?.content_object?.market_value}{" "}
-                        Your asset's value today
-                    </Paragraph>
+                    <InlineMath
+                        math={`V = \\$${userRisk?.content_object?.market_value}`}
+                    />
+                    <Paragraph>&nbsp;&nbsp;Your asset's value today</Paragraph>
                 </Row>
                 <Row style={{ marginBottom: ".5rem" }}>
                     <InlineMath
@@ -79,7 +89,12 @@ export default function PremiumFormulaDisplay({
                         A battery replacement is more likely than a total loss.
                         But as long as people view this as a blended weighted average, the math works out to be the same */
                     />
-                    <Paragraph>&nbsp;&nbsp;Conservative Factor</Paragraph>
+                    <Tooltip
+                        title="Added to the probabilty of loss. A higher conservative factor will make it more likely your policy's reserves can cover a loss."
+                        color="black"
+                    >
+                        <Paragraph>&nbsp;&nbsp;Conservative Factor</Paragraph>
+                    </Tooltip>
                 </Row>
                 <div>
                     <Paragraph
@@ -88,6 +103,7 @@ export default function PremiumFormulaDisplay({
                             color: colors.gray9,
                             textDecoration: "underline",
                             textUnderlineOffset: "2px",
+                            marginBottom: ".",
                         }}
                     >
                         Discounts
@@ -118,10 +134,11 @@ export default function PremiumFormulaDisplay({
                                 }\\% `}
                             />
                             <Paragraph>
-                                &nbsp;&nbsp;You are
+                                &nbsp;&nbsp;You are&nbsp;
                                 {riskSettings?.cell_phone_screen_protector_discount /
                                     100}
-                                % less likely if you have a screen protector
+                                % less likely to have a total loss if you have a
+                                screen protector
                             </Paragraph>
                         </Row>
                         <Row style={{ marginBottom: ".5rem" }}>
@@ -131,9 +148,10 @@ export default function PremiumFormulaDisplay({
                                 }\\%`}
                             />
                             <Paragraph>
-                                &nbsp;&nbsp;You are{" "}
+                                &nbsp;&nbsp;You are&nbsp;
                                 {riskSettings?.cell_phone_case_discount / 100}%
-                                less likely if you have a phone case
+                                less likely to have a total loss if you have a
+                                phone case
                             </Paragraph>
                         </Row>
                     </>

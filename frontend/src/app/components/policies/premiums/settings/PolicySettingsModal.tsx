@@ -10,6 +10,7 @@ import {
     Popconfirm,
     Radio,
     RadioChangeEvent,
+    Col,
 } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 
@@ -24,7 +25,7 @@ import {
 import PremiumFormulaDisplay from "./PremiumFormulaDisplay";
 import SlidablePolicyRiskSetting from "./SlidablePolicyRiskSetting";
 
-const { Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 
 export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     const [visible, setVisible] = useState(false);
@@ -84,9 +85,9 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         let audio_equipment_peril_rate =
             preset === "low" ? 30 : preset === "medium" ? 20 : 10;
         let cell_phone_case_discount =
-            preset === "low" ? 0 : preset === "medium" ? 100 : 300;
+            preset === "low" ? 0 : preset === "medium" ? 1 : 1.5;
         let cell_phone_screen_protector_discount =
-            preset === "low" ? 0 : preset === "medium" ? 100 : 300;
+            preset === "low" ? 0 : preset === "medium" ? 1 : 1.5;
 
         form.setFieldsValue({
             conservative_factor,
@@ -154,6 +155,21 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         }
     };
 
+    useEffect(() => {
+        if (
+            riskSettings &&
+            Object.keys(riskSettings).length &&
+            !getRiskSettingsPending
+        ) {
+            Object.keys(riskSettings).forEach((key) => {
+                // hacky way to specify basis point form fields
+                let divisor = key.includes("discount") ? 100 : 1;
+
+                form.setFieldsValue({ [key]: riskSettings[key] / divisor });
+            });
+        }
+    }, [riskSettings, getRiskSettingsPending]);
+
     return (
         <Row justify="end" align="middle">
             <Modal
@@ -194,39 +210,47 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                     <Row
                         style={{
                             alignItems: "center",
-                            justifyContent: "flex-end",
+                            justifyContent: "space-between",
                             marginBottom: "1rem",
                         }}
                     >
-                        <div>
-                            <Paragraph style={{ color: colors.gray7 }}>
-                                Presets:
-                            </Paragraph>
-                            <Radio.Group
-                                options={[
-                                    { label: "Low Risk", value: "low" },
-                                    { label: "Medium", value: "medium" },
-                                    { label: "High Risk", value: "high" },
-                                ]}
-                                onChange={setPresetOption}
-                                value={chosenPreset}
-                                optionType="button"
-                                buttonStyle="solid"
-                            />
-                        </div>
+                        <Col span={14}>
+                            <Title level={4}>
+                                Set policy variables or choose a preset
+                            </Title>
+                        </Col>
+                        <Col span={10}>
+                            <Row>
+                                <Paragraph style={{ color: colors.gray7 }}>
+                                    Presets:&nbsp;
+                                </Paragraph>
+                                <Radio.Group
+                                    options={[
+                                        { label: "Low Risk", value: "low" },
+                                        { label: "Medium", value: "medium" },
+                                        { label: "High Risk", value: "high" },
+                                    ]}
+                                    onChange={setPresetOption}
+                                    value={chosenPreset}
+                                    optionType="button"
+                                    buttonStyle="solid"
+                                />
+                            </Row>
+                        </Col>
                     </Row>
-                    <Form form={form}>
+                    <Form form={form} initialValues={riskSettings}>
                         {policyHasCellPhoneEnabled && (
                             <Form.Item
                                 label="Cell Phone Loss Rate"
                                 name={"cell_phone_peril_rate"}
                             >
                                 <SlidablePolicyRiskSetting
+                                    stepSize={0.5}
                                     sliderOnChange={sliderOnChange}
                                     setDraggingValue={setDraggingValue}
                                     draggingValue={draggingValue}
                                     identifier={"cell_phone_peril_rate"}
-                                    initialValue={cellPhonePerilRate}
+                                    value={cellPhonePerilRate}
                                 />
                             </Form.Item>
                         )}
@@ -236,11 +260,12 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                                 name={"audio_equipment_peril_rate"}
                             >
                                 <SlidablePolicyRiskSetting
+                                    stepSize={0.5}
                                     sliderOnChange={sliderOnChange}
                                     setDraggingValue={setDraggingValue}
                                     draggingValue={draggingValue}
                                     identifier={"audio_equipment_peril_rate"}
-                                    initialValue={audioEquipmentPerilRate}
+                                    value={audioEquipmentPerilRate}
                                 />
                             </Form.Item>
                         )}
@@ -249,11 +274,13 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                             name={"conservative_factor"}
                         >
                             <SlidablePolicyRiskSetting
+                                min={0}
+                                stepSize={0.5}
                                 sliderOnChange={sliderOnChange}
                                 setDraggingValue={setDraggingValue}
                                 draggingValue={draggingValue}
                                 identifier={"conservative_factor"}
-                                initialValue={conservativeValue}
+                                value={conservativeValue}
                             />
                         </Form.Item>
                         {policyHasCellPhoneEnabled && (
@@ -265,15 +292,16 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                                     }
                                 >
                                     <SlidablePolicyRiskSetting
+                                        min={0}
+                                        max={5}
+                                        stepSize={0.05}
                                         sliderOnChange={sliderOnChange}
                                         setDraggingValue={setDraggingValue}
                                         draggingValue={draggingValue}
                                         identifier={
                                             "cell_phone_screen_protector_discount"
                                         }
-                                        initialValue={
-                                            cellPhoneScreenProtectorDiscount
-                                        }
+                                        value={cellPhoneScreenProtectorDiscount}
                                     />
                                 </Form.Item>
                                 <Form.Item
@@ -281,11 +309,14 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                                     name={"cell_phone_case_discount"}
                                 >
                                     <SlidablePolicyRiskSetting
+                                        min={0}
+                                        max={5}
+                                        stepSize={0.05}
                                         sliderOnChange={sliderOnChange}
                                         setDraggingValue={setDraggingValue}
                                         draggingValue={draggingValue}
                                         identifier={"cell_phone_case_discount"}
-                                        initialValue={cellPhoneCaseDiscount}
+                                        value={cellPhoneCaseDiscount}
                                     />
                                 </Form.Item>
                             </>
