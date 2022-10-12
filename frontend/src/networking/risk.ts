@@ -40,3 +40,13 @@ export function deleteRiskPhoto(photoId: number) {
 export function getRisksForUser() {
     return axiosInstance.get(`/api/v1/risk/`); // currently gets all risks for all policies, even ones that the user hasnt joined (aka just got a quote but didnt follow through)
 }
+
+export function computeHypotheticalPremiums(
+    policyId: any,
+    simulatedRiskSettings: any
+) {
+    return axiosInstance.post(
+        `/api/v1/policies/${policyId}/test/risk/`,
+        simulatedRiskSettings
+    );
+}

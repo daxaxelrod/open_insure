@@ -24,11 +24,13 @@ import {
 } from "../../../../../redux/reducers/commonTypes";
 import PremiumFormulaDisplay from "./PremiumFormulaDisplay";
 import SlidablePolicyRiskSetting from "./SlidablePolicyRiskSetting";
+import { computeHypotheticalPremiums } from "../../../../../networking/risk";
 
 const { Title, Paragraph } = Typography;
 
 export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     const [visible, setVisible] = useState(false);
+    const [hypotheticalPremiums, setHypotheticalPremiums] = useState<any>({});
     const dispatch = useAppDispatch();
     const getRiskSettingsPending = useAppSelector(
         (state) => state.risk.getPolicyRiskSettingsPending
@@ -98,6 +100,14 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         });
     };
 
+    async function fetchHypotheticalPremiums() {
+        let values = await form.validateFields();
+
+        let response = await computeHypotheticalPremiums(policy.id, values);
+
+        setHypotheticalPremiums(response.data);
+    }
+
     const policyHasCellPhoneEnabled =
         policy.available_underlying_insured_types.includes("cell_phone");
     const policyHasAudioEquipmentEnabled =
@@ -122,6 +132,13 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
             dataIndex: "premium_amount",
             render: (text: string) => `$${parseInt(text) / 100}`,
             key: "premium_amount",
+        },
+        {
+            title: "Hypothetical Premiums",
+            dataIndex: "premium_amount",
+            render: (text: string, record: Risk) =>
+                `${hypotheticalPremiums[record.user]}`,
+            key: "hypothetical_premium_amount",
         },
     ];
 
@@ -215,9 +232,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                         }}
                     >
                         <Col span={14}>
-                            <Title level={4}>
-                                Set policy variables or choose a preset
-                            </Title>
+                            <Title level={4}>Set policy variables</Title>
                         </Col>
                         <Col span={10}>
                             <Row>
