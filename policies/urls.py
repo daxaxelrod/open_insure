@@ -8,6 +8,7 @@ from policies.views import (
     PolicyViewSet,
     PremiumViewSet,
     RiskSettingsViewSet,
+    RiskSettingsHyptotheticalApiView,
 
     # risk
     PolicyRiskViewSet,
@@ -24,6 +25,8 @@ risk_router = routers.NestedSimpleRouter(router, r"policies", lookup="policy")
 risk_router.register(r"risk", PolicyRiskViewSet, basename="policy-risks")
 
 urlpatterns = [
+    re_path("policies/(?P<policy_id>\d+)/risk_settings/$", RiskSettingsViewSet.as_view()),
+    re_path("policies/(?P<policy_id>\d+)/risk_settings/hypothetical/$", RiskSettingsHyptotheticalApiView.as_view()),
     path("premiums/<int:pk>/", PremiumViewSet.as_view(), name="premium_detail"),
     path(
         "claims/<int:claim_pk>/approvals/<int:pk>/",
@@ -31,6 +34,5 @@ urlpatterns = [
         name="claim_approval_detail",
     ),
     path("media/riskPhoto/<int:photo_id>", RiskMediaViewSet.as_view()),
-    re_path("policies/(?P<policy_id>\d+)/risk_settings", RiskSettingsViewSet.as_view()),
     path("", include(risk_router.urls)),
 ]

@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from pods.serializers import PodSerializer
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_403_FORBIDDEN
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
@@ -138,6 +139,39 @@ class RiskSettingsViewSet(RetrieveUpdateAPIView):
             raise ValidationError({
                 "message": "Risk settings not found"
                 })
+
+class RiskSettingsHyptotheticalApiView(APIView):
+    permission_classes = [IsAuthenticated & InRiskSettingsPolicyPod]
+    serializer_class = PolicyRiskSettingsSerializer
+    
+
+    def post(self, request, *args, **kwargs):
+        """
+            Compute the hypothetical premium amount for a proposed risk setting
+
+            returns:
+                user_id -> hypothetical_premium
+        """
+        try:
+            risk_settings = PolicyRiskSettings.objects.get(policy__id=self.kwargs["policy_id"])
+        except PolicyRiskSettings.DoesNotExist:
+            raise ValidationError({
+                "message": "Risk settings not found"
+                })
+        risk_settings_serializer = PolicyRiskSettingsSerializer(data=request.data)
+        risk_settings_serializer.is_valid(raise_exception=True)
+        # DO NOT SAVE THE RISK SETTINGS
+        proposed_risk_settings = PolicyRiskSettings(**risk_settings_serializer.validated_data)
+
+        # compute the hypothetical premium amount for each user
+        hypothetical_premiums = {}
+        for user in risk_settings.policy.pod.members.all():
+            hypothetical_premiums[user.id] = compute_premium_amount(user, proposed_risk_settings)
+
+        return Response(
+            hypothetical_premiums,
+            status=HTTP_201_CREATED,
+        )
 
 class ClaimViewSet(ModelViewSet):
     queryset = Claim.objects.all()

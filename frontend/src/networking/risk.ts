@@ -42,11 +42,11 @@ export function getRisksForUser() {
 }
 
 export function computeHypotheticalPremiums(
-    policyId: any,
+    policyId: number,
     simulatedRiskSettings: any
 ) {
     return axiosInstance.post(
-        `/api/v1/policies/${policyId}/test/risk/`,
+        `/api/v1/policies/${policyId}/risk_settings/hypothetical/`,
         simulatedRiskSettings
     );
 }

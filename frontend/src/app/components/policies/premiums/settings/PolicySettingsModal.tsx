@@ -31,6 +31,8 @@ const { Title, Paragraph } = Typography;
 export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     const [visible, setVisible] = useState(false);
     const [hypotheticalPremiums, setHypotheticalPremiums] = useState<any>({});
+    const [hypotheticalPremiumsPending, setHypotheticalPremiumsPending] =
+        useState(false);
     const dispatch = useAppDispatch();
     const getRiskSettingsPending = useAppSelector(
         (state) => state.risk.getPolicyRiskSettingsPending
@@ -102,10 +104,12 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
 
     async function fetchHypotheticalPremiums() {
         let values = await form.validateFields();
+        setHypotheticalPremiumsPending(true);
 
         let response = await computeHypotheticalPremiums(policy.id, values);
 
         setHypotheticalPremiums(response.data);
+        setHypotheticalPremiumsPending(false);
     }
 
     const policyHasCellPhoneEnabled =
@@ -137,7 +141,17 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
             title: "Hypothetical Premiums",
             dataIndex: "premium_amount",
             render: (text: string, record: Risk) =>
-                `${hypotheticalPremiums[record.user]}`,
+                hypotheticalPremiums[record.user] ? (
+                    `${hypotheticalPremiums[record.user]}`
+                ) : (
+                    <Button
+                        type="primary"
+                        onClick={fetchHypotheticalPremiums}
+                        loading={hypotheticalPremiumsPending}
+                    >
+                        Get New Premium
+                    </Button>
+                ),
             key: "hypothetical_premium_amount",
         },
     ];
