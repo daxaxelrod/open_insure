@@ -161,16 +161,18 @@ class RiskSettingsHyptotheticalApiView(APIView):
         risk_settings_serializer = PolicyRiskSettingsSerializer(data=request.data)
         risk_settings_serializer.is_valid(raise_exception=True)
         # DO NOT SAVE THE RISK SETTINGS
-        proposed_risk_settings = PolicyRiskSettings(**risk_settings_serializer.validated_data)
+        proposed_risk_settings = PolicyRiskSettings(**risk_settings_serializer.validated_data, policy=risk_settings.policy)
 
         # compute the hypothetical premium amount for each user
         hypothetical_premiums = {}
-        for user in risk_settings.policy.pod.members.all():
-            hypothetical_premiums[user.id] = compute_premium_amount(user, proposed_risk_settings)
+        for risk in risk_settings.policy.risks.filter(premium_amount__isnull=False):
+            risk.risk_score = compute_risk_score(risk, proposed_risk_settings)
+            premium_amount = compute_premium_amount(risk)
+            hypothetical_premiums[risk.user.id] = premium_amount
 
         return Response(
             hypothetical_premiums,
-            status=HTTP_201_CREATED,
+            status=HTTP_200_OK,
         )
 
 class ClaimViewSet(ModelViewSet):
@@ -279,7 +281,7 @@ class PolicyRiskViewSet(ModelViewSet):
             # already quoted (doesnt allow for a new price)
             return Response(self.get_serializer(risk).data, status=HTTP_200_OK)
 
-        risk.risk_score = compute_risk_score(risk)
+        risk.risk_score = compute_risk_score(risk, risk.policy.risk_settings)
         risk.premium_amount = compute_premium_amount(risk)
         risk.value_at_risk = risk.risk_score * risk.content_object.market_value
         logger.info(f"Risk {risk.id} has a premium of {risk.premium_amount}")

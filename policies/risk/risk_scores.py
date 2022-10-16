@@ -12,28 +12,24 @@ def get_base_peril_likelihood(property_type, risk_settings: PolicyRiskSettings):
     return getattr(risk_settings, f"{property_type}_peril_rate")
 
 
-def compute_risk_score(risk: Risk):
+def compute_risk_score(risk: Risk, risk_settings: PolicyRiskSettings):
     """
     A risk score is a number between 0 and 100 that represents the percent chance of a peril for a given user for the duration of the policy
     
     Many ideas here, but lets start simple
 
-    Risk scores are stored in the PolicyRiskSettings model
+    Premium modifiers are stored in the PolicyRiskSettings model
     But hope to have more in depth actuarial sub models in the future
     and also hope that its pluggable so that people can create their own risk models
     """
 
     policy: Policy = risk.policy
-    if hasattr(policy, "risk_settings") and policy.risk_settings is not None:
-        base_peril_likelihood = get_base_peril_likelihood(
-            risk.underlying_insured_type,
-            policy.risk_settings
-        )
-        # the margin of safety that the policy wants to have
-        conservative_factor = policy.risk_settings.conservative_factor  # percent
-    else:
-        base_peril_likelihood = 10 # %
-        conservative_factor = 5 # %
+    base_peril_likelihood = get_base_peril_likelihood(
+        risk.underlying_insured_type,
+        risk_settings
+    )
+    # the margin of safety that the policy wants to have
+    conservative_factor = risk_settings.conservative_factor  # percent
 
     risk_score = (
             base_peril_likelihood

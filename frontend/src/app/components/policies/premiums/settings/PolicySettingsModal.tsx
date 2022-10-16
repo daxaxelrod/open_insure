@@ -11,8 +11,13 @@ import {
     Radio,
     RadioChangeEvent,
     Col,
+    Tooltip,
 } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import {
+    SettingOutlined,
+    ArrowUpOutlined,
+    ArrowDownOutlined,
+} from "@ant-design/icons";
 
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import colors from "../../../../constants/colors";
@@ -25,6 +30,7 @@ import {
 import PremiumFormulaDisplay from "./PremiumFormulaDisplay";
 import SlidablePolicyRiskSetting from "./SlidablePolicyRiskSetting";
 import { computeHypotheticalPremiums } from "../../../../../networking/risk";
+import { get_icon_for_insured_asset_type } from "../../quotes/RisksTable";
 
 const { Title, Paragraph } = Typography;
 
@@ -100,16 +106,20 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
             cell_phone_screen_protector_discount,
             audio_equipment_peril_rate,
         });
+        setHypotheticalPremiums({});
     };
 
     async function fetchHypotheticalPremiums() {
         let values = await form.validateFields();
         setHypotheticalPremiumsPending(true);
-
-        let response = await computeHypotheticalPremiums(policy.id, values);
-
-        setHypotheticalPremiums(response.data);
-        setHypotheticalPremiumsPending(false);
+        try {
+            let response = await computeHypotheticalPremiums(policy.id, values);
+            setHypotheticalPremiums(response.data);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setHypotheticalPremiumsPending(false);
+        }
     }
 
     const policyHasCellPhoneEnabled =
@@ -132,7 +142,32 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
             key: "name",
         },
         {
-            title: "Premium",
+            title: "Type",
+            render: (text: string, record: Risk) => (
+                <Tooltip
+                    color="black"
+                    title={
+                        <div style={{ padding: ".5rem .75rem 0" }}>
+                            <Paragraph style={{ color: colors.gray1 }}>
+                                {record.content_object?.model}
+                            </Paragraph>
+                            <Paragraph style={{ color: colors.gray1 }}>
+                                Worth ${record.content_object?.market_value}
+                            </Paragraph>
+                        </div>
+                    }
+                >
+                    {get_icon_for_insured_asset_type(
+                        record.underlying_insured_type,
+                        false
+                    )}
+                </Tooltip>
+            ),
+            dataIndex: "type",
+            key: "type",
+        },
+        {
+            title: "Current Premium",
             dataIndex: "premium_amount",
             render: (text: string) => `$${parseInt(text) / 100}`,
             key: "premium_amount",
@@ -140,9 +175,29 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         {
             title: "Hypothetical Premiums",
             dataIndex: "premium_amount",
-            render: (text: string, record: Risk) =>
-                hypotheticalPremiums[record.user] ? (
-                    `${hypotheticalPremiums[record.user]}`
+            render: (text: string, record: Risk) => {
+                const percentChange =
+                    Math.round(
+                        ((hypotheticalPremiums?.[record.user] -
+                            record.premium_amount) /
+                            record.premium_amount) *
+                            1000
+                    ) / 10;
+
+                const changeIcon =
+                    percentChange > 0 ? (
+                        <ArrowUpOutlined style={{ marginLeft: 6 }} />
+                    ) : (
+                        <ArrowDownOutlined style={{ marginLeft: 6 }} />
+                    );
+                return hypotheticalPremiums[record.user] ? (
+                    <div>
+                        {`$${
+                            Math.round(hypotheticalPremiums[record.user]) / 100
+                        }`}{" "}
+                        {changeIcon}
+                        {percentChange}%
+                    </div>
                 ) : (
                     <Button
                         type="primary"
@@ -151,7 +206,8 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                     >
                         Get New Premium
                     </Button>
-                ),
+                );
+            },
             key: "hypothetical_premium_amount",
         },
     ];
@@ -184,6 +240,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                 [identifier]: true,
             });
         }
+        setHypotheticalPremiums({});
     };
 
     useEffect(() => {
@@ -274,7 +331,6 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                                 name={"cell_phone_peril_rate"}
                             >
                                 <SlidablePolicyRiskSetting
-                                    stepSize={0.5}
                                     sliderOnChange={sliderOnChange}
                                     setDraggingValue={setDraggingValue}
                                     draggingValue={draggingValue}
@@ -289,7 +345,6 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                                 name={"audio_equipment_peril_rate"}
                             >
                                 <SlidablePolicyRiskSetting
-                                    stepSize={0.5}
                                     sliderOnChange={sliderOnChange}
                                     setDraggingValue={setDraggingValue}
                                     draggingValue={draggingValue}
@@ -304,7 +359,6 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                         >
                             <SlidablePolicyRiskSetting
                                 min={0}
-                                stepSize={0.5}
                                 sliderOnChange={sliderOnChange}
                                 setDraggingValue={setDraggingValue}
                                 draggingValue={draggingValue}

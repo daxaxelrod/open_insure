@@ -1,3 +1,4 @@
+from email import policy
 from django.db import IntegrityError
 from django.utils import timezone
 from rest_framework import serializers
@@ -281,6 +282,12 @@ class RiskSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class PolicyRiskSettingsSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = PolicyRiskSettings
         fields = "__all__"
+        read_only_fields = (
+            "id",
+            "policy",
+            "created_at"
+        )

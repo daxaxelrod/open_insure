@@ -26,19 +26,23 @@ interface RiskRowType extends Risk {
 
 const { Title } = Typography;
 
-function get_icon_for_insured_asset_type(type: UnderlyingInsuredType) {
+export function get_icon_for_insured_asset_type(
+    type: UnderlyingInsuredType,
+    withTooltip: boolean = true
+) {
+    const Wrapper = withTooltip ? Tooltip : "div"; // apparently 'div' is a valid react component, who knew it was just strings
     switch (type) {
         case "cell_phone":
             return (
-                <Tooltip title="Cell phone">
+                <Wrapper title="Cell phone">
                     <MobileOutlined style={{ fontSize: "1.6em" }} />
-                </Tooltip>
+                </Wrapper>
             );
         case "audio_equipment":
             return (
-                <Tooltip title="Audio Equipment">
+                <Wrapper title="Audio Equipment">
                     <CustomerServiceOutlined style={{ fontSize: "1.6em" }} />
-                </Tooltip>
+                </Wrapper>
             );
         default:
             return null;
