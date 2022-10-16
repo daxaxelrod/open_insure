@@ -274,6 +274,17 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         }
     }, [riskSettings, getRiskSettingsPending]);
 
+    const formLayout: any = {
+        labelCol: {
+            xs: { span: 10 },
+            sm: { span: 6 },
+        },
+        wrapperCol: {
+            xs: { span: 14 },
+            sm: { span: 18 },
+        },
+    };
+
     return (
         <Row justify="end" align="middle">
             <Modal
@@ -315,7 +326,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                         style={{
                             alignItems: "center",
                             justifyContent: "space-between",
-                            marginBottom: "1rem",
+                            marginBottom: "1.5rem",
                         }}
                     >
                         <Col span={14}>
@@ -341,7 +352,11 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                             </Row>
                         </Col>
                     </Row>
-                    <Form form={form} initialValues={riskSettings}>
+                    <Form
+                        form={form}
+                        initialValues={riskSettings}
+                        {...formLayout}
+                    >
                         {policyHasCellPhoneEnabled && (
                             <Form.Item
                                 label="Cell Phone Loss Rate"

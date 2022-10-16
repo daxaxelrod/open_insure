@@ -28,7 +28,7 @@ export default function SlidablePolicyRiskSetting({
 }: props) {
     return (
         <Row>
-            <Col span={14}>
+            <Col span={18}>
                 <Slider
                     min={min}
                     max={max}
@@ -49,7 +49,7 @@ export default function SlidablePolicyRiskSetting({
                 />
             </Col>
             <Col
-                span={10}
+                span={6}
                 style={{
                     display: "flex",
                     justifyContent: "center",

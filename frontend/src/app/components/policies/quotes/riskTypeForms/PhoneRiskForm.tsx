@@ -19,7 +19,6 @@ export default function PhoneRiskForm({
     closeDrawer: () => void;
 }) {
     const [form] = Form.useForm();
-    const navigate = useNavigate();
 
     const riskPending = useAppSelector((state) => state.risk.modifyRiskPending);
     const risk = useAppSelector((state) => state.risk.focusedRisk);
