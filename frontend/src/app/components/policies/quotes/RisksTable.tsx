@@ -34,13 +34,13 @@ export function get_icon_for_insured_asset_type(
     switch (type) {
         case "cell_phone":
             return (
-                <Wrapper title="Cell phone">
+                <Wrapper title="Cell phone" color="black">
                     <MobileOutlined style={{ fontSize: "1.6em" }} />
                 </Wrapper>
             );
         case "audio_equipment":
             return (
-                <Wrapper title="Audio Equipment">
+                <Wrapper title="Audio Equipment" color="black">
                     <CustomerServiceOutlined style={{ fontSize: "1.6em" }} />
                 </Wrapper>
             );
@@ -163,7 +163,9 @@ export default function RiskTable({ policy }: { policy: Policy }) {
         },
         {
             title: "Premium",
-            render: (text) => <Title level={5}>${text / 100}</Title>,
+            render: (text) => (
+                <Title level={5}>${(text / 100).toFixed(2)}</Title>
+            ),
             dataIndex: "premium_amount",
             key: "premium_amount",
         },

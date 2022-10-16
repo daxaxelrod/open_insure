@@ -51,7 +51,7 @@ export default function UserMainPremiumObligation({
                     <Col>
                         <Title level={4}>Your Premium</Title>
                         <Title style={{ marginTop: 0 }}>
-                            ${userPremiumObligation / 100}
+                            ${(userPremiumObligation / 100).toFixed(2)}
                         </Title>
                     </Col>
                 </Row>
@@ -59,7 +59,7 @@ export default function UserMainPremiumObligation({
                     <Col span={12}>
                         <Statistic
                             title="Total premiums you've paid"
-                            value={totalPremiumsPaidToPolicy / 100}
+                            value={(totalPremiumsPaidToPolicy / 100).toFixed(2)}
                             formatter={(val) => `$${val}`}
                             valueStyle={{
                                 fontSize: "1.2rem",

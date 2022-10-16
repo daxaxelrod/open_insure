@@ -12,6 +12,7 @@ import {
     RadioChangeEvent,
     Col,
     Tooltip,
+    notification,
 } from "antd";
 import {
     SettingOutlined,
@@ -86,26 +87,38 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     const setPresetOption = (option: RadioChangeEvent) => {
         let preset = option.target.value;
         setChosenPreset(preset);
-        // is there a cleaner way to do this?
-        // definitely a better way
-        let conservative_factor =
-            preset === "low" ? 50 : preset === "medium" ? 20 : 0;
-        let cell_phone_peril_rate =
-            preset === "low" ? 30 : preset === "medium" ? 20 : 10;
-        let audio_equipment_peril_rate =
-            preset === "low" ? 30 : preset === "medium" ? 20 : 10;
-        let cell_phone_case_discount =
-            preset === "low" ? 0 : preset === "medium" ? 1 : 1.5;
-        let cell_phone_screen_protector_discount =
-            preset === "low" ? 0 : preset === "medium" ? 1 : 1.5;
 
-        form.setFieldsValue({
-            conservative_factor,
-            cell_phone_peril_rate,
-            cell_phone_case_discount,
-            cell_phone_screen_protector_discount,
-            audio_equipment_peril_rate,
-        });
+        if (preset === "reset") {
+            form.setFieldsValue({
+                ...riskSettings,
+            });
+            notification.success({
+                message: "Reset to existing settings",
+                placement: "top",
+            });
+        } else {
+            // is there a cleaner way to do this?
+            // definitely a better way
+            let conservative_factor =
+                preset === "low" ? 50 : preset === "medium" ? 20 : 0;
+            let cell_phone_peril_rate =
+                preset === "low" ? 30 : preset === "medium" ? 20 : 10;
+            let audio_equipment_peril_rate =
+                preset === "low" ? 30 : preset === "medium" ? 20 : 10;
+            let cell_phone_case_discount =
+                preset === "low" ? 0 : preset === "medium" ? 100 : 150; // discounts in basis points
+            let cell_phone_screen_protector_discount =
+                preset === "low" ? 0 : preset === "medium" ? 100 : 150;
+
+            form.setFieldsValue({
+                conservative_factor,
+                cell_phone_peril_rate,
+                cell_phone_case_discount,
+                cell_phone_screen_protector_discount,
+                audio_equipment_peril_rate,
+            });
+        }
+
         setHypotheticalPremiums({});
     };
 
@@ -169,7 +182,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         {
             title: "Current Premium",
             dataIndex: "premium_amount",
-            render: (text: string) => `$${parseInt(text) / 100}`,
+            render: (text: string) => `$${(parseInt(text) / 100).toFixed(2)}`,
             key: "premium_amount",
         },
         {
@@ -241,6 +254,9 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
             });
         }
         setHypotheticalPremiums({});
+        if (chosenPreset) {
+            setChosenPreset("");
+        }
     };
 
     useEffect(() => {
@@ -315,6 +331,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                                         { label: "Low Risk", value: "low" },
                                         { label: "Medium", value: "medium" },
                                         { label: "High Risk", value: "high" },
+                                        { label: "Reset", value: "reset" },
                                     ]}
                                     onChange={setPresetOption}
                                     value={chosenPreset}
@@ -378,6 +395,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                                         min={0}
                                         max={5}
                                         stepSize={0.05}
+                                        inBasisPoints
                                         sliderOnChange={sliderOnChange}
                                         setDraggingValue={setDraggingValue}
                                         draggingValue={draggingValue}
@@ -395,6 +413,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                                         min={0}
                                         max={5}
                                         stepSize={0.05}
+                                        inBasisPoints
                                         sliderOnChange={sliderOnChange}
                                         setDraggingValue={setDraggingValue}
                                         draggingValue={draggingValue}

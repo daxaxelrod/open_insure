@@ -12,6 +12,7 @@ interface props {
     min?: number;
     max?: number;
     stepSize?: number;
+    inBasisPoints?: boolean;
 }
 
 export default function SlidablePolicyRiskSetting({
@@ -23,6 +24,7 @@ export default function SlidablePolicyRiskSetting({
     min = 1,
     max = 100,
     stepSize = 1,
+    inBasisPoints = false,
 }: props) {
     return (
         <Row>
@@ -31,8 +33,13 @@ export default function SlidablePolicyRiskSetting({
                     min={min}
                     max={max}
                     step={stepSize}
-                    onChange={(val) => sliderOnChange(val, identifier)}
-                    value={value}
+                    onChange={(val) =>
+                        sliderOnChange(
+                            inBasisPoints ? val * 100 : val,
+                            identifier
+                        )
+                    }
+                    value={inBasisPoints ? value / 100 : value}
                     onAfterChange={() =>
                         setDraggingValue({
                             ...draggingValue,
@@ -49,7 +56,7 @@ export default function SlidablePolicyRiskSetting({
                     alignItems: "center",
                 }}
             >
-                <Paragraph>{value}%</Paragraph>
+                <Paragraph>{value / (inBasisPoints ? 100 : 1)}%</Paragraph>
             </Col>
         </Row>
     );
