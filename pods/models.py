@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -62,7 +63,7 @@ class Pod(models.Model):
 
 class UserPod(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pod = models.ForeignKey(Pod, on_delete=models.CASCADE)
+    pod = models.ForeignKey(Pod, on_delete=models.SET_NULL, null=True, blank=True)
     risk_penalty = models.IntegerField(default=0, help_text="Base penalty for user who is percieved as more risky to the group, in basis points")
     is_user_friend_of_the_pod = models.BooleanField(
         default=False

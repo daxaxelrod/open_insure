@@ -109,6 +109,8 @@ export interface GenericProperty {
     condition: string;
     market_value: number;
     album: Image[];
+    has_screen_protector?: boolean;
+    has_case?: boolean;
 }
 
 export interface Risk {

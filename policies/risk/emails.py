@@ -19,6 +19,7 @@ def send_risk_update_email(user: User, policy: Policy, changer: User, old_risk: 
             {
                 "policy_link": policy_link,
                 "old_risk": old_risk,
+                "new_premium": new_risk.premium_amount / 100,
                 "new_risk": new_risk,
                 "changer": changer,
             },

@@ -80,9 +80,10 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         }
     }, [visible, policy?.id]);
 
-    const handleOk = () => {
+    const handleOk = async () => {
+        let values = await form.validateFields();
         dispatch(
-            updatePolicyRiskSettings(policy?.id, riskSettings, () => {
+            updatePolicyRiskSettings(policy?.id, values, () => {
                 setVisible(false);
             })
         );
@@ -174,6 +175,22 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                             <Paragraph style={{ color: colors.gray1 }}>
                                 Worth ${record.content_object?.market_value}
                             </Paragraph>
+                            {(record.content_object?.has_case ||
+                                record.content_object
+                                    ?.has_screen_protector) && (
+                                <Paragraph style={{ color: colors.gray1 }}>
+                                    {record.content_object
+                                        ?.has_screen_protector &&
+                                    record.content_object?.has_screen_protector
+                                        ? "Has screen protector and case"
+                                        : record.content_object
+                                              ?.has_screen_protector
+                                        ? "Has screen protector"
+                                        : record.content_object?.has_case
+                                        ? "Has case"
+                                        : ""}
+                                </Paragraph>
+                            )}
                         </div>
                     }
                 >
@@ -274,9 +291,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
         ) {
             Object.keys(riskSettings).forEach((key) => {
                 // hacky way to specify basis point form fields
-                let divisor = key.includes("discount") ? 100 : 1;
-
-                form.setFieldsValue({ [key]: riskSettings[key] / divisor });
+                form.setFieldsValue({ [key]: riskSettings[key] });
             });
         }
     }, [riskSettings, getRiskSettingsPending]);
@@ -301,6 +316,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                 visible={visible}
                 width={"50%"}
                 onOk={handleOk}
+                onCancel={handleCancel}
                 footer={[
                     <Button key="back" onClick={handleCancel}>
                         Do nothing & Close
@@ -309,19 +325,18 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                         title="This will update the premiums for all members of this policy. Are you sure? All members will be emailed about the change."
                         onConfirm={handleOk}
                         onCancel={() => {}}
-                        okButtonProps={{
-                            loading: patchPolicyRiskSettingsPending,
-                        }}
                         okText="Yes, update"
                         cancelText="No"
                     >
-                        <Button key="submit" type="primary">
+                        <Button
+                            key="submit"
+                            type="primary"
+                            loading={patchPolicyRiskSettingsPending}
+                        >
                             Submit
                         </Button>
                     </Popconfirm>,
                 ]}
-                confirmLoading={false}
-                onCancel={handleCancel}
             >
                 <PremiumFormulaDisplay
                     riskSettings={riskSettings}

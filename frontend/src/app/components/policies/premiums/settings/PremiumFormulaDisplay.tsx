@@ -1,11 +1,7 @@
 import React from "react";
 import "katex/dist/katex.min.css";
 import { Divider, Row, Tooltip, Typography } from "antd";
-import {
-    Policy,
-    Risk,
-    RiskSettings,
-} from "../../../../../redux/reducers/commonTypes";
+import { Risk, RiskSettings } from "../../../../../redux/reducers/commonTypes";
 import colors from "../../../../constants/colors";
 
 const { InlineMath, BlockMath } = require("react-katex");
@@ -33,21 +29,36 @@ export default function PremiumFormulaDisplay({
             <Title level={5} style={{ marginBottom: 5 }}>
                 This is how premiums are calculated
             </Title>
-            <BlockMath
-                math={`Premium = V \\times (${
-                    cell_phone_peril_rate || audio_equipment_peril_rate
-                        ? `\\colorbox{aqua}{$P$}`
-                        : "P"
-                } + ${conservative_factor ? `\\colorbox{aqua}{$C$}` : "C"} - ${
-                    cell_phone_screen_protector_discount
-                        ? `\\colorbox{aqua}{$D1$}`
-                        : "D1"
-                } - ${
-                    cell_phone_case_discount ? `\\colorbox{aqua}{$D2$}` : "D2"
-                })
+            <div
+                className="premium-formula-affix-container"
+                style={{
+                    position: "sticky",
+                    top: 10,
+                    backgroundColor: "white",
+                    padding: ".25rem 0",
+                    marginBottom: "-.25rem",
+                }}
+            >
+                <BlockMath
+                    math={`Premium = V \\times (${
+                        cell_phone_peril_rate || audio_equipment_peril_rate
+                            ? `\\colorbox{aqua}{$P$}`
+                            : "P"
+                    } + ${
+                        conservative_factor ? `\\colorbox{aqua}{$C$}` : "C"
+                    } - ${
+                        cell_phone_screen_protector_discount
+                            ? `\\colorbox{aqua}{$D1$}`
+                            : "D1"
+                    } - ${
+                        cell_phone_case_discount
+                            ? `\\colorbox{aqua}{$D2$}`
+                            : "D2"
+                    })
 
             `}
-            />
+                />
+            </div>
             <div>
                 <Paragraph
                     style={{
@@ -103,7 +114,7 @@ export default function PremiumFormulaDisplay({
                             color: colors.gray9,
                             textDecoration: "underline",
                             textUnderlineOffset: "2px",
-                            marginBottom: ".",
+                            marginBottom: ".5rem",
                         }}
                     >
                         Discounts

@@ -11,10 +11,11 @@
             policy {{policy.name}}
         </p>
 
-        <p>Your new premium is: ${{new_risk.premium_amount}}</p>
+        <p>Your new premium is: ${{ new_premium|floatformat:2 }}</p>
 
         <a
             href="{{policy_link}}"
+            target="_blank"
             style="
                 cursor: pointer;
                 padding: 10px;

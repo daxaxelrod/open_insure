@@ -155,7 +155,7 @@ class RiskSettingsViewSet(RetrieveUpdateAPIView):
             risk.risk_score = compute_risk_score(risk, risk_settings)
             risk.premium_amount = compute_premium_amount(risk)
             risk.value_at_risk = risk.risk_score * risk.content_object.market_value
-            risk = risk.save()
+            risk.save()
 
             # send an email to the all policy members that their premiums have changed
             premium_changed = old_risk["premium_amount"] != risk.premium_amount
