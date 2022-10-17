@@ -88,7 +88,7 @@ class PremiumChangeForm(forms.ModelForm):
 
 class PremiumAdmin(admin.ModelAdmin):
     list_editable = ('paid',)
-    list_display = ('policy', 'payer', 'amount', 'paid', 'due_date', 'paid_date')
+    list_display = ('policy', 'payer', 'amount', 'paid', 'due_date', 'paid_date', 'marked_paid_by')
 
     def get_changelist_form(self, request, **kwargs):
         return PremiumChangeForm

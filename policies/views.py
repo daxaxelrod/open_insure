@@ -2,7 +2,8 @@ import logging
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from pods.serializers import PodSerializer
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.mixins import UpdateModelMixin
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_403_FORBIDDEN
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
@@ -17,6 +18,7 @@ from policies.permissions import (
     InPolicyPod,
     InPodAndNotClaimant,
     InClaimPod,
+    InPolicyPremiumPod,
     IsPhotoOwner,
     InRiskSettingsPolicyPod
 )
@@ -316,3 +318,19 @@ class RiskViewSet(ModelViewSet):
 
     def get_queryset(self):
         return Risk.objects.filter(user=self.request.user)
+
+
+# nested under policies router
+class PolicyPremiumViewSet(UpdateModelMixin, ReadOnlyModelViewSet):
+    serializer_class = PremiumSerializer
+    permission_classes = [IsAuthenticated & InPolicyPremiumPod]
+    
+    def get_queryset(self):
+        return Premium.objects.filter(policy=self.kwargs["policy_pk"])
+
+    def perform_update(self, serializer):
+        kwargs = {}
+        if serializer.validated_data["paid"]:
+            kwargs["paid_on"] = timezone.now()
+            kwargs["mark_paid_by"] = self.request.user
+        serializer.save(**kwargs)

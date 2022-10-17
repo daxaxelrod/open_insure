@@ -70,6 +70,7 @@ class Policy(models.Model):
         default=1,
         help_text="How often premiums are due, in months. 1 means monthly, 3 means quarterly, etc.",
     )
+    escrow_manager = models.ForeignKey("pods.User", on_delete=models.CASCADE, null=True, blank=True) # for now anyone in the policy can manage premiums but i expect this to be a dedicated user role.
     
 
     # an interface to some financial provider setup with settings/config
@@ -201,6 +202,8 @@ class Premium(models.Model):
     )
     paid = models.BooleanField(default=False)
     paid_date = models.DateField(null=True, blank=True)
+    marked_paid_by = models.ForeignKey("pods.User", on_delete=models.CASCADE, null=True, blank=True, related_name="premiums_marked_paid")
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

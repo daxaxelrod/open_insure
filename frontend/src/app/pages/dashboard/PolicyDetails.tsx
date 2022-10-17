@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Col, Row, Space, Typography } from "antd";
+import { Button, Col, Row, Space, Typography } from "antd";
 import { Policy, User } from "../../../redux/reducers/commonTypes";
 
 import moment from "moment-timezone";
@@ -88,6 +88,11 @@ export default function PolicyDetails() {
                             )}
                             {isMember && (
                                 <InviteFriendToPolicy policy={policy} />
+                            )}
+                            {isMember && (
+                                <Link to={`/policy/${policy.id}/premiums/`}>
+                                    <Button type="dashed">Premiums</Button>
+                                </Link>
                             )}
                             {isMember && (
                                 <PolicySettingsModal policy={policy} />

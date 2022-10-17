@@ -172,6 +172,7 @@ class PremiumSerializer(serializers.ModelSerializer):
             "paid",
             "due_date",
             "paid_date",
+            "marked_paid_by",
             "created_at",
             "updated_at",
         ]
