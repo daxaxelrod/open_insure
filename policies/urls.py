@@ -24,7 +24,7 @@ router.register(r"risk", RiskViewSet, basename="risk")
 
 risk_router = routers.NestedSimpleRouter(router, r"policies", lookup="policy")
 risk_router.register(r"risk", PolicyRiskViewSet, basename="policy-risks")
-risk_router.register(r"premium", PolicyPremiumViewSet, basename="policy-premium")
+risk_router.register(r"premiums", PolicyPremiumViewSet, basename="policy-premium")
 
 urlpatterns = [
     re_path("policies/(?P<policy_id>\d+)/risk_settings/$", RiskSettingsViewSet.as_view()),

@@ -8,6 +8,9 @@ import {
     GET_POLICY_RISK_SETTINGS_PENDING,
     GET_POLICY_RISK_SETTINGS_SUCCESS,
     GET_POLICY_RISK_SETTINGS_FAILURE,
+    PATCH_POLICY_RISK_SETTINGS_PENDING,
+    PATCH_POLICY_RISK_SETTINGS_SUCCESS,
+    PATCH_POLICY_RISK_SETTINGS_FAILURE,
     GET_USER_POLICIES_PENDING,
     GET_USER_POLICIES_SUCCESS,
     GET_USER_POLICIES_FAILURE,
@@ -19,6 +22,7 @@ import {
     JOIN_POLICY_FAILURE,
 } from "./types";
 import { getRisksForPolicy } from "./risk";
+import { RiskSettings } from "../reducers/commonTypes";
 
 export const getAvailablePolicies =
     (
@@ -59,6 +63,21 @@ export const getUserPolicies =
             });
         } catch (error) {
             dispatch({ type: GET_USER_POLICIES_FAILURE, payload: error });
+        }
+    };
+
+export const getPolicyPremiums =
+    (policyId: number): ThunkAction<void, RootState, unknown, AnyAction> =>
+    async (dispatch) => {
+        dispatch({ type: GET_POLICY_PREMIUMS_PENDING });
+        try {
+            const response = await API.getPolicyPremiums(policyId);
+            dispatch({
+                type: GET_POLICY_PREMIUMS_SUCCESS,
+                payload: response.data,
+            });
+        } catch (error) {
+            dispatch({ type: GET_POLICY_PREMIUMS_FAILURE, payload: error });
         }
     };
 
@@ -105,6 +124,34 @@ export const getPolicyRiskSettings =
         } catch (error) {
             dispatch({
                 type: GET_POLICY_RISK_SETTINGS_FAILURE,
+                payload: {
+                    error,
+                    policy: policyId,
+                },
+            });
+        }
+    };
+
+export const updatePolicyRiskSettings =
+    (
+        policyId: number,
+        values: Partial<RiskSettings>
+    ): ThunkAction<void, RootState, unknown, AnyAction> =>
+    async (dispatch) => {
+        dispatch({ type: PATCH_POLICY_RISK_SETTINGS_PENDING });
+        try {
+            const response = await API.updatePolicyRiskSettings(
+                policyId,
+                values
+            );
+            dispatch({
+                type: PATCH_POLICY_RISK_SETTINGS_SUCCESS,
+                payload: response.data,
+            });
+            dispatch(getPolicyPremiums(policyId));
+        } catch (error) {
+            dispatch({
+                type: PATCH_POLICY_RISK_SETTINGS_FAILURE,
                 payload: {
                     error,
                     policy: policyId,

@@ -11,6 +11,9 @@ import {
     GET_POLICY_RISK_SETTINGS_PENDING,
     GET_POLICY_RISK_SETTINGS_SUCCESS,
     GET_POLICY_RISK_SETTINGS_FAILURE,
+    PATCH_POLICY_RISK_SETTINGS_PENDING,
+    PATCH_POLICY_RISK_SETTINGS_SUCCESS,
+    PATCH_POLICY_RISK_SETTINGS_FAILURE,
     CLEAR_FOCUSED_RISK,
     CREATE_RISK_PENDING,
     CREATE_RISK_SUCCESS,
@@ -194,6 +197,27 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 },
                 getPolicyRiskSettingsPending: false,
             };
+        case PATCH_POLICY_RISK_SETTINGS_PENDING:
+            return {
+                ...state,
+                patchPolicyRiskSettingsPending: true,
+            };
+
+        case PATCH_POLICY_RISK_SETTINGS_SUCCESS:
+            return {
+                ...state,
+                policyRiskSettings: {
+                    ...state.policyRiskSettings,
+                    [payload.policy]: payload,
+                },
+                patchPolicyRiskSettingsPending: false,
+            };
+        case PATCH_POLICY_RISK_SETTINGS_FAILURE:
+            return {
+                ...state,
+                patchPolicyRiskSettingsPending: false,
+            };
+
         default:
             return state;
     }

@@ -1,3 +1,4 @@
+import { RiskSettings } from "../redux/reducers/commonTypes";
 import { axiosInstance } from "./api";
 import { PaginatedListViewParams } from "./commonTypes";
 import { objectToQueryString } from "./utils";
@@ -34,6 +35,20 @@ export const getPolicyRiskSettings = (policyId: number) => {
 };
 
 export const modifyPolicyRiskSettings = (policyId: number, values: any) => {
+    return axiosInstance.patch(
+        `/api/v1/policies/${policyId}/risk_settings/`,
+        values
+    );
+};
+
+export const getPolicyPremiums = (policyId: number) => {
+    return axiosInstance.get(`/api/v1/policies/${policyId}/premiums/`);
+};
+
+export const updatePolicyRiskSettings = (
+    policyId: number,
+    values: Partial<RiskSettings>
+) => {
     return axiosInstance.patch(
         `/api/v1/policies/${policyId}/risk_settings/`,
         values
