@@ -27,7 +27,7 @@ ChartJS.register(
 export default function PolicyPoolDetails() {
     useEffect(() => {
         console.log("get policy escrow pool details");
-    });
+    }, []);
 
     const options = {};
 

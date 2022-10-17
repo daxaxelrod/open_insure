@@ -20,6 +20,7 @@ import {
     GET_QUOTE_SUCCESS,
     GET_QUOTE_FAILURE,
     UPDATE_RISK_ALBUM,
+    CLEAR_FOCUSED_RISK,
 } from "./types";
 import { Risk } from "../reducers/commonTypes";
 
@@ -38,6 +39,7 @@ export const getRisksForPolicy =
                     risks: response.data,
                 },
             });
+            dispatch({ type: CLEAR_FOCUSED_RISK });
         } catch (error) {
             dispatch({ type: GET_RISK_FOR_POLICY_FAILURE, payload: error });
         }
