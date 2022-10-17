@@ -13,6 +13,9 @@ import {
     GET_USER_POLICIES_PENDING,
     GET_USER_POLICIES_SUCCESS,
     GET_USER_POLICIES_FAILURE,
+    GET_POLICY_PREMIUMS_PENDING,
+    GET_POLICY_PREMIUMS_SUCCESS,
+    GET_POLICY_PREMIUMS_FAILURE,
 } from "../actions/types";
 import { Policy } from "./commonTypes";
 
@@ -111,6 +114,31 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 joinPolicyPending: false,
+            };
+
+        case GET_POLICY_PREMIUMS_PENDING:
+            return {
+                ...state,
+                getPolicyPremiumsPending: true,
+            };
+        case GET_POLICY_PREMIUMS_SUCCESS:
+            return {
+                ...state,
+                getPolicyPremiumsPending: false,
+                userPolicies: state.userPolicies.map((policy) => {
+                    if (policy.id === payload.policyId) {
+                        return {
+                            ...policy,
+                            premiums: payload,
+                        };
+                    }
+                    return policy;
+                }),
+            };
+        case GET_POLICY_PREMIUMS_FAILURE:
+            return {
+                ...state,
+                getPolicyPremiumsPending: false,
             };
 
         default:

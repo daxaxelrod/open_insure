@@ -22,7 +22,10 @@ import {
 
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import colors from "../../../../constants/colors";
-import { getPolicyRiskSettings } from "../../../../../redux/actions/policies";
+import {
+    getPolicyRiskSettings,
+    updatePolicyRiskSettings,
+} from "../../../../../redux/actions/policies";
 import {
     Risk,
     Policy,
@@ -78,7 +81,11 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     }, [visible, policy?.id]);
 
     const handleOk = () => {
-        setVisible(false);
+        dispatch(
+            updatePolicyRiskSettings(policy?.id, riskSettings, () => {
+                setVisible(false);
+            })
+        );
     };
     const handleCancel = () => {
         setVisible(false);

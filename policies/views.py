@@ -1,4 +1,5 @@
 import logging
+from copy import copy
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from pods.serializers import PodSerializer
@@ -23,6 +24,7 @@ from policies.permissions import (
     InRiskSettingsPolicyPod
 )
 from policies.premiums import schedule_premiums
+from policies.risk.emails import send_risk_update_email
 from policies.risk.models import PropertyImage, get_model_for_risk_type
 from policies.risk.permissions import IsRiskOwner
 from policies.risk.risk_scores import compute_premium_amount, compute_risk_score
@@ -141,6 +143,41 @@ class RiskSettingsViewSet(RetrieveUpdateAPIView):
             raise ValidationError({
                 "message": "Risk settings not found"
                 })
+
+    def perform_update(self, serializer):
+        # existing_risk_settings = copy.copy(serializer.instance.__dict__)
+        risk_settings = serializer.save(last_updated_by=self.request.user)
+        policy = risk_settings.policy
+        
+        # we need to recompute the risk scores and premiums    
+        for risk in risk_settings.policy.risks.filter(premium_amount__isnull=False):
+            old_risk = copy(risk.__dict__)
+            risk.risk_score = compute_risk_score(risk, risk_settings)
+            risk.premium_amount = compute_premium_amount(risk)
+            risk.value_at_risk = risk.risk_score * risk.content_object.market_value
+            risk = risk.save()
+
+            # send an email to the all policy members that their premiums have changed
+            premium_changed = old_risk["premium_amount"] != risk.premium_amount
+            if premium_changed:
+                send_risk_update_email(
+                    user=risk.user,
+                    policy=policy,
+                    changer=self.request.user,
+                    old_risk=old_risk,
+                    new_risk=risk
+                )
+                logger.info(f"Updated risk {risk.id} from after risk settings update. Email notification sent to {risk.user.email}")
+
+        # recompute the premiums
+        policy.premiums.all().delete()
+        schedule_premiums(policy)
+        
+        
+        return risk_settings
+
+    
+
 
 class RiskSettingsHyptotheticalApiView(APIView):
     permission_classes = [IsAuthenticated & InRiskSettingsPolicyPod]

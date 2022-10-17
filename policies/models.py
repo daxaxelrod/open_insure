@@ -182,7 +182,9 @@ class PolicyRiskSettings(models.Model):
     audio_equipment_peril_rate = models.IntegerField(default=15, help_text="audio_equipment base peril rate", validators=[MinValueValidator(1), MaxValueValidator(100)])
 
     annual_discount_rate = models.IntegerField(default=0, help_text="Annual interest rate that escrow balance could be invested at, in basis points. 100 = 1%")
-    
+
+    last_updated_by = models.ForeignKey("pods.User", on_delete=models.SET_NULL, null=True, blank=True)
+    last_updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f"{self.policy.name} Risk Settings -- Conservative Factor: {self.conservative_factor}%"

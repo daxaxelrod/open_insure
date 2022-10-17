@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Change to your premium</title>
+    </head>
+    <body>
+        <p></p>
+        <p>
+            {{changer.first_name}} {{changer.last_name}} made changes to your
+            policy {{policy.name}}
+        </p>
+
+        <p>Your new premium is: ${{new_risk.premium_amount}}</p>
+
+        <a
+            href="{{policy_link}}"
+            style="
+                cursor: pointer;
+                padding: 10px;
+                margin: 10px 0;
+                border-radius: 5px;
+            "
+            >View changes now</a
+        >
+    </body>
+</html>

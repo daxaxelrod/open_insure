@@ -11,6 +11,9 @@ import {
     PATCH_POLICY_RISK_SETTINGS_PENDING,
     PATCH_POLICY_RISK_SETTINGS_SUCCESS,
     PATCH_POLICY_RISK_SETTINGS_FAILURE,
+    GET_POLICY_PREMIUMS_PENDING,
+    GET_POLICY_PREMIUMS_SUCCESS,
+    GET_POLICY_PREMIUMS_FAILURE,
     GET_USER_POLICIES_PENDING,
     GET_USER_POLICIES_SUCCESS,
     GET_USER_POLICIES_FAILURE,
@@ -75,6 +78,7 @@ export const getPolicyPremiums =
             dispatch({
                 type: GET_POLICY_PREMIUMS_SUCCESS,
                 payload: response.data,
+                policyId,
             });
         } catch (error) {
             dispatch({ type: GET_POLICY_PREMIUMS_FAILURE, payload: error });
@@ -135,7 +139,8 @@ export const getPolicyRiskSettings =
 export const updatePolicyRiskSettings =
     (
         policyId: number,
-        values: Partial<RiskSettings>
+        values: Partial<RiskSettings>,
+        onSuccess: () => void
     ): ThunkAction<void, RootState, unknown, AnyAction> =>
     async (dispatch) => {
         dispatch({ type: PATCH_POLICY_RISK_SETTINGS_PENDING });
@@ -148,7 +153,8 @@ export const updatePolicyRiskSettings =
                 type: PATCH_POLICY_RISK_SETTINGS_SUCCESS,
                 payload: response.data,
             });
-            dispatch(getPolicyPremiums(policyId));
+            dispatch(getRisksForPolicy(policyId));
+            onSuccess();
         } catch (error) {
             dispatch({
                 type: PATCH_POLICY_RISK_SETTINGS_FAILURE,

@@ -63,7 +63,7 @@ def schedule_premiums(policy: Policy, for_users: List[User] = None):
             f"Created premiums {len(premiums)} for policy {policy.id} for user {user.id}"
         )
 
-
+# useful for when a user leaves a policy but we want to keep a record of the premiums they paid/didnt pay
 def remove_future_premiums(user: User, policy: Policy):
     now = timezone.now()
     premiums = Premium.objects.filter(policy=policy, payer=user, due_date__gt=now)
