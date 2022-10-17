@@ -136,4 +136,6 @@ export interface RiskSettings extends Record<string, any> {
     cell_phone_screen_protector_discount: number;
     audio_equipment_peril_rate: number;
     annual_discount_rate: number;
+    last_updated_by: number; // user id
+    last_updated_at: string;
 }

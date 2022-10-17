@@ -1,8 +1,16 @@
 import React from "react";
 import "katex/dist/katex.min.css";
 import { Divider, Row, Tooltip, Typography } from "antd";
-import { Risk, RiskSettings } from "../../../../../redux/reducers/commonTypes";
+import {
+    Policy,
+    Risk,
+    RiskSettings,
+    User,
+} from "../../../../../redux/reducers/commonTypes";
 import colors from "../../../../constants/colors";
+import { useAppSelector } from "../../../../../redux/hooks";
+import { useParams } from "react-router-dom";
+import moment from "moment-timezone";
 
 const { InlineMath, BlockMath } = require("react-katex");
 const { Title, Paragraph } = Typography;
@@ -24,11 +32,33 @@ export default function PremiumFormulaDisplay({
     cell_phone_screen_protector_discount: boolean;
     audio_equipment_peril_rate: boolean;
 }) {
+    let { id } = useParams();
+    const allPodUsers: User[] = useAppSelector(
+        (state) =>
+            state.policies.publicPolicies.find(
+                (p: Policy) => p.id === parseInt(id || "")
+            )?.pod?.members
+    );
+
+    const userWhoLastUpdated = allPodUsers.find(
+        (user: User) => user.id === riskSettings.last_updated_by
+    );
+
     return (
         <div>
-            <Title level={5} style={{ marginBottom: 5 }}>
-                This is how premiums are calculated
-            </Title>
+            <Row justify="space-between">
+                <Title level={5} style={{ marginBottom: 5 }}>
+                    This is how premiums are calculated
+                </Title>
+                {riskSettings.last_updated_by && userWhoLastUpdated && (
+                    <Paragraph style={{ color: colors.gray7 }}>
+                        Last updated by{" "}
+                        {`${userWhoLastUpdated.first_name} ${
+                            userWhoLastUpdated.last_name
+                        } ${moment(riskSettings.last_updated_at).fromNow()}`}
+                    </Paragraph>
+                )}
+            </Row>
             <div
                 className="premium-formula-affix-container"
                 style={{
