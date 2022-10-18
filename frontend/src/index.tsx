@@ -60,10 +60,10 @@ root.render(
                                     path="policy/:id/claims/:claimId"
                                     element={<ClaimDetails />}
                                 />
-                                <Route
+                                {/* <Route
                                     path="policy/:id/members"
                                     element={<PolicyPremiums />}
-                                />
+                                /> */}
                                 <Route
                                     path="policy/:id/pool"
                                     element={<PolicyPoolDetails />}

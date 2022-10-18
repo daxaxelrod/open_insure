@@ -27,6 +27,7 @@ export interface PoliciesState {
     getUserPolicysPending: boolean;
     createPolicyPending: boolean;
     joinPolicyPending: boolean;
+    getPolicyPremiumsPending: boolean;
 }
 
 const initialState: PoliciesState = {
@@ -37,6 +38,7 @@ const initialState: PoliciesState = {
     getUserPolicysPending: false,
     createPolicyPending: false,
     joinPolicyPending: false,
+    getPolicyPremiumsPending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
@@ -125,7 +127,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 getPolicyPremiumsPending: false,
-                userPolicies: state.userPolicies.map((policy) => {
+                publicPolicies: state.publicPolicies.map((policy) => {
                     if (policy.id === payload.policyId) {
                         return {
                             ...policy,

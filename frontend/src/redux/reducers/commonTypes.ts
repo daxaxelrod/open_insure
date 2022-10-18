@@ -15,6 +15,8 @@ export interface Premium {
     payer: number;
     due_date: string;
     paid: boolean;
+    paid_date: string;
+    marked_paid_by: number; // user id
     created_at: string;
     updated_at: string;
 }

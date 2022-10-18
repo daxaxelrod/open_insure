@@ -41,7 +41,7 @@ export default function PremiumFormulaDisplay({
     );
 
     const userWhoLastUpdated = allPodUsers.find(
-        (user: User) => user.id === riskSettings.last_updated_by
+        (user: User) => user.id === riskSettings?.last_updated_by
     );
 
     return (
@@ -50,7 +50,7 @@ export default function PremiumFormulaDisplay({
                 <Title level={5} style={{ marginBottom: 5 }}>
                     This is how premiums are calculated
                 </Title>
-                {riskSettings.last_updated_by && userWhoLastUpdated && (
+                {riskSettings?.last_updated_by && userWhoLastUpdated && (
                     <Paragraph style={{ color: colors.gray7 }}>
                         Last updated by{" "}
                         {`${userWhoLastUpdated.first_name} ${

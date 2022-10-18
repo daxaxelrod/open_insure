@@ -348,22 +348,36 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                         style={{
                             alignItems: "center",
                             justifyContent: "space-between",
-                            marginBottom: "1.5rem",
+                            marginBottom: "2rem",
                         }}
                     >
-                        <Col span={14}>
-                            <Title level={4}>Set policy variables</Title>
+                        <Col span={12}>
+                            <Title level={4} style={{ margin: 0 }}>
+                                Set policy variables
+                            </Title>
                         </Col>
-                        <Col span={10}>
-                            <Row>
-                                <Paragraph style={{ color: colors.gray7 }}>
+                        <Col span={12}>
+                            <Row justify="end">
+                                <Paragraph
+                                    style={{
+                                        color: colors.gray7,
+                                        marginRight: ".5rem",
+                                        marginBottom: 0,
+                                    }}
+                                >
                                     Presets:&nbsp;
                                 </Paragraph>
                                 <Radio.Group
                                     options={[
                                         { label: "Low Risk", value: "low" },
-                                        { label: "Medium", value: "medium" },
-                                        { label: "High Risk", value: "high" },
+                                        {
+                                            label: "Medium",
+                                            value: "medium",
+                                        },
+                                        {
+                                            label: "High Risk",
+                                            value: "high",
+                                        },
                                         { label: "Reset", value: "reset" },
                                     ]}
                                     onChange={setPresetOption}
