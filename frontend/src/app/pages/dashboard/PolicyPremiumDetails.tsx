@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
-import { Col, Row, Space, Table, Typography } from "antd";
+import { Checkbox, Col, Row, Space, Table, Typography } from "antd";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Policy, Premium, User } from "../../../redux/reducers/commonTypes";
+import {
+    Policy,
+    Premium,
+    Risk,
+    User,
+} from "../../../redux/reducers/commonTypes";
 import colors from "../../constants/colors";
 import { ColumnsType } from "antd/lib/table";
 import { getPolicyPremiums } from "../../../redux/actions/policies";
 import moment from "moment-timezone";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
 
 const { Title, Paragraph } = Typography;
 
@@ -26,6 +32,11 @@ export default function PolicyPremiumDetails() {
     const getPolicyPremiumsPending = useAppSelector(
         (state) => state.policies.getPolicyPremiumsPending
     );
+    const risks = useAppSelector((state) => state.risk.policyRisks?.[policyId]);
+
+    const togglePremiumPaid = (paidValue: boolean, premiumId: number) => {
+        console.log(paidValue, premiumId);
+    };
 
     const columns: ColumnsType<PremiumRowType> = [
         {
@@ -40,10 +51,37 @@ export default function PolicyPremiumDetails() {
         },
         ...(policy?.pod?.members?.map((user: User) => {
             return {
-                title: `${user.first_name} ${user.last_name}`,
+                title: () => {
+                    const userPremium = risks?.find(
+                        (r: Risk) => r.user === user?.id
+                    )?.premium_amount;
+
+                    return (
+                        <div>
+                            <div className="ant-table-thead">
+                                {user.first_name} {user.last_name}
+                            </div>
+                            <div className="ant-table-thead">
+                                ${(userPremium / 100).toFixed(2)}
+                            </div>
+                        </div>
+                    );
+                },
+
                 render: (text: string, record: any) => {
                     let userSpecificInfo = record[user.id];
-                    return JSON.stringify(userSpecificInfo);
+                    return (
+                        <Checkbox
+                            onChange={(e: CheckboxChangeEvent) =>
+                                togglePremiumPaid(
+                                    e.target.value,
+                                    userSpecificInfo.premiumId
+                                )
+                            }
+                        >
+                            {userSpecificInfo.paid ? "Paid" : "Not Paid"}
+                        </Checkbox>
+                    );
                 },
                 key: user.id,
             };
@@ -56,6 +94,7 @@ export default function PolicyPremiumDetails() {
                 paid: premium.paid,
                 amount: premium.amount,
                 marked_paid_by: premium.marked_paid_by,
+                premiumId: premium.id,
             };
             if (!accumulator[premium.due_date]) {
                 accumulator[premium.due_date] = {
@@ -79,12 +118,6 @@ export default function PolicyPremiumDetails() {
             let rowData: PremiumRowType;
             const month = monthKeys[index];
             const premiumsByUser = premiumsByMonth[month];
-            // const userKeys = Object.keys(premiumsByUser).map((userId: number) => {
-            //     let premiumInfo = premiumsByUser[userId]
-            //     return {
-            //         user
-            //     }
-            //  });
             rowData = {
                 key: index,
                 monthNumber: index + 1,
