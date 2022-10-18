@@ -2,19 +2,13 @@ import React, { useEffect } from "react";
 import { Checkbox, Col, Row, Space, Table, Typography } from "antd";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import {
-    Policy,
-    Premium,
-    Risk,
-    User,
-} from "../../../redux/reducers/commonTypes";
-import colors from "../../constants/colors";
+import { Policy, Risk, User } from "../../../redux/reducers/commonTypes";
 import { ColumnsType } from "antd/lib/table";
 import { getPolicyPremiums } from "../../../redux/actions/policies";
 import moment from "moment-timezone";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 interface PremiumRowType {
     key: React.Key;
@@ -47,6 +41,7 @@ export default function PolicyPremiumDetails() {
         {
             title: "Due Date",
             dataIndex: "dueDate",
+            render: (dueDate: string) => moment(dueDate).format("MMM Do, YYYY"),
             key: "dueDate",
         },
         ...(policy?.pod?.members?.map((user: User) => {
