@@ -38,7 +38,7 @@ export default function MembersTable({ policy }: { policy: Policy }) {
         navigator.clipboard.writeText(emails.join(";"));
 
         notification.success({
-            message: "Invitation sent",
+            message: "All emails copied to clipboard",
         });
     };
 

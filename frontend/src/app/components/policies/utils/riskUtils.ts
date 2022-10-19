@@ -14,6 +14,9 @@ export function determineLowestPremium(risks: Risk[]) {
 }
 
 export function getHumanReadablePaymentFrequencyForPolicy(policy: Policy) {
+    if (!policy.premium_payment_frequency) {
+        return "";
+    }
     if (policy.premium_payment_frequency === 1) {
         return "monthly";
     } else if (policy.premium_payment_frequency === 3) {

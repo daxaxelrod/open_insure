@@ -7,6 +7,7 @@ import { ColumnsType } from "antd/lib/table";
 import { getPolicyPremiums } from "../../../redux/actions/policies";
 import moment from "moment-timezone";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import { getHumanReadablePaymentFrequencyForPolicy } from "../../components/policies/utils/riskUtils";
 
 const { Title } = Typography;
 
@@ -57,7 +58,10 @@ export default function PolicyPremiumDetails() {
                                 {user.first_name} {user.last_name}
                             </div>
                             <div className="ant-table-thead">
-                                ${(userPremium / 100).toFixed(2)}
+                                ${(userPremium / 100).toFixed(2)} /{" "}
+                                {getHumanReadablePaymentFrequencyForPolicy(
+                                    policy
+                                )}
                             </div>
                         </div>
                     );
@@ -65,18 +69,18 @@ export default function PolicyPremiumDetails() {
 
                 render: (text: string, record: any) => {
                     let userSpecificInfo = record[user.id];
-                    return (
+                    return userSpecificInfo ? (
                         <Checkbox
                             onChange={(e: CheckboxChangeEvent) =>
                                 togglePremiumPaid(
                                     e.target.value,
-                                    userSpecificInfo.premiumId
+                                    userSpecificInfo?.premiumId
                                 )
                             }
                         >
-                            {userSpecificInfo.paid ? "Paid" : "Not Paid"}
+                            {userSpecificInfo?.paid ? "Paid" : "Not Paid"}
                         </Checkbox>
-                    );
+                    ) : null;
                 },
                 key: user.id,
             };
@@ -139,6 +143,7 @@ export default function PolicyPremiumDetails() {
             <Row>
                 <Col span={24}>
                     <Table
+                        scroll={{ x: "max-content" }}
                         columns={columns}
                         dataSource={tableData}
                         loading={getPolicyPremiumsPending}
