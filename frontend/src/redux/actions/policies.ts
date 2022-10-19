@@ -11,9 +11,6 @@ import {
     PATCH_POLICY_RISK_SETTINGS_PENDING,
     PATCH_POLICY_RISK_SETTINGS_SUCCESS,
     PATCH_POLICY_RISK_SETTINGS_FAILURE,
-    GET_POLICY_PREMIUMS_PENDING,
-    GET_POLICY_PREMIUMS_SUCCESS,
-    GET_POLICY_PREMIUMS_FAILURE,
     GET_USER_POLICIES_PENDING,
     GET_USER_POLICIES_SUCCESS,
     GET_USER_POLICIES_FAILURE,
@@ -66,22 +63,6 @@ export const getUserPolicies =
             });
         } catch (error) {
             dispatch({ type: GET_USER_POLICIES_FAILURE, payload: error });
-        }
-    };
-
-export const getPolicyPremiums =
-    (policyId: number): ThunkAction<void, RootState, unknown, AnyAction> =>
-    async (dispatch) => {
-        dispatch({ type: GET_POLICY_PREMIUMS_PENDING });
-        try {
-            const response = await API.getPolicyPremiums(policyId);
-            dispatch({
-                type: GET_POLICY_PREMIUMS_SUCCESS,
-                payload: response.data,
-                policyId,
-            });
-        } catch (error) {
-            dispatch({ type: GET_POLICY_PREMIUMS_FAILURE, payload: error });
         }
     };
 

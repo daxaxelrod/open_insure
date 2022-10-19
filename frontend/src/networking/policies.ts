@@ -41,10 +41,6 @@ export const modifyPolicyRiskSettings = (policyId: number, values: any) => {
     );
 };
 
-export const getPolicyPremiums = (policyId: number) => {
-    return axiosInstance.get(`/api/v1/policies/${policyId}/premiums/`);
-};
-
 export const updatePolicyRiskSettings = (
     policyId: number,
     values: Partial<RiskSettings>

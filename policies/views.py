@@ -368,6 +368,6 @@ class PolicyPremiumViewSet(UpdateModelMixin, ReadOnlyModelViewSet):
     def perform_update(self, serializer):
         kwargs = {}
         if serializer.validated_data["paid"]:
-            kwargs["paid_on"] = timezone.now()
-            kwargs["mark_paid_by"] = self.request.user
+            kwargs["paid_date"] = timezone.now().date()
+            kwargs["marked_paid_by"] = self.request.user
         serializer.save(**kwargs)

@@ -1,13 +1,19 @@
 import React, { useEffect } from "react";
-import { Checkbox, Col, Row, Space, Table, Typography } from "antd";
+import { Checkbox, Col, Row, Space, Table, Tooltip, Typography } from "antd";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { Policy, Risk, User } from "../../../redux/reducers/commonTypes";
 import { ColumnsType } from "antd/lib/table";
-import { getPolicyPremiums } from "../../../redux/actions/policies";
 import moment from "moment-timezone";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { getHumanReadablePaymentFrequencyForPolicy } from "../../components/policies/utils/riskUtils";
+import colors from "../../constants/colors";
+import {
+    getPolicyPremiums,
+    patchPremium,
+} from "../../../redux/actions/premiums";
+
+import "../../styles/dashboard/PolicyPremiumDetails.css";
 
 const { Title } = Typography;
 
@@ -30,7 +36,7 @@ export default function PolicyPremiumDetails() {
     const risks = useAppSelector((state) => state.risk.policyRisks?.[policyId]);
 
     const togglePremiumPaid = (paidValue: boolean, premiumId: number) => {
-        console.log(paidValue, premiumId);
+        dispatch(patchPremium(policyId, premiumId, { paid: paidValue }));
     };
 
     const columns: ColumnsType<PremiumRowType> = [
@@ -69,16 +75,45 @@ export default function PolicyPremiumDetails() {
 
                 render: (text: string, record: any) => {
                     let userSpecificInfo = record[user.id];
+                    let isPremiumPastDue = moment().isAfter(
+                        moment(record.dueDate)
+                    );
+                    let accountingUser = policy?.pod?.members?.find(
+                        (user: User) =>
+                            user.id === userSpecificInfo.marked_paid_by
+                    );
+
                     return userSpecificInfo ? (
                         <Checkbox
                             onChange={(e: CheckboxChangeEvent) =>
                                 togglePremiumPaid(
-                                    e.target.value,
+                                    e.target.checked,
                                     userSpecificInfo?.premiumId
                                 )
                             }
+                            checked={userSpecificInfo?.paid}
                         >
-                            {userSpecificInfo?.paid ? "Paid" : "Not Paid"}
+                            {userSpecificInfo?.paid ? (
+                                <Tooltip
+                                    trigger={"click"}
+                                    title={`Marked Paid by ${
+                                        accountingUser?.first_name
+                                            ? `${accountingUser?.first_name} ${accountingUser?.last_name}`
+                                            : "an admin user, don't know who"
+                                    }`}
+                                    color="black"
+                                >
+                                    <span className="premium-paid-link-tooltip-text">
+                                        Paid
+                                    </span>
+                                </Tooltip>
+                            ) : isPremiumPastDue ? (
+                                <span style={{ color: colors.alert1 }}>
+                                    Overdue
+                                </span>
+                            ) : (
+                                "Not paid"
+                            )}
                         </Checkbox>
                     ) : null;
                 },
@@ -126,8 +161,6 @@ export default function PolicyPremiumDetails() {
             tableData.push(rowData);
         }
     }
-
-    console.log({ tableData });
 
     useEffect(() => {
         dispatch(getPolicyPremiums(policyId));
