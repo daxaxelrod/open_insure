@@ -120,7 +120,7 @@ export default function PolicyDetails() {
                         }}
                     />
                 </PolicyDetailCol>
-                <PolicyDetailCol span={16}>
+                <PolicyDetailCol span={16} style={{ flex: 1 }}>
                     <PolicyDescriptionRow policy={policy} />
                 </PolicyDetailCol>
             </Row>

@@ -37,6 +37,8 @@ export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
                 padding: "24px 0px 2rem 3rem",
                 marginLeft: "1rem",
                 border: "1px solid #f0f0f0",
+                display: "flex",
+                height: "100%",
             }}
         >
             <Row>
