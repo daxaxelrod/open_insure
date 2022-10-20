@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Button, Col, Row, Space, Typography } from "antd";
+import { Button, Col, Row, Space, Tabs, Typography } from "antd";
 import { Policy, User } from "../../../redux/reducers/commonTypes";
 
 import moment from "moment-timezone";
@@ -125,34 +125,34 @@ export default function PolicyDetails() {
                 </PolicyDetailCol>
             </Row>
 
-            <RiskTable policy={policy} />
-            <MembersTable policy={policy} />
-            <Row>
-                <PolicyDetailCol
-                    span={12}
-                    style={{
-                        paddingRight: 10,
-                        paddingLeft: 10,
-                        display: "flex",
-                        alignItems: "stretch",
-                        width: "100%",
-                    }}
-                >
-                    <PolicyClaimsBriefCard policy={policy} />
-                </PolicyDetailCol>
-
-                <PolicyDetailCol
-                    span={12}
-                    style={{
-                        paddingLeft: 10,
-                        display: "flex",
-                        alignItems: "stretch",
-                        width: "100%",
-                    }}
-                >
+            <Tabs style={{ marginTop: "1.5rem" }}>
+                <Tabs.TabPane tab="Members" key="1" animated active>
+                    <RiskTable policy={policy} />
+                    <MembersTable policy={policy} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Money Pool">
                     <EscrowBalanceCard policy={policy} />
-                </PolicyDetailCol>
-            </Row>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Claims & Escrow" key="2">
+                    <Row>
+                        <PolicyDetailCol
+                            span={24}
+                            style={{
+                                paddingRight: 10,
+                                paddingLeft: 10,
+                                display: "flex",
+                                alignItems: "stretch",
+                                width: "100%",
+                            }}
+                        >
+                            <PolicyClaimsBriefCard policy={policy} />
+                        </PolicyDetailCol>
+                    </Row>
+                </Tabs.TabPane>
+                <Tabs.TabPane key="3" tab="Premiums">
+                    premiums
+                </Tabs.TabPane>
+            </Tabs>
         </div>
     );
 }

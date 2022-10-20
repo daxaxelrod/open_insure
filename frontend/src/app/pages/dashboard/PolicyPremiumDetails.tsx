@@ -1,5 +1,14 @@
 import React, { useEffect } from "react";
-import { Checkbox, Col, Row, Spin, Table, Tooltip, Typography } from "antd";
+import {
+    Checkbox,
+    Col,
+    notification,
+    Row,
+    Spin,
+    Table,
+    Tooltip,
+    Typography,
+} from "antd";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
@@ -35,13 +44,21 @@ export default function PolicyPremiumDetails() {
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find((p: Policy) => p.id === policyId)
     );
+    let currentUser = useAppSelector((state) => state.auth.currentUser);
     const getPolicyPremiumsPending = useAppSelector(
         (state) => state.policies.getPolicyPremiumsPending
     );
     const risks = useAppSelector((state) => state.risk.policyRisks?.[policyId]);
 
     const togglePremiumPaid = (paidValue: boolean, premiumId: number) => {
-        dispatch(patchPremium(policyId, premiumId, { paid: paidValue }));
+        if (isMember) {
+            dispatch(patchPremium(policyId, premiumId, { paid: paidValue }));
+        } else {
+            notification.warn({
+                message: "Only policy members can modify premiums",
+                placement: "top",
+            });
+        }
     };
 
     const premiums = useAppSelector(
@@ -51,6 +68,11 @@ export default function PolicyPremiumDetails() {
     const pendingPremiums = useAppSelector(
         (state) => state.premiums.pendingPremiums
     );
+
+    let isMember =
+        currentUser.id !== undefined &&
+        policy?.pod &&
+        policy?.pod.members?.some((m: User) => m.id === currentUser.id);
 
     const columns: ColumnsType<PremiumRowType> = [
         {
