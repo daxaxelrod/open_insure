@@ -18,6 +18,7 @@ import {
     REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import premiumsReducer from "./reducers/premiumsReducer";
 
 const persistConfig = {
     key: "root",
@@ -30,6 +31,7 @@ const reducers = combineReducers({
     pods: podsReducer,
     policies: policiesReducer,
     risk: riskReducer,
+    premiums: premiumsReducer,
     // claims: claimsReducer,
 });
 
