@@ -69,7 +69,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 userPolicies: [...state.userPolicies, payload],
-                publicPolicies: [...state.publicPolicies, payload], // hrm
+                publicPolicies: [...state.publicPolicies, payload],
                 createPolicyPending: false,
             };
         case CREATE_POLICY_FAILURE:

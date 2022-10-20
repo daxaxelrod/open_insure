@@ -17,7 +17,7 @@ export const patchPremium =
         payload: API.PremiumPatchPayload
     ): ThunkAction<void, RootState, unknown, AnyAction> =>
     async (dispatch) => {
-        dispatch({ type: PATCH_PREMIUM_PENDING });
+        dispatch({ type: PATCH_PREMIUM_PENDING, payload: { premiumId } });
         try {
             const response = await API.patchPremium(
                 policyId,
@@ -25,8 +25,11 @@ export const patchPremium =
                 payload
             );
             dispatch({ type: PATCH_PREMIUM_SUCCESS, payload: response.data });
-        } catch (error) {
-            dispatch({ type: PATCH_PREMIUM_FAILURE, payload: error });
+        } catch (error: any) {
+            dispatch({
+                type: PATCH_PREMIUM_FAILURE,
+                payload: { ...error, premiumId },
+            });
         }
     };
 
