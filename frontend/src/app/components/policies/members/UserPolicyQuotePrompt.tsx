@@ -5,9 +5,11 @@ import { getQuote } from "../../../../redux/actions/risk";
 import { ToTopOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
 
 const { Title, Paragraph } = Typography;
+
+const whatEvenDoesItMeanToBeEarlyThreshold = 10;
 
 export default function UserPolicyQuotePrompt({
     openRiskDrawer,
@@ -20,6 +22,9 @@ export default function UserPolicyQuotePrompt({
             (p: Policy) => p.id === parseInt(id || "")
         )
     );
+    let policyRisks: Risk[] = useAppSelector(
+        (state) => state.risk.policyRisks?.[parseInt(id || "")]
+    );
     const risk = useAppSelector((state) => state.risk.focusedRisk);
     const getQuotePending = useAppSelector(
         (state) => state.risk.getQuotePending
@@ -28,6 +33,11 @@ export default function UserPolicyQuotePrompt({
     if (getQuotePending) {
         return <Skeleton />;
     }
+
+    let isEarlyQuoter =
+        policyRisks.filter((risk: Risk) => {
+            return risk?.premium_amount;
+        }).length < whatEvenDoesItMeanToBeEarlyThreshold;
 
     // prompt to fill out their information and get a quote
     // needs more love
@@ -48,7 +58,9 @@ export default function UserPolicyQuotePrompt({
                         <Paragraph style={{ marginTop: 0 }}>
                             {risk?.premium_amount
                                 ? `${risk?.premium_amount / 100} / month`
-                                : `You'll be the first one to get a quote for the ${policy.name} policy!`}
+                                : isEarlyQuoter
+                                ? `You'll be the first one to get a quote for the ${policy.name} policy!`
+                                : `Join this popular policy!`}
                         </Paragraph>
                     </span>
                 </Col>

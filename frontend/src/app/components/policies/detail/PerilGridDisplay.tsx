@@ -13,13 +13,13 @@ const { Paragraph } = Typography;
 const getIconForPeril = (peril: Peril) => {
     switch (peril.icon_name) {
         case "alert":
-            return <AlertOutlined style={{ fontSize: "2rem" }} />;
+            return <AlertOutlined style={{ fontSize: "1.5rem" }} />;
         case "meh":
-            return <MehOutlined style={{ fontSize: "2rem" }} />;
+            return <MehOutlined style={{ fontSize: "1.5rem" }} />;
         case "crown":
-            return <CrownOutlined style={{ fontSize: "2rem" }} />;
+            return <CrownOutlined style={{ fontSize: "1.5rem" }} />;
         case "ThunderboltOutlined":
-            return <ThunderboltOutlined style={{ fontSize: "2rem" }} />;
+            return <ThunderboltOutlined style={{ fontSize: "1.5rem" }} />;
         default:
             return null;
     }

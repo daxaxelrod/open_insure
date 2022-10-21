@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 import React from "react";
 import styled from "styled-components";
 import { useAppSelector } from "../../../../redux/hooks";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy, Premium } from "../../../../redux/reducers/commonTypes";
 import colors from "../../../constants/colors";
 import { ConditionalWrapper } from "../../../utils/componentUtils";
 
@@ -16,7 +16,10 @@ export default function UserMainPremiumObligation({
 }) {
     const focusedRisk = useAppSelector((state) => state.risk.focusedRisk);
     const currentUser = useAppSelector((state) => state.auth.currentUser);
-    const userPremiums = policy.premiums.filter(
+    const policyPremiums: Premium[] = useAppSelector(
+        (state) => state.premiums.premiums[policy.id]
+    );
+    const userPremiums = policyPremiums.filter(
         (p) => p.payer === currentUser.id
     );
 
@@ -83,7 +86,7 @@ export default function UserMainPremiumObligation({
                                             color: colors.alert1,
                                         }}
                                     >
-                                        Payment is late!
+                                        Your payment is late!
                                     </Paragraph>
                                 ) : (
                                     <Paragraph style={{ fontSize: ".8rem" }}>

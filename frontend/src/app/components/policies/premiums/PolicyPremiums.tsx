@@ -1,33 +1,33 @@
 import React, { useEffect } from "react";
 import {
     Checkbox,
-    Col,
+    
     notification,
-    Row,
+    Popconfirm,
     Spin,
-    Table,
+    
     Tooltip,
     Typography,
 } from "antd";
 import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
     Policy,
     Premium,
     Risk,
     User,
-} from "../../../redux/reducers/commonTypes";
+} from "../../../../redux/reducers/commonTypes";
 import { ColumnsType } from "antd/lib/table";
 import moment from "moment-timezone";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { getHumanReadablePaymentFrequencyForPolicy } from "../../components/policies/utils/riskUtils";
-import colors from "../../constants/colors";
+import { getHumanReadablePaymentFrequencyForPolicy } from "../utils/riskUtils";
+import colors from "../../../constants/colors";
 import {
     getPolicyPremiums,
     patchPremium,
-} from "../../../redux/actions/premiums";
+} from "../../../../redux/actions/premiums";
 
-import "../../styles/dashboard/PolicyPremiumDetails.css";
+import "../../../styles/dashboard/PolicyPremiumDetails.css";
 
 const { Title } = Typography;
 
@@ -37,10 +37,11 @@ interface PremiumRowType {
     dueDate: string;
 }
 
-export default function PolicyPremiumDetails() {
+export default function PolicyPremiums() {
     let { id } = useParams();
     let policyId = parseInt(id || "");
     let dispatch = useAppDispatch();
+    let [isUnpaidWarningOpen, setIsUnpaidWarningOpen] = 
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find((p: Policy) => p.id === policyId)
     );
@@ -52,7 +53,14 @@ export default function PolicyPremiumDetails() {
 
     const togglePremiumPaid = (paidValue: boolean, premiumId: number) => {
         if (isMember) {
-            dispatch(patchPremium(policyId, premiumId, { paid: paidValue }));
+            if (!paidValue) {
+                alert("are you sure you want to mark this as unpaid?");
+
+            } else {
+                dispatch(
+                    patchPremium(policyId, premiumId, { paid: paidValue })
+                );
+            }
         } else {
             notification.warn({
                 message: "Only policy members can modify premiums",
@@ -144,6 +152,7 @@ export default function PolicyPremiumDetails() {
                             isPending ? (
                                 <Spin />
                             ) : (
+                             
                                 <Checkbox
                                     onChange={(e: CheckboxChangeEvent) =>
                                         togglePremiumPaid(

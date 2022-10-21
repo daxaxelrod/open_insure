@@ -98,7 +98,7 @@ class PolicyViewSet(ModelViewSet):
         if policy.is_policy_active() and not pod.allow_joiners_after_policy_start:
             return Response(
                 {
-                    "message": "Policy is active and does not allow for new memebers after policy start"
+                    "message": "Policy is active and does not allow for new members after policy start"
                 },
                 status=HTTP_403_FORBIDDEN,
             )

@@ -1,9 +1,10 @@
 import React from "react";
-import { Col, Row, Space, Statistic, Typography } from "antd";
+import { Col, Row, Space, Statistic, Tag, Typography } from "antd";
 import { Peril, Policy } from "../../../../redux/reducers/commonTypes";
 import PerilGridDisplay from "./PerilGridDisplay";
 import { CalendarOutlined } from "@ant-design/icons";
 import moment from "moment-timezone";
+import colors from "../../../constants/colors";
 
 const { Title, Paragraph } = Typography;
 
@@ -30,13 +31,31 @@ const mockPerils: Peril[] = [
     },
 ];
 
-export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
+export default function PolicyDescriptionRow({
+    policy,
+    hasPolicyStarted,
+}: {
+    policy: Policy;
+    hasPolicyStarted: boolean;
+}) {
+    const renderPolicyStatusTag = () => {
+        return hasPolicyStarted ? (
+            <Tag color="success" style={{ marginLeft: 10 }}>
+                In Force
+            </Tag>
+        ) : (
+            <Tag color="warning" style={{ marginLeft: 10 }}>
+                In Set up
+            </Tag>
+        );
+    };
+
     return (
         <div
             style={{
                 padding: "24px 0px 2rem 3rem",
                 marginLeft: "1rem",
-                border: "1px solid #f0f0f0",
+
                 display: "flex",
                 height: "100%",
             }}
@@ -48,10 +67,16 @@ export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-between",
-                        paddingRight: "1.5rem",
+                        paddingRight: "1.8rem",
                     }}
                 >
-                    <Title level={4}>Description</Title>
+                    <Title
+                        level={4}
+                        style={{ display: "flex", alignItems: "center" }}
+                    >
+                        Description {renderPolicyStatusTag()}
+                    </Title>
+
                     <Paragraph>{policy.description}</Paragraph>
                     <Row justify="start">
                         <Space size={50}>
@@ -73,7 +98,7 @@ export default function PolicyDescriptionRow({ policy }: { policy: Policy }) {
                     </Row>
                 </Col>
                 <Col span={12}>
-                    <Title level={4} style={{ textAlign: "center" }}>
+                    <Title level={4} style={{ textAlign: "left" }}>
                         Covered Events
                     </Title>
                     <Row>

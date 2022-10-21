@@ -152,7 +152,7 @@ class ClaimSerializer(serializers.ModelSerializer):
             return claim
         else:
             raise serializers.ValidationError(
-                {"claimant": "User is not a memeber of the policy's pod."}
+                {"claimant": "User is not a member of the policy's pod."}
             )
 
     class Meta:

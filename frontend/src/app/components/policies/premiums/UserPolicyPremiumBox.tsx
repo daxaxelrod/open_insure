@@ -29,6 +29,7 @@ export default function UserPolicyPremiumBox({
                 display: "flex",
                 flex: 1,
             }}
+            bordered={false}
         >
             {riskPending ? (
                 <Skeleton />

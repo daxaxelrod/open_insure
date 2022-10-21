@@ -19,6 +19,7 @@ import PolicyClaimsBriefCard from "../../components/policies/claims/PolicyClaims
 import { getOrCreateRisk } from "../../../redux/actions/risk";
 import EscrowBalanceCard from "../../components/policies/premiums/EscrowBalanceCard";
 import PolicySettingsModal from "../../components/policies/premiums/settings/PolicySettingsModal";
+import PolicyPremiums from "../../components/policies/premiums/PolicyPremiums";
 
 const { Title, Paragraph } = Typography;
 
@@ -64,16 +65,9 @@ export default function PolicyDetails() {
             <div>
                 <Row align="middle">
                     <Col span={19}>
-                        <Title style={{ marginBottom: 0 }} level={2}>
+                        <Title style={{ marginBottom: "1.8rem" }} level={2}>
                             {policy?.name}
                         </Title>
-                        <Paragraph
-                            style={{ color: colors.gray10, fontSize: 12 }}
-                        >
-                            {hasPolicyStarted
-                                ? "Active Policy"
-                                : "In setup phase"}
-                        </Paragraph>
                     </Col>
                     <Col
                         span={5}
@@ -88,11 +82,6 @@ export default function PolicyDetails() {
                             )}
                             {isMember && (
                                 <InviteFriendToPolicy policy={policy} />
-                            )}
-                            {isMember && (
-                                <Link to={`/policy/${policy.id}/premiums/`}>
-                                    <Button type="dashed">Premiums</Button>
-                                </Link>
                             )}
                             {isMember && (
                                 <PolicySettingsModal policy={policy} />
@@ -121,7 +110,10 @@ export default function PolicyDetails() {
                     />
                 </PolicyDetailCol>
                 <PolicyDetailCol span={16} style={{ flex: 1 }}>
-                    <PolicyDescriptionRow policy={policy} />
+                    <PolicyDescriptionRow
+                        policy={policy}
+                        hasPolicyStarted={hasPolicyStarted}
+                    />
                 </PolicyDetailCol>
             </Row>
 
@@ -130,10 +122,13 @@ export default function PolicyDetails() {
                     <RiskTable policy={policy} />
                     <MembersTable policy={policy} />
                 </Tabs.TabPane>
+                <Tabs.TabPane key="3" tab="Premiums">
+                    <PolicyPremiums />
+                </Tabs.TabPane>
                 <Tabs.TabPane tab="Money Pool">
                     <EscrowBalanceCard policy={policy} />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Claims & Escrow" key="2">
+                <Tabs.TabPane tab="Claims" key="2">
                     <Row>
                         <PolicyDetailCol
                             span={24}
@@ -148,9 +143,6 @@ export default function PolicyDetails() {
                             <PolicyClaimsBriefCard policy={policy} />
                         </PolicyDetailCol>
                     </Row>
-                </Tabs.TabPane>
-                <Tabs.TabPane key="3" tab="Premiums">
-                    premiums
                 </Tabs.TabPane>
             </Tabs>
         </div>

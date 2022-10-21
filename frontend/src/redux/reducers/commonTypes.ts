@@ -21,7 +21,7 @@ export interface Premium {
     updated_at: string;
 }
 
-export interface PolicyMemeberApprovals {
+export interface PolicyMemberApprovals {
     id: number;
     approver: number;
     claim: number;
@@ -44,7 +44,7 @@ export interface Claim {
     is_approved: boolean;
     created_at: string;
     updated_at: string;
-    approvals: PolicyMemeberApprovals[];
+    approvals: PolicyMemberApprovals[];
 }
 
 export interface Pod {
