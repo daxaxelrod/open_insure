@@ -178,7 +178,6 @@ class RiskSettingsViewSet(RetrieveUpdateAPIView):
 
     
 
-
 class RiskSettingsHyptotheticalApiView(APIView):
     permission_classes = [IsAuthenticated & InRiskSettingsPolicyPod]
     serializer_class = PolicyRiskSettingsSerializer

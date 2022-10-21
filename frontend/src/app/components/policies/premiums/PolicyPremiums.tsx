@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Checkbox,
-    
+    Col,
     notification,
     Popconfirm,
+    Table,
+    Row,
     Spin,
-    
     Tooltip,
     Typography,
 } from "antd";
@@ -41,7 +42,9 @@ export default function PolicyPremiums() {
     let { id } = useParams();
     let policyId = parseInt(id || "");
     let dispatch = useAppDispatch();
-    let [isUnpaidWarningOpen, setIsUnpaidWarningOpen] = 
+    let [isUnpaidWarningOpen, setIsUnpaidWarningOpen] = useState(false);
+    let [localFocusedPremiumId, setLocalFocusedPremiumId] =
+        useState<number>(-1);
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find((p: Policy) => p.id === policyId)
     );
@@ -54,8 +57,8 @@ export default function PolicyPremiums() {
     const togglePremiumPaid = (paidValue: boolean, premiumId: number) => {
         if (isMember) {
             if (!paidValue) {
-                alert("are you sure you want to mark this as unpaid?");
-
+                setLocalFocusedPremiumId(premiumId);
+                setIsUnpaidWarningOpen(true);
             } else {
                 dispatch(
                     patchPremium(policyId, premiumId, { paid: paidValue })
@@ -67,6 +70,21 @@ export default function PolicyPremiums() {
                 placement: "top",
             });
         }
+    };
+
+    const confirmPopover = () => {
+        if (localFocusedPremiumId !== -1) {
+            setIsUnpaidWarningOpen(false);
+            dispatch(
+                patchPremium(policyId, localFocusedPremiumId, { paid: false })
+            );
+            setLocalFocusedPremiumId(-1);
+        }
+    };
+
+    const closePopover = () => {
+        setIsUnpaidWarningOpen(false);
+        setLocalFocusedPremiumId(-1);
     };
 
     const premiums = useAppSelector(
@@ -152,40 +170,50 @@ export default function PolicyPremiums() {
                             isPending ? (
                                 <Spin />
                             ) : (
-                             
-                                <Checkbox
-                                    onChange={(e: CheckboxChangeEvent) =>
-                                        togglePremiumPaid(
-                                            e.target.checked,
-                                            userSpecificInfo?.premiumId
-                                        )
-                                    }
-                                    checked={userSpecificInfo?.paid}
+                                <Popconfirm
+                                    title="Are you sure you want to mark this as unpaid?"
+                                    disabled={!isUnpaidWarningOpen}
+                                    onConfirm={confirmPopover}
+                                    onCancel={closePopover}
+                                    okText="Yes"
+                                    cancelText="No"
                                 >
-                                    {userSpecificInfo?.paid ? (
-                                        <Tooltip
-                                            trigger={"hover"}
-                                            title={`Marked Paid by ${
-                                                accountingUser?.first_name
-                                                    ? `${accountingUser?.first_name} ${accountingUser?.last_name}`
-                                                    : "an admin user, don't know who"
-                                            } on ${moment(
-                                                userSpecificInfo?.paid_date
-                                            ).format("MMMM Do, YYYY")}`}
-                                            color="black"
-                                        >
-                                            <span className="premium-paid-link-tooltip-text">
-                                                Paid
+                                    <Checkbox
+                                        onChange={(e: CheckboxChangeEvent) =>
+                                            togglePremiumPaid(
+                                                e.target.checked,
+                                                userSpecificInfo?.premiumId
+                                            )
+                                        }
+                                        checked={userSpecificInfo?.paid}
+                                    >
+                                        {userSpecificInfo?.paid ? (
+                                            <Tooltip
+                                                trigger={"hover"}
+                                                title={`Marked Paid by ${
+                                                    accountingUser?.first_name
+                                                        ? `${accountingUser?.first_name} ${accountingUser?.last_name}`
+                                                        : "an admin user, don't know who"
+                                                } on ${moment(
+                                                    userSpecificInfo?.paid_date
+                                                ).format("MMMM Do, YYYY")}`}
+                                                color="black"
+                                            >
+                                                <span className="premium-paid-link-tooltip-text">
+                                                    Paid
+                                                </span>
+                                            </Tooltip>
+                                        ) : isPremiumPastDue ? (
+                                            <span
+                                                style={{ color: colors.alert1 }}
+                                            >
+                                                Overdue
                                             </span>
-                                        </Tooltip>
-                                    ) : isPremiumPastDue ? (
-                                        <span style={{ color: colors.alert1 }}>
-                                            Overdue
-                                        </span>
-                                    ) : (
-                                        "Not paid"
-                                    )}
-                                </Checkbox>
+                                        ) : (
+                                            "Not paid"
+                                        )}
+                                    </Checkbox>
+                                </Popconfirm>
                             )
                         ) : null;
                     },
