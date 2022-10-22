@@ -11,6 +11,11 @@ import {
     Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { getPolicyPremiums } from "../../../redux/actions/premiums";
+import { Premium } from "../../../redux/reducers/commonTypes";
+import moment from "moment-timezone";
 
 const { Title: AntTitle } = Typography;
 
@@ -25,11 +30,35 @@ ChartJS.register(
 );
 
 export default function PolicyPoolDetails() {
+    const { id } = useParams();
+    const policyId = parseInt(id || "");
+    const dispatch = useAppDispatch();
+    const premiums = useAppSelector(
+        (state) => state.premiums.premiums?.[policyId]
+    );
+    const getPolicyPremiumsPending = useAppSelector(
+        (state) => state.premiums.getPolicyPremiumsPending
+    );
+
     useEffect(() => {
-        console.log("get policy escrow pool details");
-    }, []);
+        if (!premiums && !getPolicyPremiumsPending && policyId) {
+            dispatch(getPolicyPremiums(policyId));
+        }
+    }, [premiums, getPolicyPremiumsPending, policyId]);
 
     const options = {};
+
+    // no padding, earliest to latest premium
+
+    let t: any = {};
+    let premiumMonthsArray = premiums.reduce((acc: any[], premium: Premium) => {
+        let dueDate = moment(premium.due_date).month();
+        if (!(dueDate in acc)) {
+            acc.push(dueDate);
+        }
+        return acc;
+    }, []);
+    console.log({ premiumMonthsArray });
 
     const data = {
         labels: ["May", "June", "July", "Aug", "Sept", "Oct"],

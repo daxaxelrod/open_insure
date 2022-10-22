@@ -117,18 +117,20 @@ export default function PolicyDetails() {
                 </PolicyDetailCol>
             </Row>
 
-            <Tabs style={{ marginTop: "1.5rem" }}>
+            <Tabs style={{ marginTop: "1.5rem" }} size="small" type="card">
                 <Tabs.TabPane tab="Members" key="1" animated active>
-                    <RiskTable policy={policy} />
                     <MembersTable policy={policy} />
                 </Tabs.TabPane>
-                <Tabs.TabPane key="3" tab="Premiums">
+                <Tabs.TabPane tab="Covered Assets" key="2">
+                    <RiskTable policy={policy} />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Premiums" key="3">
                     <PolicyPremiums />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Money Pool">
+                <Tabs.TabPane tab="Money Pool" key="4">
                     <EscrowBalanceCard policy={policy} />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Claims" key="2">
+                <Tabs.TabPane tab="Claims" key="5">
                     <Row>
                         <PolicyDetailCol
                             span={24}

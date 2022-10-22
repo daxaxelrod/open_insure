@@ -282,6 +282,11 @@ export default function PolicyPremiums() {
             <Row>
                 <Col span={24}>
                     <Table
+                        // summary={(pageData: any) => {
+                        //     console.log({ pageData });
+
+                        //     return <div>total</div>;
+                        // }}
                         scroll={{ x: "max-content" }}
                         columns={columns}
                         dataSource={tableData}
