@@ -48,17 +48,27 @@ export default function PolicyPoolDetails() {
 
     const options = {};
 
-    // no padding, earliest to latest premium
+    let sortedPremiums = premiums.sort((a: Premium, b: Premium) => {
+        return moment(a.due_date).unix() - moment(b.due_date).unix();
+    });
 
-    let t: any = {};
-    let premiumMonthsArray = premiums.reduce((acc: any[], premium: Premium) => {
-        let dueDate = moment(premium.due_date).month();
-        if (!(dueDate in acc)) {
-            acc.push(dueDate);
-        }
-        return acc;
-    }, []);
+    let premiumMonthsArray = sortedPremiums.reduce(
+        (acc: any[], premium: Premium) => {
+            let dueDate = moment(premium.due_date).format("MM, YYYY");
+            console.log(dueDate, " in", acc, dueDate in acc);
+
+            if (acc.includes(dueDate)) {
+                return acc;
+            } else {
+                acc.push(dueDate);
+                return acc;
+            }
+        },
+        []
+    );
     console.log({ premiumMonthsArray });
+
+    let premiumsBinnedByDueDate: Record<string, Premium[]> = {};
 
     const data = {
         labels: ["May", "June", "July", "Aug", "Sept", "Oct"],
