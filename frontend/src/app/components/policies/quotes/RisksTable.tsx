@@ -225,7 +225,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
         },
     ];
     return (
-        <div style={{ marginBottom: "1rem", marginTop: ".5rem" }}>
+        <div style={{ marginBottom: "1rem" }}>
             <Title level={4}>Covered Assets</Title>
             <Table dataSource={risks} columns={columns} />
         </div>

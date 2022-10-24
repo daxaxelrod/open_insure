@@ -35,9 +35,9 @@ export default function UserPolicyQuotePrompt({
     }
 
     let isEarlyQuoter =
-        policyRisks.filter((risk: Risk) => {
+        policyRisks?.filter((risk: Risk) => {
             return risk?.premium_amount;
-        }).length < whatEvenDoesItMeanToBeEarlyThreshold;
+        })?.length < whatEvenDoesItMeanToBeEarlyThreshold;
 
     // prompt to fill out their information and get a quote
     // needs more love

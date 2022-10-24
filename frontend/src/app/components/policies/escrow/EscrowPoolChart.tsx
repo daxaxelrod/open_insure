@@ -87,7 +87,6 @@ export default function EscrowPoolChart({}) {
                 .reduce((existingAcc: number, val: number) => {
                     return (existingAcc += val);
                 }, 0);
-            console.log({ intermediateSum });
 
             acc.push(intermediateSum + totalPaidInForMonth);
             return acc;

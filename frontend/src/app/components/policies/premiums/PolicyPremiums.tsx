@@ -30,7 +30,7 @@ import {
 
 import "../../../styles/dashboard/PolicyPremiumDetails.css";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 interface PremiumRowType {
     key: React.Key;
@@ -276,7 +276,11 @@ export default function PolicyPremiums() {
         <div>
             <Row align="middle">
                 <Col span={19}>
-                    <Title level={2}>Premiums</Title>
+                    <Title level={4}>Premiums</Title>
+                    <Paragraph style={{ color: colors.gray9 }}>
+                        Hover <span style={{ fontWeight: 800 }}>bold</span>{" "}
+                        columns for more information
+                    </Paragraph>
                 </Col>
             </Row>
             <Row>

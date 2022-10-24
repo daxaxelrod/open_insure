@@ -21,6 +21,8 @@ import EscrowBalanceCard from "../../components/policies/premiums/EscrowBalanceC
 import PolicySettingsModal from "../../components/policies/premiums/settings/PolicySettingsModal";
 import PolicyPremiums from "../../components/policies/premiums/PolicyPremiums";
 
+import "../../styles/dashboard/PolicyDetails.css";
+
 const { Title, Paragraph } = Typography;
 
 export default function PolicyDetails() {
@@ -117,13 +119,19 @@ export default function PolicyDetails() {
                 </PolicyDetailCol>
             </Row>
 
-            <Tabs style={{ marginTop: "1.5rem" }} size="small" type="card">
-                <Tabs.TabPane tab="Members" key="1" animated active>
-                    <MembersTable policy={policy} />
-                </Tabs.TabPane>
+            <Tabs
+                style={{ marginTop: "1.5rem" }}
+                size="large"
+                type="card"
+                className="policyDetailsTabs"
+            >
                 <Tabs.TabPane tab="Covered Assets" key="2">
                     <RiskTable policy={policy} />
                 </Tabs.TabPane>
+                <Tabs.TabPane tab="Members" key="1" animated active>
+                    <MembersTable policy={policy} />
+                </Tabs.TabPane>
+
                 <Tabs.TabPane tab="Premiums" key="3">
                     <PolicyPremiums />
                 </Tabs.TabPane>
