@@ -5,9 +5,15 @@ import {
     getGovernanceTypeHumanReadable,
     getPremiumsPaidThisMonth,
 } from "../../../utils/policyUtils";
+import { useAppSelector } from "../../../../redux/hooks";
 
 export default function PolicyPoolStats({ policy }: { policy: Policy }) {
-    const premiumsPerMonth = getPremiumsPaidThisMonth(policy).toFixed(2);
+    const premiums = useAppSelector(
+        (state) => state.premiums.premiums?.[policy?.id]
+    );
+    const premiumsPerMonth = getPremiumsPaidThisMonth(premiums, policy).toFixed(
+        2
+    );
     const claimsThisMonth = 0;
 
     return policy && Object.keys(policy).length > 0 ? (

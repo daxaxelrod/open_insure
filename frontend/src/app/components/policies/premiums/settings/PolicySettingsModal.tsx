@@ -75,7 +75,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     });
 
     useEffect(() => {
-        if (visible) {
+        if (visible && riskSettings === undefined) {
             dispatch(getPolicyRiskSettings(policy?.id));
         }
     }, [visible, policy?.id]);

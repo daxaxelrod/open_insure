@@ -1,11 +1,6 @@
-import React, { useEffect } from "react";
-import { Alert, Card, Col, Row, Table, Typography } from "antd";
+import React from "react";
+import { Alert, Card, Col, Row, Typography } from "antd";
 
-import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { getPolicyPremiums } from "../../../redux/actions/premiums";
-import { Premium } from "../../../redux/reducers/commonTypes";
-import moment from "moment-timezone";
 import EscrowPoolChart from "../../components/policies/escrow/EscrowPoolChart";
 
 const { Title: AntTitle } = Typography;

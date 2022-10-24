@@ -33,10 +33,13 @@ export function isPolicyMember(currentUser: User, policy: Policy): boolean {
     );
 }
 
-export function getPremiumsPaidThisMonth(policy: Policy): number {
+export function getPremiumsPaidThisMonth(
+    premiums: Premium[],
+    policy: Policy
+): number {
     let currentMonth = moment().startOf("month");
     let premiumsDueThisMonth =
-        policy?.premiums?.filter((premium) => {
+        premiums?.filter((premium) => {
             let isPremiumDuringCurrentMonth = moment(premium.due_date).isSame(
                 currentMonth,
                 "month"

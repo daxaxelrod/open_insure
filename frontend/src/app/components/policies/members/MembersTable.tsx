@@ -86,15 +86,22 @@ export default function MembersTable({ policy }: { policy: Policy }) {
             dataIndex: "verified_email",
             render: (text) => <div>{text ? <CheckOutlined /> : null}</div>,
         },
+        {
+            title: () => (
+                <Row justify="end">
+                    {isMember && (
+                        <Button type="primary" onClick={emailEveryone}>
+                            Email Eveyone
+                        </Button>
+                    )}
+                </Row>
+            ),
+            render: (text) => null,
+        },
     ];
     return (
         <div style={{ marginBottom: ".5rem" }}>
-            <Row justify="space-between">
-                <Title level={4}>Policy Members</Title>
-                {isMember && (
-                    <Button onClick={emailEveryone}>Email Eveyone</Button>
-                )}
-            </Row>
+            <Title level={4}>Policy Members</Title>
             <Table dataSource={members} columns={columns} />
         </div>
     );
