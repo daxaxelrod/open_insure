@@ -22,6 +22,7 @@ import PolicySettingsModal from "../../components/policies/premiums/settings/Pol
 import PolicyPremiums from "../../components/policies/premiums/PolicyPremiums";
 
 import "../../styles/dashboard/PolicyDetails.css";
+import PolicyClaimsList from "../../components/policies/claims/PolicyClaimsList";
 
 const { Title, Paragraph } = Typography;
 
@@ -131,7 +132,6 @@ export default function PolicyDetails() {
                 <Tabs.TabPane tab="Members" key="1" animated active>
                     <MembersTable policy={policy} />
                 </Tabs.TabPane>
-
                 <Tabs.TabPane tab="Premiums" key="3">
                     <PolicyPremiums />
                 </Tabs.TabPane>
@@ -140,8 +140,11 @@ export default function PolicyDetails() {
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Claims" key="5">
                     <Row>
+                        <PolicyDetailCol span={14}>
+                            <PolicyClaimsList />
+                        </PolicyDetailCol>
                         <PolicyDetailCol
-                            span={24}
+                            span={10}
                             style={{
                                 paddingRight: 10,
                                 paddingLeft: 10,

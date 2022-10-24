@@ -269,7 +269,9 @@ export default function PolicyPremiums() {
     }
 
     useEffect(() => {
-        dispatch(getPolicyPremiums(policyId));
+        if (policyId) {
+            dispatch(getPolicyPremiums(policyId));
+        }
     }, [policyId]);
 
     return (

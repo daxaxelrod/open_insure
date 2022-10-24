@@ -17,7 +17,7 @@ export default function UserMainPremiumObligation({
     const focusedRisk = useAppSelector((state) => state.risk.focusedRisk);
     const currentUser = useAppSelector((state) => state.auth.currentUser);
     const policyPremiums: Premium[] = useAppSelector(
-        (state) => state.premiums.premiums[policy.id]
+        (state) => state.premiums.premiums?.[policy.id]
     );
     const userPremiums = policyPremiums?.filter(
         (p) => p.payer === currentUser.id

@@ -23,7 +23,10 @@ const initialState: PremiumsState = {
     pendingPremiums: {},
 };
 
-export default (state = initialState, { type, payload, action }: AnyAction) => {
+export default (
+    state = initialState,
+    { type, payload, policyId }: AnyAction
+) => {
     switch (type) {
         case GET_AVAILABLE_POLICIES_SUCCESS:
             return {
@@ -49,7 +52,7 @@ export default (state = initialState, { type, payload, action }: AnyAction) => {
                 ...state,
                 premiums: {
                     ...state.premiums,
-                    [action.policyId]: payload,
+                    [policyId]: payload,
                 },
                 getPolicyPremiumsPending: false,
             };

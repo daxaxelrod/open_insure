@@ -15,6 +15,7 @@ export default function PolicyClaimsBriefCard({ policy }: { policy: Policy }) {
                 display: "flex",
                 flex: 1,
             }}
+            bordered={false}
             bodyStyle={{
                 display: "flex",
                 flexDirection: "column",
