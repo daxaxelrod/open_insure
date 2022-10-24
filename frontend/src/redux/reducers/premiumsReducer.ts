@@ -4,6 +4,9 @@ import {
     PATCH_PREMIUM_PENDING,
     PATCH_PREMIUM_SUCCESS,
     PATCH_PREMIUM_FAILURE,
+    GET_POLICY_PREMIUMS_PENDING,
+    GET_POLICY_PREMIUMS_SUCCESS,
+    GET_POLICY_PREMIUMS_FAILURE,
 } from "../actions/types";
 import { Policy, Premium } from "./commonTypes";
 
@@ -20,7 +23,7 @@ const initialState: PremiumsState = {
     pendingPremiums: {},
 };
 
-export default (state = initialState, { type, payload }: AnyAction) => {
+export default (state = initialState, { type, payload, action }: AnyAction) => {
     switch (type) {
         case GET_AVAILABLE_POLICIES_SUCCESS:
             return {
@@ -36,6 +39,26 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                     ),
                 },
             };
+        case GET_POLICY_PREMIUMS_PENDING:
+            return {
+                ...state,
+                getPolicyPremiumsPending: true,
+            };
+        case GET_POLICY_PREMIUMS_SUCCESS:
+            return {
+                ...state,
+                premiums: {
+                    ...state.premiums,
+                    [action.policyId]: payload,
+                },
+                getPolicyPremiumsPending: false,
+            };
+        case GET_POLICY_PREMIUMS_FAILURE:
+            return {
+                ...state,
+                getPolicyPremiumsPending: false,
+            };
+
         case PATCH_PREMIUM_PENDING:
             return {
                 ...state,

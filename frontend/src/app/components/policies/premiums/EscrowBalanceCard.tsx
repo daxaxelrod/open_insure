@@ -1,8 +1,9 @@
 import React from "react";
-import { Button, Card, Row, Typography } from "antd";
+import { Button, Card, Col, Row, Typography } from "antd";
 import { Policy } from "../../../../redux/reducers/commonTypes";
 import PolicyPoolStats from "./PolicyPoolStats";
 import { useNavigate } from "react-router-dom";
+import EscrowPoolChart from "../escrow/EscrowPoolChart";
 
 const { Title } = Typography;
 
@@ -18,8 +19,14 @@ export default function EscrowBalanceCard({ policy }: { policy: Policy }) {
                 <Title level={4}>Pool Info</Title>
                 <Button onClick={goToEscrowDetail}>More</Button>
             </Row>
-
-            <PolicyPoolStats policy={policy} />
+            <Row>
+                <Col span={15}>
+                    <EscrowPoolChart />
+                </Col>
+                <Col span={8} offset={1}>
+                    <PolicyPoolStats policy={policy} />
+                </Col>
+            </Row>
         </Card>
     );
 }

@@ -70,7 +70,7 @@ export default function RiskTable({ policy }: { policy: Policy }) {
                 key: `risk-${risk.id}-${index}`,
             };
         }) || [];
-    risks = risks.filter(
+    risks = risks?.filter(
         (r) =>
             r?.premium_amount &&
             policy?.pod?.members?.some((m: User) => m.id === r.user)

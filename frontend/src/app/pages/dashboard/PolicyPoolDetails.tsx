@@ -32,10 +32,6 @@ export default function PolicyPoolDetails() {
                     <Card>Latest claims info</Card>
                 </Col>
             </Row>
-            <Row>
-                <AntTitle level={3}>Premiums</AntTitle>
-                <Table />
-            </Row>
         </>
     );
 }

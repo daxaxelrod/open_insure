@@ -7,7 +7,8 @@ import {
 } from "../../../utils/policyUtils";
 
 export default function PolicyPoolStats({ policy }: { policy: Policy }) {
-    const premiumsPerMonth = getPremiumsPaidThisMonth(policy);
+    const premiumsPerMonth = getPremiumsPaidThisMonth(policy).toFixed(2);
+    const claimsThisMonth = 0;
 
     return policy && Object.keys(policy).length > 0 ? (
         <Row gutter={16}>
@@ -32,6 +33,13 @@ export default function PolicyPoolStats({ policy }: { policy: Policy }) {
                     title="Premiums this month"
                     value={premiumsPerMonth}
                     formatter={(val) => `+$${val}`}
+                />
+            </Col>
+            <Col span={12}>
+                <Statistic
+                    title="Claims this month"
+                    value={claimsThisMonth}
+                    formatter={(val) => `-$${val}`}
                 />
             </Col>
         </Row>

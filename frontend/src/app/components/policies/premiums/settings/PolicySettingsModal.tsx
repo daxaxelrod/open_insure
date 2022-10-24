@@ -160,7 +160,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                     return userName;
                 }
             },
-            key: "name",
+            key: "user_name",
         },
         {
             title: "Type",
@@ -200,8 +200,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                     )}
                 </Tooltip>
             ),
-            dataIndex: "type",
-            key: "type",
+            key: "asset_type",
         },
         {
             title: "Current Premium",

@@ -50,7 +50,7 @@ export default function PolicyPremiums() {
     );
     let currentUser = useAppSelector((state) => state.auth.currentUser);
     const getPolicyPremiumsPending = useAppSelector(
-        (state) => state.policies.getPolicyPremiumsPending
+        (state) => state.premiums.getPolicyPremiumsPending
     );
     const risks = useAppSelector((state) => state.risk.policyRisks?.[policyId]);
 

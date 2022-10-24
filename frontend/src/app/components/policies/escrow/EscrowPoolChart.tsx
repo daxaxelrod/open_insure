@@ -26,6 +26,9 @@ ChartJS.register(
     Legend
 );
 
+const projectedBalanceColor = "#69c0ff";
+const actualBalanceColor = "#73d13d";
+
 export default function EscrowPoolChart({}) {
     const { id } = useParams();
     const policyId = parseInt(id || "");
@@ -103,6 +106,8 @@ export default function EscrowPoolChart({}) {
                 id: 1,
                 label: "Escrow Balance",
                 data: cummulativePaidPremiums,
+                backgroundColor: projectedBalanceColor,
+                borderColor: projectedBalanceColor,
             },
         ],
     };

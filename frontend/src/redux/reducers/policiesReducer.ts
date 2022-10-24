@@ -13,9 +13,6 @@ import {
     GET_USER_POLICIES_PENDING,
     GET_USER_POLICIES_SUCCESS,
     GET_USER_POLICIES_FAILURE,
-    GET_POLICY_PREMIUMS_PENDING,
-    GET_POLICY_PREMIUMS_SUCCESS,
-    GET_POLICY_PREMIUMS_FAILURE,
 } from "../actions/types";
 import { Policy } from "./commonTypes";
 
@@ -27,7 +24,6 @@ export interface PoliciesState {
     getUserPolicysPending: boolean;
     createPolicyPending: boolean;
     joinPolicyPending: boolean;
-    getPolicyPremiumsPending: boolean;
 }
 
 const initialState: PoliciesState = {
@@ -38,7 +34,6 @@ const initialState: PoliciesState = {
     getUserPolicysPending: false,
     createPolicyPending: false,
     joinPolicyPending: false,
-    getPolicyPremiumsPending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
@@ -117,32 +112,6 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 joinPolicyPending: false,
             };
-
-        case GET_POLICY_PREMIUMS_PENDING:
-            return {
-                ...state,
-                getPolicyPremiumsPending: true,
-            };
-        case GET_POLICY_PREMIUMS_SUCCESS:
-            return {
-                ...state,
-                getPolicyPremiumsPending: false,
-                publicPolicies: state.publicPolicies.map((policy) => {
-                    if (policy.id === payload.policyId) {
-                        return {
-                            ...policy,
-                            premiums: payload,
-                        };
-                    }
-                    return policy;
-                }),
-            };
-        case GET_POLICY_PREMIUMS_FAILURE:
-            return {
-                ...state,
-                getPolicyPremiumsPending: false,
-            };
-
         default:
             return state;
     }
