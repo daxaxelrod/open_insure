@@ -1,0 +1,81 @@
+footer.dark {
+    background-color: #000;
+    color: rgba(255, 255, 255, 0.65);
+}
+footer.dark a {
+    color: #fff;
+}
+footer.dark h2 {
+    color: #ffffff;
+}
+footer.dark h2 > span {
+    color: #ffffff;
+}
+footer.dark .bottom-bar {
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    overflow: hidden;
+}
+footer {
+    border-top: 1px solid;
+    clear: both;
+    font-size: 12px;
+    background: #fff;
+    position: relative;
+    z-index: 100;
+    color: ;
+    box-shadow: 0 1000px 0 1000px #fff;
+}
+footer .ant-row {
+    text-align: center;
+}
+footer .ant-row .footer-center {
+    display: inline-block;
+    text-align: left;
+}
+footer .ant-row .footer-center > h2 {
+    font-size: 14px;
+    margin: 0 auto 24px;
+    font-weight: 500;
+    position: relative;
+}
+footer .ant-row .footer-center > h2 > .anticon {
+    font-size: 16px;
+    position: absolute;
+    left: -22px;
+    top: 3px;
+    color: #aaa;
+}
+footer .ant-row .footer-center > div {
+    margin: 12px 0;
+}
+footer .footer-wrap {
+    position: relative;
+    padding: 86px 70px;
+}
+footer .bottom-bar {
+    border-top: 1px solid;
+    text-align: right;
+    padding: 20px;
+    margin: 0;
+    line-height: 24px;
+}
+footer .bottom-bar a {
+    color: rgba(255, 255, 255, 0.65);
+}
+footer .bottom-bar a:hover {
+    color: #fff;
+}
+footer .bottom-bar .translate-button {
+    text-align: left;
+    width: 200px;
+    margin: 0 auto;
+}
+footer .footer-logo {
+    position: relative;
+    top: -2px;
+}
+footer .footer-flag {
+    position: relative;
+    top: -4px;
+    margin-right: 8px;
+}

@@ -1,69 +1,69 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@ant-design/colors": "^6.0.0",
-    "@reduxjs/toolkit": "^1.8.2",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^14.2.1",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^17.0.45",
-    "@types/react": "^18.0.14",
-    "@types/react-dom": "^18.0.5",
-    "@types/styled-components": "^5.1.26",
-    "antd": "^4.21.3",
-    "axios": "^0.27.2",
-    "axios-jwt": "^1.8.0",
-    "chart.js": "^3.8.2",
-    "gaussian": "^1.2.0",
-    "moment-timezone": "^0.5.34",
-    "rc-queue-anim": "^2.0.0",
-    "rc-scroll-anim": "^2.7.6",
-    "rc-tween-one": "^3.0.6",
-    "react": "^18.2.0",
-    "react-chartjs-2": "^4.3.1",
-    "react-dom": "^18.2.0",
-    "react-dom-confetti": "^0.2.0",
-    "react-katex": "^3.0.1",
-    "react-redux": "^8.0.2",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
-    "react-use-wizard": "^2.2.0",
-    "redux-persist": "^6.0.0",
-    "styled-components": "^5.3.5",
-    "typescript": "^4.7.4",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "import/no-anonymous-default-export": "off"
+    "name": "frontend",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@ant-design/colors": "^6.0.0",
+        "@reduxjs/toolkit": "^1.8.2",
+        "@testing-library/jest-dom": "^5.16.4",
+        "@testing-library/react": "^13.3.0",
+        "@testing-library/user-event": "^14.2.1",
+        "@types/jest": "^27.5.2",
+        "@types/node": "^17.0.45",
+        "@types/react": "^18.0.14",
+        "@types/react-dom": "^18.0.5",
+        "@types/styled-components": "^5.1.26",
+        "antd": "^4.21.3",
+        "axios": "^0.27.2",
+        "axios-jwt": "^1.8.0",
+        "chart.js": "^3.8.2",
+        "gaussian": "^1.2.0",
+        "moment-timezone": "^0.5.34",
+        "rc-queue-anim": "^2.0.0",
+        "rc-scroll-anim": "^2.1.0",
+        "rc-tween-one": "^1.5.5",
+        "react": "^18.2.0",
+        "react-chartjs-2": "^4.3.1",
+        "react-dom": "^18.2.0",
+        "react-dom-confetti": "^0.2.0",
+        "react-katex": "^3.0.1",
+        "react-redux": "^8.0.2",
+        "react-router-dom": "^6.3.0",
+        "react-scripts": "5.0.1",
+        "react-use-wizard": "^2.2.0",
+        "redux-persist": "^6.0.0",
+        "styled-components": "^5.3.5",
+        "typescript": "^4.7.4",
+        "web-vitals": "^2.1.4"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ],
+        "rules": {
+            "import/no-anonymous-default-export": "off"
+        }
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "babel-plugin-styled-components": "^2.0.7"
     }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "babel-plugin-styled-components": "^2.0.7"
-  }
 }

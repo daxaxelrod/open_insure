@@ -1,0 +1,58 @@
+@media only screen and (max-width: 970px) {
+    .banner-wrapper {
+        height: 100vh;
+    }
+    .banner-wrapper .banner {
+        overflow: hidden;
+    }
+    .banner-wrapper .banner .banner-img-wrapper,
+    .banner-wrapper .banner .banner-text-wrapper {
+        width: 90%;
+        margin: auto;
+        display: block;
+        position: relative;
+    }
+    .banner-wrapper .banner .banner-img-wrapper {
+        height: auto;
+        margin: 40px auto;
+    }
+    .banner-wrapper .banner .banner-text-wrapper {
+        text-align: center;
+        padding: 0;
+    }
+    .banner-wrapper .banner .banner-text-wrapper p {
+        margin: 8% 0;
+        line-height: 1.5em;
+    }
+    .main-info {
+        font-size: 16px;
+        line-height: 2em;
+    }
+    .page2 .info-content {
+        font-size: 14px;
+        line-height: 2em;
+    }
+    .page3 .ant-row > div {
+        margin: 24px 0;
+    }
+    .page4 .slick-slide .comment {
+        font-size: 16px;
+        line-height: 2em;
+    }
+    .page4 .slick-slide > p {
+        font-size: 12px;
+    }
+    .page5 {
+        min-height: 1100px;
+    }
+    footer .ant-row .footer-center {
+        text-align: center;
+    }
+    #footer .footer-wrap {
+        padding: 40px;
+    }
+    footer.dark .bottom-bar {
+        padding: 20px 8px;
+        text-align: center;
+    }
+}

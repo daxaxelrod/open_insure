@@ -1,0 +1,45 @@
+header {
+    position: fixed;
+    z-index: 1000;
+    height: 64px;
+    padding: 0 32px;
+    width: 100%;
+    background: #f8fafe;
+    transition: box-shadow 0.3s ease-out, background 0.3s ease-out;
+}
+header.show-shadow {
+    background: #fdfdfd;
+    box-shadow: 0 2px 8px rgba(229, 229, 229, 0.5);
+}
+header .logo {
+    background: url(https://gw.alipayobjects.com/zos/rmsportal/sDUzcQUsFXjBgcHNCuiv.svg)
+        no-repeat center;
+    display: inline-block;
+    width: 40px;
+    height: 64px;
+}
+header .logo-wrapper {
+    display: inline-block;
+    height: 100%;
+    line-height: 64px;
+}
+header .logo-wrapper span {
+    line-height: 64px;
+    font-size: 20px;
+    margin-right: 18px;
+    white-space: nowrap;
+    color: rgba(0, 0, 0, 0.9);
+    display: inline-block;
+    vertical-align: top;
+}
+header .button {
+    float: right;
+    height: 100%;
+    line-height: 64px;
+}
+header .button .ant-btn {
+    border-radius: 32px;
+    font-size: 14px;
+    line-height: 32px;
+    height: 32px;
+}

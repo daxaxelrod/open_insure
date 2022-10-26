@@ -11,15 +11,19 @@ import Page4 from "../components/home/Page4";
 import Page5 from "../components/home/Page5";
 import Footer from "../components/home/Footer";
 
+import "../components/home/static/header.css";
+import "../components/home/static/home.css";
+import "../components/home/static/footer.css";
+import "../components/home/static/responsive.css";
+
 const { Title, Paragraph } = Typography;
 
 export default function Home() {
     const [isMobile, setIsMobile] = useState(false);
 
     return (
-        <Layout style={{ padding: "0 24px 24px" }}>
+        <Layout>
             <Content>
-                <Header key="header" className={"show-shadow"} />
                 <Banner
                     key="banner"
                     isMobile={isMobile}
@@ -30,7 +34,6 @@ export default function Home() {
                 <Page3 key="page3" />
                 <Page4 key="page4" isMobile={isMobile} />
                 <Page5 key="page5" />
-                <Footer key="footer" />
                 <Row>
                     <Col span={12}>
                         <Typography>
@@ -90,6 +93,7 @@ export default function Home() {
                         </Typography>
                     </Col>
                 </Row>
+                <Footer key="footer" />
             </Content>
         </Layout>
     );
