@@ -1,14 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Row, Space, Typography } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
 import { Link } from "react-router-dom";
+import Header from "../components/home/Header";
+import Banner from "../components/home/Banner";
+import Page1 from "../components/home/Page1";
+import Page2 from "../components/home/Page2";
+import Page3 from "../components/home/Page3";
+import Page4 from "../components/home/Page4";
+import Page5 from "../components/home/Page5";
+import Footer from "../components/home/Footer";
 
 const { Title, Paragraph } = Typography;
 
 export default function Home() {
+    const [isMobile, setIsMobile] = useState(false);
+
     return (
         <Layout style={{ padding: "0 24px 24px" }}>
             <Content>
+                <Header key="header" className={"show-shadow"} />
+                <Banner
+                    key="banner"
+                    isMobile={isMobile}
+                    navToShadow={() => {}}
+                />
+                <Page1 key="page1" />
+                <Page2 key="page2" />
+                <Page3 key="page3" />
+                <Page4 key="page4" isMobile={isMobile} />
+                <Page5 key="page5" />
+                <Footer key="footer" />
                 <Row>
                     <Col span={12}>
                         <Typography>
