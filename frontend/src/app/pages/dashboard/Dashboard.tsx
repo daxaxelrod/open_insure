@@ -8,7 +8,7 @@ import {
     UserOutlined,
     SearchOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout, Menu } from "antd";
 import "../../styles/dashboard/main.css";
 import { getAvailablePolicies } from "../../../redux/actions/policies";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
@@ -50,7 +50,7 @@ export default function Home(props: any) {
     }, [accessToken, pageNum]);
 
     return (
-        <Layout>
+        <Layout style={{ padding: "0 24px 24px" }}>
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="logo" />
                 <Menu

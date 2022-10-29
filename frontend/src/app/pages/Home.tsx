@@ -11,11 +11,6 @@ import Page4 from "../components/home/Page4";
 import Page5 from "../components/home/Page5";
 import Footer from "../components/home/Footer";
 
-import "../components/home/static/header.css";
-import "../components/home/static/home.css";
-import "../components/home/static/footer.css";
-import "../components/home/static/responsive.css";
-
 const { Title, Paragraph } = Typography;
 
 export default function Home() {

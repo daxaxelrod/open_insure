@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import QueueAnim from "rc-queue-anim";
-import { Button, Space } from "antd";
+import { Button, Col, Space, Row, Typography } from "antd";
 import { Element } from "rc-scroll-anim";
 import BannerImage from "./BannerImage";
 import { assets } from "./data";
 
+const { Title, Paragraph } = Typography;
 class Banner extends React.PureComponent {
     static propTypes = {
         className: PropTypes.string,
@@ -23,8 +24,8 @@ class Banner extends React.PureComponent {
                 className={`${className}-wrapper page`}
                 onChange={navToShadow}
             >
-                <div className={className}>
-                    <div className={`${className}-img-wrapper`}>
+                <Row>
+                    <Col md={12} s={24}>
                         {isMobile ? (
                             <img
                                 width="100%"
@@ -34,12 +35,23 @@ class Banner extends React.PureComponent {
                         ) : (
                             <BannerImage />
                         )}
-                    </div>
-                    <div className={`${className}-text-wrapper`} delay={300}>
-                        <h1 key="h1">让数据栩栩如生</h1>
+                    </Col>
+                    <Col
+                        md={12}
+                        s={24}
+                        className={`${className}-text-wrapper`}
+                        delay={300}
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+
+                            flexDirection: "column",
+                        }}
+                    >
+                        <Title>Save 30-50% on Phone Insurance</Title>
                         <p className="main-info" key="p">
-                            AntV
-                            是蚂蚁金服全新一代数据可视化解决方案，致力于提供一套简单方便、专业可靠、无限可能的数据可视化最佳实践。
+                            Insure yourself with friends. Join a group, manage
+                            premiums/claims and cut out the middle man
                         </p>
                         <Space size={16}>
                             <Button type="primary" size="large">
@@ -49,8 +61,8 @@ class Banner extends React.PureComponent {
                                 Login
                             </Button>
                         </Space>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             </Element>
         );
     }
