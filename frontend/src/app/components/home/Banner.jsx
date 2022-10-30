@@ -4,6 +4,7 @@ import QueueAnim from "rc-queue-anim";
 import { Button, Col, Space, Row, Typography } from "antd";
 import { Element } from "rc-scroll-anim";
 import BannerImage from "./BannerImage";
+import heroImage from "../../../assets/images/hero_open_insure.png";
 import { assets } from "./data";
 
 const { Title, Paragraph } = Typography;
@@ -25,20 +26,10 @@ class Banner extends React.PureComponent {
                 onChange={navToShadow}
             >
                 <Row>
-                    <Col md={12} s={24}>
-                        {isMobile ? (
-                            <img
-                                width="100%"
-                                src={`${assets}/image/home/intro-landscape-3a409.svg`}
-                                alt=""
-                            />
-                        ) : (
-                            <BannerImage />
-                        )}
-                    </Col>
                     <Col
-                        md={12}
-                        s={24}
+                        offset={2}
+                        md={10}
+                        s={22}
                         className={`${className}-text-wrapper`}
                         delay={300}
                         style={{
@@ -61,6 +52,9 @@ class Banner extends React.PureComponent {
                                 Login
                             </Button>
                         </Space>
+                    </Col>
+                    <Col md={12} s={22}>
+                        <img width="100%" src={heroImage} alt="" />
                     </Col>
                 </Row>
             </Element>

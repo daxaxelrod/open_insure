@@ -29,7 +29,7 @@ export default function Home() {
                 <Page3 key="page3" />
                 <Page4 key="page4" isMobile={isMobile} />
                 <Page5 key="page5" />
-                <Row>
+                {/* <Row>
                     <Col span={12}>
                         <Typography>
                             <Title level={2}>Self insure with confidence</Title>
@@ -87,7 +87,7 @@ export default function Home() {
                             <Paragraph>Completely Open Source</Paragraph>
                         </Typography>
                     </Col>
-                </Row>
+                </Row> */}
                 <Footer key="footer" />
             </Content>
         </Layout>

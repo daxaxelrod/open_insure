@@ -1,0 +1,67 @@
+.page4 {
+    min-height: 715px;
+    padding: 130px 0;
+    background: #f8fafe;
+}
+.page4 .slick-slide {
+    height: 455px;
+}
+.page4 .slick-slide .user {
+    width: 98px;
+    height: 98px;
+    border-radius: 100%;
+    margin: auto;
+}
+.page4 .slick-slide .comment {
+    line-height: 48px;
+    font-size: 20px;
+    width: 100%;
+    max-width: 680px;
+    margin: 41px auto 47px;
+    position: relative;
+    color: #545454;
+    font-weight: 300;
+}
+.page4 .slick-slide .comment > img {
+    position: absolute;
+    left: -40px;
+    top: -15px;
+}
+.page4 .slick-slide > h4 {
+    font-size: 30px;
+    line-height: 38px;
+    font-weight: normal;
+}
+.page4 .slick-slide > p {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #888888;
+    font-weight: 300;
+}
+.page4 .slick-dots li {
+    margin: 0 8px;
+}
+.page4 .slick-dots li button {
+    transition: opacity 0.3s;
+    width: 10px !important;
+    height: 10px !important;
+    background: #1890ff;
+    border-radius: 100%;
+}
+.page4 .slick-dots li button:hover::before,
+.page4 .slick-dots li button:focus::before {
+    opacity: 1;
+    background: #1890ff;
+    width: 20px;
+    height: 20px;
+}
+.page4 .slick-dots li button::before {
+    transition: color 0.3s;
+}
+.page4 .slick-dots li.slick-active button {
+    background: #1890ff;
+}
+.page4 .slick-dots li.slick-active button::before {
+    opacity: 1;
+    background: #1890ff;
+}

@@ -1,0 +1,31 @@
+.page3 {
+    min-height: 521px;
+    background: #544ff9;
+    background: linear-gradient(
+        to right,
+        #544ff9 0%,
+        #7351f4 26%,
+        #874bff 100%
+    );
+    color: #c3d1ff;
+}
+.page3 .page {
+    padding: 130px 0 156px;
+}
+.page3 .page img {
+    width: 96px;
+    margin: 0 32px 32px;
+}
+.page3 .page h5 {
+    color: white;
+    margin-bottom: 16px;
+    font-size: 20px;
+    font-weight: 400;
+}
+.page3 .page .detail {
+    display: inline-block;
+    max-width: 240px;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 26px;
+}

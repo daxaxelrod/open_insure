@@ -1,0 +1,48 @@
+.page2 .info-content {
+    font-size: 14px;
+    line-height: 2em;
+}
+.page2 {
+    min-height: 555px;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+}
+.page2 .page {
+    padding: 112px 0 146px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.page2 .info-content {
+    max-width: 900px;
+    line-height: 48px;
+    margin: 0 auto;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.page2 .card .title,
+.page2 .card .description {
+    color: rgba(0, 0, 0, 0.65) !important;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.page2 .page-wrapper .page {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    position: relative;
+    text-align: center;
+}
+
+.page2 .separator {
+    margin-bottom: 65px;
+    display: inline-block;
+    width: 30px;
+    height: 5px;
+    background: #1890ff;
+    border-radius: 2.5px;
+    margin-top: 10px;
+}
