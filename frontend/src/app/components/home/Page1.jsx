@@ -52,7 +52,7 @@ export default function Page1() {
     ));
 
     return (
-        <section className="page-wrapper page1">
+        <section className="page-wrapper page1" style={{ paddingBottom: 100 }}>
             <QueueAnim
                 component={Row}
                 type="bottom"

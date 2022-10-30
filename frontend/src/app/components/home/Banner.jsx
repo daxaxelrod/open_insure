@@ -6,6 +6,7 @@ import { Element } from "rc-scroll-anim";
 import BannerImage from "./BannerImage";
 import heroImage from "../../../assets/images/hero_open_insure.png";
 import { assets } from "./data";
+import { Link } from "react-router-dom";
 
 const { Title, Paragraph } = Typography;
 class Banner extends React.PureComponent {
@@ -35,22 +36,43 @@ class Banner extends React.PureComponent {
                         style={{
                             display: "flex",
                             justifyContent: "center",
-
                             flexDirection: "column",
                         }}
                     >
                         <Title>Save 30-50% on Phone Insurance</Title>
-                        <p className="main-info" key="p">
+                        <p
+                            className="main-info"
+                            key="p"
+                            style={{
+                                lineHeight: "36px",
+                                fontSize: "16px",
+                                margin: "30px 0 40px",
+                                fontWeight: 300,
+                                color: "rgba(0, 0, 0, 0.65)",
+                            }}
+                        >
                             Insure yourself with friends. Join a group, manage
                             premiums/claims and cut out the middle man
                         </p>
-                        <Space size={16}>
-                            <Button type="primary" size="large">
-                                Sign up
-                            </Button>
-                            <Button type="primary" size="large">
-                                Login
-                            </Button>
+                        <Space size={26}>
+                            <Link to={"/join"}>
+                                <Button
+                                    type="primary"
+                                    size="large"
+                                    style={{ fontWeight: "bold" }}
+                                >
+                                    Sign up
+                                </Button>
+                            </Link>
+                            <Link to={"/login"}>
+                                <Button
+                                    type="primary"
+                                    size="large"
+                                    style={{ fontWeight: "bold" }}
+                                >
+                                    Login
+                                </Button>
+                            </Link>
                         </Space>
                     </Col>
                     <Col md={12} s={22}>
