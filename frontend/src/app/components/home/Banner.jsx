@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import QueueAnim from "rc-queue-anim";
 import { Button, Col, Space, Row, Typography } from "antd";
 import { Element } from "rc-scroll-anim";
-import BannerImage from "./BannerImage";
 import heroImage from "../../../assets/images/hero_open_insure.png";
 import { assets } from "./data";
 import { Link } from "react-router-dom";
@@ -19,18 +18,18 @@ class Banner extends React.PureComponent {
         className: "banner",
     };
     render() {
-        const { className, isMobile, navToShadow } = this.props;
+        const { className } = this.props;
         return (
             <Element
                 component="section"
                 className={`${className}-wrapper page`}
-                onChange={navToShadow}
             >
                 <Row>
                     <Col
-                        offset={2}
-                        md={10}
-                        s={22}
+                        xl={{ span: 6, offset: 5 }}
+                        lg={{ span: 6, offset: 3 }}
+                        md={{ span: 12, offset: 2 }}
+                        sm={24}
                         className={`${className}-text-wrapper`}
                         delay={300}
                         style={{
@@ -39,20 +38,27 @@ class Banner extends React.PureComponent {
                             flexDirection: "column",
                         }}
                     >
-                        <Title>Save 30-50% on Phone Insurance</Title>
+                        <Title
+                            style={{
+                                fontSize: "3rem",
+                            }}
+                        >
+                            Phone insurance without the bullshit
+                        </Title>
                         <p
                             className="main-info"
                             key="p"
                             style={{
                                 lineHeight: "36px",
-                                fontSize: "16px",
+                                fontSize: "1.5rem",
                                 margin: "30px 0 40px",
                                 fontWeight: 300,
                                 color: "rgba(0, 0, 0, 0.65)",
                             }}
                         >
                             Insure yourself with friends. Join a group, manage
-                            premiums/claims and cut out the middle man
+                            members, premiums, and claims while cutting out the
+                            middle man.
                         </p>
                         <Space size={26}>
                             <Link to={"/join"}>
@@ -64,7 +70,7 @@ class Banner extends React.PureComponent {
                                     Sign up
                                 </Button>
                             </Link>
-                            <Link to={"/login"}>
+                            {/* <Link to={"/login"}>
                                 <Button
                                     type="primary"
                                     size="large"
@@ -72,10 +78,10 @@ class Banner extends React.PureComponent {
                                 >
                                     Login
                                 </Button>
-                            </Link>
+                            </Link> */}
                         </Space>
                     </Col>
-                    <Col md={12} s={22}>
+                    <Col md={10} s={22}>
                         <img width="100%" src={heroImage} alt="" />
                     </Col>
                 </Row>

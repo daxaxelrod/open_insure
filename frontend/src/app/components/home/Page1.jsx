@@ -4,16 +4,21 @@ import { Row, Col, Card, Typography } from "antd";
 import { page1 } from "./data";
 
 import "./static/indexSectionOne.css";
+import useWindowSize from "../hooks/useWindowSize";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 export default function Page1() {
+    const size = useWindowSize();
+    const isMobile = size.width < 768;
+
     const children = page1.map((card, i) => (
         <Col
             key={i.toString()}
-            lg={{ span: 6 }}
+            lg={{ span: 6, offset: i === 0 ? 3 : 0 }}
+            md={{ span: 12, offset: i === 0 ? 2 : 0 }}
+            sm={24}
             style={{
-                flex: 1,
                 height: "100%",
                 justifyContent: "center",
             }}
@@ -24,7 +29,6 @@ export default function Page1() {
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: "100%",
                 }}
             >
                 <Title level={3} style={{ textAlign: "center" }}>
@@ -34,30 +38,35 @@ export default function Page1() {
                     src={card.img}
                     alt=""
                     style={{
-                        margin: "0 auto",
-                        width: "100%",
-                        height: 60,
+                        margin: "0 auto 10px",
+
+                        height: 30,
                         borderTopLeftRadius: "-0.75rem",
                         borderTopRightRadius: "-0.75rem",
-                        marginBottom: "1rem",
                     }}
                 />
                 <div className="card-body">
-                    <span className="description text-secondary">
+                    <Paragraph className="description text-secondary">
                         {card.description}
-                    </span>
+                    </Paragraph>
                 </div>
             </Card>
         </Col>
     ));
 
     return (
-        <section className="page-wrapper page1" style={{ paddingBottom: 100 }}>
+        <section
+            className="page-wrapper page1"
+            style={{
+                paddingTop: 35,
+                paddingBottom: 50,
+            }}
+        >
             <QueueAnim
                 component={Row}
                 type="bottom"
                 delay={500}
-                componentProps={{ justify: "center", gutter: 16 }}
+                componentProps={{ gutter: 16 }}
             >
                 {children}
             </QueueAnim>

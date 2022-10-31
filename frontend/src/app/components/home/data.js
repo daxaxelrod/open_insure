@@ -4,8 +4,8 @@ export const page1 = [
     {
         img: `${assets}/image/icon/g2-c94ef.svg`,
         href: `${base}zh-cn/g2/3.x/index.html`,
-        title: "Gather",
-        description: "Bring together your friends and start a policy",
+        title: "Browse",
+        description: "Join a policy or create your own.",
     },
     {
         img: `${assets}/image/icon/g6-b4554.svg`,
@@ -16,7 +16,7 @@ export const page1 = [
     },
     {
         img: `${assets}/image/icon/f2-d360c.svg`,
-        title: "Vote",
+        title: "Participate",
         href: `${base}zh-cn/f2/3.x/index.html`,
         description:
             "Vote on claims and other policy decisions. 100% of unused premiums get returned at the end of the policy",

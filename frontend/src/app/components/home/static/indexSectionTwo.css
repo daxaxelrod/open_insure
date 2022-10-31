@@ -1,9 +1,5 @@
-.page2 .info-content {
-    font-size: 14px;
-    line-height: 2em;
-}
 .page2 {
-    min-height: 555px;
+    min-height: 800px;
     display: flex;
     justify-content: center;
     background-color: white;
@@ -20,6 +16,7 @@
     margin: 0 auto;
     font-size: 20px;
     font-weight: 300;
+    padding: 0 1.5rem;
 }
 
 .page2 .card .title,
@@ -45,4 +42,8 @@
     background: #1890ff;
     border-radius: 2.5px;
     margin-top: 10px;
+}
+
+.page2 .howItWorksListItem {
+    font-size: 1.5rem;
 }

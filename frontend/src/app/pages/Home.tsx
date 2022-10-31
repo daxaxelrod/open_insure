@@ -10,6 +10,7 @@ import Page3 from "../components/home/Page3";
 import Page4 from "../components/home/Page4";
 import Page5 from "../components/home/Page5";
 import Footer from "../components/home/Footer";
+import styled from "styled-components";
 
 const { Title, Paragraph } = Typography;
 
@@ -19,16 +20,10 @@ export default function Home() {
     return (
         <Layout>
             <Content>
-                <Banner
-                    key="banner"
-                    isMobile={isMobile}
-                    navToShadow={() => {}}
-                />
+                <Banner key="banner" />
                 <Page1 key="page1" />
                 <Page2 key="page2" />
                 <Page3 key="page3" />
-                <Page4 key="page4" isMobile={isMobile} />
-                <Page5 key="page5" />
                 {/* <Row>
                     <Col span={12}>
                         <Typography>
@@ -93,3 +88,25 @@ export default function Home() {
         </Layout>
     );
 }
+
+export const Container = styled.div`
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+
+    @media (min-width: 576px) {
+        max-width: 576px;
+    }
+
+    @media (min-width: 768px) {
+        max-width: 768px;
+    }
+
+    @media (min-width: 992px) {
+        max-width: 992px;
+    }
+
+    @media (min-width: 1200px) {
+        max-width: 2200px;
+    }
+`;

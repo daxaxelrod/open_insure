@@ -1,23 +1,21 @@
 import React from "react";
 import QueueAnim from "rc-queue-anim";
-import OverPack from "rc-scroll-anim/lib/ScrollOverPack";
-import { Row, Col } from "antd";
-import { page3 } from "./data";
+import { Element } from "rc-scroll-anim";
+import { Row, Col, Typography, Button } from "antd";
+import useWindowSize from "../hooks/useWindowSize";
+import { GithubOutlined } from "@ant-design/icons";
 
 import "./static/indexSectionThree.css";
 
+const { Title, Paragraph } = Typography;
+
 export default function Page3() {
-    const children = page3.map((card, i) => (
-        <Col key={i.toString()} md={8} xs={24}>
-            <img src={card.img} alt="" width="100" height="100" />
-            <h5>{card.title}</h5>
-            <div className="detail">{card.description}</div>
-        </Col>
-    ));
+    const size = useWindowSize();
     return (
-        <OverPack
+        <Element
             component="section"
             className="page-wrapper page3 text-center"
+            style={{ padding: 24 }}
         >
             <QueueAnim
                 type="bottom"
@@ -25,9 +23,68 @@ export default function Page3() {
                 leaveReverse
                 key="page3"
                 component={Row}
+                componentProps={{ gutter: 16 }}
             >
-                {children}
+                <Col
+                    key={"githubholder"}
+                    md={{ span: 4, offset: 5 }}
+                    xs={24}
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        display: "flex",
+                        flexDirection: "column",
+                        flex: 1,
+                        marginBottom: size.width < 768 ? "2rem" : "0",
+                    }}
+                >
+                    <GithubOutlined
+                        style={{ fontSize: "10rem", color: "white" }}
+                    />
+                </Col>
+                <Col
+                    key={"githubExplainer"}
+                    md={9}
+                    xs={24}
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        marginBottom: size.width < 768 ? "2rem" : "0",
+                    }}
+                >
+                    <Title
+                        style={{
+                            fontSize: "3rem",
+                            color: "white",
+                        }}
+                    >
+                        Free & open source
+                    </Title>
+                    <Paragraph
+                        style={{
+                            color: "rgba(255,255,255,0.85)",
+                            fontSize: "1.6rem",
+                        }}
+                    >
+                        Transparency is a core tenet of this project. Our code
+                        is open source and available on GitHub.
+                    </Paragraph>
+                    <a
+                        href={"https://github.com/daxaxelrod/open_insure"}
+                        target="_blank"
+                    >
+                        <Button
+                            icon={<GithubOutlined />}
+                            type={"text"}
+                            size="large"
+                            style={{ color: "white" }}
+                        >
+                            View on GitHub
+                        </Button>
+                    </a>
+                </Col>
+                <Col md={6} sm={0} />
             </QueueAnim>
-        </OverPack>
+        </Element>
     );
 }
