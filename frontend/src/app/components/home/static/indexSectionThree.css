@@ -1,5 +1,4 @@
 .page3 {
-    min-height: 500px;
     background: #544ff9;
     background: linear-gradient(
         to right,
@@ -10,7 +9,7 @@
     color: #c3d1ff;
 }
 .page3 .page {
-    padding: 130px 0 156px;
+    padding: 80px 0 127px;
 }
 .page3 .page img {
     width: 96px;

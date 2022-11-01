@@ -43,7 +43,7 @@ class Banner extends React.PureComponent {
                                 fontSize: "3rem",
                             }}
                         >
-                            Phone insurance without the bullshit
+                            Phone insurance, no middlemen allowed
                         </Title>
                         <p
                             className="main-info"
