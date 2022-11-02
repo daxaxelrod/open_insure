@@ -68,7 +68,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 registerPending: false,
                 currentUser: null,
-                registrationError: { overall: payload.detail },
+                registrationError: { overall: payload },
             };
 
         default:

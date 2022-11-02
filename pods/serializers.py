@@ -43,7 +43,7 @@ class UserSerializer(ModelSerializer):
     def validate_email(self, value):
         lower_email = value.lower()
         if User.objects.filter(email__iexact=lower_email).exists():
-            raise ValidationError("Duplicate email")
+            raise ValidationError("Email already exists. Try logging in.")
         return lower_email
 
     def create(self, validated_data):

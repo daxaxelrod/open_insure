@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Alert, Button, Checkbox, Col, Form, Input, Row } from "antd";
 
 import { useWizard } from "react-use-wizard";
 import { register } from "../../../redux/actions/onboarding";
@@ -21,6 +21,10 @@ export default function EmailPassOnboardingStep({}) {
     const isRegisterPending = useAppSelector(
         (state) => state.auth.registerPending
     );
+    const registerError = useAppSelector(
+        (state) => state.auth.registrationError?.overall
+    );
+
     const navigate = useNavigate();
 
     const createUser = ({ firstName, lastName, email, password }: any) => {
@@ -54,7 +58,7 @@ export default function EmailPassOnboardingStep({}) {
             <Form.Item label="Full Name" style={{ marginBottom: 0 }}>
                 <Form.Item
                     name="firstName"
-                    rules={[{ required: true }]}
+                    rules={[{ required: true, message: "First name required" }]}
                     style={{
                         display: "inline-block",
                         width: "calc(50% - 8px)",
@@ -64,7 +68,7 @@ export default function EmailPassOnboardingStep({}) {
                 </Form.Item>
                 <Form.Item
                     name="lastName"
-                    rules={[{ required: true }]}
+                    rules={[{ required: true, message: "Last name required" }]}
                     style={{
                         display: "inline-block",
                         width: "calc(50% - 8px)",
@@ -108,6 +112,13 @@ export default function EmailPassOnboardingStep({}) {
                     Register
                 </Button>
             </Form.Item>
+            {registerError ? (
+                <Row>
+                    <Col xs={{ offset: 8, span: 16 }}>
+                        <Alert message={registerError} type="error" />
+                    </Col>
+                </Row>
+            ) : null}
         </Form>
     );
 }

@@ -20,8 +20,11 @@ export const register =
         try {
             const response = await API.register(payload);
             dispatch({ type: REGISTER_SUCCESS, payload: response.data });
-        } catch (error) {
-            dispatch({ type: REGISTER_FAILURE, payload: error });
+        } catch (error: any) {
+            dispatch({
+                type: REGISTER_FAILURE,
+                payload: error.response.data.email?.[0],
+            });
         }
     };
 
