@@ -1,13 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import QueueAnim from "rc-queue-anim";
 import { Button, Col, Space, Row, Typography } from "antd";
 import { Element } from "rc-scroll-anim";
 import heroImage from "../../../assets/images/hero_open_insure.png";
-import { assets } from "./data";
 import { Link } from "react-router-dom";
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 class Banner extends React.PureComponent {
     static propTypes = {
         className: PropTypes.string,

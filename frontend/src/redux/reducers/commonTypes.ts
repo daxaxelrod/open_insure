@@ -83,6 +83,7 @@ export interface Policy {
     max_pool_size: number;
     pool_address: string;
     pool_balance: number;
+    escrow_manager: number;
     premium_payment_frequency: number; // in # of months
     claim_approval_threshold_percentage: number;
     claim_payout_limit: number;

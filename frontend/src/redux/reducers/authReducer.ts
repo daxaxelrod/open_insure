@@ -13,16 +13,17 @@ import { User } from "./commonTypes";
 export interface AuthState {
     currentUser?: User | null;
     loginPending: boolean;
-    loginError?: object | null;
+    loginError?: any;
     registerPending: boolean;
-    registrationError?: object | null;
+    registrationError?: any;
 }
 
 const initialState: AuthState = {
     currentUser: null,
     loginPending: false,
     registerPending: false,
-    registrationError: {},
+    registrationError: null,
+    loginError: null,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
@@ -31,6 +32,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 loginPending: true,
+                loginError: null,
             };
         case LOGIN_SUCCESS:
             return {
@@ -42,12 +44,13 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 loginPending: false,
-                loginError: payload?.error,
+                loginError: { overall: payload.detail },
             };
         case LOGOUT:
             return {
                 ...state,
                 currentUser: null,
+                loginError: null,
             };
         case REGISTER_PENDING:
             return {
@@ -65,6 +68,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 registerPending: false,
                 currentUser: null,
+                registrationError: { overall: payload.detail },
             };
 
         default:

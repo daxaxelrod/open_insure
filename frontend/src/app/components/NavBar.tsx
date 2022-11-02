@@ -1,7 +1,8 @@
 import React from "react";
-import { Typography, Layout, Row } from "antd";
+import { Typography, Layout, Row, Button } from "antd";
 import { useAppSelector } from "../../redux/hooks";
 import { isLoggedIn } from "axios-jwt";
+import { Link } from "react-router-dom";
 const { Header } = Layout;
 
 const { Title } = Typography;
@@ -21,11 +22,7 @@ export default function NavBar() {
                 flex: 1,
             }}
         >
-            <Row
-                align="middle"
-                justify={loggedIn ? "space-between" : "start"}
-                style={{ flex: 1 }}
-            >
+            <Row align="middle" justify="space-between" style={{ flex: 1 }}>
                 {loggedIn && (
                     <Title level={4} style={{ margin: 0 }}>
                         &nbsp;Hi {currentUser?.first_name}
@@ -37,6 +34,11 @@ export default function NavBar() {
                         Open Insure&nbsp;
                     </Title>
                 </a>
+                {!loggedIn && (
+                    <a href={"/login"}>
+                        <Button type="link">Login</Button>
+                    </a>
+                )}
             </Row>
         </Header>
     );

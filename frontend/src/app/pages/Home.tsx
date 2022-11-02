@@ -1,22 +1,13 @@
 import React, { useState } from "react";
-import { Button, Col, Row, Space, Typography } from "antd";
 import Layout, { Content } from "antd/lib/layout/layout";
-import { Link } from "react-router-dom";
-import Header from "../components/home/Header";
 import Banner from "../components/home/Banner";
 import Page1 from "../components/home/Page1";
 import Page2 from "../components/home/Page2";
 import Page3 from "../components/home/Page3";
-import Page4 from "../components/home/Page4";
-import Page5 from "../components/home/Page5";
 import Footer from "../components/home/Footer";
 import styled from "styled-components";
 
-const { Title, Paragraph } = Typography;
-
 export default function Home() {
-    const [isMobile, setIsMobile] = useState(false);
-
     return (
         <Layout>
             <Content>

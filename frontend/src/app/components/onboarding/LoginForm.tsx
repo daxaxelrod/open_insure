@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Alert, Button, Col, Form, Input, Row } from "antd";
 import { getAccessToken, isLoggedIn } from "axios-jwt";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,9 @@ export default function LoginForm() {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const isLoginPending = useAppSelector((state) => state.auth.loginPending);
+    const loginError = useAppSelector(
+        (state) => state.auth.loginError?.overall
+    );
     const dispatch = useAppDispatch();
 
     const loginUser = ({ email, password }: any) => {
@@ -66,6 +69,13 @@ export default function LoginForm() {
                     Login
                 </Button>
             </Form.Item>
+            {loginError ? (
+                <Row>
+                    <Col xs={{ offset: 8, span: 16 }}>
+                        <Alert message={loginError} type="error" />
+                    </Col>
+                </Row>
+            ) : null}
         </Form>
     );
 }
