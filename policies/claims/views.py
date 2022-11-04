@@ -3,6 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from policies.claims.emails import send_notification_of_new_claim_vote
 
 from policies.models import Claim, ClaimApproval
 from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer
@@ -20,12 +21,13 @@ class ClaimViewSet(ModelViewSet):
         # side effect, send out open approvals requests
         policy_type = claim.policy.governance_type
         if policy_type == "direct_democracy":
+            pod_members_except_claimant = claim.policy.pod.members.all().exclude(id=claim.claimant.id)
             approvals = [
                 ClaimApproval(claim=claim, approver=user)
-                for user in claim.policy.pod.members.all().exclude(id=claim.claimant.id)
+                for user in pod_members_except_claimant
             ]
             ClaimApproval.objects.bulk_create(approvals)
-            # maybe send an email too?
+            send_notification_of_new_claim_vote(claim, pod_members_except_claimant)
 
 
 class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):

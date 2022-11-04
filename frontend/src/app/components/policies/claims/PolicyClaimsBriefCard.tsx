@@ -1,8 +1,6 @@
-import { Card, Col, Row, Statistic, Tooltip, Typography } from "antd";
+import { Card, Col, Row, Statistic, Tooltip } from "antd";
 import React from "react";
 import { Policy } from "../../../../redux/reducers/commonTypes";
-
-const Title = Typography.Title;
 
 export default function PolicyClaimsBriefCard({ policy }: { policy: Policy }) {
     let numPendingClaims = policy?.claims?.filter(
@@ -22,7 +20,6 @@ export default function PolicyClaimsBriefCard({ policy }: { policy: Policy }) {
                 flex: 1,
             }}
         >
-            <Title level={4}>Claims</Title>
             <Row>
                 <Col span={12}>
                     <Statistic

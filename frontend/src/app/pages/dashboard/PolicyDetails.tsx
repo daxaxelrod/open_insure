@@ -141,6 +141,7 @@ export default function PolicyDetails() {
                 <Tabs.TabPane tab="Claims" key="5">
                     <Row>
                         <PolicyDetailCol span={14}>
+                            <Title level={4}>Claims</Title>
                             <PolicyClaimsList />
                         </PolicyDetailCol>
                         <PolicyDetailCol
