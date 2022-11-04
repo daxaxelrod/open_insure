@@ -52,14 +52,18 @@ def send_unpaid_premium_due_soon(premium: Premium):
     escrow_agent = policy.escrow_manager
     if escrow_agent:
         escrow_agent_name = f"{escrow_agent.first_name} {escrow_agent.last_name}"
+        reply_to_array = [escrow_agent.email]
     else:
         escrow_agent_name = "the user responsible for managing your policy's premiums"
+        reply_to_array = policy.pod.members.all().exclude(id=user.id).values_list('email', flat=True)
+    
+    premium_due = premium.amount / 100
 
     html_message = render_to_string(
             "unpaid_premium_due_soon.html",
             {
                 "policy_name": policy.name,
-                "premium_amount": premium.amount,
+                "premium_amount": premium_due,
                 "premium_due_date": premium.due_date.strftime("%A, %B %d, %Y"),
                 "escrow_agent": escrow_agent_name,
                 "policy_link": policy_link
@@ -68,14 +72,15 @@ def send_unpaid_premium_due_soon(premium: Premium):
     plain_message = strip_tags(html_message)
     from_email = "Open Insure <noreply@openinsure.io>"
     to = user.email
-    subject = f"${premium.amount} is due!"
+    subject = f"${premium_due} is due!"
+    
 
     message = EmailMultiAlternatives(
         subject,
         plain_message,
         to=[to],
         from_email=from_email,
-        reply_to=[settings.ADMIN_EMAIL],
+        reply_to=[settings.ADMIN_EMAIL, *reply_to_array],
     )
     message.attach_alternative(html_message, "text/html")
 

@@ -57,7 +57,6 @@ export default function PolicyClaimsList() {
 
     return (
         <>
-            {" "}
             {claims?.length === undefined || claims?.length === 0
                 ? renderEmpty()
                 : claims.map((claim: Claim) => {
