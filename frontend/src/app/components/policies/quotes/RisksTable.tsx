@@ -170,32 +170,6 @@ export default function RiskTable({ policy }: { policy: Policy }) {
             key: "premium_amount",
         },
         {
-            title: "Make",
-            render: (text, record: RiskRowType) => record.content_object?.make,
-            key: "make",
-        },
-        {
-            title: "Market Value",
-            render: (text, record: RiskRowType) =>
-                `$${record.content_object?.market_value}`,
-            key: "market_value",
-        },
-
-        {
-            title: "Type",
-            render: (text, record: RiskRowType) =>
-                get_icon_for_insured_asset_type(record.underlying_insured_type),
-            dataIndex: "type",
-            key: "type",
-        },
-        {
-            title: "Condition",
-            render: (text, record: RiskRowType) =>
-                getHumanReadableCondition(record.content_object?.condition),
-            dataIndex: "condition",
-            key: "condition",
-        },
-        {
             title: "Member",
             render: (text, record: Risk) => {
                 const user = policy.pod.members.find(
@@ -222,6 +196,32 @@ export default function RiskTable({ policy }: { policy: Policy }) {
             },
             dataIndex: "member",
             key: "member_name",
+        },
+        {
+            title: "Make",
+            render: (text, record: RiskRowType) => record.content_object?.make,
+            key: "make",
+        },
+        {
+            title: "Market Value",
+            render: (text, record: RiskRowType) =>
+                `$${record.content_object?.market_value}`,
+            key: "market_value",
+        },
+
+        {
+            title: "Type",
+            render: (text, record: RiskRowType) =>
+                get_icon_for_insured_asset_type(record.underlying_insured_type),
+            dataIndex: "type",
+            key: "type",
+        },
+        {
+            title: "Condition",
+            render: (text, record: RiskRowType) =>
+                getHumanReadableCondition(record.content_object?.condition),
+            dataIndex: "condition",
+            key: "condition",
         },
     ];
     return (

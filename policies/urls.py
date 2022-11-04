@@ -3,8 +3,6 @@ from rest_framework_nested import routers
 
 
 from policies.views import (
-    ClaimApprovalViewSet,
-    ClaimViewSet,
     PolicyPremiumViewSet,
     PolicyViewSet,
     PremiumViewSet,
@@ -15,6 +13,11 @@ from policies.views import (
     PolicyRiskViewSet,
     RiskViewSet,
     RiskMediaViewSet,
+)
+
+from policies.claims.views import (
+    ClaimApprovalViewSet,
+    ClaimViewSet,
 )
 
 router = routers.DefaultRouter()

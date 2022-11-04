@@ -17,8 +17,6 @@ from policies.paginators import StandardResultsSetPagination
 from policies.models import Claim, ClaimApproval, Policy, PolicyRiskSettings, Premium, Risk
 from policies.permissions import (
     InPolicyPod,
-    InPodAndNotClaimant,
-    InClaimPod,
     InPolicyPremiumPod,
     IsPhotoOwner,
     InRiskSettingsPolicyPod
@@ -34,13 +32,15 @@ from policies.risk.serializers import (
     get_serializer_for_risk_type,
 )
 from policies.serializers import (
-    ClaimSerializer,
     PolicyRiskSettingsSerializer,
     PolicySerializer,
     FullPolicySerializer,
     PremiumSerializer,
-    ClaimApprovalSerializer,
     RiskSerializer,
+)
+from policies.claims.serializers import (
+    ClaimSerializer,
+    ClaimApprovalSerializer,
 )
 from policies.utils import send_user_welcome_email
 
@@ -125,7 +125,7 @@ class PolicyViewSet(ModelViewSet):
 class PremiumViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Premium.objects.all()
     serializer_class = PremiumSerializer
-    permission_classes = [IsAuthenticated & InPodAndNotClaimant]
+    permission_classes = [IsAuthenticated]
 
     # premiums are paid to the publicly available escrow account
     # available on the policy detail page
@@ -212,47 +212,7 @@ class RiskSettingsHyptotheticalApiView(APIView):
             hypothetical_premiums,
             status=HTTP_200_OK,
         )
-
-class ClaimViewSet(ModelViewSet):
-    queryset = Claim.objects.all()
-    serializer_class = ClaimSerializer
-    permission_classes = [IsAuthenticated & InClaimPod]
-
-    def perform_create(self, serializer):
-        claim = serializer.save()
-
-        # side effect, send out open approvals requests
-        policy_type = claim.policy.governance_type
-        if policy_type == "direct_democracy":
-            approvals = [
-                ClaimApproval(claim=claim, approver=user)
-                for user in claim.policy.pod.members.all().exclude(id=claim.claimant.id)
-            ]
-            ClaimApproval.objects.bulk_create(approvals)
-            # maybe send an email too?
-
-
-class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
-    serializer_class = ClaimApprovalSerializer
-
-    def get_queryset(self):
-        return ClaimApproval.objects.filter(approver=self.request.user)
-
-    def perform_update(self, serializer):
-        approval = serializer.save()
-        claim = approval.claim
-        policy = claim.policy
-
-        # TODO what happens when the claim is > pool_balance? Tough cookies?
-
-        # Everything is all good, mark the claim as something to be paid out
-        # Maybe there should be another record for claim payouts, similar to policy closeouts
-        policy.pool_balance -= claim.amount
-        policy.save()
-        claim.paid_on = timezone.now()
-        claim.save()
-
-
+        
 class PolicyRiskViewSet(ModelViewSet):
     serializer_class = RiskSerializer
 

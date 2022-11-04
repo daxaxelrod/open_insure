@@ -29,11 +29,6 @@ class InPolicyPremiumPod(BasePermission):
             return True
         return request.user in obj.policy.pod.members.all()
 
-class InClaimPod(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return request.user in obj.policy.pod.members.all()
-
-
 class IsPhotoOwner(BasePermission):
     def has_object_permission(self, request, view, obj: PropertyImage):
         return request.user and obj.owner == request.user
