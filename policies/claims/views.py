@@ -6,7 +6,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 from policies.models import Claim, ClaimApproval
 from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer
-from policies.claims.permissions import InClaimPod
+from policies.claims.permissions import InClaimPod, IsNotClaimant
 
 
 class ClaimViewSet(ModelViewSet):
@@ -30,6 +30,7 @@ class ClaimViewSet(ModelViewSet):
 
 class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
     serializer_class = ClaimApprovalSerializer
+    permission_classes = [IsAuthenticated & InClaimPod & IsNotClaimant]
 
     def get_queryset(self):
         return ClaimApproval.objects.filter(approver=self.request.user)

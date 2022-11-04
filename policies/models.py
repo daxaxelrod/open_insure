@@ -97,6 +97,7 @@ class Policy(models.Model):
     #       Encourages claim inflation
 
     claim_approval_threshold_percentage = models.IntegerField(default=50, help_text="Percentage of members that must vote yes to approve a claim")
+    claim_approval_vote_due_number_of_days = models.IntegerField(default=7, help_text="Number of days after a claim is submitted that the vote is due without penalty")
     perils = models.ManyToManyField(Peril, blank=True, related_name="policies")
 
     created_at = models.DateTimeField(auto_now_add=True)

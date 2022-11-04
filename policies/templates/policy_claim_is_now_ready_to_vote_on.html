@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>New claim against {{ policy.name }}</title>
+    </head>
+    <body>
+        <body>
+            <p>
+                {{claimant.first_name}} {{claimant.last_name}} has submitted a
+                claim against {{policy.name}}. Review the claim and vote on it
+                by {{due_date}}.
+            </p>
+
+            <a
+                href="{{claim_link}}"
+                target="_blank"
+                style="cursor: pointer; margin: 10px 0; border-radius: 5px"
+                >View changes now</a
+            >
+        </body>
+    </body>
+</html>
