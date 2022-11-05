@@ -57,6 +57,7 @@ def send_user_welcome_email(user: User, policy: Policy):
                 "escrow_address": policy.pool_address,
                 "premium_amount": user_risk.premium_amount / 100,
                 "policy": policy,
+                "perils": policy.perils.all(),
             },
         )
         plain_message = strip_tags(html_message)

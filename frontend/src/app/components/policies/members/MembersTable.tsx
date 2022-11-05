@@ -35,7 +35,7 @@ export default function MembersTable({ policy }: { policy: Policy }) {
         // mailto is unreliable, so we'll use a copy to clipboard + alert
         // let mailLink = `mailto:to=${emails.join("&to=");}`;
         // window.open(mailLink, "_blank");
-        navigator.clipboard.writeText(emails.join(";"));
+        navigator?.clipboard?.writeText(emails.join(";"));
 
         notification.success({
             message: "All emails copied to clipboard",

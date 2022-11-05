@@ -78,7 +78,7 @@ def send_unpaid_premium_due_soon(premium: Premium):
     plain_message = strip_tags(html_message)
     from_email = "Open Insure <noreply@openinsure.io>"
     to = user.email
-    subject = f"${premium_due} is due!"
+    subject = f"${premium_due} is due today!"
     
 
     message = EmailMultiAlternatives(
