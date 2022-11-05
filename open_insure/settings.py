@@ -258,3 +258,6 @@ if DEBUG:
     # make all loggers use the console.
     for logger in LOGGING['loggers']:
         LOGGING['loggers'][logger]['handlers'] = ['console']
+
+if TESTING:
+    LOGGING = {}
