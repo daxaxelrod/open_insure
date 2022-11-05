@@ -7,7 +7,7 @@ from policies.claims.emails import send_notification_of_new_claim_vote
 
 from policies.models import Claim, ClaimApproval
 from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer
-from policies.claims.permissions import InClaimPod, IsNotClaimant
+from policies.claims.permissions import InClaimPod, InClaimApprovalPod, IsNotClaimant
 
 
 class ClaimViewSet(ModelViewSet):
@@ -32,7 +32,7 @@ class ClaimViewSet(ModelViewSet):
 
 class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
     serializer_class = ClaimApprovalSerializer
-    permission_classes = [IsAuthenticated & InClaimPod & IsNotClaimant]
+    permission_classes = [IsAuthenticated & InClaimApprovalPod & IsNotClaimant]
 
     def get_queryset(self):
         return ClaimApproval.objects.filter(approver=self.request.user)

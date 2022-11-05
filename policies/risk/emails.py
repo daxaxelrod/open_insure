@@ -5,6 +5,7 @@ from policies.models import Policy, PolicyRiskSettings, Premium
 
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from django.utils import timezone
 
 
 from django.template.loader import render_to_string
@@ -44,11 +45,7 @@ def send_risk_update_email(user: User, policy: Policy, changer: User, old_risk: 
     except Exception as e:
         logger.warning(f"Failed to send welcome email to {user.email}: {e}")
 
-def send_unpaid_premium_due_soon(premium: Premium):
-    user = premium.payer
-    policy = premium.policy
-    policy_link = f"{settings.FRONTEND_URL}/policy/{policy.id}"
-    
+def get_escrow_agent_related_info(user, policy):
     escrow_agent = policy.escrow_manager
     if escrow_agent:
         escrow_agent_name = f"{escrow_agent.first_name} {escrow_agent.last_name}"
@@ -57,10 +54,19 @@ def send_unpaid_premium_due_soon(premium: Premium):
         escrow_agent_name = "the user responsible for managing your policy's premiums"
         reply_to_array = policy.pod.members.all().exclude(id=user.id).values_list('email', flat=True)
     
+    return escrow_agent_name, reply_to_array
+
+def send_unpaid_premium_due_soon(premium: Premium):
+    user = premium.payer
+    policy = premium.policy
+    policy_link = f"{settings.FRONTEND_URL}/policy/{policy.id}"
+    
+    escrow_agent_name, reply_to_array = get_escrow_agent_related_info(user, policy)
+    
     premium_due = premium.amount / 100
 
     html_message = render_to_string(
-            "unpaid_premium_due_soon.html",
+            "premiums/unpaid_premium_due_soon.html",
             {
                 "policy_name": policy.name,
                 "premium_amount": premium_due,
@@ -86,6 +92,45 @@ def send_unpaid_premium_due_soon(premium: Premium):
 
     message.send()
 
+# Think "I paid the premium but the escrow agent hasn't marked it as paid yet"
+# Or also "Oh shit I havent paid yet"
 def send_unpaid_premium_should_have_been_marked_paid(premium: Premium):
+    
     user = premium.payer
-    pass
+    policy = premium.policy
+    policy_link = f"{settings.FRONTEND_URL}/policy/{policy.id}"
+
+    escrow_agent_name, reply_to_array = get_escrow_agent_related_info(user, policy)
+    
+    premium_due = premium.amount / 100
+
+    print(premium.due_date)
+
+    html_message = render_to_string(
+            "premiums/unpaid_premium_past_due_and_not_marked_paid.html",
+            {
+                "policy_name": policy.name,
+                "premium_amount": premium_due,
+                "premium_due_date_raw": premium.due_date,
+                "escrow_agent": escrow_agent_name,
+                "policy_link": policy_link
+            },
+    )
+
+    plain_message = strip_tags(html_message)
+    from_email = "Open Insure <noreply@openinsure.io>"
+    to = user.email
+    subject = f"You risk losing coverage"
+
+    message = EmailMultiAlternatives(
+        subject,
+        plain_message,
+        to=[to],
+        from_email=from_email,
+        reply_to=[settings.ADMIN_EMAIL, *reply_to_array],
+    )
+    message.attach_alternative(html_message, "text/html")
+
+    message.send()
+
+

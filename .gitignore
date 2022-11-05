@@ -9,3 +9,4 @@ property_images/
 misc/
 **/.DS_Store
 
+logs/*

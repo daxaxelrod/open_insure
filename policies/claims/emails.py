@@ -24,7 +24,7 @@ def send_notification_of_new_claim_vote(claim: Claim, pod_members_except_claiman
             claim_link = f"{settings.FRONTEND_URL}/policy/{policy.id}/claims/{claim.id}"
 
             html_message = render_to_string(
-                "policy_claim_is_now_ready_to_vote_on.html",
+                "claims/policy_claim_is_now_ready_to_vote_on.html",
                 {
                     "claim_link": claim_link,
                     "claimant": claimant,

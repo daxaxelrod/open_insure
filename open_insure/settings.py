@@ -214,3 +214,47 @@ else:
     EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 FRONTEND_URL = env("FRONTEND_URL")
+
+LOG_DIR = os.path.join(BASE_DIR, 'logs')
+LOG_FILE = '/api.log'
+LOG_PATH = LOG_DIR + LOG_FILE
+
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        
+        
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': LOG_PATH,
+            'formatter': 'simple'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+# for deeper debugging, uncomment the following
+if DEBUG:
+    # make all loggers use the console.
+    for logger in LOGGING['loggers']:
+        LOGGING['loggers'][logger]['handlers'] = ['console']

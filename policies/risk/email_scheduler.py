@@ -13,6 +13,7 @@ def unpaid_premiums_due_soon_job():
     # NOTE! This needs to have a second look once I do timezone aware policies
     # this just assumes that policy holders are in the same timezone as the server
     unpaid_premiums = Premium.objects.filter(due_date=now.date(), paid=False).prefetch_related("payer")
+    logger.info(f"Found {len(unpaid_premiums)} unpaid premiums due today, sending notifications")
     for unpaid_premium in unpaid_premiums:
         send_unpaid_premium_due_soon(unpaid_premium)
 
@@ -22,12 +23,13 @@ def unpaid_premiums_should_have_been_marked_as_paid_job():
     now = timezone.now()
     three_days_ago = now - timezone.timedelta(days=3)
     # see note for unpaid_premiums... note
-    premiums_that_should_have_been_marked_paid = Premium.objects.filter(due_date=three_days_ago.date(), paid=False)
+    premiums_that_should_have_been_marked_paid = Premium.objects.filter(due_date=three_days_ago.date(), paid=False) 
+    logger.info(f"Found {len(premiums_that_should_have_been_marked_paid)} premiums that should have been marked as paid, sending notifications")
     for premium in premiums_that_should_have_been_marked_paid:
         send_unpaid_premium_should_have_been_marked_paid(premium)
 
 def schedule_email_premium_notification_emails(scheduler: BackgroundScheduler):
     logger.info("Setting up premium email scheduling")
     scheduler.add_job(unpaid_premiums_due_soon_job, 'interval', hours=24)
-    # scheduler.add_job(unpaid_premiums_should_have_been_marked_as_paid_job,)
+    scheduler.add_job(unpaid_premiums_should_have_been_marked_as_paid_job, 'interval', hours=24)
     
