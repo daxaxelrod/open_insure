@@ -237,6 +237,7 @@ class PolicyRiskViewSet(ModelViewSet):
             kwargs["object_id"] = property_object.id
 
         risk = serializer.save(policy=policy, user=self.request.user, **kwargs)
+
         return risk
 
     def partial_update(self, request, policy_pk=None, pk=None):
@@ -284,6 +285,16 @@ class PolicyRiskViewSet(ModelViewSet):
         risk.value_at_risk = risk.risk_score * risk.content_object.market_value
         logger.info(f"Risk {risk.id} has a premium of {risk.premium_amount}")
         risk.save()
+
+        # handle the case where the policy creator (who gets auto added to the pod)
+        # starts to create their first risk
+        
+        if self.request.user == risk.policy.pod.creator: # be lazy
+            policy = risk.policy # ok special case, be eager
+            if policy.premiums.filter(payer=self.request.user).count() == 0:
+                schedule_premiums(policy, for_users=[self.request.user])
+                send_user_welcome_email(self.request.user, policy)
+
         return Response(self.get_serializer(risk).data, status=HTTP_200_OK)
 
     @action(detail=True, methods=["POST"], permission_classes=[IsAuthenticated])

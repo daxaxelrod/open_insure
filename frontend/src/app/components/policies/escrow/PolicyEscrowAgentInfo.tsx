@@ -4,7 +4,7 @@ import { Policy, User } from "../../../../redux/reducers/commonTypes";
 
 export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
     const escrowManagerId = policy.escrow_manager;
-    const escrowManager: User | undefined = policy.pod.members.find(
+    const escrowManager: User | undefined = policy.pod?.members?.find(
         (member) => member.id === escrowManagerId
     );
 

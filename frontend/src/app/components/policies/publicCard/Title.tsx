@@ -37,8 +37,7 @@ export default function Title({ policy }: { policy: Policy }) {
                         }}
                     >
                         &nbsp;
-                        {policy?.pod?.members?.length}{" "}
-                        {maybePluralize(policy?.pod?.members?.length, "member")}
+                        {policy?.pod?.members?.length ? ` ${policy?.pod?.members?.length} ${maybePluralize(policy?.pod?.members?.length, "member")}` : ''}
                         &nbsp;
                     </div>
                 </Avatar.Group>

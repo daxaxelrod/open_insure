@@ -34,17 +34,7 @@ export default function Page1() {
                 <Title level={3} style={{ textAlign: "center" }}>
                     {card.title}
                 </Title>
-                <img
-                    src={card.img}
-                    alt=""
-                    style={{
-                        margin: "0 auto 10px",
-
-                        height: 30,
-                        borderTopLeftRadius: "-0.75rem",
-                        borderTopRightRadius: "-0.75rem",
-                    }}
-                />
+                
                 <div className="card-body">
                     <Paragraph className="description text-secondary">
                         {card.description}
