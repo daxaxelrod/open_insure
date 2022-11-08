@@ -50,7 +50,7 @@ export default function PoolAddressSetupModal({
     return (
         <Modal
             visible={visible}
-            title="Edit Escrow Pool Address"
+            title={`${policy?.name}'s Escrow Address`}
             onOk={handleOk}
             onCancel={handleCancel}
             footer={[

@@ -37,11 +37,17 @@ export default function UserProfile() {
                         <Title level={2}>
                             {user?.first_name} {user?.last_name}
                         </Title>
-                        <Title level={4}>
+                        <Title
+                            level={4}
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
                             {user?.email}&nbsp;
                             {user?.verified_email ? (
                                 <CheckCircleOutlined
-                                    style={{ color: "#40a9ff" }}
+                                    style={{ color: "#40a9ff", marginLeft: 1 }}
                                 />
                             ) : (
                                 <Tooltip
