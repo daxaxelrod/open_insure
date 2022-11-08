@@ -19,7 +19,6 @@ export default function NavBar() {
                 paddingTop: 10,
                 paddingBottom: 10,
                 display: "flex",
-                flex: 1,
             }}
         >
             <Row align="middle" justify="space-between" style={{ flex: 1 }}>

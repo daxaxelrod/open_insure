@@ -1,9 +1,16 @@
-import { Avatar, Col, Row } from "antd";
 import React from "react";
+import { Avatar, Col, Row, Typography } from "antd";
+import { WarningOutlined } from "@ant-design/icons";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Policy, User } from "../../../../redux/reducers/commonTypes";
-import { validate_bitcoin_address } from "../../../utils/stringUtils";
+import {
+    validate_bitcoin_address,
+    titleCase,
+} from "../../../utils/stringUtils";
 import EscrowPoolAddressInlineDisplay from "../premiums/EscrowPoolAddressInlineDisplay";
+import colors from "../../../constants/colors";
+
+const { Paragraph } = Typography;
 
 export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
     const escrowManagerId = policy.escrow_manager;
@@ -29,7 +36,6 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
             <Col span={20}>
                 <div
                     style={{
-                        marginBottom: 4,
                         color: "rgba(0,0,0,.45)",
                         fontSize: 14,
                     }}
@@ -39,13 +45,28 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                 <div style={{ fontSize: 24, fontWeight: 500 }}>
                     {escrowManager === undefined
                         ? "Not set"
-                        : `${escrowManager?.first_name} ${escrowManager?.last_name}`}
+                        : `${titleCase(escrowManager?.first_name)} ${titleCase(
+                              escrowManager?.last_name
+                          )}`}
                 </div>
 
                 {poolAddress ? (
                     <EscrowPoolAddressInlineDisplay address={poolAddress} />
                 ) : (
-                    <div />
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        <WarningOutlined
+                            style={{ color: colors.alert1, marginRight: 6 }}
+                        />
+                        <Paragraph style={{ marginBottom: 0, fontSize: 14 }}>
+                            Not setup! Tell{" "}
+                            {titleCase(escrowManager?.first_name)} to fix this
+                        </Paragraph>
+                    </div>
                 )}
 
                 {/* todo: question asked by a user: "how am i gonna get them the money" */}
