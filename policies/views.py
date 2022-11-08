@@ -75,11 +75,12 @@ class PolicyViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         # create the attached pod if payload doesnt have a pod id
+        # adds the policy creator as the escrow agent. This might change in the future, likely to a democratic system
         if not serializer.validated_data.get("pod", None):
             pod_serializer = PodSerializer(data=self.request.data)
             if pod_serializer.is_valid():
                 pod = pod_serializer.save(creator=self.request.user)
-                serializer.save(pod=pod)
+                serializer.save(pod=pod, escrow_manager=self.request.user)
             else:
                 raise ValidationError(
                     {

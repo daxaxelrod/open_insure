@@ -8,7 +8,4 @@ from policies.utils import unique_code_generator
 @receiver(post_save, sender=Policy)
 def create_policy(sender, instance, created, **kwargs):
     if created:
-        if instance.pool_address is None:
-            instance.pool_address = unique_code_generator(instance, "pool_address")
-            instance.save()
         PolicyRiskSettings.objects.create(policy=instance)

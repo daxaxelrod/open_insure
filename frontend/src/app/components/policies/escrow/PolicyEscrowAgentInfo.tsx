@@ -1,5 +1,6 @@
 import { Avatar, Col, Row } from "antd";
 import React from "react";
+import { useAppSelector } from "../../../../redux/hooks";
 import { Policy, User } from "../../../../redux/reducers/commonTypes";
 
 export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
@@ -7,6 +8,8 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
     const escrowManager: User | undefined = policy.pod?.members?.find(
         (member) => member.id === escrowManagerId
     );
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
+    const isUserEscrowManager = escrowManager?.id === currentUser?.id;
 
     return (
         <Row gutter={16} style={{ padding: "0 0 2.5rem 0" }}>

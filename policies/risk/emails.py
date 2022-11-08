@@ -47,9 +47,15 @@ def send_risk_update_email(user: User, policy: Policy, changer: User, old_risk: 
 
 def get_escrow_agent_related_info(user, policy):
     escrow_agent = policy.escrow_manager
+    
     if escrow_agent:
-        escrow_agent_name = f"{escrow_agent.first_name} {escrow_agent.last_name}"
-        reply_to_array = [escrow_agent.email]
+        is_user_the_escrow_agent = user.id == escrow_agent.id
+        if is_user_the_escrow_agent:
+            escrow_agent_name = "you (You're the escrow agent!)"
+            reply_to_array = []
+        else:
+            escrow_agent_name = f"{escrow_agent.first_name} {escrow_agent.last_name}"
+            reply_to_array = [escrow_agent.email]
     else:
         escrow_agent_name = "the user responsible for managing your policy's premiums"
         reply_to_array = policy.pod.members.all().exclude(id=user.id).values_list('email', flat=True)

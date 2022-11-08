@@ -208,6 +208,31 @@ class PolicyTestCase(TestCase):
         self.assertEquals(policy.pod.members.count(), 1)
         self.assertEquals(member_user_premiums.count(), 3)
 
+    # semi temporary case, we will eventually want to allow users to vote on who the agent will be
+    def test_policy_creator_gets_marked_as_escrow_agent(self):
+        payload = {
+            "name":"$10 Small electronics policy",
+            "description":"No pool cap, $500 claim payout limit",
+            "coverage_type":"m_property",
+            "premium_pool_type":"perpetual_pool",
+            "governance_type":"direct_democracy",
+            "available_underlying_insured_types": ["cell_phone"],
+            "premium_payment_frequency":1,  # 1 means monthly
+            "coverage_duration":12,  # months
+            "coverage_start_date":timezone.now() + timezone.timedelta(days=30),
+        }
+
+        response = client.post(
+            f"/api/v1/policies/",
+            data=payload,
+            content_type="application/json",
+        )
+        
+        _json = response.json()
+
+        self.assertEquals(response.status_code, HTTP_201_CREATED)
+        self.assertEquals(_json["escrow_manager"], self.main_user.id)
+
 
 def setUpModule():
     logging.disable()

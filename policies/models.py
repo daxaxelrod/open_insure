@@ -312,7 +312,7 @@ class ClaimEvidence(models.Model):
 
 
 # think of these as votes
-class ClaimApproval(models.Model):
+class ClaimApproval(models.Model): 
     claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="approvals")
     approved = models.BooleanField(default=False, blank=True)
     approved_on = models.DateTimeField(null=True, blank=True)
@@ -331,9 +331,33 @@ class ClaimApproval(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         if self.approved:
             repr_str = "approved"
         else:
             repr_str = "not approved"
         return f"{self.approver} vote on claim {self.claim} - {repr_str}"
+
+
+# not used yet
+class EscrowAgentVote(models.Model):
+    """
+    The escrow agent is the user that holds the funds for the policy and pays out claims once they are approved
+    """
+
+    policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="escrow_agent_choices")
+    voter = models.ForeignKey("pods.User", on_delete=models.CASCADE, related_name="escrow_agent_votes")
+    choice = models.ForeignKey("pods.User", on_delete=models.CASCADE, related_name="escrow_agent_choices")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["voter", "choice"],
+                name="escrow-agent-vote-not-for-self",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.escrow_agent} is the escrow agent for {self.policy}"
