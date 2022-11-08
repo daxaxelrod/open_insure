@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { Avatar, Button, Col, Row, Typography } from "antd";
-import { WarningOutlined, EditOutlined } from "@ant-design/icons";
+import { Avatar, Button, Col, Row, Typography, Tooltip } from "antd";
+import {
+    WarningOutlined,
+    EditOutlined,
+    QuestionCircleOutlined,
+} from "@ant-design/icons";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Policy, User } from "../../../../redux/reducers/commonTypes";
 import { titleCase } from "../../../utils/stringUtils";
@@ -8,7 +12,7 @@ import EscrowPoolAddressInlineDisplay from "../premiums/EscrowPoolAddressInlineD
 import colors from "../../../constants/colors";
 import PoolAddressSetupModal from "./PoolAddressSetupModal";
 
-const { Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 
 // question asked by a user: "how am i gonna get them the money"
 // this component is the answer to that question
@@ -38,7 +42,7 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                     alt=""
                 />
             </Col>
-            <Col span={20}>
+            <Col span={18}>
                 <div
                     style={{
                         color: "rgba(0,0,0,.45)",
@@ -107,6 +111,20 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                     visible={poolAddressSetupModalVisible}
                     close={() => setPoolAddressSetupModalVisible(false)}
                 />
+            </Col>
+            <Col span={2}>
+                <Tooltip
+                    color="black"
+                    placement="leftTop"
+                    title="This is who you pay premiums to. It's auto set to the person who created the policy. In the future, you'll be able to vote on who you want the escrow agent to be."
+                >
+                    <QuestionCircleOutlined
+                        style={{
+                            color: colors.gray7,
+                            padding: "3px 10px 10px 3px",
+                        }}
+                    />
+                </Tooltip>
             </Col>
         </Row>
     );
