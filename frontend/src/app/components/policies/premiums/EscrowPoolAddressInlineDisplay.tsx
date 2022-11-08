@@ -1,7 +1,7 @@
 import React from "react";
-function validate_bitcoin_address(btc_address: string) {
-    return btc_address.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$") !== null;
-}
+import { validate_bitcoin_address } from "../../../utils/stringUtils";
+import venmoLogo from "../../../../assets/images/escrow/venmo-logo.jpg";
+import bitcoinLogo from "../../../../assets/images/escrow/bitcoin-logo.png";
 
 export default function EscrowPoolAddressInlineDisplay({
     address,
@@ -20,7 +20,17 @@ export default function EscrowPoolAddressInlineDisplay({
                 target={"_blank"}
                 onClick={(event) => event.stopPropagation()}
                 href={`https://www.blockchain.com/btc/address/${address}`}
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                }}
+                rel="noreferrer"
             >
+                <img
+                    src={bitcoinLogo}
+                    style={{ height: 20, width: 20, marginRight: 8 }}
+                    alt="Bitcoin logo"
+                />
                 Bitcoin Wallet
             </a>
         );
@@ -30,7 +40,17 @@ export default function EscrowPoolAddressInlineDisplay({
                 target={"_blank"}
                 onClick={(event) => event.stopPropagation()}
                 href={`https://account.venmo.com/u/${address}`}
+                rel="noreferrer"
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                }}
             >
+                <img
+                    src={venmoLogo}
+                    style={{ height: 18, width: 18, marginRight: 8 }}
+                    alt="Venmo logo"
+                />
                 {address}
             </a>
         );
