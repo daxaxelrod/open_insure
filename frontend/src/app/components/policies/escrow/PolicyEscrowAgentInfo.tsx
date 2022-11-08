@@ -1,28 +1,30 @@
-import React from "react";
-import { Avatar, Col, Row, Typography } from "antd";
-import { WarningOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { Avatar, Button, Col, Row, Typography } from "antd";
+import { WarningOutlined, EditOutlined } from "@ant-design/icons";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Policy, User } from "../../../../redux/reducers/commonTypes";
-import {
-    validate_bitcoin_address,
-    titleCase,
-} from "../../../utils/stringUtils";
+import { titleCase } from "../../../utils/stringUtils";
 import EscrowPoolAddressInlineDisplay from "../premiums/EscrowPoolAddressInlineDisplay";
 import colors from "../../../constants/colors";
+import PoolAddressSetupModal from "./PoolAddressSetupModal";
 
 const { Paragraph } = Typography;
 
+// question asked by a user: "how am i gonna get them the money"
+// this component is the answer to that question
+
 export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
+    const [poolAddressSetupModalVisible, setPoolAddressSetupModalVisible] =
+        useState(false);
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
     const escrowManagerId = policy.escrow_manager;
     const escrowManager: User | undefined = policy.pod?.members?.find(
         (member) => member.id === escrowManagerId
     );
-    const currentUser = useAppSelector((state) => state.auth.currentUser);
 
     const poolAddress = policy?.pool_address;
 
     const isUserEscrowManager = escrowManager?.id === currentUser?.id;
-    const isValidBtcAddress = validate_bitcoin_address(poolAddress);
 
     return (
         <Row gutter={16} style={{ padding: "0 0 2.5rem 0" }}>
@@ -52,6 +54,17 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
 
                 {poolAddress ? (
                     <EscrowPoolAddressInlineDisplay address={poolAddress} />
+                ) : isUserEscrowManager ? (
+                    <div style={{}}>
+                        <Button
+                            type="primary"
+                            onClick={() =>
+                                setPoolAddressSetupModalVisible(true)
+                            }
+                        >
+                            <EditOutlined /> Setup
+                        </Button>
+                    </div>
                 ) : (
                     <div
                         style={{
@@ -68,8 +81,11 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                         </Paragraph>
                     </div>
                 )}
-
-                {/* todo: question asked by a user: "how am i gonna get them the money" */}
+                <PoolAddressSetupModal
+                    policy={policy}
+                    visible={poolAddressSetupModalVisible}
+                    close={() => setPoolAddressSetupModalVisible(false)}
+                />
             </Col>
         </Row>
     );

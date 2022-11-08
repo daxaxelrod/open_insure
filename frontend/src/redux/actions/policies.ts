@@ -17,6 +17,9 @@ import {
     CREATE_POLICY_PENDING,
     CREATE_POLICY_SUCCESS,
     CREATE_POLICY_FAILURE,
+    PATCH_POLICY_PENDING,
+    PATCH_POLICY_SUCCESS,
+    PATCH_POLICY_FAILURE,
     JOIN_POLICY_PENDING,
     JOIN_POLICY_SUCCESS,
     JOIN_POLICY_FAILURE,
@@ -77,6 +80,21 @@ export const createPolicy =
             dispatch({ type: CREATE_POLICY_SUCCESS, payload: response.data });
         } catch (error) {
             dispatch({ type: CREATE_POLICY_FAILURE, payload: error });
+        }
+    };
+
+export const patchPolicy =
+    (
+        policyId: number,
+        values: API.PolicyPatchPayload
+    ): ThunkAction<void, RootState, unknown, AnyAction> =>
+    async (dispatch) => {
+        dispatch({ type: PATCH_POLICY_PENDING });
+        try {
+            const response = await API.patchPolicy(policyId, values);
+            dispatch({ type: PATCH_POLICY_SUCCESS, payload: response.data });
+        } catch (error) {
+            dispatch({ type: PATCH_POLICY_FAILURE, payload: error });
         }
     };
 

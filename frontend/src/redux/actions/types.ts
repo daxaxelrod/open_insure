@@ -27,6 +27,10 @@ export const CREATE_POLICY_PENDING = "policies/CREATE_POLICY_PENDING";
 export const CREATE_POLICY_SUCCESS = "policies/CREATE_POLICY_SUCCESS";
 export const CREATE_POLICY_FAILURE = "policies/CREATE_POLICY_FAILURE";
 
+export const PATCH_POLICY_PENDING = "policies/PATCH_POLICY_PENDING";
+export const PATCH_POLICY_SUCCESS = "policies/PATCH_POLICY_SUCCESS";
+export const PATCH_POLICY_FAILURE = "policies/PATCH_POLICY_FAILURE";
+
 // Policies the user is a member of
 export const GET_USER_POLICIES_PENDING = "policies/GET_USER_POLICIES_PENDING";
 export const GET_USER_POLICIES_SUCCESS = "policies/GET_USER_POLICIES_SUCCESS";

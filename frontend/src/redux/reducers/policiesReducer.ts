@@ -13,6 +13,9 @@ import {
     GET_USER_POLICIES_PENDING,
     GET_USER_POLICIES_SUCCESS,
     GET_USER_POLICIES_FAILURE,
+    PATCH_POLICY_SUCCESS,
+    PATCH_POLICY_PENDING,
+    PATCH_POLICY_FAILURE,
 } from "../actions/types";
 import { Policy } from "./commonTypes";
 
@@ -24,6 +27,7 @@ export interface PoliciesState {
     getUserPolicysPending: boolean;
     createPolicyPending: boolean;
     joinPolicyPending: boolean;
+    patchPolicyPending: boolean;
 }
 
 const initialState: PoliciesState = {
@@ -34,6 +38,7 @@ const initialState: PoliciesState = {
     getUserPolicysPending: false,
     createPolicyPending: false,
     joinPolicyPending: false,
+    patchPolicyPending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
@@ -71,6 +76,27 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 createPolicyPending: false,
+            };
+        case PATCH_POLICY_PENDING:
+            return {
+                ...state,
+                patchPolicyPending: true,
+            };
+        case PATCH_POLICY_SUCCESS:
+            return {
+                ...state,
+                publicPolicies: state.publicPolicies.map((policy) => {
+                    if (policy.id === payload.id) {
+                        return payload;
+                    }
+                    return policy;
+                }),
+                patchPolicyPending: false,
+            };
+        case PATCH_POLICY_FAILURE:
+            return {
+                ...state,
+                patchPolicyPending: false,
             };
         case GET_USER_POLICIES_PENDING:
             return {

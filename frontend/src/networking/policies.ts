@@ -12,6 +12,13 @@ export interface PolicyCreationPayload {
     pod: number;
 }
 
+// only allow patching of a few fields
+// of course this needs to be forced by the backend as well
+export interface PolicyPatchPayload {
+    name?: string;
+    pool_address?: string;
+}
+
 export const getAvailablePolicies = (params: PaginatedListViewParams) => {
     return axiosInstance.get(
         `/api/v1/policies/?${objectToQueryString(params)}`
@@ -24,6 +31,10 @@ export const getUserPolicies = () => {
 
 export const createPolicy = (values: PolicyCreationPayload) => {
     return axiosInstance.post(`/api/v1/policies/`, values);
+};
+
+export const patchPolicy = (policyId: number, payload: PolicyPatchPayload) => {
+    return axiosInstance.patch(`/api/v1/policies/${policyId}/`, payload);
 };
 
 export const joinPolicy = (policyId: number) => {
