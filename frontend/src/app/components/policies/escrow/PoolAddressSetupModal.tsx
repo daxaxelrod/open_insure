@@ -73,6 +73,9 @@ export default function PoolAddressSetupModal({
                 layout="vertical"
                 requiredMark={false}
                 disabled={!acceptedTerms}
+                initialValues={{
+                    poolAddress: policy?.pool_address,
+                }}
             >
                 <Form.Item label="Funds Location" name="poolAddress" required>
                     <Input placeholder="Your venmo username or your bitcoin wallet address" />
@@ -84,6 +87,7 @@ export default function PoolAddressSetupModal({
                     style={{ display: "flex", flexDirection: "column" }}
                 >
                     <Checkbox
+                        defaultChecked={acceptedTerms}
                         onChange={(e) => {
                             setAcceptedTerms(e.target.checked);
                         }}
@@ -93,12 +97,13 @@ export default function PoolAddressSetupModal({
                 <Col span={19}>
                     <Paragraph>
                         You are the escrow agent for {policy?.name}. It's a big
-                        responsibilty. Policy members will send YOU their
+                        responsibilty. Policy members will send <u>you</u> their
                         premiums, its your job to safegaurd the funds. If the
                         group votes to do something, whether it's pay a claim or
-                        close out the policy, you're responsible for returning
-                        the money. You also acknowledge that you are doing this
-                        for free, you will not take a cut of anyone's premiums.
+                        close out the policy, you are responsible for returning
+                        the money. You also acknowledge that you will{" "}
+                        <u>do this for free</u>. you will not take a cut of
+                        anyone's premiums.
                     </Paragraph>
                 </Col>
             </Row>

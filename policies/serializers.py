@@ -70,6 +70,7 @@ class PerilSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+# Todo - Fully lock down patching of policy based on policy state
 class PolicySerializer(serializers.ModelSerializer):
     # Meant to be used for posting/patching
     pod = serializers.PrimaryKeyRelatedField(queryset=Pod.objects.all(), required=False)

@@ -87,7 +87,15 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 publicPolicies: state.publicPolicies.map((policy) => {
                     if (policy.id === payload.id) {
-                        return payload;
+                        // keep the deep objects, only change the shallow ones
+                        let onlyObjectItems = Object.fromEntries(
+                            Object.entries(policy).filter(
+                                (pair) =>
+                                    pair[1] instanceof Object ||
+                                    pair[1] instanceof Array
+                            )
+                        );
+                        return { ...payload, ...onlyObjectItems };
                     }
                     return policy;
                 }),

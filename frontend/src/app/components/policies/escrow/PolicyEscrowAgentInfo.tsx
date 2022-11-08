@@ -30,8 +30,11 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
         <Row gutter={16} style={{ padding: "0 0 2.5rem 0" }}>
             <Col span={4}>
                 <Avatar
-                    size={64}
-                    src="https://joeschmoe.io/api/v1/random"
+                    size={68}
+                    src={
+                        escrowManager?.picture ||
+                        "https://joeschmoe.io/api/v1/random"
+                    }
                     alt=""
                 />
             </Col>
@@ -53,9 +56,27 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                 </div>
 
                 {poolAddress ? (
-                    <EscrowPoolAddressInlineDisplay address={poolAddress} />
+                    <Row>
+                        <EscrowPoolAddressInlineDisplay address={poolAddress} />
+                        {isUserEscrowManager && (
+                            <Button
+                                type="primary"
+                                icon={<EditOutlined />}
+                                onClick={() =>
+                                    setPoolAddressSetupModalVisible(true)
+                                }
+                                shape="round"
+                                size="small"
+                                style={{
+                                    padding: "0 .25rem",
+                                    marginLeft: ".4rem",
+                                    marginTop: ".20rem",
+                                }}
+                            />
+                        )}
+                    </Row>
                 ) : isUserEscrowManager ? (
-                    <div style={{}}>
+                    <div>
                         <Button
                             type="primary"
                             onClick={() =>
