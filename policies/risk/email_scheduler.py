@@ -30,6 +30,6 @@ def unpaid_premiums_should_have_been_marked_as_paid_job():
 
 def schedule_email_premium_notification_emails(scheduler: BackgroundScheduler):
     logger.info("Setting up premium email scheduling")
-    scheduler.add_job(unpaid_premiums_due_soon_job, 'interval', hours=24)
-    scheduler.add_job(unpaid_premiums_should_have_been_marked_as_paid_job, 'interval', hours=24)
+    scheduler.add_job(unpaid_premiums_due_soon_job, 'cron', hour=18, replace_existing=True)
+    scheduler.add_job(unpaid_premiums_should_have_been_marked_as_paid_job, 'cron', hour=18, replace_existing=True)
     
