@@ -142,3 +142,42 @@ export interface RiskSettings extends Record<string, any> {
     last_updated_by: number; // user id
     last_updated_at: string;
 }
+
+export interface Claim {
+    policy: number;
+    claimant: number;
+    title: string;
+    description: string;
+    amount: number;
+    paid_on: string;
+    is_claim_invalid: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface ClaimEvidence {
+    claim: number;
+    evidence_type: "photo" | "video" | "document";
+    url: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface ClaimApproval {
+    claim: number;
+    approved: boolean;
+    approved_on: string;
+    viewed_on: string;
+    comment: string;
+    approver: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface ClaimComment {
+    claim: number;
+    comment: string;
+    commenter: number;
+    created_at: string;
+    updated_at: string;
+}

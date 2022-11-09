@@ -19,6 +19,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import premiumsReducer from "./reducers/premiumsReducer";
+import claimsReducer from "./reducers/claimsReducer";
 
 const persistConfig = {
     key: "root",
@@ -32,7 +33,7 @@ const reducers = combineReducers({
     policies: policiesReducer,
     risk: riskReducer,
     premiums: premiumsReducer,
-    // claims: claimsReducer,
+    claims: claimsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

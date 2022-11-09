@@ -16,7 +16,7 @@ export default function UserProfile() {
 
     const logoutHandler = () => {
         logout();
-        navigate("/");
+        navigate("/login");
     };
 
     return (

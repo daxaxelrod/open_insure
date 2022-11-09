@@ -65,10 +65,7 @@ export default function PolicyClaimsList() {
             <ClaimCreationModalForm
                 policy={policy}
                 visible={isClaimCreationModalVisible}
-                onCreate={() => {
-                    setIsClaimCreationModalVisible(false);
-                }}
-                onCancel={() => {
+                close={() => {
                     setIsClaimCreationModalVisible(false);
                 }}
             />

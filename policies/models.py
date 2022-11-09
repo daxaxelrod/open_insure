@@ -298,7 +298,7 @@ class Claim(models.Model):
         if self.is_approved():
             approval_str = "Approved :"
         else:
-            approval_str = "test"
+            approval_str = "Unapproved :"
         return f"{approval_str} Claim for {self.policy.name} by {self.claimant}"
 
 
@@ -338,6 +338,17 @@ class ClaimApproval(models.Model):
             repr_str = "not approved"
         return f"{self.approver} vote on claim {self.claim} - {repr_str}"
 
+class ClaimComment(models.Model):
+    claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="comments")
+    commenter = models.ForeignKey(
+        "pods.User", on_delete=models.CASCADE, related_name="claim_comments"
+    )
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.commenter} comment on claim {self.claim} - {self.comment}"
 
 # not used yet
 class EscrowAgentVote(models.Model):

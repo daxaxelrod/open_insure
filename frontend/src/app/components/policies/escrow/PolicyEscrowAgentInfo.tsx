@@ -12,7 +12,7 @@ import EscrowPoolAddressInlineDisplay from "../premiums/EscrowPoolAddressInlineD
 import colors from "../../../constants/colors";
 import PoolAddressSetupModal from "./PoolAddressSetupModal";
 
-const { Title, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 // question asked by a user: "how am i gonna get them the money"
 // this component is the answer to that question
@@ -116,7 +116,14 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                 <Tooltip
                     color="black"
                     placement="leftTop"
-                    title="This is who you pay premiums to. It's auto set to the person who created the policy. In the future, you'll be able to vote on who you want the escrow agent to be."
+                    title={() => (
+                        <div style={{ padding: 14 }}>
+                            This is who you pay premiums to. It's auto set to
+                            the person who created the policy. In the future,
+                            you'll be able to vote on who you want the escrow
+                            agent to be.
+                        </div>
+                    )}
                 >
                     <QuestionCircleOutlined
                         style={{
