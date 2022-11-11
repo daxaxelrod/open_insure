@@ -54,9 +54,9 @@ class Banner extends React.PureComponent {
                                 color: "rgba(0, 0, 0, 0.65)",
                             }}
                         >
-                            Insure yourself with friends. Join a group, manage
-                            members, premiums, and claims while cutting out the
-                            middle man.
+                            Insure your cell phone with friends. Join a group,
+                            manage members, premiums, and claims while cutting
+                            out the middle man.
                         </p>
                         <Space size={26}>
                             <Link to={"/join"}>

@@ -32,7 +32,7 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
 
     return (
         <Row gutter={16} style={{ padding: "0 0 2.5rem 0" }}>
-            <Col span={4}>
+            <Col span={5}>
                 <Avatar
                     size={68}
                     src={
@@ -42,7 +42,7 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                     alt=""
                 />
             </Col>
-            <Col span={18}>
+            <Col span={17} style={{ marginLeft: -10 }}>
                 <div
                     style={{
                         color: "rgba(0,0,0,.45)",
