@@ -44,9 +44,14 @@ Front End: `npx prettier --write src/**/*.tsx`
 ```bash
   pipenv install
 
+  pipenv shell
+
   pipenv run python manage.py migrate
 
   pipenv run python manage.py createsuperuser
+    1. Add database username
+    2. Add your email
+    3. create password
 
   pipenv run python manage.py runserver
 ```
