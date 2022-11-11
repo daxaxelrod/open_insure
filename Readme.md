@@ -38,7 +38,7 @@ Front End: `npx prettier --write src/**/*.tsx`
 
 ### API Setup
 
-1. Copy .env.example to .env
+1. Copy .env.example and rename the copy to .env
 2. Run the following commands:
 
 ```bash
@@ -61,6 +61,8 @@ Note: database is all sqlite, proper db settings setup to come
 For development notes see: [roadmap.md](./roadmap.md)
 
 ### Frontend Setup
+
+In frontend directory: Copy .env.example and rename the copy to .env
 
 In a separate terminal window, run the frontend
 
