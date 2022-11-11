@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Empty, Row } from "antd";
+import { Button, Empty, notification, Row } from "antd";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Claim, Policy } from "../../../../redux/reducers/commonTypes";
@@ -42,7 +42,10 @@ export default function PolicyClaimsList() {
                                 <Button
                                     type="primary"
                                     onClick={() =>
-                                        setIsClaimCreationModalVisible(true)
+                                        // setIsClaimCreationModalVisible(true)
+                                        notification.info({
+                                            message: "Coming soon!",
+                                        })
                                     }
                                 >
                                     File Claim
