@@ -23,6 +23,7 @@ Policies
 -   Claims
     -   Settlement type (Commitee or direct democracy)
     -   Claim evidence (Pictures, statements)
+    -   Claim Approvals (Votes from policy holders)
 
 # Development
 
@@ -49,9 +50,6 @@ Front End: `npx prettier --write src/**/*.tsx`
   pipenv run python manage.py migrate
 
   pipenv run python manage.py createsuperuser
-    1. Add database username
-    2. Add your email
-    3. create password
 
   pipenv run python manage.py runserver
 ```
@@ -96,3 +94,14 @@ Build command `docker build -t insure .`
 
 1. Create and push a new branch
 2. Create new Pull Request in Github
+
+## Deployment
+
+Backend
+`python manage.py migrate`
+
+`gunicorn open_insure.wsgi:application --access-logfile=- --bind 0.0.0.0:8000 --capture-output --enable-stdio-inheritance`
+
+Frontend
+`npm run build` (I often build on a seperate machine that has more RAM than the typical prod server and copy the build folder over)
+`serve -s build`
