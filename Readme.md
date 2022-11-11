@@ -23,6 +23,7 @@ Policies
 -   Claims
     -   Settlement type (Commitee or direct democracy)
     -   Claim evidence (Pictures, statements)
+    -   Claim Approvals (Votes from policy holders)
 
 # Development
 
@@ -38,11 +39,13 @@ Front End: `npx prettier --write src/**/*.tsx`
 
 ### API Setup
 
-1. Copy .env.example to .env
+1. Copy .env.example and rename the copy to .env
 2. Run the following commands:
 
 ```bash
   pipenv install
+
+  pipenv shell
 
   pipenv run python manage.py migrate
 
@@ -56,6 +59,8 @@ Note: database is all sqlite, proper db settings setup to come
 For development notes see: [roadmap.md](./roadmap.md)
 
 ### Frontend Setup
+
+In frontend directory: Copy .env.example and rename the copy to .env
 
 In a separate terminal window, run the frontend
 
@@ -89,3 +94,14 @@ Build command `docker build -t insure .`
 
 1. Create and push a new branch
 2. Create new Pull Request in Github
+
+## Deployment
+
+Backend
+`python manage.py migrate`
+
+`gunicorn open_insure.wsgi:application --access-logfile=- --bind 0.0.0.0:8000 --capture-output --enable-stdio-inheritance`
+
+Frontend
+`npm run build` (I often build on a seperate machine that has more RAM than the typical prod server and copy the build folder over)
+`serve -s build`
