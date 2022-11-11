@@ -37,8 +37,6 @@ export default function ClaimCreationModalForm({
 
     const lossPercentage: number = Form.useWatch("lossPercentage", form);
 
-    console.log({ lossPercentage });
-
     const handleOk = () => {
         form.validateFields().then((values) => {
             dispatch(createClaim(policy?.id, values));

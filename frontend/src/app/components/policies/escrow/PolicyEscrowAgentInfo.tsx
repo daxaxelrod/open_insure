@@ -64,7 +64,7 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                         <EscrowPoolAddressInlineDisplay address={poolAddress} />
                         {isUserEscrowManager && (
                             <Button
-                                type="primary"
+                                type="link"
                                 icon={<EditOutlined />}
                                 onClick={() =>
                                     setPoolAddressSetupModalVisible(true)
@@ -101,8 +101,12 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                             style={{ color: colors.alert1, marginRight: 6 }}
                         />
                         <Paragraph style={{ marginBottom: 0, fontSize: 14 }}>
-                            Not setup! Tell{" "}
-                            {titleCase(escrowManager?.first_name)} to fix this
+                            Not setup!{" "}
+                            {escrowManager?.first_name
+                                ? `Tell ${titleCase(
+                                      escrowManager?.first_name
+                                  )} to fix this`
+                                : "Select an escrow agent first."}
                         </Paragraph>
                     </div>
                 )}
