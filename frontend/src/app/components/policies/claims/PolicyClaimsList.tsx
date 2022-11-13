@@ -42,10 +42,7 @@ export default function PolicyClaimsList() {
                                 <Button
                                     type="primary"
                                     onClick={() =>
-                                        // setIsClaimCreationModalVisible(true)
-                                        notification.info({
-                                            message: "Coming soon!",
-                                        })
+                                        setIsClaimCreationModalVisible(true)
                                     }
                                 >
                                     File Claim

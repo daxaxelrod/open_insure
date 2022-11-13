@@ -73,8 +73,7 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                                 size="small"
                                 style={{
                                     padding: "0 .25rem",
-                                    marginLeft: ".45rem",
-                                    marginTop: ".20rem",
+                                    marginLeft: ".3rem",
                                 }}
                             />
                         )}

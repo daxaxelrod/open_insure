@@ -1,6 +1,7 @@
 import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.utils import timezone
+from apscheduler.triggers.cron import CronTrigger
 from policies.models import Premium
 
 from policies.risk.emails import send_unpaid_premium_due_soon, send_unpaid_premium_should_have_been_marked_paid
@@ -8,6 +9,7 @@ from policies.risk.emails import send_unpaid_premium_due_soon, send_unpaid_premi
 logger = logging.getLogger(__name__)
 
 def unpaid_premiums_due_soon_job():
+    print("Running job to send premium due soon emails")
     now = timezone.now()
     # get all the unpaid premiums due withing 24 hours.
     # NOTE! This needs to have a second look once I do timezone aware policies
@@ -20,6 +22,7 @@ def unpaid_premiums_due_soon_job():
 
 # special shout out to M who sparked this and many other great ideas
 def unpaid_premiums_should_have_been_marked_as_paid_job():
+    print("Running job to send premium should have been marked as paid emails")
     now = timezone.now()
     three_days_ago = now - timezone.timedelta(days=3)
     # see note for unpaid_premiums... note
@@ -30,6 +33,6 @@ def unpaid_premiums_should_have_been_marked_as_paid_job():
 
 def schedule_email_premium_notification_emails(scheduler: BackgroundScheduler):
     logger.info("Setting up premium email scheduling")
-    scheduler.add_job(unpaid_premiums_due_soon_job, 'cron', hour=18, replace_existing=True, id="unpaid_premiums_due_soon")
-    scheduler.add_job(unpaid_premiums_should_have_been_marked_as_paid_job, 'cron', hour=18, replace_existing=True, id="unpaid_premiums_should_have_been_marked_as_paid")
+    scheduler.add_job(unpaid_premiums_due_soon_job, CronTrigger.from_crontab('0 18 * * *'), replace_existing=True, id="unpaid_premiums_due_soon")
+    scheduler.add_job(unpaid_premiums_should_have_been_marked_as_paid_job, CronTrigger.from_crontab('0 18 * * *'), replace_existing=True, id="unpaid_premiums_should_have_been_marked_as_paid")
     
