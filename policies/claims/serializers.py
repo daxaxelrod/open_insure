@@ -108,6 +108,7 @@ class ClaimSerializer(serializers.ModelSerializer):
         policy = validated_data.get("policy")
         request = self.context["request"]
         if request.user in policy.pod.members.all():
+            # No one can create a policy on a user's behalf, they must do it themselves
             claim, _ = Claim.objects.get_or_create(
                 **validated_data, claimant=request.user
             )

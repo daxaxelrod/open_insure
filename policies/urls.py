@@ -22,12 +22,13 @@ from policies.claims.views import (
 
 router = routers.DefaultRouter()
 router.register(r"policies", PolicyViewSet)
-router.register(r"claims", ClaimViewSet)
+
 router.register(r"risk", RiskViewSet, basename="risk")
 
-risk_router = routers.NestedSimpleRouter(router, r"policies", lookup="policy")
-risk_router.register(r"risk", PolicyRiskViewSet, basename="policy-risks")
-risk_router.register(r"premiums", PolicyPremiumViewSet, basename="policy-premium")
+policy_nested_router = routers.NestedSimpleRouter(router, r"policies", lookup="policy")
+policy_nested_router.register(r"risk", PolicyRiskViewSet, basename="policy-risks")
+policy_nested_router.register(r"premiums", PolicyPremiumViewSet, basename="policy-premium")
+policy_nested_router.register(r"claims", ClaimViewSet, basename="policy-claims")
 
 urlpatterns = [
     re_path("policies/(?P<policy_id>\d+)/risk_settings/$", RiskSettingsViewSet.as_view()),
@@ -39,5 +40,5 @@ urlpatterns = [
         name="claim_approval_detail",
     ),
     path("media/riskPhoto/<int:photo_id>", RiskMediaViewSet.as_view()),
-    path("", include(risk_router.urls)),
+    path("", include(policy_nested_router.urls)),
 ]

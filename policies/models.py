@@ -280,6 +280,9 @@ class Claim(models.Model):
             settings.CLAIM_APPROVAL_THRESHOLD_PERCENTAGE
         )
 
+    def has_evidence(self):
+        return self.evidence.count() > 0
+
     class Meta:
         constraints = [
             models.UniqueConstraint(

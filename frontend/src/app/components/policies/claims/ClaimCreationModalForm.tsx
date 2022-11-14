@@ -62,7 +62,13 @@ export default function ClaimCreationModalForm({
 
     const handleOk = () => {
         form.validateFields().then((values) => {
-            dispatch(createClaim(policy?.id, values));
+            dispatch(
+                createClaim(policy?.id, {
+                    ...values,
+                    amount: lossPercentage * marketValue,
+                    policy: policy?.id,
+                })
+            );
             close();
         });
     };
@@ -99,10 +105,28 @@ export default function ClaimCreationModalForm({
                     lossPercentage: 20,
                 }}
             >
-                <Form.Item label="Title" name="title" required>
+                <Form.Item
+                    label="Title"
+                    name="title"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Title required",
+                        },
+                    ]}
+                >
                     <Input placeholder="Cracked phone screen" />
                 </Form.Item>
-                <Form.Item label="Description" name="description" required>
+                <Form.Item
+                    label="Description"
+                    name="description"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Description required",
+                        },
+                    ]}
+                >
                     <TextArea
                         showCount
                         minLength={120}

@@ -14,7 +14,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
 from policies.paginators import StandardResultsSetPagination
-from policies.models import Claim, ClaimApproval, Policy, PolicyRiskSettings, Premium, Risk
+from policies.models import Policy, PolicyRiskSettings, Premium, Risk
 from policies.permissions import (
     InPolicyPod,
     InPolicyPremiumPod,
@@ -37,10 +37,6 @@ from policies.serializers import (
     FullPolicySerializer,
     PremiumSerializer,
     RiskSerializer,
-)
-from policies.claims.serializers import (
-    ClaimSerializer,
-    ClaimApprovalSerializer,
 )
 from policies.utils import send_user_welcome_email
 
