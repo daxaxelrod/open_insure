@@ -26,6 +26,7 @@ import {
 } from "./types";
 import { getRisksForPolicy } from "./risk";
 import { RiskSettings } from "../reducers/commonTypes";
+import { setClaimsForPolicy } from "./claims";
 
 export const getAvailablePolicies =
     (
@@ -48,6 +49,7 @@ export const getAvailablePolicies =
             ) {
                 const policy = response.data?.results[index];
                 dispatch(getRisksForPolicy(policy.id));
+                dispatch(setClaimsForPolicy(policy.id, policy?.claims));
             }
         } catch (error) {
             dispatch({ type: GET_AVAILABLE_POLICIES_FAILURE, payload: error });

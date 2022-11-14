@@ -9,3 +9,7 @@ export interface ClaimCreationPayload {
 export const createClaim = (policyId: number, values: ClaimCreationPayload) => {
     return axiosInstance.post(`/api/v1/policies/${policyId}/claims/`, values);
 };
+
+export const getClaimsForPolicy = (policyId: number) => {
+    return axiosInstance.get(`/api/v1/policies/${policyId}/claims/`);
+};

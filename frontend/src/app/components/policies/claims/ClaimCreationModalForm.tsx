@@ -178,10 +178,13 @@ export default function ClaimCreationModalForm({
                         </Col>
                     </Row>
                     <Divider />
-                    <Row justify="space-between">
+                    <Row
+                        justify="space-between"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setShowHelp(!showHelp)}
+                    >
                         <Title level={5}>Need Help?</Title>
                         <div
-                            onClick={() => setShowHelp(!showHelp)}
                             style={{
                                 cursor: "pointer",
                                 padding: "2px 10px",

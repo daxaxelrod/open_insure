@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Empty, notification, Row } from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Empty, Row } from "antd";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Claim, Policy } from "../../../../redux/reducers/commonTypes";
@@ -8,14 +8,17 @@ import PolicyClaimDetailCard from "./PolicyClaimDetailCard";
 
 export default function PolicyClaimsList() {
     const { id } = useParams();
-    let policyId = parseInt(id || "");
-    let policy: Policy = useAppSelector((state) =>
+    const policyId = parseInt(id || "");
+    const policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find((p: Policy) => p.id === policyId)
     );
-    let claims: Claim[] = policy?.claims;
+
+    const claims = useAppSelector((state) => state.claims.claims?.[policyId]);
 
     const [isClaimCreationModalVisible, setIsClaimCreationModalVisible] =
         useState(false);
+
+    // no need to fetch claims on load, initial policy load already did that
 
     const renderEmpty = () => {
         return (
