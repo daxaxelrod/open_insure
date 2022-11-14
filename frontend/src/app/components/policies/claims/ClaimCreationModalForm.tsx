@@ -8,15 +8,21 @@ import {
     Input,
     Modal,
     Row,
+    Select,
     Slider,
     Tooltip,
     Typography,
 } from "antd";
-import { DownSquareOutlined, UpSquareOutlined } from "@ant-design/icons";
+import {
+    DownSquareOutlined,
+    UpSquareOutlined,
+    DownOutlined,
+} from "@ant-design/icons";
 import { createClaim } from "../../../../redux/actions/claims";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
 import colors from "../../../constants/colors";
+import { getCostPerType } from "./utils/cost";
 
 const { Paragraph, Title } = Typography;
 
@@ -33,6 +39,7 @@ export default function ClaimCreationModalForm({
 }: ClaimCreationModalFormProps) {
     const dispatch = useAppDispatch();
     const [showHelp, setShowHelp] = useState(false);
+    const [selectedDamageView, setSelectedDamageView] = useState<string>();
     const [form] = Form.useForm();
 
     const claimCreationPending = useAppSelector(
@@ -67,7 +74,7 @@ export default function ClaimCreationModalForm({
     return (
         <Modal
             visible={visible}
-            title={`${policy?.name}'s Escrow Address`}
+            title={`Create a claim`}
             onOk={handleOk}
             onCancel={handleCancel}
             footer={[
@@ -172,7 +179,7 @@ export default function ClaimCreationModalForm({
                     </Row>
                     <Divider />
                     <Row justify="space-between">
-                        <Title level={4}>Need Help?</Title>
+                        <Title level={5}>Need Help?</Title>
                         <div
                             onClick={() => setShowHelp(!showHelp)}
                             style={{
@@ -194,10 +201,85 @@ export default function ClaimCreationModalForm({
                     {showHelp && (
                         <div>
                             <Row>
-                                For reference, heres what it costs to repair
-                                various phone damages. Results may vary, google
-                                is your friend.
+                                <Paragraph
+                                    style={{
+                                        color: colors.gray7,
+                                    }}
+                                >
+                                    For reference, here's what it costs to
+                                    repair various phone damages. Results may
+                                    vary, google is your friend.
+                                </Paragraph>
                             </Row>
+                            <Row
+                                justify="space-between"
+                                style={{ marginTop: 10 }}
+                            >
+                                <Paragraph>Prices</Paragraph>
+                                <Select
+                                    defaultValue="iphone11"
+                                    style={{ width: 120 }}
+                                    onChange={(val) => {
+                                        setSelectedDamageView(val);
+                                    }}
+                                    options={[
+                                        {
+                                            value: "iphone11",
+                                            label: "Iphone 11",
+                                        },
+                                        {
+                                            value: "iphone14",
+                                            label: "Iphone 14",
+                                        },
+                                        {
+                                            value: "airpodsMax",
+                                            label: "Airpods Max",
+                                        },
+                                    ]}
+                                />
+                            </Row>
+                            <table
+                                style={{
+                                    width: "70%",
+                                }}
+                            >
+                                <tr>
+                                    <th style={{ textAlign: "left" }}>
+                                        Repair
+                                    </th>
+                                    <th style={{ textAlign: "left" }}>Cost</th>
+                                </tr>
+                                <tr>
+                                    <td>Battery</td>
+                                    <td>
+                                        $
+                                        {getCostPerType(
+                                            "battery",
+                                            selectedDamageView
+                                        )}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Screen Replacement</td>
+                                    <td>
+                                        $
+                                        {getCostPerType(
+                                            "screen",
+                                            selectedDamageView
+                                        )}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Charging Port fix</td>
+                                    <td>
+                                        $
+                                        {getCostPerType(
+                                            "chargingPort",
+                                            selectedDamageView
+                                        )}
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     )}
                 </Form.Item>

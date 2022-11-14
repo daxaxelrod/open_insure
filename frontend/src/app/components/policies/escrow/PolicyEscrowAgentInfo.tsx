@@ -120,7 +120,7 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                     color="black"
                     placement="leftTop"
                     title={() => (
-                        <div style={{ padding: 14 }}>
+                        <div style={{ padding: 10 }}>
                             This is who you pay premiums to. It's auto set to
                             the person who created the policy. In the future,
                             you'll be able to vote on who you want the escrow
