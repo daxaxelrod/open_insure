@@ -8,8 +8,6 @@ export const patchPremium = (
     premiumId: number,
     payload: PremiumPatchPayload
 ) => {
-    console.log("patchPremium", policyId, premiumId, payload);
-
     return axiosInstance.patch(
         `/api/v1/policies/${policyId}/premiums/${premiumId}/`,
         payload

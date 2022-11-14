@@ -210,8 +210,13 @@ class Premium(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def short_description(self):
+        return f"${self.amount/100} premium due on {self.due_date} for {self.policy.name}"
+
     def __str__(self) -> str:
         return f"Premium for {self.policy.name} paid by {self.payer}, due on {self.due_date}"
+
+    
 
 
 class PolicyCloseout(models.Model):
@@ -276,6 +281,9 @@ class Claim(models.Model):
     def is_approved(self):
         all_approvals_count = self.approvals.count()
         approved_count = self.approvals.filter(approved=True).count()
+        if all_approvals_count == 0:
+            # approvals not created for some reason, shouldnt happen
+            return False
         return (approved_count / all_approvals_count) >= float(
             settings.CLAIM_APPROVAL_THRESHOLD_PERCENTAGE
         )

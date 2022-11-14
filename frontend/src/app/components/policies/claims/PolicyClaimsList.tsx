@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Button, Empty, Row } from "antd";
+import React, { useState } from "react";
+import { Button, Empty, Row, Typography } from "antd";
 import { useParams } from "react-router-dom";
+import { FileAddOutlined } from "@ant-design/icons";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Claim, Policy } from "../../../../redux/reducers/commonTypes";
 import ClaimCreationModalForm from "./ClaimCreationModalForm";
 import PolicyClaimDetailCard from "./PolicyClaimDetailCard";
+import ClaimListErrorBar from "./ClaimListErrorBar";
+
+const { Title } = Typography;
 
 export default function PolicyClaimsList() {
     const { id } = useParams();
@@ -60,6 +64,19 @@ export default function PolicyClaimsList() {
 
     return (
         <>
+            <Row justify="space-between">
+                <Title level={4}>Claims</Title>
+                {claims?.length > 0 ? (
+                    <Button
+                        type="primary"
+                        onClick={() => setIsClaimCreationModalVisible(true)}
+                        icon={<FileAddOutlined />}
+                    >
+                        File Claim
+                    </Button>
+                ) : null}
+            </Row>
+            <ClaimListErrorBar />
             {claims?.length === undefined || claims?.length === 0
                 ? renderEmpty()
                 : claims.map((claim: Claim) => {

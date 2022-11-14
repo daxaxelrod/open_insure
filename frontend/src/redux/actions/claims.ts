@@ -27,8 +27,12 @@ export const createClaim =
                 payload: response.data,
                 policyId,
             });
-        } catch (error) {
-            dispatch({ type: CREATE_CLAIM_FAILURE, payload: error, policyId });
+        } catch (error: any) {
+            dispatch({
+                type: CREATE_CLAIM_FAILURE,
+                payload: error?.response?.data,
+                policyId,
+            });
         }
     };
 

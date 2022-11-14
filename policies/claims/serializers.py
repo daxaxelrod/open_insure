@@ -91,7 +91,7 @@ class ClaimSerializer(serializers.ModelSerializer):
                 payer=self.context["request"].user,
                 due_date__lte=timezone.now(),
             )
-            missed_premiums = [x for x in premiums if not x.paid]
+            missed_premiums = [x.short_description() for x in premiums if not x.paid]
             if len(missed_premiums):
                 raise serializers.ValidationError(
                     {

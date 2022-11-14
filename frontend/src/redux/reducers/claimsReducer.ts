@@ -15,12 +15,14 @@ export interface ClaimsState {
     claims: Record<number, Claim[]>;
     claimCreationPending: boolean;
     getClaimsPending: boolean;
+    creationError: any;
 }
 
 const initialState: ClaimsState = {
     claims: {},
     claimCreationPending: false,
     getClaimsPending: false,
+    creationError: null,
 };
 
 export default (
@@ -46,6 +48,10 @@ export default (
             return {
                 ...state,
                 claimCreationPending: false,
+                creationError: {
+                    policyId,
+                    payload,
+                },
             };
         case GET_CLAIMS_FOR_POLICY_PENDING:
             return {
