@@ -1,13 +1,19 @@
 import { Progress } from "antd";
 import React from "react";
 import { Claim, Policy } from "../../../../../redux/reducers/commonTypes";
+import colors from "../../../../constants/colors";
 
 function ThresholdBar({ location }: { location: number }) {
     return (
         <div
             style={{
-                display: "absolute",
-                left: `${location}%`,
+                position: "absolute",
+                left: `${location * 0.81}%`,
+                width: "1px",
+                height: "100%",
+                top: 2,
+                bottom: 0,
+                borderRight: `2px dashed ${colors.alert2}`,
             }}
         />
     );
@@ -20,16 +26,26 @@ export default function ClaimVoteStatus({
     claim: Claim;
     policy: Policy;
 }) {
+    let percent = 20;
     return (
         <div
             style={{
-                display: "flex",
+                marginTop: "1rem",
+                justifyContent: "center",
+                position: "relative",
             }}
         >
+            <Progress
+                percent={percent}
+                status={
+                    percent >= policy.claim_approval_threshold_percentage
+                        ? "success"
+                        : "normal"
+                }
+            />
             <ThresholdBar
                 location={policy.claim_approval_threshold_percentage}
             />
-            <Progress percent={20} />
         </div>
     );
 }

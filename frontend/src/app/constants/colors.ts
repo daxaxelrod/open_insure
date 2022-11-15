@@ -14,6 +14,7 @@ export default {
     gray13: "#000000",
     warning1: "#ff7a45",
     alert1: "#f5222d",
+    alert2: "#fa541c",
     good: "#52c41a",
     lightGood: "#64E392",
 };

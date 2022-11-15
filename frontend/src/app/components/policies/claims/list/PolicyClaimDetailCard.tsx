@@ -6,6 +6,7 @@ import { useAppSelector } from "../../../../../redux/hooks";
 import ClaimStatusBar from "./ClaimStatusBar";
 import ClaimEvidenceImages from "./ClaimEvidenceImages";
 import ClaimVoteStatus from "./ClaimVoteStatus";
+import colors from "../../../../constants/colors";
 
 const { Title, Paragraph } = Typography;
 
@@ -17,9 +18,11 @@ type props = {
 const ClaimTitle = ({ claim, claimant }: { claim: Claim; claimant?: User }) => {
     return (
         <div>
-            <Title level={4}>{claim.title}</Title>
             <Row justify="end">
-                <Paragraph>
+                <Title level={4}>{claim.title}</Title>
+            </Row>
+            <Row justify="end">
+                <Paragraph style={{ color: colors.gray8 }}>
                     Submitted by {claimant?.first_name}{" "}
                     {claimant?.last_name.slice(0, 1)}
                 </Paragraph>
@@ -51,10 +54,10 @@ export default function PolicyClaimDetailCard({ claim, policy }: props) {
                     }}
                 >
                     <Row>
-                        <Col span={6}>
+                        <Col span={9}>
                             <ClaimEvidenceImages claim={claim} />
                         </Col>
-                        <Col span={18}>
+                        <Col span={14} offset={1}>
                             <ClaimTitle claim={claim} claimant={claimant} />
                             <ClaimVoteStatus claim={claim} policy={policy} />
                         </Col>
