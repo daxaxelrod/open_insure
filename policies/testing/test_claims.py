@@ -23,6 +23,14 @@ class ClaimsTestCase(TestCase):
 
         client.login(username=self.main_user.username, password="password")
 
+    def generate_approvals(self, claim):
+        pod_members_except_claimant = claim.policy.pod.members.all().exclude(id=claim.claimant.id)
+        approvals = [
+            ClaimApproval(claim=claim, approver=user)
+            for user in pod_members_except_claimant
+        ]
+        ClaimApproval.objects.bulk_create(approvals)
+
     def test_create_claim_sets_requestor_as_claimant(self):
         payload = {
             "title": "Test Claim",
@@ -30,7 +38,7 @@ class ClaimsTestCase(TestCase):
             "policy": self.policy.id,
             "amount": 1000, # $10
         }
-        response = client.post("/api/v1/claims/", payload)
+        response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload)
         _json = response.json()
         
         self.assertEquals(response.status_code, HTTP_201_CREATED)
@@ -53,11 +61,14 @@ class ClaimsTestCase(TestCase):
             "amount": 1000, # $10
         }
 
-        claim_creation_response = client.post("/api/v1/claims/", payload)
+        claim_creation_response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload)
         try:
             main_user_claim = Claim.objects.get(policy=self.policy, claimant=self.main_user)
         except Claim.DoesNotExist:
             self.assertTrue(False)
+        
+        self.generate_approvals(main_user_claim)
+
         member_claim_approval = ClaimApproval.objects.get(claim=main_user_claim, approver=self.member_user)
 
         # member 1 approves the claim
@@ -83,7 +94,7 @@ class ClaimsTestCase(TestCase):
             "policy": self.policy.id,
             "amount": 1000, # $10
         }
-        response = client.post("/api/v1/claims/", payload)
+        response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload)
         
         num_claims_for_policy = Claim.objects.filter(policy=self.policy).count()
         
@@ -100,7 +111,7 @@ class ClaimsTestCase(TestCase):
             "policy": self.policy.id,
             "amount": 1000, # $10
         }
-        response = client.post("/api/v1/claims/", payload)
+        response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload)
         claims = Claim.objects.filter(policy=self.policy)
 
         self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
@@ -121,7 +132,7 @@ class ClaimsTestCase(TestCase):
             "policy": orignal_claim.policy.id,
             "amount": orignal_claim.amount
         }
-        response = client.post("/api/v1/claims/", payload)
+        response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload)
 
         all_claims = Claim.objects.filter(policy=self.policy).count()
         self.assertEquals(response.status_code, HTTP_201_CREATED)
@@ -146,7 +157,7 @@ class ClaimsTestCase(TestCase):
             "description": "Testing no duplicates",
             "amount": 1000,
         }
-        response = client.post("/api/v1/claims/", claim_over_limit)
+        response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", claim_over_limit)
         _json = response.json()
 
         # claim got created but amount was lowered
@@ -167,7 +178,7 @@ class ClaimsTestCase(TestCase):
             "description": "Testing no duplicates",
             "amount": 1000,
         }
-        response = client.post("/api/v1/claims/", claim_over_limit)
+        response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", claim_over_limit)
         claims = Claim.objects.filter(policy=self.policy)
 
         self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
@@ -188,7 +199,7 @@ class ClaimsTestCase(TestCase):
             "description": "I swear, plz pay me",
             "amount": 50,
         }
-        response = client.post("/api/v1/claims/", claim_over_limit)
+        response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", claim_over_limit)
         claims = Claim.objects.filter(policy=self.policy)
 
         self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
@@ -209,16 +220,18 @@ class ClaimsTestCase(TestCase):
             "description": "I should be declined",
             "amount": 1000,
         }
-        response = client.post("/api/v1/claims/", payload)
+        response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload)
         _json = response.json()
         outstanding_claim_id = _json["id"]
         overage_claim = Claim.objects.get(id=outstanding_claim_id)
+        self.generate_approvals(overage_claim)
 
         # then that same user makes a claim of $50 which gets instantly paid
         create_paid_claim_for_user(self.main_user, self.policy, 5000)
 
         
         member_claim_approval = ClaimApproval.objects.get(claim=overage_claim, approver=self.member_user)
+        
 
         # member 1 tries to approves the claim
         client.login(username=self.member_user.username, password="password")
