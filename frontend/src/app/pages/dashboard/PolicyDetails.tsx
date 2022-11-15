@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Button, Col, Row, Space, Tabs, Typography } from "antd";
+import { Col, Row, Space, Tabs, Typography } from "antd";
 import { Policy, User } from "../../../redux/reducers/commonTypes";
 
 import moment from "moment-timezone";
-import colors from "../../constants/colors";
 import PolicyQuoteRequestForm, {
     PolicyQuoteRequestBoxRefType,
 } from "../../components/policies/quotes/PolicyQuoteRequestBox";
@@ -22,12 +21,13 @@ import PolicySettingsModal from "../../components/policies/premiums/settings/Pol
 import PolicyPremiums from "../../components/policies/premiums/PolicyPremiums";
 
 import "../../styles/dashboard/PolicyDetails.css";
-import PolicyClaimsList from "../../components/policies/claims/PolicyClaimsList";
+import PolicyClaimsList from "../../components/policies/claims/list/PolicyClaimsList";
 
 const { Title, Paragraph } = Typography;
 
 export default function PolicyDetails() {
     let { id } = useParams();
+    const [activeTabKey, setActiveTabKey] = useState("1");
     let dispatch = useAppDispatch();
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
@@ -125,11 +125,13 @@ export default function PolicyDetails() {
                 size="large"
                 type="card"
                 className="policyDetailsTabs"
+                activeKey={activeTabKey}
+                onTabClick={(key) => setActiveTabKey(key)}
             >
-                <Tabs.TabPane tab="Covered Assets" key="2">
+                <Tabs.TabPane tab="Covered Assets" key="1">
                     <RiskTable policy={policy} />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Members" key="1" animated active>
+                <Tabs.TabPane tab="Members" key="2" animated>
                     <MembersTable policy={policy} />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Premiums" key="3">

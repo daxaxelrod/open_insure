@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Button, Empty, Row, Typography } from "antd";
 import { useParams } from "react-router-dom";
 import { FileAddOutlined } from "@ant-design/icons";
-import { useAppSelector } from "../../../../redux/hooks";
-import { Claim, Policy } from "../../../../redux/reducers/commonTypes";
-import ClaimCreationModalForm from "./ClaimCreationModalForm";
-import PolicyClaimDetailCard from "./PolicyClaimDetailCard";
+import { useAppSelector } from "../../../../../redux/hooks";
+import { Claim, Policy } from "../../../../../redux/reducers/commonTypes";
+import ClaimCreationModalForm from "../ClaimCreationModalForm";
 import ClaimListErrorBar from "./ClaimListErrorBar";
+import PolicyClaimDetailCard from "./PolicyClaimDetailCard";
 
 const { Title } = Typography;
 
@@ -77,11 +77,20 @@ export default function PolicyClaimsList() {
                 ) : null}
             </Row>
             <ClaimListErrorBar />
-            {claims?.length === undefined || claims?.length === 0
-                ? renderEmpty()
-                : claims.map((claim: Claim) => {
-                      return <PolicyClaimDetailCard claim={claim} />;
-                  })}
+            {claims?.length === undefined || claims?.length === 0 ? (
+                renderEmpty()
+            ) : (
+                <Row gutter={[16, 16]}>
+                    {claims.map((claim: Claim) => {
+                        return (
+                            <PolicyClaimDetailCard
+                                claim={claim}
+                                policy={policy}
+                            />
+                        );
+                    })}
+                </Row>
+            )}
             <ClaimCreationModalForm
                 policy={policy}
                 visible={isClaimCreationModalVisible}
