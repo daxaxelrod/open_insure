@@ -22,7 +22,7 @@ const ClaimTitle = ({ claim, claimant }: { claim: Claim; claimant?: User }) => {
                 <Title level={4}>{claim.title}</Title>
             </Row>
             <Row justify="end">
-                <Paragraph style={{ color: colors.gray8 }}>
+                <Paragraph style={{ color: colors.gray8, fontSize: "1.2rem" }}>
                     {claimant?.picture ? (
                         <img
                             src={claimant?.picture}

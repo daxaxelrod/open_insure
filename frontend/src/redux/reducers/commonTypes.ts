@@ -34,14 +34,16 @@ export interface PolicyMemberApprovals {
 }
 
 export interface Evidence {
+    id: number;
     claim: number;
-    evidence_type: string;
+    evidence_type: "photo" | "video" | "document";
     url: string;
     created_at: string;
     updated_at: string;
 }
 
 export interface ClaimComment {
+    id: number;
     claim: number;
     commenter: number;
     comment: string;
@@ -62,6 +64,7 @@ export interface Claim {
     updated_at: string;
     approvals: PolicyMemberApprovals[];
     evidence: Evidence[];
+    comments: ClaimComment[];
 }
 
 export interface Pod {
