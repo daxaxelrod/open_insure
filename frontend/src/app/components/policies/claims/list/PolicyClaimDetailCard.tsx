@@ -23,8 +23,19 @@ const ClaimTitle = ({ claim, claimant }: { claim: Claim; claimant?: User }) => {
             </Row>
             <Row justify="end">
                 <Paragraph style={{ color: colors.gray8 }}>
-                    Submitted by {claimant?.first_name}{" "}
-                    {claimant?.last_name.slice(0, 1)}
+                    {claimant?.picture ? (
+                        <img
+                            src={claimant?.picture}
+                            style={{
+                                height: 25,
+                                width: 25,
+                                borderRadius: 15,
+                                marginRight: 5,
+                            }}
+                            alt="user avatar"
+                        />
+                    ) : null}
+                    {claimant?.first_name} {claimant?.last_name.slice(0, 1)}
                 </Paragraph>
             </Row>
         </div>

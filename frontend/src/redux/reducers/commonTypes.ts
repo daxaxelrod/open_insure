@@ -32,6 +32,22 @@ export interface PolicyMemberApprovals {
     created_at: string;
     updated_at: string;
 }
+
+export interface Evidence {
+    claim: number;
+    evidence_type: string;
+    url: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface ClaimComment {
+    claim: number;
+    commenter: number;
+    comment: string;
+    created_at: string;
+    updated_at: string;
+}
 export interface Claim {
     id: number;
     policy: number;
@@ -45,6 +61,7 @@ export interface Claim {
     created_at: string;
     updated_at: string;
     approvals: PolicyMemberApprovals[];
+    evidence: Evidence[];
 }
 
 export interface Pod {
