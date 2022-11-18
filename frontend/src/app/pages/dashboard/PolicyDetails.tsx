@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { Col, Row, Space, Tabs, Typography } from "antd";
@@ -22,33 +22,37 @@ import PolicyPremiums from "../../components/policies/premiums/PolicyPremiums";
 
 import "../../styles/dashboard/PolicyDetails.css";
 import PolicyClaimsList from "../../components/policies/claims/list/PolicyClaimsList";
+import { setPolicyDetailTabKey } from "../../../redux/actions/ui";
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 export default function PolicyDetails() {
     let { id } = useParams();
-    const [activeTabKey, setActiveTabKey] = useState("1");
+
     let dispatch = useAppDispatch();
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
             (p: Policy) => p.id === parseInt(id || "")
         )
     );
+    const policyDetailTabIndex = useAppSelector(
+        (state) => state.ui.policyDetailTabKey
+    );
     let policyQuoteDrawerFormRef = useRef<PolicyQuoteRequestBoxRefType>(null);
     let currentUser = useAppSelector((state) => state.auth.currentUser);
     let focusedRisk = useAppSelector((state) => state.risk.focusedRisk);
-
-    useEffect(() => {
-        if (policy && policy?.id && focusedRisk === null) {
-            dispatch(getOrCreateRisk(policy?.id, {}));
-        }
-    }, [policy, focusedRisk]);
 
     let doesPolicyHaveStartDate = policy?.coverage_start_date;
     let hasPolicyStarted = false;
     if (doesPolicyHaveStartDate) {
         hasPolicyStarted = moment().isAfter(moment(policy.coverage_start_date));
     }
+
+    useEffect(() => {
+        if (policy && policy?.id && focusedRisk === null) {
+            dispatch(getOrCreateRisk(policy?.id, {}));
+        }
+    }, [policy, focusedRisk]);
 
     if (!policy) {
         return <PolicyDetailSkeleton />;
@@ -125,8 +129,8 @@ export default function PolicyDetails() {
                 size="large"
                 type="card"
                 className="policyDetailsTabs"
-                activeKey={activeTabKey}
-                onTabClick={(key) => setActiveTabKey(key)}
+                activeKey={policyDetailTabIndex}
+                onTabClick={(key) => dispatch(setPolicyDetailTabKey(key))}
             >
                 <Tabs.TabPane tab="Covered Assets" key="1">
                     <RiskTable policy={policy} />

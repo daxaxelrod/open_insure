@@ -109,3 +109,6 @@ export const GET_CLAIMS_FOR_POLICY_SUCCESS =
 export const GET_CLAIMS_FOR_POLICY_FAILURE =
     "claims/GET_CLAIMS_FOR_POLICY_FAILURE";
 export const SET_CLAIMS_FOR_POLICY = "claims/SET_CLAIMS_FOR_POLICY"; // for use by a get policy list call
+
+// UI
+export const SET_POLICY_DETAIL_TAB_KEY = "ui/SET_POLICY_DETAIL_TAB_KEY";

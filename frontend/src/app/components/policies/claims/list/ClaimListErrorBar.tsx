@@ -4,9 +4,6 @@ import { useAppSelector } from "../../../../../redux/hooks";
 
 export default function ClaimListErrorBar() {
     const error = useAppSelector((state) => state.claims.creationError);
-
-    console.log(error);
-
     if (error) {
         return (
             <Alert

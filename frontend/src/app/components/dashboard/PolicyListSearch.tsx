@@ -7,6 +7,7 @@ import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import CreatePolicyModal from "./modals/CreatePolicyModal";
 import PolicyCard from "../policies/publicCard/PolicyCard";
 import { CLEAR_FOCUSED_RISK } from "../../../redux/actions/types";
+import { setPolicyDetailTabKey } from "../../../redux/actions/ui";
 
 const { Title } = Typography;
 
@@ -23,6 +24,7 @@ export default function PolicyListSearch() {
         if (focusedRisk) {
             dispatch({ type: CLEAR_FOCUSED_RISK });
         }
+        dispatch(setPolicyDetailTabKey("1"));
     }, []);
 
     return (
