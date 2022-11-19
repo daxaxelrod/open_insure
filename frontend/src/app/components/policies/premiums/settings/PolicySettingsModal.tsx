@@ -483,7 +483,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                 />
             </Modal>
 
-            <Button type="dashed" onClick={() => setVisible(true)}>
+            <Button type="default" onClick={() => setVisible(true)}>
                 <Paragraph style={{ color: colors.gray8 }}>
                     <SettingOutlined /> Settings
                 </Paragraph>

@@ -19,12 +19,13 @@ import UserPolicies from "./app/pages/UserPolicies";
 import PolicyDetails from "./app/pages/dashboard/PolicyDetails";
 import UserProfile from "./app/pages/UserProfile";
 import NotFound from "./app/pages/NotFound";
-import ClaimDetails from "./app/pages/ClaimDetails";
+import ClaimDetails from "./app/pages/claims/ClaimDetails";
 
 import PublicProfile from "./app/components/users/PublicProfile";
 import { isLoggedIn } from "axios-jwt";
 import PolicyPoolDetails from "./app/pages/dashboard/PolicyPoolDetails";
 import PolicyPremiumDetails from "./app/components/policies/premiums/PolicyPremiums";
+import ClaimCreate from "./app/pages/claims/ClaimCreate";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -56,6 +57,10 @@ root.render(
                                     element={<PolicyDetails />}
                                 />
                                 <Route
+                                    path="policy/:id/claims/new"
+                                    element={<ClaimCreate />}
+                                />
+                                <Route
                                     path="policy/:id/claims/:claimId"
                                     element={<ClaimDetails />}
                                 />
@@ -72,8 +77,8 @@ root.render(
                                     path="/members/:id"
                                     element={<PublicProfile />}
                                 />
+                                <Route path="*" element={<NotFound />} />
                             </Route>
-                            <Route path="*" element={<NotFound />} />
                         </Routes>
                     </BrowserRouter>
                 </Layout>

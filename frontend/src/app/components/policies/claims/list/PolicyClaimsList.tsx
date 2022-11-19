@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { Button, Empty, Row, Typography } from "antd";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FileAddOutlined } from "@ant-design/icons";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { Claim, Policy } from "../../../../../redux/reducers/commonTypes";
-import ClaimCreationModalForm from "../ClaimCreationModalForm";
-import ClaimListErrorBar from "./ClaimListErrorBar";
 import PolicyClaimDetailCard from "./PolicyClaimDetailCard";
 
 const { Title } = Typography;
@@ -13,6 +11,7 @@ const { Title } = Typography;
 export default function PolicyClaimsList() {
     const { id } = useParams();
     const policyId = parseInt(id || "");
+    const navigate = useNavigate();
     const policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find((p: Policy) => p.id === policyId)
     );
@@ -21,6 +20,10 @@ export default function PolicyClaimsList() {
 
     const [isClaimCreationModalVisible, setIsClaimCreationModalVisible] =
         useState(false);
+
+    const goToClaimSetup = () => {
+        navigate("/policy/" + policyId + "/claims/new");
+    };
 
     // no need to fetch claims on load, initial policy load already did that
 
@@ -48,9 +51,7 @@ export default function PolicyClaimsList() {
                             <Row>
                                 <Button
                                     type="primary"
-                                    onClick={() =>
-                                        setIsClaimCreationModalVisible(true)
-                                    }
+                                    onClick={() => goToClaimSetup()}
                                 >
                                     File Claim
                                 </Button>
@@ -69,14 +70,13 @@ export default function PolicyClaimsList() {
                 {claims?.length > 0 ? (
                     <Button
                         type="primary"
-                        onClick={() => setIsClaimCreationModalVisible(true)}
+                        onClick={() => goToClaimSetup()}
                         icon={<FileAddOutlined />}
                     >
                         File Claim
                     </Button>
                 ) : null}
             </Row>
-            <ClaimListErrorBar />
             {claims?.length === undefined || claims?.length === 0 ? (
                 renderEmpty()
             ) : (
@@ -91,13 +91,6 @@ export default function PolicyClaimsList() {
                     })}
                 </Row>
             )}
-            <ClaimCreationModalForm
-                policy={policy}
-                visible={isClaimCreationModalVisible}
-                close={() => {
-                    setIsClaimCreationModalVisible(false);
-                }}
-            />
         </>
     );
 }

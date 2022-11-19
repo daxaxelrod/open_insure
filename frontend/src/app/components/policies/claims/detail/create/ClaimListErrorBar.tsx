@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert } from "antd";
-import { useAppSelector } from "../../../../../redux/hooks";
+import { useAppSelector } from "../../../../../../redux/hooks";
 
 export default function ClaimListErrorBar() {
     const error = useAppSelector((state) => state.claims.creationError);

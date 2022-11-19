@@ -13,26 +13,20 @@ import {
     Typography,
 } from "antd";
 import { DownSquareOutlined, UpSquareOutlined } from "@ant-design/icons";
-import { createClaim } from "../../../../redux/actions/claims";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
-import colors from "../../../constants/colors";
-import { getCostPerType } from "./utils/cost";
+import { createClaim } from "../../../../../../redux/actions/claims";
+import { useAppDispatch, useAppSelector } from "../../../../../../redux/hooks";
+import { Policy, Risk } from "../../../../../../redux/reducers/commonTypes";
+import colors from "../../../../../constants/colors";
+import { getCostPerType } from "../../utils/cost";
 
 const { TextArea } = Input;
 const { Paragraph, Title } = Typography;
 
-type ClaimCreationModalFormProps = {
+type ClaimCreationFormProps = {
     policy: Policy;
-    visible: boolean;
-    close: () => void;
 };
 
-export default function ClaimCreationModalForm({
-    policy,
-    visible,
-    close,
-}: ClaimCreationModalFormProps) {
+export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
     const dispatch = useAppDispatch();
     const [showHelp, setShowHelp] = useState(false);
     const [selectedDamageView, setSelectedDamageView] = useState<string>();
@@ -65,34 +59,11 @@ export default function ClaimCreationModalForm({
                     policy: policy?.id,
                 })
             );
-            close();
         });
     };
 
-    const handleCancel = () => {
-        close();
-    };
-
     return (
-        <Modal
-            visible={visible}
-            title={`Create a claim`}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            footer={[
-                <Button key="back" onClick={handleCancel}>
-                    Close
-                </Button>,
-                <Button
-                    key="submit"
-                    type="primary"
-                    loading={claimCreationPending}
-                    onClick={handleOk}
-                >
-                    Submit
-                </Button>,
-            ]}
-        >
+        <div>
             <Form
                 form={form}
                 layout="vertical"
@@ -100,6 +71,8 @@ export default function ClaimCreationModalForm({
                 initialValues={{
                     lossPercentage: 20,
                 }}
+                title={`Create a claim`}
+                onFinish={handleOk}
             >
                 <Form.Item
                     label="Title"
@@ -307,6 +280,6 @@ export default function ClaimCreationModalForm({
                     )}
                 </Form.Item>
             </Form>
-        </Modal>
+        </div>
     );
 }
