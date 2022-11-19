@@ -1,7 +1,6 @@
-import { Divider, Form, Radio } from "antd";
 import React from "react";
-import { Typography } from "antd";
-import FormItemLabel from "antd/lib/form/FormItemLabel";
+import { Typography, Form, Radio } from "antd";
+
 const { Title } = Typography;
 
 function getHumanReadableRiskName(type: string) {

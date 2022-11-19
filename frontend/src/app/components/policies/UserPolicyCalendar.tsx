@@ -4,8 +4,8 @@ import type { BadgeProps } from "antd";
 import { Badge, Calendar, Typography } from "antd";
 import moment from "moment-timezone";
 import type { Moment } from "moment";
-import { PresetStatusColorType } from "antd/lib/_util/colors";
 import { useAppSelector } from "../../../redux/hooks";
+import { PresetStatusColorType } from "antd/es/_util/colors";
 
 const { Title } = Typography;
 interface CalendarItem {
@@ -58,7 +58,8 @@ export default function UserPolicyCalendar({
         return listData || [];
     };
 
-    const dateCellRender = (value: Moment) => {
+    const dateCellRender = (value: any) => {
+        // value is Dayjs?
         const listData = getListData(value);
         return (
             <ul className="events">

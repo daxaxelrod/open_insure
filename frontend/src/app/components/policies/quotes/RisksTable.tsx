@@ -12,7 +12,6 @@ import {
     CustomerServiceOutlined,
     WarningOutlined,
 } from "@ant-design/icons";
-import type { ColumnsType } from "antd/es/table";
 import { Alert, Drawer, Image, Table, Tooltip, Typography } from "antd";
 import { getHumanReadableCondition } from "../utils/riskUtils";
 import { Link } from "react-router-dom";
@@ -20,6 +19,7 @@ import colors from "../../../constants/colors";
 import { ConditionalWrapper } from "../../../utils/componentUtils";
 import PolicyQuoteForm from "./PolicyQuoteForm";
 
+import type { ColumnsType } from "antd/es/table";
 interface RiskRowType extends Risk {
     key: React.Key;
 }

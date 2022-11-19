@@ -51,7 +51,12 @@ export default function Home(props: any) {
 
     return (
         <Layout style={{ padding: "0 24px 24px" }}>
-            <Sider trigger={null} collapsible collapsed={collapsed}>
+            <Sider
+                trigger={null}
+                collapsible
+                collapsed={collapsed}
+                theme="light"
+            >
                 <div className="logo" />
                 <Menu
                     theme="light"

@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import Layout, { Content } from "antd/lib/layout/layout";
 import Banner from "../components/home/Banner";
 import Page1 from "../components/home/Page1";
 import Page2 from "../components/home/Page2";
 import Page3 from "../components/home/Page3";
 import Footer from "../components/home/Footer";
 import styled from "styled-components";
+import { Layout } from "antd";
 
 export default function Home() {
     return (
         <Layout>
-            <Content>
+            <Layout.Content>
                 <Banner key="banner" />
                 <Page1 key="page1" />
                 <Page2 key="page2" />
@@ -75,7 +75,7 @@ export default function Home() {
                     </Col>
                 </Row> */}
                 <Footer key="footer" />
-            </Content>
+            </Layout.Content>
         </Layout>
     );
 }

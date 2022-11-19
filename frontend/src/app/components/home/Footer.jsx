@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 const { Footer } = Layout;
 
 function OpenInsureFooter() {
+    const [api, contextHolder] = notification.useNotification();
+
     return (
         <Footer className="dark" style={{ marginBottom: 60 }}>
             <div className="footer-wrap">
@@ -43,7 +45,7 @@ function OpenInsureFooter() {
                             <div>
                                 <a
                                     onClick={() => {
-                                        notification.info({
+                                        api.info({
                                             placement: "bottomRight",
                                             message: "Interest noted",
                                             description: "Will build if demand",
@@ -56,7 +58,7 @@ function OpenInsureFooter() {
                             <div>
                                 <a
                                     onClick={() => {
-                                        notification.info({
+                                        api.info({
                                             placement: "bottomRight",
                                             message: `The backend is served from ${process.env.REACT_APP_BACKEND_URL}`,
                                         });
@@ -73,7 +75,7 @@ function OpenInsureFooter() {
                             <div>
                                 <a
                                     onClick={() => {
-                                        notification.success({
+                                        api.success({
                                             placement: "bottomRight",
                                             message: "Link copied to clipboard",
                                         });

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Col, Row, UploadProps } from "antd";
+import { Col, Row, UploadFile, UploadProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Typography, message, Upload, Modal } from "antd";
 
 import { Risk, Image, Policy } from "../../../../../redux/reducers/commonTypes";
 import { UploadRequestOption } from "rc-upload/lib/interface";
-import { RcFile, UploadFile } from "antd/lib/upload/interface";
 import { getBase64 } from "../../utils/photoUtils";
 import { getAssetTypeName } from "../../../../utils/riskUtils";
 import {
@@ -14,6 +13,7 @@ import {
 } from "../../../../../networking/risk";
 import { useAppDispatch } from "../../../../../redux/hooks";
 import { updatePhotoSet } from "../../../../../redux/actions/risk";
+import { RcFile } from "antd/es/upload";
 const { Paragraph } = Typography;
 
 // auto upload image to risk, dont rely on the parent form

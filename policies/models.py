@@ -268,6 +268,12 @@ class Claim(models.Model):
         null=True, blank=True, help_text="Null means not paid yet"
     )
 
+    location_lat = models.FloatField(null=True, blank=True)
+    location_long = models.FloatField(null=True, blank=True)
+
+    occurance_date = models.DateField(null=True, blank=True)
+
+
     # does this need more context? Maybe another field with an explanation
     # its useful for allowing the system to mark claims as over the limit without having to recompute all the prior payouts each time
     is_claim_invalid = models.BooleanField(

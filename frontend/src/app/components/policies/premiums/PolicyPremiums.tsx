@@ -18,17 +18,17 @@ import {
     Risk,
     User,
 } from "../../../../redux/reducers/commonTypes";
-import { ColumnsType } from "antd/lib/table";
 import moment from "moment-timezone";
-import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { getHumanReadablePaymentFrequencyForPolicy } from "../utils/riskUtils";
 import colors from "../../../constants/colors";
 import {
     getPolicyPremiums,
     patchPremium,
 } from "../../../../redux/actions/premiums";
+import type { ColumnsType } from "antd/es/table";
 
 import "../../../styles/dashboard/PolicyPremiumDetails.css";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 const { Title, Paragraph } = Typography;
 
@@ -42,6 +42,7 @@ export default function PolicyPremiums() {
     let { id } = useParams();
     let policyId = parseInt(id || "");
     let dispatch = useAppDispatch();
+    const [api] = notification.useNotification();
     let [isUnpaidWarningOpen, setIsUnpaidWarningOpen] = useState(false);
     let [localFocusedPremiumId, setLocalFocusedPremiumId] =
         useState<number>(-1);
@@ -65,7 +66,7 @@ export default function PolicyPremiums() {
                 );
             }
         } else {
-            notification.warn({
+            api.warning({
                 message: "Only policy members can modify premiums",
                 placement: "top",
             });

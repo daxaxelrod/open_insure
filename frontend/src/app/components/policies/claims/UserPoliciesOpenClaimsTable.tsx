@@ -1,9 +1,9 @@
 import React from "react";
-import type { ColumnsType } from "antd/es/table";
 import { Table, Typography } from "antd";
 import { Claim, Policy } from "../../../../redux/reducers/commonTypes";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../../../redux/hooks";
+import type { ColumnsType } from "antd/es/table";
 
 const { Title } = Typography;
 

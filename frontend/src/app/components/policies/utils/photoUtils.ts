@@ -1,4 +1,4 @@
-import { RcFile } from "antd/lib/upload";
+import { RcFile } from "antd/es/upload";
 
 export const getBase64 = (file: RcFile): Promise<string> =>
     new Promise((resolve, reject) => {

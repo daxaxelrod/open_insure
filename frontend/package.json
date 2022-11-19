@@ -13,7 +13,7 @@
         "@types/react": "^18.0.14",
         "@types/react-dom": "^18.0.5",
         "@types/styled-components": "^5.1.26",
-        "antd": "^4.24.3",
+        "antd": "^5.0.0",
         "axios": "^0.27.2",
         "axios-jwt": "^1.8.0",
         "chart.js": "^3.8.2",

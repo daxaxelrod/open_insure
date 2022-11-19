@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import TextArea from "antd/lib/input/TextArea";
 import {
     Button,
     Col,
@@ -13,17 +12,14 @@ import {
     Tooltip,
     Typography,
 } from "antd";
-import {
-    DownSquareOutlined,
-    UpSquareOutlined,
-    DownOutlined,
-} from "@ant-design/icons";
+import { DownSquareOutlined, UpSquareOutlined } from "@ant-design/icons";
 import { createClaim } from "../../../../redux/actions/claims";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
 import colors from "../../../constants/colors";
 import { getCostPerType } from "./utils/cost";
 
+const { TextArea } = Input;
 const { Paragraph, Title } = Typography;
 
 type ClaimCreationModalFormProps = {

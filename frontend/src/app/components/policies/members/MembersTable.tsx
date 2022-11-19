@@ -2,11 +2,12 @@ import React, { useEffect } from "react";
 import { Avatar, Button, Row, Table, Typography, notification } from "antd";
 
 import { Policy, User } from "../../../../redux/reducers/commonTypes";
-import { ColumnsType } from "antd/lib/table";
 import { CheckOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { Link } from "react-router-dom";
 import { getPodById } from "../../../../redux/actions/pods";
+import type { ColumnsType } from "antd/es/table";
+
 const { Title } = Typography;
 
 interface MemberRowType extends User {

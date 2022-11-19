@@ -26,7 +26,7 @@ export default function ClaimVoteStatus({
     claim: Claim;
     policy: Policy;
 }) {
-    let percent = 50;
+    let percent = 70;
     return (
         <div
             style={{
