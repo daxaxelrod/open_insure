@@ -2,10 +2,10 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 
-from policies.models import Claim, ClaimApproval, Policy
-from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer
+from policies.models import Claim, ClaimApproval, ClaimEvidence, Policy
+from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer, ClaimEvidenceSerializer
 from policies.claims.permissions import InClaimPod, InClaimApprovalPod, IsNotClaimant
 
 
@@ -45,3 +45,14 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
         claim.paid_on = timezone.now()
         claim.save()
 
+class ClaimEvidenceAPIView(CreateAPIView):
+    '''
+        Frontend workflow necessitates that we create image assets for the claim before we can create the claim itself
+
+        Clients will create images first (which is linked to the photo upload) and then attach them to the claim
+    '''
+    serializer_class = ClaimEvidenceSerializer
+    permission_classes = [IsAuthenticated & InClaimPod]
+
+    def perform_create(self, serializer):
+        return serializer.create(policy=self.kwargs["policy_id"], owner=self.request.user)

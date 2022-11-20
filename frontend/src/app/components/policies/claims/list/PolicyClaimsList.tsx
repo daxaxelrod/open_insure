@@ -65,7 +65,7 @@ export default function PolicyClaimsList() {
 
     return (
         <>
-            <Row justify="space-between">
+            <Row justify="space-between" style={{ padding: "0 1rem 0 0" }}>
                 <Title level={4}>Claims</Title>
                 {claims?.length > 0 ? (
                     <Button

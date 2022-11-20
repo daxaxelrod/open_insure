@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../../redux/hooks";
 import { QuestionCircleOutlined, InboxOutlined } from "@ant-design/icons";
 import { Policy, Risk } from "../../../../../../redux/reducers/commonTypes";
 import colors from "../../../../../constants/colors";
+import ClaimEvidencePhotoUpload from "./ClaimEvidencePhotoUpload";
 
 const { TextArea } = Input;
 const { Paragraph, Title } = Typography;
@@ -217,29 +218,11 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                     </Row>
                 </Form.Item>
                 <Form.Item label="Upload Evidence">
-                    <Form.Item
-                        name="dragger"
-                        valuePropName="fileList"
-                        getValueFromEvent={handleUpload}
-                        noStyle
-                    >
-                        <Upload.Dragger
-                            name="files"
-                            action="/up"
-                            multiple
-                            maxCount={12}
-                        >
-                            <p className="ant-upload-drag-icon">
-                                <InboxOutlined />
-                            </p>
-                            <p className="ant-upload-text">
-                                Upload Photos or documents of the damage
-                            </p>
-                            <p className="ant-upload-hint">
-                                Support for a single or bulk upload.
-                            </p>
-                        </Upload.Dragger>
-                    </Form.Item>
+                    <ClaimEvidencePhotoUpload
+                        onUploadSuccess={() => {}}
+                        onUploadError={() => {}}
+                        policy={policy}
+                    />
                 </Form.Item>
                 <Form.Item
                     style={{
@@ -247,7 +230,12 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                         justifyContent: "flex-end",
                     }}
                 >
-                    <Button type="primary" htmlType="submit" size="large">
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        size="large"
+                        loading={claimCreationPending}
+                    >
                         Create Claim
                     </Button>
                 </Form.Item>

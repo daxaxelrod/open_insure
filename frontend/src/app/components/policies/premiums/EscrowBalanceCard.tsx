@@ -16,7 +16,7 @@ export default function EscrowBalanceCard({ policy }: { policy: Policy }) {
     };
 
     return (
-        <Card style={{ display: "flex", flex: 1, flexDirection: "column" }}>
+        <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <Row justify="space-between">
                 <Title level={4}>Pool Info</Title>
                 {/* <Button onClick={goToEscrowDetail}>More</Button> deprecated? */}
@@ -30,6 +30,6 @@ export default function EscrowBalanceCard({ policy }: { policy: Policy }) {
                     <PolicyPoolStats policy={policy} />
                 </Col>
             </Row>
-        </Card>
+        </div>
     );
 }

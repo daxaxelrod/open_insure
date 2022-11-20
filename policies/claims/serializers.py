@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.utils import timezone
-from policies.models import Claim, ClaimApproval, Premium
+from policies.models import Claim, ClaimApproval, ClaimEvidence, Premium
+from policies.model_choices import CLAIM_EVIDENCE_TYPE_CHOICES
 
 class FullClaimApprovalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -122,3 +123,10 @@ class ClaimSerializer(serializers.ModelSerializer):
         model = Claim
         fields = "__all__"
         read_only_fields = ["paid_on"]
+
+class ClaimEvidenceSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=True)
+    evidence_type = serializers.ChoiceField(choices=CLAIM_EVIDENCE_TYPE_CHOICES)
+    class Meta:
+        model = ClaimEvidence
+        fields = ["evidence_type", 'image']

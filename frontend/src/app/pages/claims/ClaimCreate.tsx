@@ -1,7 +1,7 @@
 import React from "react";
 import { Breadcrumb, Col, Row, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
 import { Policy } from "../../../redux/reducers/commonTypes";
 import ClaimCreationForm from "../../components/policies/claims/detail/create/ClaimCreationForm";
@@ -24,7 +24,7 @@ export default function ClaimCreate() {
                 <Breadcrumb>
                     <Link to={`/policy/${id}`}>
                         <Breadcrumb.Item>
-                            <ArrowLeftOutlined /> {policy?.name}
+                            <ArrowLeftOutlined /> Back to policy
                         </Breadcrumb.Item>
                     </Link>
                 </Breadcrumb>

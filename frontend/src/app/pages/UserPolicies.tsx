@@ -103,8 +103,16 @@ export default function UserPolicies() {
 }
 
 const ClaimsTab = ({ count }: { count: number }) => {
+    const [shouldShow, setShouldShow] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setShouldShow(true);
+        }, 600);
+    }, []);
+
     return (
-        <Badge count={count} className="ant-tabs-tab-btn">
+        <Badge count={shouldShow ? count : 0} className="ant-tabs-tab-btn">
             <div style={{ margin: "0 1rem" }}>Claims</div>
         </Badge>
     );

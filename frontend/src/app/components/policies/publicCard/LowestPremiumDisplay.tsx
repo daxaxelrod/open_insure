@@ -43,7 +43,7 @@ export default function LowestPremiumDisplay({
                         Starting at
                     </span>
                     <Title level={1} style={{ lineHeight: 1, marginBottom: 6 }}>
-                        ${amount / 100}
+                        ${(amount / 100).toFixed(2)}
                     </Title>
                     <Title
                         level={5}

@@ -322,11 +322,25 @@ class Claim(models.Model):
         return f"{approval_str} Claim for {self.policy.name} by {self.claimant}"
 
 
+# {
+#     title: "My claim",
+#     description: "I was robbed",
+#     evidence: [
+#         {
+#             type: "image",
+#         }
+#     ]
+# }
+
+
 class ClaimEvidence(models.Model):
     # Mainly just pictures of what happened. Just links to a url so could also be documents
-    claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="evidence")
+    claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="evidence", null=True, blank=True)
+    policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="claim_evidence")
+    owner = models.ForeignKey("pods.User", on_delete=models.CASCADE, related_name="claim_evidence")
     evidence_type = models.CharField(max_length=16, choices=CLAIM_EVIDENCE_TYPE_CHOICES)
-    url = models.URLField()
+    image = models.ImageField(upload_to="claim_evidence_images", max_length=264)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

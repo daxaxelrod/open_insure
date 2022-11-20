@@ -18,11 +18,12 @@ from policies.views import (
 from policies.claims.views import (
     ClaimApprovalViewSet,
     ClaimViewSet,
+    ClaimEvidenceAPIView,
 )
 
 router = routers.DefaultRouter()
-router.register(r"policies", PolicyViewSet)
 
+router.register(r"policies", PolicyViewSet)
 router.register(r"risk", RiskViewSet, basename="risk")
 
 policy_nested_router = routers.NestedSimpleRouter(router, r"policies", lookup="policy")
@@ -33,6 +34,7 @@ policy_nested_router.register(r"claims", ClaimViewSet, basename="policy-claims")
 urlpatterns = [
     re_path("policies/(?P<policy_id>\d+)/risk_settings/$", RiskSettingsViewSet.as_view()),
     re_path("policies/(?P<policy_id>\d+)/risk_settings/hypothetical/$", RiskSettingsHyptotheticalApiView.as_view()),
+    re_path("policies/(?P<policy_id>\d+)/claim_evidence/$", ClaimEvidenceAPIView.as_view(), name="policy-claim-evidence"),
     path("premiums/<int:pk>/", PremiumViewSet.as_view(), name="premium_detail"),
     path(
         "claims/<int:claim_pk>/approvals/<int:pk>/",
