@@ -4,42 +4,41 @@
     line-height: 64px;
     cursor: pointer;
     transition: color 0.3s;
-  }
-  
-  #components-layout-demo-custom-trigger .trigger:hover {
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
     color: #1890ff;
-  }
-  
-  #components-layout-demo-custom-trigger .logo {
+}
+
+#components-layout-demo-custom-trigger .logo {
     height: 32px;
     margin: 16px;
     background: rgba(255, 255, 255, 0.3);
-  }
-  
-  .site-layout .site-layout-background {
-    background: #fff;
-  }
+}
 
-  .site-layout .site-layout-background {
+.site-layout .site-layout-background {
+    background: #fff;
+}
+
+.site-layout .site-layout-background {
     background-color: #fff;
-  }
+}
 
-  .ant-layout {
+.ant-layout {
     min-height: 100vh;
-  }
+}
 
-  .ant-layout-header {
+.ant-layout-header {
     padding: 0 20px;
-  }
-  .ant-layout-header .trigger {
+}
+.ant-layout-header .trigger {
     padding: 20px;
-  }
+}
 
-  .ant-layout-sider {
+.ant-layout-sider {
     background: #fff;
-  } 
+}
 
-  .cursor-pointer {
+.cursor-pointer {
     cursor: pointer;
-  }
-  
+}

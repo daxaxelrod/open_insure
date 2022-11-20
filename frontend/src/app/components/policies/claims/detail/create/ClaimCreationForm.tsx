@@ -1,23 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     Button,
     Col,
-    Divider,
+    DatePicker,
     Form,
     Input,
-    Modal,
     Row,
-    Select,
     Slider,
     Tooltip,
     Typography,
+    Upload,
 } from "antd";
-import { DownSquareOutlined, UpSquareOutlined } from "@ant-design/icons";
+
 import { createClaim } from "../../../../../../redux/actions/claims";
 import { useAppDispatch, useAppSelector } from "../../../../../../redux/hooks";
+import { QuestionCircleOutlined, InboxOutlined } from "@ant-design/icons";
 import { Policy, Risk } from "../../../../../../redux/reducers/commonTypes";
 import colors from "../../../../../constants/colors";
-import { getCostPerType } from "../../utils/cost";
 
 const { TextArea } = Input;
 const { Paragraph, Title } = Typography;
@@ -28,15 +27,13 @@ type ClaimCreationFormProps = {
 
 export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
     const dispatch = useAppDispatch();
-    const [showHelp, setShowHelp] = useState(false);
-    const [selectedDamageView, setSelectedDamageView] = useState<string>();
     const [form] = Form.useForm();
 
     const claimCreationPending = useAppSelector(
         (state) => state.claims.claimCreationPending
     );
     const policyRisks = useAppSelector(
-        (state) => state.risk.policyRisks?.[policy.id]
+        (state) => state.risk.policyRisks?.[policy?.id]
     );
     const currentUser = useAppSelector((state) => state.auth.currentUser);
 
@@ -62,6 +59,14 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
         });
     };
 
+    const handleUpload = (e: any) => {
+        console.log("Upload event:", e);
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e?.fileList;
+    };
+
     return (
         <div>
             <Form
@@ -74,18 +79,37 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                 title={`Create a claim`}
                 onFinish={handleOk}
             >
-                <Form.Item
-                    label="Title"
-                    name="title"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Title required",
-                        },
-                    ]}
-                >
-                    <Input placeholder="Cracked phone screen" />
-                </Form.Item>
+                <Row>
+                    <Col span={16}>
+                        <Form.Item
+                            label="Title"
+                            name="title"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Title required",
+                                },
+                            ]}
+                        >
+                            <Input placeholder="Cracked phone screen" />
+                        </Form.Item>
+                    </Col>
+                    <Col span={7} offset={1}>
+                        <Form.Item
+                            label="Date of loss"
+                            name="occurance_date"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Enter the date of the loss",
+                                },
+                            ]}
+                        >
+                            <DatePicker />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
                 <Form.Item
                     label="Description"
                     name="description"
@@ -103,56 +127,77 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                         placeholder="Give a detailed description as to what happened"
                     />
                 </Form.Item>
+                <Form.Item
+                    label="Location"
+                    name="location_description"
+                    rules={[
+                        {
+                            required: true,
+                            message: "",
+                        },
+                    ]}
+                >
+                    <Input placeholder="4th & 5th in NYC" />
+                </Form.Item>
+
                 <Form.Item name="lossPercentage" required>
                     <Row>
                         <Col span={24}>
-                            <Paragraph
-                                style={{
-                                    fontSize: 14,
-                                    color: colors.gray7,
-                                    marginBottom: 0,
-                                }}
-                            >
-                                Requested Funds
-                            </Paragraph>
+                            <Row>
+                                <Paragraph
+                                    style={{
+                                        fontSize: 14,
+                                        color: colors.gray7,
+                                        marginBottom: 0,
+                                    }}
+                                >
+                                    Requested Funds
+                                </Paragraph>
+                                <Tooltip
+                                    color="black"
+                                    placement="top"
+                                    title={() => (
+                                        <div style={{ padding: 10 }}>
+                                            Based on how damaged your{" "}
+                                            {userRiskForPolicy?.underlying_insured_type ===
+                                            "audio_equipment"
+                                                ? "headphone"
+                                                : "cell phone"}{" "}
+                                            is.
+                                        </div>
+                                    )}
+                                >
+                                    <QuestionCircleOutlined
+                                        style={{
+                                            color: colors.gray7,
+                                            padding: "3px 10px 10px 3px",
+                                            marginLeft: 4,
+                                        }}
+                                    />
+                                </Tooltip>
+                            </Row>
                         </Col>
                     </Row>
 
                     <Row>
                         <Col span={8}>
-                            <Title level={2}>
+                            <Title level={1}>
                                 $
                                 {Math.round(
                                     (lossPercentage * marketValue) / 100
                                 ).toLocaleString()}
                             </Title>
-                            <Paragraph
-                                style={{
-                                    fontSize: 14,
-                                    color: colors.gray7,
-                                    marginBottom: 0,
-                                }}
-                            >
-                                <Tooltip
-                                    color="black"
-                                    title={`Your ${
-                                        userRiskForPolicy?.underlying_insured_type ===
-                                        "audio_equipment"
-                                            ? "headphone"
-                                            : "cell phone"
-                                    }'s market value`}
-                                >
-                                    ${marketValue.toLocaleString()}
-                                </Tooltip>{" "}
-                                * {lossPercentage}%
-                            </Paragraph>
                         </Col>
                         <Col span={16}>
                             <Slider
                                 min={1}
                                 max={100}
                                 defaultValue={20}
-                                tipFormatter={(value) => `${value}%`}
+                                tipFormatter={(value) =>
+                                    `$${Math.round(
+                                        ((value ?? 0) * marketValue) / 100
+                                    ).toLocaleString()}`
+                                }
                                 onChange={(value) =>
                                     form.setFieldsValue({
                                         lossPercentage: value,
@@ -170,114 +215,41 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                             />
                         </Col>
                     </Row>
-                    <Divider />
-                    <Row
-                        justify="space-between"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => setShowHelp(!showHelp)}
+                </Form.Item>
+                <Form.Item label="Upload Evidence">
+                    <Form.Item
+                        name="dragger"
+                        valuePropName="fileList"
+                        getValueFromEvent={handleUpload}
+                        noStyle
                     >
-                        <Title level={5}>Need Help?</Title>
-                        <div
-                            style={{
-                                cursor: "pointer",
-                                padding: "2px 10px",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                borderRadius: 5,
-                            }}
+                        <Upload.Dragger
+                            name="files"
+                            action="/up"
+                            multiple
+                            maxCount={12}
                         >
-                            {!showHelp ? (
-                                <DownSquareOutlined />
-                            ) : (
-                                <UpSquareOutlined />
-                            )}
-                        </div>
-                    </Row>
-                    {showHelp && (
-                        <div>
-                            <Row>
-                                <Paragraph
-                                    style={{
-                                        color: colors.gray7,
-                                    }}
-                                >
-                                    For reference, here's what it costs to
-                                    repair various phone damages. Results may
-                                    vary, google is your friend.
-                                </Paragraph>
-                            </Row>
-                            <Row
-                                justify="space-between"
-                                style={{ marginTop: 10 }}
-                            >
-                                <Paragraph>Prices</Paragraph>
-                                <Select
-                                    defaultValue="iphone11"
-                                    style={{ width: 120 }}
-                                    onChange={(val) => {
-                                        setSelectedDamageView(val);
-                                    }}
-                                    options={[
-                                        {
-                                            value: "iphone11",
-                                            label: "Iphone 11",
-                                        },
-                                        {
-                                            value: "iphone14",
-                                            label: "Iphone 14",
-                                        },
-                                        {
-                                            value: "airpodsMax",
-                                            label: "Airpods Max",
-                                        },
-                                    ]}
-                                />
-                            </Row>
-                            <table
-                                style={{
-                                    width: "70%",
-                                }}
-                            >
-                                <tr>
-                                    <th style={{ textAlign: "left" }}>
-                                        Repair
-                                    </th>
-                                    <th style={{ textAlign: "left" }}>Cost</th>
-                                </tr>
-                                <tr>
-                                    <td>Battery</td>
-                                    <td>
-                                        $
-                                        {getCostPerType(
-                                            "battery",
-                                            selectedDamageView
-                                        )}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Screen Replacement</td>
-                                    <td>
-                                        $
-                                        {getCostPerType(
-                                            "screen",
-                                            selectedDamageView
-                                        )}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Charging Port fix</td>
-                                    <td>
-                                        $
-                                        {getCostPerType(
-                                            "chargingPort",
-                                            selectedDamageView
-                                        )}
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    )}
+                            <p className="ant-upload-drag-icon">
+                                <InboxOutlined />
+                            </p>
+                            <p className="ant-upload-text">
+                                Upload Photos or documents of the damage
+                            </p>
+                            <p className="ant-upload-hint">
+                                Support for a single or bulk upload.
+                            </p>
+                        </Upload.Dragger>
+                    </Form.Item>
+                </Form.Item>
+                <Form.Item
+                    style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                    }}
+                >
+                    <Button type="primary" htmlType="submit" size="large">
+                        Create Claim
+                    </Button>
                 </Form.Item>
             </Form>
         </div>

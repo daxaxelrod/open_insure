@@ -271,6 +271,9 @@ class Claim(models.Model):
     location_lat = models.FloatField(null=True, blank=True)
     location_long = models.FloatField(null=True, blank=True)
 
+    # lat long covers precise location, allow people to say "NYC 23rd and 5th" or "my house"
+    location_description = models.TextField(null=True, blank=True, help_text="If the location is not precise, you can describe it here")
+
     occurance_date = models.DateField(null=True, blank=True)
 
 

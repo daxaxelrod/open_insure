@@ -32,7 +32,7 @@ function OpenInsureFooter() {
 
                     <Col lg={4} sm={24} xs={24}>
                         <div className="footer-center">
-                            <h2>Api</h2>
+                            <h2>API</h2>
                             <div>
                                 <a
                                     target="_blank"
@@ -52,7 +52,7 @@ function OpenInsureFooter() {
                                         });
                                     }}
                                 >
-                                    Api Docs
+                                    API Docs
                                 </a>
                             </div>
                             <div>
