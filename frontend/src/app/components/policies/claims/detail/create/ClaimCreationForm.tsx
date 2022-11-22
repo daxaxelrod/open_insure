@@ -67,12 +67,11 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
         });
     };
 
-    const handleUpload = (e: any) => {
-        console.log("Upload event:", e);
-        if (Array.isArray(e)) {
-            return e;
-        }
-        return e?.fileList;
+    const removeEvidenceIdFromForm = (evidenceId: number) => {
+        const evidenceIds = form.getFieldValue("evidence");
+        form.setFieldsValue({
+            evidence: evidenceIds.filter((id: number) => id !== evidenceId),
+        });
     };
 
     return (
@@ -149,64 +148,65 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                     <Input placeholder="4th & 5th in NYC" />
                 </Form.Item>
 
-                <Form.Item name="lossPercentage" required>
-                    <Row>
-                        <Col span={24}>
-                            <Row>
-                                <Paragraph
+                <Row>
+                    <Col span={24}>
+                        <Row>
+                            <Paragraph
+                                style={{
+                                    fontSize: 14,
+                                    color: colors.gray7,
+                                    marginBottom: 0,
+                                }}
+                            >
+                                Requested Funds
+                            </Paragraph>
+                            <Tooltip
+                                color="black"
+                                placement="top"
+                                title={() => (
+                                    <div style={{ padding: 10 }}>
+                                        Based on how damaged your{" "}
+                                        {userRiskForPolicy?.underlying_insured_type ===
+                                        "audio_equipment"
+                                            ? "headphone"
+                                            : "cell phone"}{" "}
+                                        is.
+                                    </div>
+                                )}
+                            >
+                                <QuestionCircleOutlined
                                     style={{
-                                        fontSize: 14,
                                         color: colors.gray7,
-                                        marginBottom: 0,
+                                        padding: "3px 10px 10px 3px",
+                                        marginLeft: 4,
                                     }}
-                                >
-                                    Requested Funds
-                                </Paragraph>
-                                <Tooltip
-                                    color="black"
-                                    placement="top"
-                                    title={() => (
-                                        <div style={{ padding: 10 }}>
-                                            Based on how damaged your{" "}
-                                            {userRiskForPolicy?.underlying_insured_type ===
-                                            "audio_equipment"
-                                                ? "headphone"
-                                                : "cell phone"}{" "}
-                                            is.
-                                        </div>
-                                    )}
-                                >
-                                    <QuestionCircleOutlined
-                                        style={{
-                                            color: colors.gray7,
-                                            padding: "3px 10px 10px 3px",
-                                            marginLeft: 4,
-                                        }}
-                                    />
-                                </Tooltip>
-                            </Row>
-                        </Col>
-                    </Row>
+                                />
+                            </Tooltip>
+                        </Row>
+                    </Col>
+                </Row>
 
-                    <Row>
-                        <Col span={8}>
-                            <Title level={1}>
-                                $
-                                {Math.round(
-                                    (lossPercentage * marketValue) / 100
-                                ).toLocaleString()}
-                            </Title>
-                        </Col>
-                        <Col span={16}>
+                <Row>
+                    <Col span={8}>
+                        <Title level={1}>
+                            $
+                            {Math.round(
+                                (lossPercentage * marketValue) / 100
+                            ).toLocaleString()}
+                        </Title>
+                    </Col>
+                    <Col span={16}>
+                        <Form.Item name="lossPercentage" required>
                             <Slider
                                 min={1}
                                 max={100}
                                 defaultValue={20}
-                                tipFormatter={(value) =>
-                                    `$${Math.round(
-                                        ((value ?? 0) * marketValue) / 100
-                                    ).toLocaleString()}`
-                                }
+                                tooltip={{
+                                    formatter: (value) =>
+                                        `$${Math.round(
+                                            ((value ?? 0) * marketValue) / 100
+                                        ).toLocaleString()}`,
+                                }}
                                 onChange={(value) =>
                                     form.setFieldsValue({
                                         lossPercentage: value,
@@ -222,12 +222,13 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                                     },
                                 }}
                             />
-                        </Col>
-                    </Row>
-                </Form.Item>
+                        </Form.Item>
+                    </Col>
+                </Row>
                 <Form.Item label="Upload Evidence">
                     <ClaimEvidencePhotoUpload
                         onUploadSuccess={appendEvidenceIdToForm}
+                        removeEvidence={removeEvidenceIdFromForm}
                         onUploadError={() => {}}
                         policy={policy}
                     />

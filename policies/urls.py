@@ -34,7 +34,7 @@ policy_nested_router.register(r"claims", ClaimViewSet, basename="policy-claims")
 urlpatterns = [
     re_path("policies/(?P<policy_id>\d+)/risk_settings/$", RiskSettingsViewSet.as_view()),
     re_path("policies/(?P<policy_id>\d+)/risk_settings/hypothetical/$", RiskSettingsHyptotheticalApiView.as_view()),
-    re_path("policies/(?P<policy_id>\d+)/claim_evidence/$", ClaimEvidenceAPIView.as_view(), name="policy-claim-evidence"),
+    re_path("policies/(?P<policy_pk>\d+)/claim_evidence/$", ClaimEvidenceAPIView.as_view(), name="policy-claim-evidence"), # todo, standardize to policy_pk
     path("premiums/<int:pk>/", PremiumViewSet.as_view(), name="premium_detail"),
     path(
         "claims/<int:claim_pk>/approvals/<int:pk>/",

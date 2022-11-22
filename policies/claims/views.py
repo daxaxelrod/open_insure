@@ -3,6 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
+from django.shortcuts import get_object_or_404
 
 from policies.models import Claim, ClaimApproval, ClaimEvidence, Policy
 from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer, ClaimEvidenceSerializer
@@ -55,4 +56,5 @@ class ClaimEvidenceAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated & InClaimPod]
 
     def perform_create(self, serializer):
-        return serializer.create(policy=self.kwargs["policy_id"], owner=self.request.user)
+        policy = get_object_or_404(Policy, pk=self.kwargs["policy_pk"])
+        return serializer.save(policy=policy, owner=self.request.user)

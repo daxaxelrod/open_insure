@@ -12,6 +12,7 @@ type ClaimEvidencePhotoUploadProps = {
     policy: Policy;
     onUploadSuccess: (evidenceId: number) => void;
     onUploadError: () => void;
+    removeEvidence: (evidenceId: number) => void;
 };
 
 const getBase64 = (file: RcFile): Promise<string> =>
@@ -26,24 +27,12 @@ export default function ClaimEvidencePhotoUpload({
     policy,
     onUploadSuccess,
     onUploadError,
+    removeEvidence,
 }: ClaimEvidencePhotoUploadProps) {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
     const [previewTitle, setPreviewTitle] = useState("");
-    const [fileList, setFileList] = useState<UploadFile[]>([
-        {
-            uid: "-xxx",
-            percent: 50,
-            name: "image.png",
-            status: "uploading",
-            url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-        },
-        {
-            uid: "-5",
-            name: "image.png",
-            status: "error",
-        },
-    ]);
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     const handleCancel = () => setPreviewOpen(false);
 
@@ -62,9 +51,47 @@ export default function ClaimEvidencePhotoUpload({
     const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
         setFileList(newFileList);
 
-    const uploadEvidence = (options: RcCustomRequestOptions) => {
-        debugger;
-        return createClaimEvidence(policy?.id, {});
+    const uploadEvidence = async (options: RcCustomRequestOptions) => {
+        const config = {
+            onUploadProgress: options.onProgress,
+            onUploadSuccess: options.onSuccess,
+            onUploadError: options.onError,
+        };
+
+        let formData = new FormData();
+        formData.append("image", options.file);
+        formData.append("photo_order", fileList.length + 1 + "");
+        formData.append("evidence_type", "photo");
+
+        try {
+            let results = await createClaimEvidence(
+                policy?.id,
+                formData,
+                config
+            );
+            let lastItem = fileList?.[fileList.length - 1];
+            setFileList([
+                ...fileList,
+                {
+                    ...lastItem,
+                    status: "done",
+                    name: (options?.file as any)?.name || "", // @ts-ignore
+                    url: results.data.image,
+                    uid: results.data.id,
+                },
+            ]);
+            onUploadSuccess(results.data.id);
+        } catch (err) {
+            let lastItem = fileList?.[fileList.length - 1];
+            setFileList([
+                ...fileList.slice(0, -1),
+                {
+                    ...lastItem,
+                    status: "error",
+                },
+            ]);
+            onUploadError();
+        }
     };
 
     const uploadButton = (
@@ -83,6 +110,14 @@ export default function ClaimEvidencePhotoUpload({
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
+                accept="image/png, image/jpeg, image/jpg"
+                onRemove={(file) => {
+                    try {
+                        removeEvidence(parseInt(file.uid));
+                    } catch (err) {
+                        console.log(err);
+                    }
+                }}
             >
                 {fileList.length >= 8 ? null : uploadButton}
                 {fileList.length >= 8 ? "Maximum 8 photos" : null}
@@ -94,7 +129,7 @@ export default function ClaimEvidencePhotoUpload({
                 onCancel={handleCancel}
             >
                 <img
-                    alt="evidence photo"
+                    alt="claim evidence"
                     style={{ width: "100%" }}
                     src={previewImage}
                 />

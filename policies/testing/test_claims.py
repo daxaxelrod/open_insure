@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, override_settings, Client
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_200_OK
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_200_OK, HTTP_403_FORBIDDEN
 
 from pods.models import Pod, User
 from policies.models import Claim, ClaimApproval
@@ -98,7 +98,7 @@ class ClaimsTestCase(TestCase):
         
         num_claims_for_policy = Claim.objects.filter(policy=self.policy).count()
         
-        self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEquals(response.status_code, HTTP_403_FORBIDDEN)
         self.assertEqual(num_claims_for_policy, 0)
 
     def test_user_cannot_create_claim_if_they_are_not_current_on_their_premiums(self):

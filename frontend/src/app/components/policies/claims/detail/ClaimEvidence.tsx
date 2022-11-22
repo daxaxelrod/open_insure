@@ -23,6 +23,7 @@ export default function ClaimEvidence() {
                         <EditOutlined key="edit" />,
                         <EllipsisOutlined key="ellipsis" />,
                     ]}
+                    title={"Evidence"}
                 ></Card>
             </Col>
         </Row>

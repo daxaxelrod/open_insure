@@ -345,6 +345,12 @@ class ClaimEvidence(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self) -> str:
+        if self.claim:
+            return f"Claim evidence for {self.claim.policy.name} by {self.claim.claimant}"
+        else:
+            return f"Unattributed evidence for {self.policy.name} by {self.owner}"
+
 
 # think of these as votes
 class ClaimApproval(models.Model): 

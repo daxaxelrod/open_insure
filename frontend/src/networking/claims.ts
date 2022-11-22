@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from "axios";
 import { axiosInstance } from "./api";
 
 export interface ClaimCreationPayload {
@@ -14,9 +15,14 @@ export const getClaimsForPolicy = (policyId: number) => {
     return axiosInstance.get(`/api/v1/policies/${policyId}/claims/`);
 };
 
-export const createClaimEvidence = (policyId: number, rest: any) => {
+export const createClaimEvidence = (
+    policyId: number,
+    formData: FormData,
+    config: AxiosRequestConfig = {}
+) => {
     return axiosInstance.post(
         `/api/v1/policies/${policyId}/claim_evidence/`,
-        {}
+        formData,
+        config
     );
 };

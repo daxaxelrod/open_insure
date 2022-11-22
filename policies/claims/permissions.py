@@ -4,7 +4,7 @@ from policies.models import Claim, ClaimApproval, Policy
 
 class InClaimPod(BasePermission):
     def has_permission(self, request, view):
-        policy_id = view.kwargs["policy_id"]
+        policy_id = view.kwargs["policy_pk"]
         policy = Policy.objects.get(id=policy_id)
         return request.user in policy.pod.members.all()
 

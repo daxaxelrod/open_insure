@@ -22,11 +22,11 @@ export default function ClaimCreate() {
         <div>
             <Row>
                 <Breadcrumb>
-                    <Link to={`/policy/${id}`}>
-                        <Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                        <Link to={`/policy/${id}`}>
                             <ArrowLeftOutlined /> Back to policy
-                        </Breadcrumb.Item>
-                    </Link>
+                        </Link>
+                    </Breadcrumb.Item>
                 </Breadcrumb>
             </Row>
             <Row>

@@ -127,6 +127,7 @@ class ClaimSerializer(serializers.ModelSerializer):
 class ClaimEvidenceSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=True)
     evidence_type = serializers.ChoiceField(choices=CLAIM_EVIDENCE_TYPE_CHOICES)
+    photo_order = serializers.IntegerField(required=False)
     class Meta:
         model = ClaimEvidence
-        fields = ["evidence_type", 'image']
+        fields = ["id", "evidence_type", 'image', 'photo_order']
