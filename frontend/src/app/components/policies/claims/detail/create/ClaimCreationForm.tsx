@@ -5,6 +5,7 @@ import {
     DatePicker,
     Form,
     Input,
+    message,
     Row,
     Slider,
     Tooltip,
@@ -14,10 +15,11 @@ import {
 
 import { createClaim } from "../../../../../../redux/actions/claims";
 import { useAppDispatch, useAppSelector } from "../../../../../../redux/hooks";
-import { QuestionCircleOutlined, InboxOutlined } from "@ant-design/icons";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Policy, Risk } from "../../../../../../redux/reducers/commonTypes";
 import colors from "../../../../../constants/colors";
 import ClaimEvidencePhotoUpload from "./ClaimEvidencePhotoUpload";
+import moment from "moment-timezone";
 
 const { TextArea } = Input;
 const { Paragraph, Title } = Typography;
@@ -29,6 +31,8 @@ type ClaimCreationFormProps = {
 export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
     const dispatch = useAppDispatch();
     const [form] = Form.useForm();
+    const [messageApi, contextHolder] = message.useMessage();
+    const [alertCounter, setAlertCounter] = React.useState(0);
 
     const claimCreationPending = useAppSelector(
         (state) => state.claims.claimCreationPending
@@ -50,13 +54,29 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
 
     const handleOk = () => {
         form.validateFields().then((values) => {
-            dispatch(
-                createClaim(policy?.id, {
-                    ...values,
-                    amount: lossPercentage * marketValue,
-                    policy: policy?.id,
-                })
-            );
+            if (values?.evidence?.length > 0) {
+                dispatch(
+                    createClaim(policy?.id, {
+                        ...values,
+                        amount: lossPercentage * marketValue,
+                        policy: policy?.id,
+                        occurance_date: moment(values.occurance_date).format(
+                            "YYYY-MM-DD"
+                        ),
+                    })
+                );
+                setAlertCounter(0);
+            } else {
+                let baseMessage = "At least one photo is required";
+                messageApi.error(
+                    alertCounter > 8
+                        ? "UPLOAD A PHOTO YOU MORON"
+                        : alertCounter > 2
+                        ? baseMessage.toLocaleUpperCase() + "!"
+                        : baseMessage
+                );
+                setAlertCounter(alertCounter + 1);
+            }
         });
     };
 
@@ -74,8 +94,17 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
         });
     };
 
+    // const appendEvidenceIdToForm = (evidenceId: number) => {
+    //     setEvidenceIds([...evidenceIds, evidenceId]);
+    // };
+
+    // const removeEvidenceIdFromForm = (evidenceId: number) => {
+    //     setEvidenceIds(evidenceIds.filter((id: number) => id !== evidenceId));
+    // };
+
     return (
         <div>
+            {contextHolder}
             <Form
                 form={form}
                 layout="vertical"
@@ -113,7 +142,12 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                                 },
                             ]}
                         >
-                            <DatePicker />
+                            <DatePicker
+                                disabledDate={(current) =>
+                                    current.isAfter(moment().toDate())
+                                }
+                                format="YYYY-MM-DD"
+                            />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -200,7 +234,6 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                             <Slider
                                 min={1}
                                 max={100}
-                                defaultValue={20}
                                 tooltip={{
                                     formatter: (value) =>
                                         `$${Math.round(
@@ -225,7 +258,38 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Form.Item label="Upload Evidence">
+                <Form.Item
+                    label={
+                        <div>
+                            Upload Evidence{" "}
+                            <Tooltip
+                                color="black"
+                                placement="top"
+                                title={() => (
+                                    <div style={{ padding: 10 }}>
+                                        Upload photos (videos coming soon) of
+                                        the damage. Minimum of{" "}
+                                        <strong
+                                            style={{ color: colors.alert1 }}
+                                        >
+                                            1 photo
+                                        </strong>{" "}
+                                        required.
+                                    </div>
+                                )}
+                            >
+                                <QuestionCircleOutlined
+                                    style={{
+                                        color: colors.gray7,
+                                        padding: "0 10px 10px 0",
+                                        marginLeft: 4,
+                                    }}
+                                />
+                            </Tooltip>
+                        </div>
+                    }
+                    name={"evidence"}
+                >
                     <ClaimEvidencePhotoUpload
                         onUploadSuccess={appendEvidenceIdToForm}
                         removeEvidence={removeEvidenceIdFromForm}
