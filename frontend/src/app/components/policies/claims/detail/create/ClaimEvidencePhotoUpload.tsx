@@ -3,12 +3,14 @@ import { Form, Modal, Upload, UploadProps } from "antd";
 import { RcFile, UploadFile } from "antd/es/upload";
 import { PlusOutlined } from "@ant-design/icons";
 import { Policy } from "../../../../../../redux/reducers/commonTypes";
+import { createClaimEvidence } from "../../../../../../networking/claims";
+import type { UploadRequestOption as RcCustomRequestOptions } from "rc-upload/lib/interface";
 
 // re_path("policies/(?P<policy_id>\d+)/claim_evidence/$",
 
 type ClaimEvidencePhotoUploadProps = {
     policy: Policy;
-    onUploadSuccess: () => void;
+    onUploadSuccess: (evidenceId: number) => void;
     onUploadError: () => void;
 };
 
@@ -29,30 +31,6 @@ export default function ClaimEvidencePhotoUpload({
     const [previewImage, setPreviewImage] = useState("");
     const [previewTitle, setPreviewTitle] = useState("");
     const [fileList, setFileList] = useState<UploadFile[]>([
-        {
-            uid: "-1",
-            name: "image.png",
-            status: "done",
-            url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-        },
-        {
-            uid: "-2",
-            name: "image.png",
-            status: "done",
-            url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-        },
-        {
-            uid: "-3",
-            name: "image.png",
-            status: "done",
-            url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-        },
-        {
-            uid: "-4",
-            name: "image.png",
-            status: "done",
-            url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-        },
         {
             uid: "-xxx",
             percent: 50,
@@ -84,6 +62,11 @@ export default function ClaimEvidencePhotoUpload({
     const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
         setFileList(newFileList);
 
+    const uploadEvidence = (options: RcCustomRequestOptions) => {
+        debugger;
+        return createClaimEvidence(policy?.id, {});
+    };
+
     const uploadButton = (
         <div>
             <PlusOutlined />
@@ -94,13 +77,15 @@ export default function ClaimEvidencePhotoUpload({
     return (
         <Form.Item>
             <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                maxCount={8}
+                customRequest={uploadEvidence}
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
             >
                 {fileList.length >= 8 ? null : uploadButton}
+                {fileList.length >= 8 ? "Maximum 8 photos" : null}
             </Upload>
             <Modal
                 open={previewOpen}
@@ -109,7 +94,7 @@ export default function ClaimEvidencePhotoUpload({
                 onCancel={handleCancel}
             >
                 <img
-                    alt="example"
+                    alt="evidence photo"
                     style={{ width: "100%" }}
                     src={previewImage}
                 />

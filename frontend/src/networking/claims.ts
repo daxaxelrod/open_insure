@@ -13,3 +13,10 @@ export const createClaim = (policyId: number, values: ClaimCreationPayload) => {
 export const getClaimsForPolicy = (policyId: number) => {
     return axiosInstance.get(`/api/v1/policies/${policyId}/claims/`);
 };
+
+export const createClaimEvidence = (policyId: number, rest: any) => {
+    return axiosInstance.post(
+        `/api/v1/policies/${policyId}/claim_evidence/`,
+        {}
+    );
+};

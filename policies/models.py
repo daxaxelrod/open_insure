@@ -340,6 +340,7 @@ class ClaimEvidence(models.Model):
     owner = models.ForeignKey("pods.User", on_delete=models.CASCADE, related_name="claim_evidence")
     evidence_type = models.CharField(max_length=16, choices=CLAIM_EVIDENCE_TYPE_CHOICES)
     image = models.ImageField(upload_to="claim_evidence_images", max_length=264)
+    photo_order = models.IntegerField(default=0, help_text="Order of photos in the claim", null=True, blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

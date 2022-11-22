@@ -60,6 +60,13 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
         });
     };
 
+    const appendEvidenceIdToForm = (evidenceId: number) => {
+        const evidenceIds = form.getFieldValue("evidence");
+        form.setFieldsValue({
+            evidence: [...evidenceIds, evidenceId],
+        });
+    };
+
     const handleUpload = (e: any) => {
         console.log("Upload event:", e);
         if (Array.isArray(e)) {
@@ -76,6 +83,7 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                 requiredMark={false}
                 initialValues={{
                     lossPercentage: 20,
+                    evidence: [],
                 }}
                 title={`Create a claim`}
                 onFinish={handleOk}
@@ -219,7 +227,7 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                 </Form.Item>
                 <Form.Item label="Upload Evidence">
                     <ClaimEvidencePhotoUpload
-                        onUploadSuccess={() => {}}
+                        onUploadSuccess={appendEvidenceIdToForm}
                         onUploadError={() => {}}
                         policy={policy}
                     />
