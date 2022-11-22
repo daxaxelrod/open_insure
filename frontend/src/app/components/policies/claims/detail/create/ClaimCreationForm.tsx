@@ -69,7 +69,7 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
             } else {
                 let baseMessage = "At least one photo is required";
                 messageApi.error(
-                    alertCounter > 8
+                    alertCounter > 5
                         ? "UPLOAD A PHOTO YOU MORON"
                         : alertCounter > 2
                         ? baseMessage.toLocaleUpperCase() + "!"
