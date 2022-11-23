@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Button, Empty, Row, Typography } from "antd";
+import { Button, Empty, notification, Row, Typography } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { FileAddOutlined } from "@ant-design/icons";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { Claim, Policy } from "../../../../../redux/reducers/commonTypes";
 import PolicyClaimDetailCard from "./PolicyClaimDetailCard";
+import moment from "moment-timezone";
 
 const { Title } = Typography;
 
@@ -12,6 +13,7 @@ export default function PolicyClaimsList() {
     const { id } = useParams();
     const policyId = parseInt(id || "");
     const navigate = useNavigate();
+    const [api, notificationContext] = notification.useNotification();
     const policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find((p: Policy) => p.id === policyId)
     );
@@ -22,7 +24,18 @@ export default function PolicyClaimsList() {
         useState(false);
 
     const goToClaimSetup = () => {
-        navigate("/policy/" + policyId + "/claims/new");
+        let coverageStartDate = moment(policy.coverage_start_date);
+        let hasPolicyStarted = moment().isAfter(coverageStartDate);
+        if (hasPolicyStarted) {
+            navigate("/policy/" + policyId + "/claims/new");
+        } else {
+            api.warning({
+                message: "You cannot file a claim yet",
+                description: `Policy starts on ${coverageStartDate.format(
+                    "MM-DD-YY"
+                )} (${coverageStartDate.fromNow()})`,
+            });
+        }
     };
 
     // no need to fetch claims on load, initial policy load already did that
@@ -65,6 +78,7 @@ export default function PolicyClaimsList() {
 
     return (
         <>
+            {notificationContext}
             <Row justify="space-between" style={{ padding: "0 1rem 0 0" }}>
                 <Title level={4}>Claims</Title>
                 {claims?.length > 0 ? (
