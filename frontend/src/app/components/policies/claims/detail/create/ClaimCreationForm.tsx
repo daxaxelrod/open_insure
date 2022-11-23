@@ -16,10 +16,15 @@ import {
 import { createClaim } from "../../../../../../redux/actions/claims";
 import { useAppDispatch, useAppSelector } from "../../../../../../redux/hooks";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import { Policy, Risk } from "../../../../../../redux/reducers/commonTypes";
+import {
+    Claim,
+    Policy,
+    Risk,
+} from "../../../../../../redux/reducers/commonTypes";
 import colors from "../../../../../constants/colors";
 import ClaimEvidencePhotoUpload from "./ClaimEvidencePhotoUpload";
 import moment from "moment-timezone";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 const { Paragraph, Title } = Typography;
@@ -32,6 +37,7 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
     const dispatch = useAppDispatch();
     const [form] = Form.useForm();
     const [messageApi, contextHolder] = message.useMessage();
+    const navigate = useNavigate();
     const [alertCounter, setAlertCounter] = React.useState(0);
 
     const claimCreationPending = useAppSelector(
@@ -56,14 +62,22 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
         form.validateFields().then((values) => {
             if (values?.evidence?.length > 0) {
                 dispatch(
-                    createClaim(policy?.id, {
-                        ...values,
-                        amount: lossPercentage * marketValue,
-                        policy: policy?.id,
-                        occurance_date: moment(values.occurance_date).format(
-                            "YYYY-MM-DD"
-                        ),
-                    })
+                    createClaim(
+                        policy?.id,
+                        {
+                            ...values,
+                            amount: lossPercentage * marketValue,
+                            policy: policy?.id,
+                            occurance_date: moment(
+                                values.occurance_date
+                            ).format("YYYY-MM-DD"),
+                        },
+                        (claim: Claim) => {
+                            navigate(
+                                "/policy/" + policy?.id + "/claims/" + claim?.id
+                            );
+                        }
+                    )
                 );
                 setAlertCounter(0);
             } else {

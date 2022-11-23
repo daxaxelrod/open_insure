@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from policies.models import Claim, ClaimApproval, ClaimEvidence, Policy
 from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer, ClaimEvidenceSerializer
 from policies.claims.permissions import InClaimPod, InClaimApprovalPod, IsNotClaimant
+from policies.claims.approvals import conditionally_create_claim_approvals
 
 
 class ClaimViewSet(ModelViewSet):
@@ -18,12 +19,9 @@ class ClaimViewSet(ModelViewSet):
     def perform_create(self, serializer):
         policy = Policy.objects.get(id=self.kwargs["policy_pk"])
         claim = serializer.save(policy=policy)
-
-    def perform_update(self, serializer):
-        # side effect, send out open approvals requests
-        claim = serializer.save()
-        self.conditionally_create_claim_approvals(claim)
-
+        conditionally_create_claim_approvals(claim)
+        
+            
 
 class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
     serializer_class = ClaimApprovalSerializer

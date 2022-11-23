@@ -1,13 +1,20 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, override_settings, Client
+from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_200_OK, HTTP_403_FORBIDDEN
 
 from pods.models import Pod, User
-from policies.models import Claim, ClaimApproval
+from policies.models import Claim, ClaimApproval, ClaimEvidence
 from policies.testing.helpers import create_test_policy, create_paid_claim_for_user, prepay_all_premiums_for_user
 
 # initialize the APIClient app
 client = Client()
+
+small_gif = (
+            b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04'
+            b'\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02'
+            b'\x02\x4c\x01\x00\x3b'
+        )
 class ClaimsTestCase(TestCase):
 
     def setUp(self):
@@ -54,20 +61,20 @@ class ClaimsTestCase(TestCase):
         self.policy.pool_balance = 5000
         self.policy.save()
 
+        evidence = self.create_evidence()
         payload = {
             "title": "Test Claim",
             "description": "A claim to test user attribution",
             "policy": self.policy.id,
             "amount": 1000, # $10
+            "evidence": [evidence.id,]
         }
 
-        claim_creation_response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload)
+        claim_creation_response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload, content_type="application/json")
         try:
             main_user_claim = Claim.objects.get(policy=self.policy, claimant=self.main_user)
         except Claim.DoesNotExist:
             self.assertTrue(False)
-        
-        self.generate_approvals(main_user_claim)
 
         member_claim_approval = ClaimApproval.objects.get(claim=main_user_claim, approver=self.member_user)
 
@@ -134,10 +141,8 @@ class ClaimsTestCase(TestCase):
         }
         response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload)
 
-        all_claims = Claim.objects.filter(policy=self.policy).count()
-        self.assertEquals(response.status_code, HTTP_201_CREATED)
-        self.assertEqual(all_claims, 1) # not recreated
-
+        self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
+        
     def test_claim_gets_created_with_lower_amount_if_prior_payouts_puts_user_over_lifetime_payout_limit(self):
         # if a policy has a payout limit, 
         # then a user can only create a claim up to the max 
@@ -214,17 +219,19 @@ class ClaimsTestCase(TestCase):
         self.policy.lifetime_payout_limit = 5000
         self.policy.save()
         
+        evidence = self.create_evidence()
         payload = {
             "policy": self.policy.id,
             "title": "An outstanding claim while the other gets paid",
             "description": "I should be declined",
             "amount": 1000,
+            "evidence": [evidence.id,]
         }
-        response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload)
+        response = client.post(f"/api/v1/policies/{self.policy.id}/claims/", payload, content_type="application/json")
+
         _json = response.json()
         outstanding_claim_id = _json["id"]
         overage_claim = Claim.objects.get(id=outstanding_claim_id)
-        self.generate_approvals(overage_claim)
 
         # then that same user makes a claim of $50 which gets instantly paid
         create_paid_claim_for_user(self.main_user, self.policy, 5000)
@@ -248,5 +255,16 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(member_claim_approval.approved, False)
         self.assertEquals(overage_claim.paid_on, None)
         self.assertEquals(self.policy.pool_balance, 0)
+
+    def create_evidence(self):
+        uploaded = SimpleUploadedFile('small.gif', small_gif, content_type='image/gif')
+        evidence = ClaimEvidence.objects.create(
+            image=uploaded,
+            policy=self.policy,
+            owner=self.main_user,
+            evidence_type='photo'
+        )
+        
+        return evidence
         
         

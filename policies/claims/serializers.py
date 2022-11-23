@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.utils import timezone
 from policies.models import Claim, ClaimApproval, ClaimEvidence, Premium
 from policies.model_choices import CLAIM_EVIDENCE_TYPE_CHOICES
+from django.db.utils import IntegrityError
 
 class FullClaimApprovalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,12 +48,20 @@ class ClaimApprovalSerializer(serializers.ModelSerializer):
         model = ClaimApproval
         fields = "__all__"
 
+class ClaimEvidenceSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=True)
+    evidence_type = serializers.ChoiceField(choices=CLAIM_EVIDENCE_TYPE_CHOICES)
+    photo_order = serializers.IntegerField(required=False)
+    class Meta:
+        model = ClaimEvidence
+        fields = ["id", "evidence_type", 'image', 'photo_order']
 
 class ClaimSerializer(serializers.ModelSerializer):
     claimant = serializers.PrimaryKeyRelatedField(
         read_only=True
     )  # serializers.hiddenfield doesnt work because it doesnt return the representation to the client
     approvals = ClaimApprovalSerializer(many=True, read_only=True)
+    evidence = serializers.PrimaryKeyRelatedField(many=True, queryset=ClaimEvidence.objects.all())
 
     def validate(self, attrs):
 
@@ -110,10 +119,12 @@ class ClaimSerializer(serializers.ModelSerializer):
         request = self.context["request"]
         if request.user in policy.pod.members.all():
             # No one can create a policy on a user's behalf, they must do it themselves
-            claim, _ = Claim.objects.get_or_create(
-                **validated_data, claimant=request.user
-            )
-            return claim
+            try:
+                return super().create(dict(**validated_data, claimant=request.user))
+            except IntegrityError as e:
+                raise serializers.ValidationError(
+                    {"message": "Cannot create identical claims."}
+                )
         else:
             raise serializers.ValidationError(
                 {"claimant": "User is not a member of the policy's pod."}
@@ -123,11 +134,3 @@ class ClaimSerializer(serializers.ModelSerializer):
         model = Claim
         fields = "__all__"
         read_only_fields = ["paid_on"]
-
-class ClaimEvidenceSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(required=True)
-    evidence_type = serializers.ChoiceField(choices=CLAIM_EVIDENCE_TYPE_CHOICES)
-    photo_order = serializers.IntegerField(required=False)
-    class Meta:
-        model = ClaimEvidence
-        fields = ["id", "evidence_type", 'image', 'photo_order']

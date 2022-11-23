@@ -93,8 +93,11 @@ class PremiumAdmin(admin.ModelAdmin):
     def get_changelist_form(self, request, **kwargs):
         return PremiumChangeForm
 
+class ClaimAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'amount', 'created_at')
+
 admin.site.register(Policy, PolicyAdmin)
-admin.site.register(Claim)
+admin.site.register(Claim, ClaimAdmin)
 admin.site.register(Premium, PremiumAdmin)
 admin.site.register(PolicyCloseout)
 admin.site.register(ClaimEvidence)

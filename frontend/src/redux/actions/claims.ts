@@ -16,7 +16,8 @@ import { Claim } from "../reducers/commonTypes";
 export const createClaim =
     (
         policyId: number,
-        values: API.ClaimCreationPayload
+        values: API.ClaimCreationPayload,
+        callback: (claim: Claim) => void
     ): ThunkAction<void, RootState, unknown, AnyAction> =>
     async (dispatch) => {
         dispatch({ type: CREATE_CLAIM_PENDING });
@@ -27,6 +28,7 @@ export const createClaim =
                 payload: response.data,
                 policyId,
             });
+            callback(response.data);
         } catch (error: any) {
             dispatch({
                 type: CREATE_CLAIM_FAILURE,
