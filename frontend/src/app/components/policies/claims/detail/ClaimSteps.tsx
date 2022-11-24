@@ -23,7 +23,7 @@ export default function ClaimSteps() {
 
     return (
         <Row>
-            <Col span={20} offset={2}>
+            <Col span={21} offset={3}>
                 <Steps items={items} current={current} />
             </Col>
         </Row>

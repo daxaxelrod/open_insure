@@ -16,14 +16,16 @@ export default function ClaimMetaData() {
                     span={3}
                     style={{
                         display: "flex",
+                        flexDirection: "column",
+                        marginTop: 8,
                     }}
                 >
-                    <span style={{ fontSize: 12, color: colors.gray7 }}>
-                        Created{" "}
-                        {moment(claim?.created_at).format(
-                            "MMMM Do YYYY, h:mm a"
-                        )}
-                    </span>
+                    <div style={{ fontSize: 12, color: colors.gray7 }}>
+                        {moment(claim?.created_at).format("MMMM Do YYYY")}
+                    </div>
+                    <div style={{ fontSize: 12, color: colors.gray7 }}>
+                        {moment(claim?.created_at).format("h:mm a")}
+                    </div>
                 </Col>
                 <Col span={21}>
                     <Title level={3}>{claim?.title}</Title>
