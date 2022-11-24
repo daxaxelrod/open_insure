@@ -98,6 +98,7 @@ export default function PolicyClaimsList() {
                     {claims.map((claim: Claim) => {
                         return (
                             <PolicyClaimDetailCard
+                                key={`claim-card-${claim.id}`}
                                 claim={claim}
                                 policy={policy}
                             />

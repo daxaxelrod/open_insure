@@ -5,7 +5,7 @@ from rest_framework import serializers
 from rest_framework.fields import MultipleChoiceField
 from pods.serializers import PodSerializer
 from pods.models import Pod
-from policies.claims.serializers import ClaimSerializer
+from policies.claims.serializers import FullClaimSerializer
 from policies.model_choices import UNDERLYING_INSURED_TYPE
 
 from policies.models import (
@@ -115,7 +115,7 @@ class FullPolicySerializer(serializers.ModelSerializer):
     # meant for get, has a few nested joins
     pod = PodSerializer(read_only=True)
     premiums = PremiumSerializer(many=True, read_only=True) 
-    claims = ClaimSerializer(many=True, read_only=True)
+    claims = FullClaimSerializer(many=True, read_only=True)
     close_out = PolicyCloseoutSerializer(many=False, read_only=True)
     available_underlying_insured_types = MultipleChoiceField(
         choices=UNDERLYING_INSURED_TYPE

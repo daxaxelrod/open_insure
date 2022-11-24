@@ -9,23 +9,27 @@ const contentStyle: React.CSSProperties = {
     lineHeight: "160px",
     textAlign: "center",
     background: "#1d61e5",
-    borderRadius: "5px",
+    borderRadius: "15px",
+};
+
+const imageStyle: React.CSSProperties = {
+    borderRadius: "15px",
+    objectFit: "cover",
 };
 
 export default function ClaimEvidenceImages({ claim }: { claim: Claim }) {
     let evidence = claim.evidence?.filter((e) => e.evidence_type === "photo");
 
     return (
-        <div
-            style={{ padding: `0 1.25rem 0 0` }}
-            onClick={(e) => {
-                e.preventDefault();
-            }}
-        >
+        <div style={{ padding: `0 1.25rem 0 0` }}>
             <Carousel>
                 {evidence?.map((evidence) => (
                     <div key={evidence.id} style={contentStyle}>
-                        <img src={evidence.url} alt="evidence" />
+                        <img
+                            src={evidence.image}
+                            alt="evidence"
+                            style={imageStyle}
+                        />
                     </div>
                 ))}
                 {!evidence?.length && (

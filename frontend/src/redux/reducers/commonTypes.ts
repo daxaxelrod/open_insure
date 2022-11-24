@@ -36,8 +36,11 @@ export interface PolicyMemberApprovals {
 export interface Evidence {
     id: number;
     claim: number;
+    policy: number;
+    owner: number;
     evidence_type: "photo" | "video" | "document";
-    url: string;
+    image: string; // aka url
+    photo_order: number;
     created_at: string;
     updated_at: string;
 }

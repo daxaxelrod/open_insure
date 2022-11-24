@@ -134,3 +134,6 @@ class ClaimSerializer(serializers.ModelSerializer):
         model = Claim
         fields = "__all__"
         read_only_fields = ["paid_on"]
+
+class FullClaimSerializer(ClaimSerializer):
+    evidence = ClaimEvidenceSerializer(many=True, read_only=True)

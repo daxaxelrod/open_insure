@@ -1,12 +1,13 @@
 
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+
 from django.utils import timezone
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from django.shortcuts import get_object_or_404
 
 from policies.models import Claim, ClaimApproval, ClaimEvidence, Policy
-from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer, ClaimEvidenceSerializer
+from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer, ClaimEvidenceSerializer, FullClaimSerializer
 from policies.claims.permissions import InClaimPod, InClaimApprovalPod, IsNotClaimant
 from policies.claims.approvals import conditionally_create_claim_approvals
 
@@ -15,6 +16,11 @@ class ClaimViewSet(ModelViewSet):
     queryset = Claim.objects.all()
     serializer_class = ClaimSerializer
     permission_classes = [IsAuthenticated & InClaimPod]
+
+    def get_serializer_class(self):
+        if self.request.method in SAFE_METHODS:
+            return FullClaimSerializer
+        return ClaimSerializer
 
     def perform_create(self, serializer):
         policy = Policy.objects.get(id=self.kwargs["policy_pk"])
