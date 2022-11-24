@@ -1,8 +1,9 @@
 import React, { createContext } from "react";
-import { Claim } from "../../../redux/reducers/commonTypes";
+import { Claim, Policy } from "../../../redux/reducers/commonTypes";
 
 export type ClaimDetailContextType = {
     claim?: Claim;
+    policy?: Policy;
     isClaimApproved: boolean;
 };
 

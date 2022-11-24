@@ -33,7 +33,6 @@ export default function EscrowPoolChart({}) {
     const { id } = useParams();
     const policyId = parseInt(id || "");
     const dispatch = useAppDispatch();
-    let now = moment();
     const premiums = useAppSelector(
         (state) => state.premiums.premiums?.[policyId]
     );
