@@ -42,7 +42,7 @@ const ClaimTitle = ({ claim, claimant }: { claim: Claim; claimant?: User }) => {
     );
 };
 
-export default function PolicyClaimDetailCard({ claim, policy }: props) {
+export default function PolicyClaimCard({ claim, policy }: props) {
     const claimant = policy?.pod?.members.find(
         (member) => member.id === claim.claimant
     );

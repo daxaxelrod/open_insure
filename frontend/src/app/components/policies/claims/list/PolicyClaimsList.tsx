@@ -1,11 +1,11 @@
 import React, { useState } from "react";
+import moment from "moment-timezone";
 import { Button, Empty, notification, Row, Typography } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { FileAddOutlined } from "@ant-design/icons";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { Claim, Policy } from "../../../../../redux/reducers/commonTypes";
-import PolicyClaimDetailCard from "./PolicyClaimDetailCard";
-import moment from "moment-timezone";
+import PolicyClaimCard from "./PolicyClaimCard";
 
 const { Title } = Typography;
 
@@ -97,7 +97,7 @@ export default function PolicyClaimsList() {
                 <Row gutter={[16, 16]}>
                     {claims.map((claim: Claim) => {
                         return (
-                            <PolicyClaimDetailCard
+                            <PolicyClaimCard
                                 key={`claim-card-${claim.id}`}
                                 claim={claim}
                                 policy={policy}
