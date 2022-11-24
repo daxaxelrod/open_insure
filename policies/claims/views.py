@@ -7,7 +7,8 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from django.shortcuts import get_object_or_404
 
 from policies.models import Claim, ClaimApproval, ClaimEvidence, Policy
-from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer, ClaimEvidenceSerializer, FullClaimSerializer
+from policies.claims.models import ClaimView
+from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer, ClaimEvidenceSerializer, FullClaimSerializer, ClaimViewSerializer
 from policies.claims.permissions import InClaimPod, InClaimApprovalPod, IsNotClaimant
 from policies.claims.approvals import conditionally_create_claim_approvals
 
@@ -62,3 +63,14 @@ class ClaimEvidenceAPIView(CreateAPIView):
     def perform_create(self, serializer):
         policy = get_object_or_404(Policy, pk=self.kwargs["policy_pk"])
         return serializer.save(policy=policy, owner=self.request.user)
+
+class ClaimViewModelViewSet(ModelViewSet):
+    queryset = ClaimView.objects.all()
+    serializer_class = ClaimViewSerializer
+    permission_classes = [IsAuthenticated & InClaimPod]
+
+    def get_queryset(self):
+        return ClaimView.objects.filter(claim__id=self.kwargs["claim_pk"])
+
+    def perform_create(self, serializer):
+        serializer.save(viewer=self.request.user)

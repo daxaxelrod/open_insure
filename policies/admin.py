@@ -25,6 +25,7 @@ from policies.risk.models import (
 )
 
 from policies.perils.models import Peril
+from policies.claims.models import ClaimView
 
 class PropertyImageInline(admin.TabularInline):
     model = PropertyImage
@@ -108,3 +109,4 @@ admin.site.register(AudioEquipmentRisk)
 admin.site.register(PolicyRiskSettings)
 admin.site.register(ImageAlbum, AlbumAdmin)
 admin.site.register(Peril)
+admin.site.register(ClaimView)

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.utils import timezone
 from policies.models import Claim, ClaimApproval, ClaimEvidence, Premium
+from policies.claims.models import ClaimView
 from policies.model_choices import CLAIM_EVIDENCE_TYPE_CHOICES
 from django.db.utils import IntegrityError
 
@@ -137,3 +138,9 @@ class ClaimSerializer(serializers.ModelSerializer):
 
 class FullClaimSerializer(ClaimSerializer):
     evidence = ClaimEvidenceSerializer(many=True, read_only=True)
+
+
+class ClaimViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClaimView
+        fields = "__all__"

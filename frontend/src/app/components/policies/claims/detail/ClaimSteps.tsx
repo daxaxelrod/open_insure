@@ -6,19 +6,19 @@ export default function ClaimSteps() {
     const { claim, isClaimApproved } = useContext(ClaimDetailContext);
 
     const items = [
-        { title: "Create" },
-        { title: "Fill out", description: "Add more details to your claim" },
+        { title: "File Claim" },
         { title: "Vote", description: "Members vote on your claim" },
+        { title: "Outcome", description: "Claim is approved or denied" },
     ];
 
-    let current = 1;
+    let current = 0;
 
     if (isClaimApproved) {
         current = 3;
     }
 
     if (claim && claim?.evidence?.length > 0) {
-        current = 2;
+        current = 1;
     }
 
     return (
