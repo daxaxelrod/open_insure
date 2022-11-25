@@ -7,8 +7,16 @@ import {
     GET_CLAIMS_FOR_POLICY_PENDING,
     GET_CLAIMS_FOR_POLICY_SUCCESS,
     GET_CLAIMS_FOR_POLICY_FAILURE,
+    GET_CLAIM_COMMENTS_PENDING,
+    GET_CLAIM_COMMENTS_SUCCESS,
+    GET_CLAIM_COMMENTS_FAILURE,
 } from "../actions/types";
-import { Claim, ClaimEvidence, ClaimApproval } from "./commonTypes";
+import {
+    Claim,
+    ClaimEvidence,
+    ClaimApproval,
+    ClaimComment,
+} from "./commonTypes";
 
 export interface ClaimsState {
     // policyId: number -> Claim[]
@@ -16,6 +24,10 @@ export interface ClaimsState {
     claimCreationPending: boolean;
     getClaimsPending: boolean;
     creationError: any;
+    comments: Record<number, ClaimComment[]>;
+    // we only expect to get one comment set at a time
+    // no need for more complex pending states
+    commentsPending: boolean;
 }
 
 const initialState: ClaimsState = {
@@ -23,11 +35,13 @@ const initialState: ClaimsState = {
     claimCreationPending: false,
     getClaimsPending: false,
     creationError: null,
+    comments: {},
+    commentsPending: false,
 };
 
 export default (
     state = initialState,
-    { type, payload, policyId }: AnyAction
+    { type, payload, policyId, claimId }: AnyAction
 ) => {
     switch (type) {
         case CREATE_CLAIM_PENDING:
@@ -73,6 +87,26 @@ export default (
                 ...state,
                 getClaimsPending: false,
             };
+        case GET_CLAIM_COMMENTS_PENDING:
+            return {
+                ...state,
+                commentsPending: true,
+            };
+        case GET_CLAIM_COMMENTS_SUCCESS:
+            return {
+                ...state,
+                comments: {
+                    ...state.comments,
+                    [claimId]: payload,
+                },
+                commentsPending: false,
+            };
+        case GET_CLAIM_COMMENTS_FAILURE:
+            return {
+                ...state,
+                commentsPending: false,
+            };
+
         default:
             return state;
     }

@@ -3,6 +3,7 @@ import { Col, Row, Typography } from "antd";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import moment from "moment-timezone";
 import colors from "../../../../constants/colors";
+import { SideText } from "./Styled";
 
 const { Title, Paragraph } = Typography;
 
@@ -20,12 +21,12 @@ export default function ClaimMetaData() {
                         marginTop: 8,
                     }}
                 >
-                    <div style={{ fontSize: 12, color: colors.gray7 }}>
+                    <SideText>
                         {moment(claim?.created_at).format("MMMM Do YYYY")}
-                    </div>
-                    <div style={{ fontSize: 12, color: colors.gray7 }}>
+                    </SideText>
+                    <SideText>
                         {moment(claim?.created_at).format("h:mm a")}
-                    </div>
+                    </SideText>
                 </Col>
                 <Col span={21}>
                     <Title level={3}>{claim?.title}</Title>

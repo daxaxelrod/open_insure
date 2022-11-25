@@ -20,9 +20,6 @@ export default function PolicyClaimsList() {
 
     const claims = useAppSelector((state) => state.claims.claims?.[policyId]);
 
-    const [isClaimCreationModalVisible, setIsClaimCreationModalVisible] =
-        useState(false);
-
     const goToClaimSetup = () => {
         let coverageStartDate = moment(policy.coverage_start_date);
         let hasPolicyStarted = moment().isAfter(coverageStartDate);

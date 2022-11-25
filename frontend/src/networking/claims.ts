@@ -26,3 +26,9 @@ export const createClaimEvidence = (
         config
     );
 };
+
+export const getClaimComments = (policyId: number, claimId: number) => {
+    return axiosInstance.post(
+        `/api/v1/policies/${policyId}/claims/${claimId}/comments/`
+    );
+};

@@ -10,6 +10,9 @@ import {
     GET_CLAIMS_FOR_POLICY_PENDING,
     GET_CLAIMS_FOR_POLICY_SUCCESS,
     GET_CLAIMS_FOR_POLICY_FAILURE,
+    GET_CLAIM_COMMENTS_PENDING,
+    GET_CLAIM_COMMENTS_SUCCESS,
+    GET_CLAIM_COMMENTS_FAILURE,
 } from "../actions/types";
 import { Claim } from "../reducers/commonTypes";
 
@@ -62,3 +65,27 @@ export const setClaimsForPolicy = (policyId: number, claims: Claim[]) => {
         policyId,
     };
 };
+
+// sometimes I ask myself why I nest the urls like this
+// I like to say that it makes it easier to understand the model relationships, even if it has no technical need
+export const getClaimComments =
+    (
+        policyId: number,
+        claimId: number
+    ): ThunkAction<void, RootState, unknown, AnyAction> =>
+    async (dispatch: any) => {
+        try {
+            dispatch({ type: GET_CLAIM_COMMENTS_PENDING });
+            const response = await API.getClaimComments(policyId, claimId);
+            dispatch({
+                type: GET_CLAIM_COMMENTS_SUCCESS,
+                payload: response.data,
+                claimId,
+            });
+        } catch (error) {
+            dispatch({
+                type: GET_CLAIM_COMMENTS_FAILURE,
+            });
+            console.log("error retrieving claim", claimId, "comments ");
+        }
+    };

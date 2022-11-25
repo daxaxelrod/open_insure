@@ -18,6 +18,7 @@ export default function ClaimEvidence() {
                 <Image.PreviewGroup>
                     {claim?.evidence?.map((evidence) => (
                         <Image
+                            key={"evidence-image-" + evidence.id}
                             width={200}
                             src={evidence.image}
                             alt="evidence"

@@ -20,6 +20,7 @@ from policies.claims.views import (
     ClaimViewSet,
     ClaimEvidenceAPIView,
     ClaimViewModelViewSet,
+    ClaimCommentsViewSet
 )
 
 router = routers.DefaultRouter()
@@ -32,8 +33,11 @@ policy_nested_router.register(r"risk", PolicyRiskViewSet, basename="policy-risks
 policy_nested_router.register(r"premiums", PolicyPremiumViewSet, basename="policy-premium")
 policy_nested_router.register(r"claims", ClaimViewSet, basename="policy-claims")
 
+# unsure if i can nest a router in an already nested router, to test
+# if so then refactor, would be cleaner that way
 claim_view_router = routers.DefaultRouter()
-claim_view_router.register(r"^policies/(?P<policy_pk>[^/.]+)/claims/(?P<claim_pk>[^/.]+)/views", ClaimViewModelViewSet, basename="claim-view")
+claim_view_router.register(r"^policies/(?P<policy_pk>[^/.]+)/claims/(?P<claim_pk>[^/.]+)/views", ClaimViewModelViewSet, basename="claim-views")
+claim_view_router.register(r"^policies/(?P<policy_pk>[^/.]+)/claims/(?P<claim_pk>[^/.]+)/comments", ClaimCommentsViewSet, basename="claim-comments")
 
 urlpatterns = [
     re_path("policies/(?P<policy_id>\d+)/risk_settings/$", RiskSettingsViewSet.as_view()),

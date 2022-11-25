@@ -3,7 +3,7 @@ import { Typography } from "antd";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
 import { ClaimDetailContext } from "../../components/contexts/ClaimDetailContext";
-import { Claim } from "../../../redux/reducers/commonTypes";
+import { Claim, Policy } from "../../../redux/reducers/commonTypes";
 import ClaimSteps from "../../components/policies/claims/detail/ClaimSteps";
 import ClaimMetaData from "../../components/policies/claims/detail/ClaimMetaData";
 import ClaimEvidence from "../../components/policies/claims/detail/ClaimEvidence";
@@ -14,6 +14,9 @@ import ClaimCommentForm from "../../components/policies/claims/detail/ClaimComme
 export default function ClaimDetails() {
     const { id, claimId } = useParams();
     const policyId = parseInt(id || "");
+    const policy: Policy = useAppSelector((state) =>
+        state.policies.publicPolicies.find((p: Policy) => p?.id === policyId)
+    );
     const claimIdInt = parseInt(claimId || "");
     const claim = useAppSelector((state) =>
         state.claims.claims?.[policyId]?.find((c: Claim) => c.id === claimIdInt)
@@ -21,7 +24,7 @@ export default function ClaimDetails() {
     const isClaimApproved = !!claim?.is_approved;
 
     return (
-        <ClaimDetailContext.Provider value={{ claim, isClaimApproved }}>
+        <ClaimDetailContext.Provider value={{ claim, isClaimApproved, policy }}>
             <ClaimSteps />
             <ClaimMetaData />
             <ClaimEvidence />

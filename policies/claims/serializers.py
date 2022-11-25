@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils import timezone
-from policies.models import Claim, ClaimApproval, ClaimEvidence, Premium
+from policies.models import Claim, ClaimApproval, ClaimEvidence, Premium, ClaimComment
 from policies.claims.models import ClaimView
 from policies.model_choices import CLAIM_EVIDENCE_TYPE_CHOICES
 from django.db.utils import IntegrityError
@@ -143,4 +143,9 @@ class FullClaimSerializer(ClaimSerializer):
 class ClaimViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClaimView
+        fields = "__all__"
+
+class ClaimCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClaimComment
         fields = "__all__"
