@@ -167,7 +167,7 @@ export default function ClaimCreationForm({ policy }: ClaimCreationFormProps) {
                 </Row>
 
                 <Form.Item
-                    label="Description"
+                    label="What Happened"
                     name="description"
                     rules={[
                         {

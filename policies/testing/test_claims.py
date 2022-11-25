@@ -252,7 +252,7 @@ class ClaimsTestCase(TestCase):
         overage_claim.refresh_from_db()
         
         self.assertEquals(member_1_approval_response.status_code, HTTP_400_BAD_REQUEST)
-        self.assertEquals(member_claim_approval.approved, False)
+        self.assertEquals(member_claim_approval.approved, None)
         self.assertEquals(overage_claim.paid_on, None)
         self.assertEquals(self.policy.pool_balance, 0)
 

@@ -1,51 +1,45 @@
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import { Row, Avatar, Form, Button, Input, Col } from "antd";
-import { Comment } from "@ant-design/compatible";
-import { useAppSelector } from "../../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
+import { User } from "../../../../../redux/reducers/commonTypes";
 
 const { TextArea } = Input;
 
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
-    <div>
-        <Form.Item>
-            <TextArea rows={4} onChange={onChange} value={value} />
-        </Form.Item>
-        <Form.Item>
-            <Button
-                htmlType="submit"
-                loading={submitting}
-                onClick={onSubmit}
-                type="primary"
-            >
-                Add Comment
-            </Button>
-        </Form.Item>
-    </div>
-);
-
 export default function ClaimCommentForm() {
+    const dispatch = useAppDispatch();
+    const [form] = Form.useForm();
     const [comment, setComment] = useState();
     const postCommentPending = useAppSelector(
         (state) => state.claims.commentsPending
     );
+    const currentUser: User = useAppSelector((state) => state.auth.currentUser);
+
+    const postComment = () => {
+        form.validateFields().then((values) => {});
+    };
 
     return (
-        <Row>
-            <Avatar
-                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                alt="Han Solo"
-            />
+        <Row gutter={12}>
+            <Col
+                span={3}
+                style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                }}
+            >
+                <Avatar src={currentUser?.picture} alt="user avatar" />
+            </Col>
             <Col span={21}>
-                <Form>
-                    <Form.Item>
+                <Form form={form} requiredMark={false}>
+                    <Form.Item name={"comment"} required>
                         <TextArea rows={4} />
                     </Form.Item>
                     <Form.Item>
                         <Button
                             htmlType="submit"
-                            loading={submitting}
-                            onClick={onSubmit}
+                            loading={postCommentPending}
+                            onClick={postComment}
                             type="primary"
                         >
                             Add Comment

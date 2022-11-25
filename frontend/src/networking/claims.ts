@@ -32,7 +32,7 @@ export const createClaimEvidence = (
 };
 
 export const getClaimComments = (policyId: number, claimId: number) => {
-    return axiosInstance.post(
+    return axiosInstance.get(
         `/api/v1/policies/${policyId}/claims/${claimId}/comments/`
     );
 };

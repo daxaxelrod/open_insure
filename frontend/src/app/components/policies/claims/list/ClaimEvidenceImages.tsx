@@ -4,9 +4,9 @@ import { Claim } from "../../../../../redux/reducers/commonTypes";
 
 const contentStyle: React.CSSProperties = {
     margin: 0,
-    height: "160px",
+    maxHeight: "140px",
     color: "#fff",
-    lineHeight: "160px",
+    lineHeight: "140px",
     textAlign: "center",
     background: "#1d61e5",
     borderRadius: "15px",
@@ -15,6 +15,7 @@ const contentStyle: React.CSSProperties = {
 const imageStyle: React.CSSProperties = {
     borderRadius: "15px",
     objectFit: "cover",
+    height: "140px",
 };
 
 export default function ClaimEvidenceImages({ claim }: { claim: Claim }) {

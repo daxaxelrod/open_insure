@@ -51,7 +51,14 @@ export default function PolicyClaimCard({ claim, policy }: props) {
         <Col xs={24} sm={24} md={12} lg={12}>
             <Link to={`/policy/${policy.id}/claims/${claim.id}`}>
                 <Card
-                    title={<ClaimStatusBar claim={claim} />}
+                    title={
+                        <ClaimStatusBar
+                            claim={claim}
+                            policyMajorityThreshold={
+                                policy.claim_approval_threshold_percentage
+                            }
+                        />
+                    }
                     hoverable
                     bordered={true}
                     style={{

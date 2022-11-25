@@ -138,7 +138,7 @@ export const deleteClaimComment = (
             );
             dispatch({
                 type: DELETE_CLAIM_COMMENT_SUCCESS,
-                payload: response.data,
+                payload: { commentId },
                 claimId,
             });
         } catch (error) {

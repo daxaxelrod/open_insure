@@ -355,7 +355,7 @@ class ClaimEvidence(models.Model):
 # think of these as votes
 class ClaimApproval(models.Model): 
     claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="approvals")
-    approved = models.BooleanField(default=False, blank=True)
+    approved = models.BooleanField(default=None, blank=True, null=True)
     approved_on = models.DateTimeField(null=True, blank=True)
     viewed_on = models.DateTimeField(
         null=True,

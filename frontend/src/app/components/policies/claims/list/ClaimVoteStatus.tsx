@@ -38,9 +38,9 @@ export default function ClaimVoteStatus({
     return (
         <div
             style={{
-                marginTop: "1rem",
                 justifyContent: "center",
                 position: "relative",
+                flex: 1,
             }}
         >
             <Progress

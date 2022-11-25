@@ -6,7 +6,7 @@ def conditionally_create_claim_approvals(claim):
         if policy_type == "direct_democracy" and claim.has_evidence():
             pod_members_except_claimant = claim.policy.pod.members.all().exclude(id=claim.claimant.id)
             approvals = [
-                ClaimApproval(claim=claim, approver=user)
+                ClaimApproval(claim=claim, approver=user, approved=None)
                 for user in pod_members_except_claimant
             ]
             ClaimApproval.objects.bulk_create(approvals)

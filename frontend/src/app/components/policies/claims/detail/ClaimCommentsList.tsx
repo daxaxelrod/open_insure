@@ -43,7 +43,10 @@ export default function ClaimCommentsList() {
                 })}
                 {getCommentsPending ? <Skeleton /> : null}
                 {comments?.length === 0 ? (
-                    <Empty description="There not any comments yet" />
+                    <Empty
+                        description="No comments yet"
+                        style={{ marginBottom: "2rem" }}
+                    />
                 ) : null}
             </Col>
         </Row>
