@@ -17,7 +17,6 @@ export default function ClaimDetails() {
     const policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find((p: Policy) => p?.id === policyId)
     );
-    debugger;
     const claimIdInt = parseInt(claimId || "");
     const claim = useAppSelector((state) =>
         state.claims.claims?.[policyId]?.find((c: Claim) => c.id === claimIdInt)

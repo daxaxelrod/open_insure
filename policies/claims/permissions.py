@@ -1,6 +1,6 @@
 from rest_framework.permissions import BasePermission
 
-from policies.models import Claim, ClaimApproval, Policy
+from policies.models import Claim, ClaimApproval, Policy, ClaimComment
 
 class InClaimPod(BasePermission):
     def has_permission(self, request, view):
@@ -18,3 +18,7 @@ class InClaimApprovalPod(BasePermission):
 class IsNotClaimant(BasePermission):
     def has_object_permission(self, request, view, obj: ClaimApproval):
         return obj.claim.claimant != request.user
+
+class IsCommentOwner(BaseException):
+    def has_object_permission(self, request, view, obj: ClaimComment):
+        return obj.commenter is request.user
