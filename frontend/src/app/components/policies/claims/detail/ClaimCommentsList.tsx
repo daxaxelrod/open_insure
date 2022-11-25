@@ -29,10 +29,7 @@ export default function ClaimCommentsList() {
 
     return (
         <Row>
-            <Col span={3}>
-                <SideText>Discussion</SideText>
-            </Col>
-            <Col span={21}>
+            <Col span={24}>
                 {comments?.map((comment: ClaimCommentType) => {
                     return (
                         <ClaimComment

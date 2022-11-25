@@ -69,6 +69,10 @@ class ClaimCommentsViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated & InClaimPod & IsCommentOwner]
     serializer_class = ClaimCommentSerializer
 
+    def perform_create(self, serializer):
+        claim = get_object_or_404(Claim, pk=self.kwargs["claim_pk"])
+        return serializer.save(claim=claim, commenter=self.request.user)
+
     def get_queryset(self):
         return ClaimComment.objects.filter(claim__id=self.kwargs["claim_pk"])
 

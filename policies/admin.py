@@ -14,6 +14,7 @@ from policies.models import (
     PolicyCloseout,
     ClaimEvidence,
     ClaimApproval,
+    ClaimComment,
     Risk,
 )
 
@@ -22,6 +23,7 @@ from policies.risk.models import (
     AudioEquipmentRisk,
     ImageAlbum,
     PropertyImage,
+    
 )
 
 from policies.perils.models import Peril
@@ -110,3 +112,4 @@ admin.site.register(PolicyRiskSettings)
 admin.site.register(ImageAlbum, AlbumAdmin)
 admin.site.register(Peril)
 admin.site.register(ClaimView)
+admin.site.register(ClaimComment)

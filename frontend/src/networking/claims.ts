@@ -9,6 +9,7 @@ export interface ClaimCreationPayload {
 
 export interface ClaimCommentCreationPayload {
     comment: string;
+    claim: number;
 }
 
 export const createClaim = (policyId: number, values: ClaimCreationPayload) => {

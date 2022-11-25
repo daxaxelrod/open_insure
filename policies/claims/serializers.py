@@ -149,3 +149,4 @@ class ClaimCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClaimComment
         fields = "__all__"
+        read_only_fields = ["commenter"]
