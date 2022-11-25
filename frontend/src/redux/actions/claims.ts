@@ -13,6 +13,12 @@ import {
     GET_CLAIM_COMMENTS_PENDING,
     GET_CLAIM_COMMENTS_SUCCESS,
     GET_CLAIM_COMMENTS_FAILURE,
+    CREATE_CLAIM_COMMENT_PENDING,
+    CREATE_CLAIM_COMMENT_SUCCESS,
+    CREATE_CLAIM_COMMENT_FAILURE,
+    DELETE_CLAIM_COMMENT_PENDING,
+    DELETE_CLAIM_COMMENT_SUCCESS,
+    DELETE_CLAIM_COMMENT_FAILURE,
 } from "../actions/types";
 import { Claim } from "../reducers/commonTypes";
 
@@ -89,3 +95,57 @@ export const getClaimComments =
             console.log("error retrieving claim", claimId, "comments ");
         }
     };
+
+export const createClaimComment = (
+    policyId: number,
+    claimId: number,
+    values: API.ClaimCommentCreationPayload
+): ThunkAction<void, RootState, unknown, AnyAction> => {
+    return async (dispatch: any) => {
+        dispatch({ type: CREATE_CLAIM_COMMENT_PENDING });
+        try {
+            const response = await API.createClaimComment(
+                policyId,
+                claimId,
+                values
+            );
+            dispatch({
+                type: CREATE_CLAIM_COMMENT_SUCCESS,
+                payload: response.data,
+                claimId,
+            });
+        } catch (error) {
+            dispatch({
+                type: CREATE_CLAIM_COMMENT_FAILURE,
+            });
+            console.log("error creating claim", claimId, "comment");
+        }
+    };
+};
+
+export const deleteClaimComment = (
+    policyId: number,
+    claimId: number,
+    commentId: number
+): ThunkAction<void, RootState, unknown, AnyAction> => {
+    return async (dispatch: any) => {
+        dispatch({ type: DELETE_CLAIM_COMMENT_PENDING });
+        try {
+            const response = await API.deleteClaimComment(
+                policyId,
+                claimId,
+                commentId
+            );
+            dispatch({
+                type: DELETE_CLAIM_COMMENT_SUCCESS,
+                payload: response.data,
+                claimId,
+            });
+        } catch (error) {
+            dispatch({
+                type: DELETE_CLAIM_COMMENT_FAILURE,
+            });
+            console.log("error deleting claim", claimId, "comment");
+        }
+    };
+};

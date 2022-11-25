@@ -10,6 +10,9 @@ import {
     GET_CLAIM_COMMENTS_PENDING,
     GET_CLAIM_COMMENTS_SUCCESS,
     GET_CLAIM_COMMENTS_FAILURE,
+    CREATE_CLAIM_COMMENT_PENDING,
+    CREATE_CLAIM_COMMENT_SUCCESS,
+    CREATE_CLAIM_COMMENT_FAILURE,
 } from "../actions/types";
 import {
     Claim,
@@ -28,6 +31,7 @@ export interface ClaimsState {
     // we only expect to get one comment set at a time
     // no need for more complex pending states
     commentsPending: boolean;
+    createCommentPending: boolean;
 }
 
 const initialState: ClaimsState = {
@@ -37,6 +41,7 @@ const initialState: ClaimsState = {
     creationError: null,
     comments: {},
     commentsPending: false,
+    createCommentPending: false,
 };
 
 export default (
@@ -105,6 +110,25 @@ export default (
             return {
                 ...state,
                 commentsPending: false,
+            };
+        case CREATE_CLAIM_COMMENT_PENDING:
+            return {
+                ...state,
+                createCommentPending: true,
+            };
+        case CREATE_CLAIM_COMMENT_SUCCESS:
+            return {
+                ...state,
+                createCommentPending: false,
+                comments: {
+                    ...state.comments,
+                    [claimId]: [...(state.comments?.[claimId] || {}), payload],
+                },
+            };
+        case CREATE_CLAIM_COMMENT_FAILURE:
+            return {
+                ...state,
+                createCommentPending: false,
             };
 
         default:

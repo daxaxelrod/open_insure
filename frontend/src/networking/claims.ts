@@ -7,6 +7,10 @@ export interface ClaimCreationPayload {
     amount: number;
 }
 
+export interface ClaimCommentCreationPayload {
+    comment: string;
+}
+
 export const createClaim = (policyId: number, values: ClaimCreationPayload) => {
     return axiosInstance.post(`/api/v1/policies/${policyId}/claims/`, values);
 };
@@ -30,5 +34,26 @@ export const createClaimEvidence = (
 export const getClaimComments = (policyId: number, claimId: number) => {
     return axiosInstance.post(
         `/api/v1/policies/${policyId}/claims/${claimId}/comments/`
+    );
+};
+
+export const createClaimComment = (
+    policyId: number,
+    claimId: number,
+    values: ClaimCommentCreationPayload
+) => {
+    return axiosInstance.post(
+        `/api/v1/policies/${policyId}/claims/${claimId}/comments/`,
+        values
+    );
+};
+
+export const deleteClaimComment = (
+    policyId: number,
+    claimId: number,
+    commentId: number
+) => {
+    return axiosInstance.delete(
+        `/api/v1/policies/${policyId}/claims/${claimId}/comments/${commentId}/`
     );
 };

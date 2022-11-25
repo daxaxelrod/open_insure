@@ -20,5 +20,8 @@ class IsNotClaimant(BasePermission):
         return obj.claim.claimant != request.user
 
 class IsCommentOwner(BaseException):
+    def has_permission(self, request, view):
+        return True
+
     def has_object_permission(self, request, view, obj: ClaimComment):
         return obj.commenter is request.user
