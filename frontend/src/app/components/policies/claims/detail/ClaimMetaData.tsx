@@ -29,7 +29,12 @@ export default function ClaimMetaData() {
                     </SideText>
                 </Col>
                 <Col span={21}>
-                    <Title level={3}>{claim?.title}</Title>
+                    <Title level={2} style={{ marginBottom: 0 }}>
+                        ${(claim?.amount || 0) / 100}
+                    </Title>
+                    <Title level={3} style={{ marginTop: 0 }}>
+                        {claim?.title}
+                    </Title>
                     <Paragraph>{claim?.description}</Paragraph>
                 </Col>
             </Row>
