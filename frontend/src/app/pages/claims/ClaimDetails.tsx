@@ -18,14 +18,16 @@ export default function ClaimDetails() {
         state.policies.publicPolicies.find((p: Policy) => p?.id === policyId)
     );
     const claimIdInt = parseInt(claimId || "");
-    const claim = useAppSelector((state) =>
+    const claim: Claim = useAppSelector((state) =>
         state.claims.claims?.[policyId]?.find((c: Claim) => c.id === claimIdInt)
     );
     const isClaimApproved = !!claim?.is_approved;
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
+    let isClaimant = claim?.claimant === currentUser?.id;
 
     return (
         <ClaimDetailContext.Provider value={{ claim, isClaimApproved, policy }}>
-            <ClaimSteps />
+            {isClaimant ? <ClaimSteps /> : null}
             <ClaimMetaData />
             <ClaimEvidence />
             <ClaimVotes />

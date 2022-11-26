@@ -112,6 +112,10 @@ class UserViewSet(ModelViewSet):
         response.data["access"] = str(refresh.access_token)
         return response
 
+    def perform_create(self, serializer):
+        # setup default picture
+        serializer.save(picture='https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&name=' + serializer.validated_data['first_name'] + '+' + serializer.validated_data['last_name'])
+
     @action(detail=False, methods=["GET"])
     def me(self, request):
         return Response(

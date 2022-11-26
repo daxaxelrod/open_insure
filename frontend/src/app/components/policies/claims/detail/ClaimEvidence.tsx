@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Card, Col, Image, Row } from "antd";
+import { Card, Col, Image, Row, Space } from "antd";
 import colors from "../../../../constants/colors";
 import {
     SettingOutlined,
@@ -16,14 +16,21 @@ export default function ClaimEvidence() {
             <Col span={3}></Col>
             <Col span={21}>
                 <Image.PreviewGroup>
-                    {claim?.evidence?.map((evidence) => (
-                        <Image
-                            key={"evidence-image-" + evidence.id}
-                            width={200}
-                            src={evidence.image}
-                            alt="evidence"
-                        />
-                    ))}
+                    <Space size={12}>
+                        {claim?.evidence?.map((evidence) => (
+                            <Image
+                                key={"evidence-image-" + evidence.id}
+                                width={140}
+                                height={140}
+                                src={evidence.image}
+                                alt="evidence"
+                                style={{
+                                    borderRadius: 12,
+                                    objectFit: "cover",
+                                }}
+                            />
+                        ))}
+                    </Space>
                 </Image.PreviewGroup>
             </Col>
         </Row>
