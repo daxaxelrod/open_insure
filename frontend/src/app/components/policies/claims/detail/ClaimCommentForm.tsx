@@ -16,6 +16,7 @@ export default function ClaimCommentForm() {
         (state) => state.claims.commentsPending
     );
     const currentUser: User = useAppSelector((state) => state.auth.currentUser);
+    console.log("currentUser", currentUser);
 
     if (!policy?.id || !claim?.id) {
         return null;

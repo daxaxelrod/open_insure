@@ -1,5 +1,5 @@
-import { Button, Col, notification, Row, Statistic } from "antd";
 import React, { useContext } from "react";
+import { Button, Col, notification, Row, Statistic, Typography } from "antd";
 import { patchCurrentUserClaimVote } from "../../../../../redux/actions/claims";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { ClaimApproval } from "../../../../../redux/reducers/commonTypes";
@@ -8,8 +8,10 @@ import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import ClaimVoteStatus from "../list/ClaimVoteStatus";
 import { SideText, ClaimVotingBox } from "./Styled";
 
+const { Paragraph } = Typography;
+
 export default function ClaimVotes() {
-    const { claim, policy } = useContext(ClaimDetailContext);
+    const { claim, policy, claimant } = useContext(ClaimDetailContext);
     const dispatch = useAppDispatch();
     const [api, context] = notification.useNotification();
     const currentUser = useAppSelector((state) => state.auth.currentUser);
@@ -51,6 +53,8 @@ export default function ClaimVotes() {
         }
     };
 
+    console.log(claimant?.id, currentUser.id);
+
     return (
         <Row style={{ margin: "20px 0" }}>
             {context}
@@ -64,19 +68,32 @@ export default function ClaimVotes() {
                     <Col span={12}>
                         <Row>
                             <Col span={12}>
-                                <ClaimVotingBox>
-                                    <Button
-                                        style={{ marginBottom: 10 }}
-                                        onClick={() => submitClaimVote(true)}
-                                    >
-                                        Approve
-                                    </Button>
-                                    <Button
-                                        onClick={() => submitClaimVote(false)}
-                                    >
-                                        Reject
-                                    </Button>
-                                </ClaimVotingBox>
+                                {claimant?.id === currentUser.id ? (
+                                    <ClaimVotingBox>
+                                        <Paragraph>
+                                            You are the claimant. You can't vote
+                                            on your claim
+                                        </Paragraph>
+                                    </ClaimVotingBox>
+                                ) : (
+                                    <ClaimVotingBox>
+                                        <Button
+                                            style={{ marginBottom: 10 }}
+                                            onClick={() =>
+                                                submitClaimVote(true)
+                                            }
+                                        >
+                                            Approve
+                                        </Button>
+                                        <Button
+                                            onClick={() =>
+                                                submitClaimVote(false)
+                                            }
+                                        >
+                                            Reject
+                                        </Button>
+                                    </ClaimVotingBox>
+                                )}
                             </Col>
                             <Col
                                 span={12}

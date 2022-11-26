@@ -77,7 +77,17 @@ export default function PoolAddressSetupModal({
                     poolAddress: policy?.pool_address,
                 }}
             >
-                <Form.Item label="Funds Location" name="poolAddress" required>
+                <Form.Item
+                    label="Funds Location"
+                    name="poolAddress"
+                    rules={[
+                        {
+                            required: true,
+                            message:
+                                "Please enter the address of the escrow account",
+                        },
+                    ]}
+                >
                     <Input placeholder="Your venmo username or your bitcoin wallet address" />
                 </Form.Item>
             </Form>
