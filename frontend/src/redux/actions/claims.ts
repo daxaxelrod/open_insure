@@ -19,6 +19,9 @@ import {
     DELETE_CLAIM_COMMENT_PENDING,
     DELETE_CLAIM_COMMENT_SUCCESS,
     DELETE_CLAIM_COMMENT_FAILURE,
+    PATCH_CLAIM_APPROVAL_PENDING,
+    PATCH_CLAIM_APPROVAL_SUCCESS,
+    PATCH_CLAIM_APPROVAL_FAILURE,
 } from "../actions/types";
 import { Claim } from "../reducers/commonTypes";
 
@@ -146,6 +149,40 @@ export const deleteClaimComment = (
                 type: DELETE_CLAIM_COMMENT_FAILURE,
             });
             console.log("error deleting claim", claimId, "comment");
+        }
+    };
+};
+
+export const patchCurrentUserClaimVote = (
+    policyId: number,
+    claimId: number,
+    claimApprovalId: number,
+    decision: boolean // maybe this could be more nuanced in the future
+    // aka a user could vote for a partial payout
+): ThunkAction<void, RootState, unknown, AnyAction> => {
+    return async (dispatch: any) => {
+        dispatch({ type: PATCH_CLAIM_APPROVAL_PENDING });
+        try {
+            const response = await API.patchCurrentUserClaimVote(
+                policyId,
+                claimId,
+                claimApprovalId,
+                decision
+            );
+            dispatch({
+                type: PATCH_CLAIM_APPROVAL_SUCCESS,
+                payload: response.data,
+            });
+        } catch (error) {
+            dispatch({
+                type: PATCH_CLAIM_APPROVAL_FAILURE,
+            });
+            console.log(
+                "error submitting vote",
+                claimApprovalId,
+                "of choice",
+                decision
+            );
         }
     };
 };

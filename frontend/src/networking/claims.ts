@@ -58,3 +58,20 @@ export const deleteClaimComment = (
         `/api/v1/policies/${policyId}/claims/${claimId}/comments/${commentId}/`
     );
 };
+
+export const patchCurrentUserClaimVote = (
+    policyId: number,
+    claimId: number,
+    voteId: number,
+    decision: boolean
+) => {
+    // maybe votes should be a single my_vote route
+    // would obfusticate vote id, less likey to be used maliciously
+    // the server could easily lock that route to the current user
+    return axiosInstance.patch(
+        `/api/v1/policies/${policyId}/claims/${claimId}/votes/${voteId}`,
+        {
+            approved: decision,
+        }
+    );
+};

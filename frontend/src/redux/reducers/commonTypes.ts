@@ -59,6 +59,8 @@ export interface Claim {
     claimant: number;
     title: string;
     description: string;
+    location_description: string;
+    occurance_date: string;
     amount: number;
     paid_on: string;
     is_claim_invalid: boolean;

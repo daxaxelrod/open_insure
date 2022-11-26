@@ -7,15 +7,21 @@ import {
 } from "../../../../../redux/reducers/commonTypes";
 import colors from "../../../../constants/colors";
 
-function ThresholdBar({ location }: { location: number }) {
+function ThresholdBar({
+    location,
+    strokeWidth = 10,
+}: {
+    location: number;
+    strokeWidth?: number;
+}) {
     return (
         <div
             style={{
                 position: "absolute",
                 left: `${location * 0.81}%`,
                 width: "1px",
-                height: "22px",
-                top: 2,
+                height: `${strokeWidth * 2}px`,
+                top: -0.1 * strokeWidth,
                 bottom: 0,
                 borderRight: `2px dashed ${colors.alert2}`,
             }}
@@ -26,9 +32,11 @@ function ThresholdBar({ location }: { location: number }) {
 export default function ClaimVoteStatus({
     claim,
     policy,
+    strokeWidth = 10,
 }: {
     claim: Claim;
     policy: Policy;
+    strokeWidth?: number;
 }) {
     let approvals = claim.approvals;
     let acceptances = approvals.filter((a: ClaimApproval) => a.approved).length;
@@ -45,6 +53,7 @@ export default function ClaimVoteStatus({
         >
             <Progress
                 percent={percent}
+                strokeWidth={strokeWidth}
                 status={
                     percent >= policy.claim_approval_threshold_percentage
                         ? "success"
@@ -52,6 +61,7 @@ export default function ClaimVoteStatus({
                 }
             />
             <ThresholdBar
+                strokeWidth={strokeWidth}
                 location={policy.claim_approval_threshold_percentage}
             />
         </div>

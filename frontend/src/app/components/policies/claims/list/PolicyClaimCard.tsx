@@ -7,6 +7,7 @@ import ClaimStatusBar from "./ClaimStatusBar";
 import ClaimEvidenceImages from "./ClaimEvidenceImages";
 import ClaimVoteStatus from "./ClaimVoteStatus";
 import colors from "../../../../constants/colors";
+import ClaimantShortDisplay from "../detail/ClaimantShortDisplay";
 
 const { Title, Paragraph } = Typography;
 
@@ -22,21 +23,7 @@ const ClaimTitle = ({ claim, claimant }: { claim: Claim; claimant?: User }) => {
                 <Title level={4}>{claim.title}</Title>
             </Row>
             <Row justify="end">
-                <Paragraph style={{ color: colors.gray8, fontSize: "1.2rem" }}>
-                    {claimant?.picture ? (
-                        <img
-                            src={claimant?.picture}
-                            style={{
-                                height: 25,
-                                width: 25,
-                                borderRadius: 15,
-                                marginRight: 5,
-                            }}
-                            alt="user avatar"
-                        />
-                    ) : null}
-                    {claimant?.first_name} {claimant?.last_name.slice(0, 1)}
-                </Paragraph>
+                <ClaimantShortDisplay claimant={claimant} />
             </Row>
         </div>
     );

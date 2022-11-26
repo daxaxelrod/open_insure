@@ -21,7 +21,7 @@ export default function ClaimEvidence() {
                             <Image
                                 key={"evidence-image-" + evidence.id}
                                 width={140}
-                                height={140}
+                                height={120}
                                 src={evidence.image}
                                 alt="evidence"
                                 style={{

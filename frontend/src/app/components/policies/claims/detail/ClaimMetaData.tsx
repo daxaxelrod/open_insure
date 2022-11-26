@@ -3,16 +3,18 @@ import { Col, Row, Typography } from "antd";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import moment from "moment-timezone";
 import colors from "../../../../constants/colors";
-import { SideText } from "./Styled";
+import { SideText, CaptionText, ClaimMetaDataContainer } from "./Styled";
+import ClaimEvidence from "./ClaimEvidence";
+import ClaimantShortDisplay from "./ClaimantShortDisplay";
 
 const { Title, Paragraph } = Typography;
 
 export default function ClaimMetaData() {
-    const { claim } = useContext(ClaimDetailContext);
+    const { claim, claimant } = useContext(ClaimDetailContext);
 
     return (
-        <div className="claim-metadata">
-            <Row>
+        <ClaimMetaDataContainer>
+            <Row style={{ marginBottom: "1.5rem" }}>
                 <Col
                     span={3}
                     style={{
@@ -28,16 +30,34 @@ export default function ClaimMetaData() {
                         {moment(claim?.created_at).format("h:mm a")}
                     </SideText>
                 </Col>
-                <Col span={21}>
+                <Col span={6}>
                     <Title level={2} style={{ marginBottom: 0 }}>
                         ${(claim?.amount || 0) / 100}
                     </Title>
                     <Title level={3} style={{ marginTop: 0 }}>
                         {claim?.title}
                     </Title>
-                    <Paragraph>{claim?.description}</Paragraph>
+                </Col>
+                <Col span={10}>
+                    <ClaimEvidence />
                 </Col>
             </Row>
-        </div>
+            <Row>
+                <Col span={6} offset={3}>
+                    <CaptionText>Description</CaptionText>
+                    <Paragraph>{claim?.description}</Paragraph>
+                    <CaptionText>Loss happened on</CaptionText>
+                    <Paragraph>
+                        {moment(claim?.occurance_date).format("MM-DD-YYYY")}
+                    </Paragraph>
+                </Col>
+                <Col span={10}>
+                    <CaptionText>Location</CaptionText>
+                    <Paragraph>{claim?.location_description}</Paragraph>
+                    <CaptionText>Filed by</CaptionText>
+                    <ClaimantShortDisplay claimant={claimant} linkToProfile />
+                </Col>
+            </Row>
+        </ClaimMetaDataContainer>
     );
 }

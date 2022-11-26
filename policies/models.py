@@ -267,6 +267,10 @@ class Claim(models.Model):
     paid_on = models.DateField(
         null=True, blank=True, help_text="Null means not paid yet"
     )
+    
+    # todo, not sure we have the infrastructure to support this yet
+    # but def needs to be done in the future, cant have claims lying around forever, people need closure
+    # votes_due_by = models.DateField() # based on the claim_approval_vote_due_number_of_days from the policy
 
     location_lat = models.FloatField(null=True, blank=True)
     location_long = models.FloatField(null=True, blank=True)

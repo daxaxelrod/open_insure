@@ -6,8 +6,17 @@ export const SideText = styled.div({
     color: colors.gray7,
 });
 
+export const CaptionText = styled.div({
+    fontSize: 10,
+    color: colors.gray7,
+});
+
 export const ClaimVotingBox = styled.div({
     display: "flex",
     flexDirection: "column",
     padding: "1.25rem",
+});
+
+export const ClaimMetaDataContainer = styled.div({
+    marginTop: "2rem",
 });

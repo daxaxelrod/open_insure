@@ -1,6 +1,7 @@
 import { Button, Col, notification, Row, Statistic } from "antd";
 import React, { useContext } from "react";
-import { useAppDispatch } from "../../../../../redux/hooks";
+import { patchCurrentUserClaimVote } from "../../../../../redux/actions/claims";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { ClaimApproval } from "../../../../../redux/reducers/commonTypes";
 import { maybePluralize } from "../../../../utils/stringUtils";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
@@ -11,6 +12,7 @@ export default function ClaimVotes() {
     const { claim, policy } = useContext(ClaimDetailContext);
     const dispatch = useAppDispatch();
     const [api, context] = notification.useNotification();
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
 
     if (!claim || !policy) {
         return null;
@@ -28,86 +30,92 @@ export default function ClaimVotes() {
     let votesNotCast = votes.length - submittedVotes.length;
 
     const submitClaimVote = (decision: boolean) => {
-        api.info({
-            message: "todo, implement vote submit",
-            description: `Vote: ${decision}`,
+        const userVote = votes.find((vote: ClaimApproval) => {
+            return vote.approver === currentUser.id;
         });
+        if (userVote) {
+            dispatch(
+                patchCurrentUserClaimVote(
+                    policy.id,
+                    claim.id,
+                    userVote.id,
+                    decision
+                )
+            );
+        } else {
+            api.info({
+                message:
+                    "It appears you have not yet been assigned a vote for this claim.",
+                description: `Reach out to your policy administrator or escrow agent to get your vote assigned. `,
+            });
+        }
     };
 
     return (
         <Row style={{ margin: "20px 0" }}>
             {context}
             <Col span={3} style={{ marginTop: 8 }}>
-                <SideText>
-                    {submittedVotes.length}{" "}
-                    {maybePluralize(submittedVotes.length, "Vote")} Cast
-                </SideText>
-                <SideText>
-                    {votesNotCast} {maybePluralize(votesNotCast, "Votes")} Not
-                    cast
-                </SideText>
-                <SideText>
-                    {votesNeededToPass}{" "}
-                    {maybePluralize(votesNeededToPass, "Votes")} Needed to Pass
-                </SideText>
+                <SideText>{submittedVotes.length} Cast</SideText>
+                <SideText>{votesNotCast} Not cast</SideText>
+                <SideText>{votesNeededToPass} Needed to Pass</SideText>
             </Col>
             <Col span={21}>
                 <Row align={"middle"}>
-                    <Col>
-                        <ClaimVotingBox>
-                            <Button
-                                style={{ marginBottom: 10 }}
-                                onClick={() => submitClaimVote(true)}
+                    <Col span={12}>
+                        <Row>
+                            <Col span={12}>
+                                <ClaimVotingBox>
+                                    <Button
+                                        style={{ marginBottom: 10 }}
+                                        onClick={() => submitClaimVote(true)}
+                                    >
+                                        Approve
+                                    </Button>
+                                    <Button
+                                        onClick={() => submitClaimVote(false)}
+                                    >
+                                        Reject
+                                    </Button>
+                                </ClaimVotingBox>
+                            </Col>
+                            <Col
+                                span={12}
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
                             >
-                                Approve
-                            </Button>
-                            <Button onClick={() => submitClaimVote(false)}>
-                                Reject
-                            </Button>
-                        </ClaimVotingBox>
+                                {claim && policy && (
+                                    <ClaimVoteStatus
+                                        claim={claim}
+                                        policy={policy}
+                                        strokeWidth={18}
+                                    />
+                                )}
+                            </Col>
+                        </Row>
                     </Col>
                     <Col
+                        span={12}
                         style={{
-                            flex: 1,
                             display: "flex",
-                            alignItems: "center",
-                            width: "100%",
+                            justifyContent: "space-around",
                         }}
                     >
-                        {claim && policy && (
-                            <ClaimVoteStatus claim={claim} policy={policy} />
-                        )}
-                    </Col>
-                </Row>
-                <Row
-                    gutter={20}
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        marginTop: 15,
-                    }}
-                >
-                    <Col>
                         <Statistic
                             title="Minimum Agreement Threshold"
                             value={policy?.claim_approval_threshold_percentage}
                             suffix="%"
                         />
-                    </Col>
-                    <Col>
-                        <Statistic
-                            title="Num Policy Members"
-                            value={votes.length}
-                        />
-                    </Col>
-                    <Col>
                         <Statistic
                             title="Votes needed to pass"
                             value={votesNeededToPass}
                         />
-                    </Col>
-                    <Col>
-                        <Statistic title="Views" value={"Todo"} />
+                        {/* <Statistic 
+                            title="Votes due in"
+                            value={claim.voting_deadline} backend driven, not started yet
+                        /> */}
                     </Col>
                 </Row>
             </Col>
