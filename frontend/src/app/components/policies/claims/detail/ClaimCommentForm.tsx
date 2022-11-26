@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Row, Avatar, Form, Button, Input, Col } from "antd";
+import { Row, Avatar, Form, Button, Input, Col, notification } from "antd";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { User } from "../../../../../redux/reducers/commonTypes";
 import { createClaimComment } from "../../../../../redux/actions/claims";
@@ -12,6 +12,7 @@ export default function ClaimCommentForm() {
     const [form] = Form.useForm();
 
     const { policy, claim } = useContext(ClaimDetailContext);
+    const [api, contextHolder] = notification.useNotification();
     const postCommentPending = useAppSelector(
         (state) => state.claims.commentsPending
     );
@@ -22,8 +23,19 @@ export default function ClaimCommentForm() {
         return null;
     }
 
+    const isUserPodMember = policy?.pod?.members.some((user: User) => {
+        return user.id === currentUser?.id;
+    });
+
     const postComment = () => {
         form.validateFields().then((values) => {
+            if (!isUserPodMember) {
+                // cant be too careful
+                api.warning({
+                    message: "You are not a member of this policy",
+                });
+                return;
+            }
             dispatch(
                 createClaimComment(policy.id, claim.id, {
                     ...values,
@@ -36,6 +48,7 @@ export default function ClaimCommentForm() {
 
     return (
         <Row gutter={12}>
+            {contextHolder}
             <Col
                 span={3}
                 style={{
@@ -62,6 +75,7 @@ export default function ClaimCommentForm() {
                             type="primary"
                             htmlType="submit"
                             loading={postCommentPending}
+                            disabled={!isUserPodMember}
                         >
                             Add Comment
                         </Button>

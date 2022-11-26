@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Button, Col, notification, Row, Statistic, Typography } from "antd";
 import { patchCurrentUserClaimVote } from "../../../../../redux/actions/claims";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
-import { ClaimApproval } from "../../../../../redux/reducers/commonTypes";
+import { ClaimApproval, User } from "../../../../../redux/reducers/commonTypes";
 import { maybePluralize } from "../../../../utils/stringUtils";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import ClaimVoteStatus from "../list/ClaimVoteStatus";
@@ -52,8 +52,9 @@ export default function ClaimVotes() {
             });
         }
     };
-
-    console.log(claimant?.id, currentUser.id);
+    const isUserPodMember = policy?.pod?.members.some((user: User) => {
+        return user.id === currentUser?.id;
+    });
 
     return (
         <Row style={{ margin: "20px 0" }}>
@@ -75,7 +76,7 @@ export default function ClaimVotes() {
                                             on your claim
                                         </Paragraph>
                                     </ClaimVotingBox>
-                                ) : (
+                                ) : isUserPodMember ? (
                                     <ClaimVotingBox>
                                         <Button
                                             style={{ marginBottom: 10 }}
@@ -92,6 +93,12 @@ export default function ClaimVotes() {
                                         >
                                             Reject
                                         </Button>
+                                    </ClaimVotingBox>
+                                ) : (
+                                    <ClaimVotingBox>
+                                        <Paragraph>
+                                            Only Policy members can vote
+                                        </Paragraph>
                                     </ClaimVotingBox>
                                 )}
                             </Col>

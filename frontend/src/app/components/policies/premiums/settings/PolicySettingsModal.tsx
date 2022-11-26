@@ -362,6 +362,8 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                                         color: colors.gray7,
                                         marginRight: ".5rem",
                                         marginBottom: 0,
+                                        display: "flex",
+                                        alignItems: "center",
                                     }}
                                 >
                                     Presets:&nbsp;
