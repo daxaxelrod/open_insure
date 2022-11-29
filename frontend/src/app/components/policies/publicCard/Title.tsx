@@ -21,7 +21,7 @@ export default function Title({ policy }: { policy: Policy }) {
                     alignItems: "center",
                 }}
             >
-                <Avatar.Group maxCount={2}>
+                <Avatar.Group maxCount={2} size={"default"}>
                     {policy?.pod?.members?.map((member) => (
                         <Avatar
                             key={member?.id}
@@ -29,17 +29,6 @@ export default function Title({ policy }: { policy: Policy }) {
                             icon={<UserOutlined />}
                         />
                     ))}
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            fontSize: 12,
-                        }}
-                    >
-                        &nbsp;
-                        {policy?.pod?.members?.length ? ` ${policy?.pod?.members?.length} ${maybePluralize(policy?.pod?.members?.length, "member")}` : ''}
-                        &nbsp;
-                    </div>
                 </Avatar.Group>
             </div>
         </div>

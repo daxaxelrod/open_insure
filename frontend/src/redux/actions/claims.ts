@@ -134,11 +134,7 @@ export const deleteClaimComment = (
     return async (dispatch: any) => {
         dispatch({ type: DELETE_CLAIM_COMMENT_PENDING });
         try {
-            const response = await API.deleteClaimComment(
-                policyId,
-                claimId,
-                commentId
-            );
+            await API.deleteClaimComment(policyId, claimId, commentId);
             dispatch({
                 type: DELETE_CLAIM_COMMENT_SUCCESS,
                 payload: { commentId },
@@ -164,7 +160,6 @@ export const patchCurrentUserClaimVote = (
         dispatch({ type: PATCH_CLAIM_APPROVAL_PENDING });
         try {
             const response = await API.patchCurrentUserClaimVote(
-                policyId,
                 claimId,
                 claimApprovalId,
                 decision
@@ -172,16 +167,20 @@ export const patchCurrentUserClaimVote = (
             dispatch({
                 type: PATCH_CLAIM_APPROVAL_SUCCESS,
                 payload: response.data,
+                policyId: policyId,
+                claimId: claimId,
             });
         } catch (error) {
             dispatch({
                 type: PATCH_CLAIM_APPROVAL_FAILURE,
+                policyId: policyId,
             });
             console.log(
                 "error submitting vote",
                 claimApprovalId,
                 "of choice",
-                decision
+                decision,
+                error
             );
         }
     };

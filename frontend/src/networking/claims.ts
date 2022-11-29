@@ -60,7 +60,6 @@ export const deleteClaimComment = (
 };
 
 export const patchCurrentUserClaimVote = (
-    policyId: number,
     claimId: number,
     voteId: number,
     decision: boolean
@@ -69,7 +68,7 @@ export const patchCurrentUserClaimVote = (
     // would obfusticate vote id, less likey to be used maliciously
     // the server could easily lock that route to the current user
     return axiosInstance.patch(
-        `/api/v1/policies/${policyId}/claims/${claimId}/votes/${voteId}`,
+        `/api/v1/claims/${claimId}/approvals/${voteId}/`,
         {
             approved: decision,
         }

@@ -17,8 +17,8 @@ class ClaimApprovalSerializer(serializers.ModelSerializer):
             claim = self.instance.claim
             policy = self.instance.claim.policy
 
-            if claim.is_approved():
-                raise serializers.ValidationError("Claim is already approved")
+            # if claim.is_approved():
+            #     raise serializers.ValidationError("Claim is already approved")
 
             if claim.is_claim_invalid:
                 raise serializers.ValidationError(

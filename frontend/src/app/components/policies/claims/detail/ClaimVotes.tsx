@@ -3,7 +3,6 @@ import { Button, Col, notification, Row, Statistic, Typography } from "antd";
 import { patchCurrentUserClaimVote } from "../../../../../redux/actions/claims";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { ClaimApproval, User } from "../../../../../redux/reducers/commonTypes";
-import { maybePluralize } from "../../../../utils/stringUtils";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import ClaimVoteStatus from "../list/ClaimVoteStatus";
 import { SideText, ClaimVotingBox } from "./Styled";
@@ -37,12 +36,7 @@ export default function ClaimVotes() {
         });
         if (userVote) {
             dispatch(
-                patchCurrentUserClaimVote(
-                    policy.id,
-                    claim.id,
-                    userVote.id,
-                    decision
-                )
+                patchCurrentUserClaimVote(policy.id, claim.id, userVote.id, decision)
             );
         } else {
             api.info({

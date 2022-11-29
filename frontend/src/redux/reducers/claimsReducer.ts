@@ -13,6 +13,7 @@ import {
     CREATE_CLAIM_COMMENT_PENDING,
     CREATE_CLAIM_COMMENT_SUCCESS,
     CREATE_CLAIM_COMMENT_FAILURE,
+    PATCH_CLAIM_APPROVAL_SUCCESS,
 } from "../actions/types";
 import {
     Claim,
@@ -129,6 +130,31 @@ export default (
             return {
                 ...state,
                 createCommentPending: false,
+            };
+        case PATCH_CLAIM_APPROVAL_SUCCESS:
+            return {
+                ...state,
+                claims: {
+                    ...state.claims,
+                    [policyId]: state.claims?.[policyId]?.map(
+                        (claim: Claim) => {
+                            if (claim.id === claimId) {
+                                return {
+                                    ...claim,
+                                    approvals: claim.approvals?.map(
+                                        (approval) => {
+                                            if (approval.id === payload.id) {
+                                                return payload;
+                                            }
+                                            return approval;
+                                        }
+                                    ),
+                                };
+                            }
+                            return claim;
+                        }
+                    ),
+                },
             };
 
         default:
