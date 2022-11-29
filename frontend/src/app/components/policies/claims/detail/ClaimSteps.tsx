@@ -1,9 +1,27 @@
-import { Col, Row, Steps } from "antd";
+import { Col, Dropdown, notification, Popconfirm, Row, Steps } from "antd";
 import React, { useContext } from "react";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 
+import { EllipsisOutlined } from "@ant-design/icons";
+import type { MenuProps } from "antd";
+
 export default function ClaimSteps() {
     const { claim, isClaimApproved } = useContext(ClaimDetailContext);
+    const [api, contextHolder] = notification.useNotification();
+
+    const dropdownItems: MenuProps["items"] = [
+        {
+            key: "1",
+            label: "Delete Claim",
+            danger: true,
+            onClick: () => {
+                api.error({
+                    message: "Not Implemented yet",
+                    description: "Ask your admin to delete this claim for you",
+                });
+            },
+        },
+    ];
 
     const items = [
         { title: "File Claim" },
@@ -23,8 +41,21 @@ export default function ClaimSteps() {
 
     return (
         <Row>
-            <Col span={21} offset={3}>
+            {contextHolder}
+            <Col span={20} offset={3}>
                 <Steps items={items} current={current} />
+            </Col>
+            <Col
+                span={1}
+                style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "flex-start",
+                }}
+            >
+                <Dropdown menu={{ items: dropdownItems }} trigger={["click"]}>
+                    <EllipsisOutlined />
+                </Dropdown>
             </Col>
         </Row>
     );

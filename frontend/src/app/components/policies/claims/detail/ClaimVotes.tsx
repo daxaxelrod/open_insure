@@ -36,7 +36,12 @@ export default function ClaimVotes() {
         });
         if (userVote) {
             dispatch(
-                patchCurrentUserClaimVote(policy.id, claim.id, userVote.id, decision)
+                patchCurrentUserClaimVote(
+                    policy.id,
+                    claim.id,
+                    userVote.id,
+                    decision
+                )
             );
         } else {
             api.info({
@@ -56,7 +61,6 @@ export default function ClaimVotes() {
             <Col span={3} style={{ marginTop: 8 }}>
                 <SideText>{submittedVotes.length} Cast</SideText>
                 <SideText>{votesNotCast} Not cast</SideText>
-                <SideText>{votesNeededToPass} Needed to Pass</SideText>
             </Col>
             <Col span={21}>
                 <Row align={"middle"}>
@@ -108,7 +112,7 @@ export default function ClaimVotes() {
                                     <ClaimVoteStatus
                                         claim={claim}
                                         policy={policy}
-                                        strokeWidth={18}
+                                        strokeWidth={14}
                                     />
                                 )}
                             </Col>
@@ -127,7 +131,7 @@ export default function ClaimVotes() {
                             suffix="%"
                         />
                         <Statistic
-                            title="Votes needed to pass"
+                            title="Total votes needed to pass"
                             value={votesNeededToPass}
                         />
                         {/* <Statistic 
