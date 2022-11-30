@@ -264,6 +264,7 @@ class Claim(models.Model):
     amount = models.IntegerField(
         validators=[MinValueValidator(1)], help_text="in cents"
     )
+    approved_on = models.DateTimeField(null=True, blank=True, help_text="The first instant where enough votes were cast to approve the claim")
     paid_on = models.DateField(
         null=True, blank=True, help_text="Null means not paid yet"
     )
@@ -297,9 +298,8 @@ class Claim(models.Model):
         if all_approvals_count == 0:
             # approvals not created for some reason, shouldnt happen
             return False
-        return (approved_count / all_approvals_count) >= float(
-            settings.CLAIM_APPROVAL_THRESHOLD_PERCENTAGE
-        )
+        return (approved_count / all_approvals_count) >= (self.policy.claim_approval_threshold_percentage / 100)
+        
 
     def has_evidence(self):
         return self.evidence.count() > 0

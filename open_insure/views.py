@@ -17,5 +17,4 @@ def get_instance_settings(request):
     
     return Response({
         "ESCROW_AGENT": settings.ESCROW_AGENT,
-        "CLAIM_APPROVAL_THRESHOLD_PERCENTAGE": float(settings.CLAIM_APPROVAL_THRESHOLD_PERCENTAGE)
     }, status=200)

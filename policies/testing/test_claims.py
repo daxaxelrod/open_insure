@@ -53,12 +53,12 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(_json["amount"], 1000)
         self.assertEquals(_json["paid_on"], None)
     
-    @override_settings(CLAIM_APPROVAL_THRESHOLD_PERCENTAGE=0.10)
-    def test_claim_gets_paid_upon_majority_approval(self):
+    def test_claim_gets_approved_when_majority_threshold_percent_dictated_by_policy_is_passed(self):
         # the claim gets marked as paid and the policy pool gets debited
         # main user creates a claim, 1 of the other two then approve it
         #   - (main user doesnt get a vote on their claim)
         self.policy.pool_balance = 5000
+        self.policy.
         self.policy.save()
 
         evidence = self.create_evidence()
@@ -210,7 +210,6 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
         self.assertEquals(claims.count(), 1)
 
-    @override_settings(CLAIM_APPROVAL_THRESHOLD_PERCENTAGE=0.10)
     def test_claim_approval_prevented_if_claimant_is_over_lifetime_policy_limit(self):
         #    ^------------^ 
         # prevents a users from having a bunch of outstanding claims that get past the first over payment filter
@@ -266,5 +265,4 @@ class ClaimsTestCase(TestCase):
         )
         
         return evidence
-        
         

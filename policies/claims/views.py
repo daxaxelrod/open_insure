@@ -1,16 +1,18 @@
-
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
+from rest_framework.decorators import action
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 
 from django.utils import timezone
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from django.shortcuts import get_object_or_404
 
 from policies.models import Claim, ClaimApproval, ClaimComment, Policy
 from policies.claims.models import ClaimView
 from policies.claims.serializers import ClaimSerializer, ClaimApprovalSerializer, ClaimEvidenceSerializer, FullClaimSerializer, ClaimViewSerializer, ClaimCommentSerializer
 from policies.claims.permissions import InClaimPod, InClaimApprovalPod, IsNotClaimant, IsCommentOwner
-from policies.claims.approvals import conditionally_create_claim_approvals
+from policies.claims.approvals import conditionally_create_claim_approvals, conditionally_approve_claim
 
 
 class ClaimViewSet(ModelViewSet):
@@ -27,6 +29,30 @@ class ClaimViewSet(ModelViewSet):
         policy = Policy.objects.get(id=self.kwargs["policy_pk"])
         claim = serializer.save(policy=policy)
         conditionally_create_claim_approvals(claim)
+
+    @action(detail=True, methods=["post"])
+    def payout(self, request, pk=None):
+        # a route that only the escrow agent can call
+        # pays out the claim (and deducts from the policy reserves)
+        # also maybe sends an email in the future
+        claim = self.get_object()
+        policy: Policy = claim.policy
+
+        if policy.escrow_manager != request.user:
+            return Response(
+                {"error": "Only the escrow manager can payout claims"},
+                status=HTTP_403_FORBIDDEN,
+            )
+        if claim.is_approved():
+            policy.pool_balance -= claim.amount
+            policy.save()
+
+            claim.paid_on = timezone.now()
+            claim.save()
+            
+            return Response(data={"message": "Claim paid out", "claim": ClaimSerializer(claim).data}, status=HTTP_200_OK)
+        return Response(data={"message": "Claim not approved, cannot pay out"}, status=HTTP_400_BAD_REQUEST)
+        
         
             
 
@@ -46,10 +72,7 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
 
         # Everything is all good, mark the claim as something to be paid out
         # Maybe there should be another record for claim payouts, similar to policy closeouts
-        policy.pool_balance -= claim.amount
-        policy.save()
-        claim.paid_on = timezone.now()
-        claim.save()
+        conditionally_approve_claim(claim)
 
 class ClaimEvidenceAPIView(CreateAPIView):
     '''
