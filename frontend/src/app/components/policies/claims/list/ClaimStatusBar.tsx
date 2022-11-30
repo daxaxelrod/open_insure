@@ -38,11 +38,11 @@ export default function ClaimStatusBar({
                     {claim?.paid_on ? (
                         <Tag color="green">Paid</Tag>
                     ) : claim.is_approved ? (
-                        "Approved"
+                        <Tag color="blue">"Approved"</Tag>
                     ) : isClaimDenied ? (
                         <Tag color="red">Rejected</Tag>
                     ) : (
-                        <Tag color="blue">Voting Stage</Tag>
+                        <Tag color="blue">Activly Voting</Tag>
                     )}
                 </span>
             </div>

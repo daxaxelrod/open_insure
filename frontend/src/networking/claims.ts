@@ -74,3 +74,10 @@ export const patchCurrentUserClaimVote = (
         }
     );
 };
+
+// only the escrow agent can hit this, backend enforced
+export const markClaimPaid = (policyId: number, claimId: number) => {
+    return axiosInstance.post(
+        `/api/v1/policies/${policyId}/claims/${claimId}/payout/`
+    );
+};

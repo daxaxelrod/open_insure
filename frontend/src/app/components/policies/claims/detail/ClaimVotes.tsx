@@ -1,11 +1,15 @@
 import React, { useContext } from "react";
 import { Button, Col, notification, Row, Statistic, Typography } from "antd";
-import { patchCurrentUserClaimVote } from "../../../../../redux/actions/claims";
+import {
+    markClaimPaid,
+    patchCurrentUserClaimVote,
+} from "../../../../../redux/actions/claims";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { ClaimApproval, User } from "../../../../../redux/reducers/commonTypes";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import ClaimVoteStatus from "../list/ClaimVoteStatus";
 import { SideText, ClaimVotingBox } from "./Styled";
+import MarkClaimPaidButton from "./MarkClaimPaidButton";
 
 const { Paragraph } = Typography;
 
@@ -15,20 +19,37 @@ export default function ClaimVotes() {
     const [api, context] = notification.useNotification();
     const currentUser = useAppSelector((state) => state.auth.currentUser);
 
-    if (!claim || !policy) {
+    if (!claim || !policy || !claimant) {
         return null;
     }
 
     let votes = claim?.approvals;
 
     let submittedVotes = votes?.filter((vote: ClaimApproval) => {
-        return !!vote.approved_on;
+        return vote.approved !== undefined;
     });
+    let votesNotCast = votes.length - submittedVotes.length;
 
     let votesNeededToPass = Math.ceil(
         (policy.claim_approval_threshold_percentage / 100) * votes.length
     );
-    let votesNotCast = votes.length - submittedVotes.length;
+
+    let approvals = claim.approvals;
+    let acceptances = approvals.filter((a: ClaimApproval) => a.approved).length;
+    let rejections = approvals.filter((a: ClaimApproval) => !a.approved).length;
+    let percent = (acceptances / (acceptances + rejections)) * 100;
+
+    let isClaimApproved = percent >= policy.claim_approval_threshold_percentage;
+
+    const isUserPodMember = policy?.pod?.members.some((user: User) => {
+        return user.id === currentUser?.id;
+    });
+
+    const escrowManagerId = policy.escrow_manager;
+    const escrowManager: User | undefined = policy.pod?.members?.find(
+        (member) => member.id === escrowManagerId
+    );
+    const isUserEscrowManager = escrowManager?.id === currentUser?.id;
 
     const submitClaimVote = (decision: boolean) => {
         const userVote = votes.find((vote: ClaimApproval) => {
@@ -51,9 +72,10 @@ export default function ClaimVotes() {
             });
         }
     };
-    const isUserPodMember = policy?.pod?.members.some((user: User) => {
-        return user.id === currentUser?.id;
-    });
+
+    const handleMarkClaimPaid = () => {
+        dispatch(markClaimPaid(claim.id, policy.id));
+    };
 
     return (
         <Row style={{ margin: "20px 0" }}>
@@ -130,10 +152,19 @@ export default function ClaimVotes() {
                             value={policy?.claim_approval_threshold_percentage}
                             suffix="%"
                         />
-                        <Statistic
-                            title="Total votes needed to pass"
-                            value={votesNeededToPass}
-                        />
+                        {isUserEscrowManager && isClaimApproved ? (
+                            <MarkClaimPaidButton
+                                claim={claim}
+                                claimantProfile={claimant}
+                                handleMarkClaimPaid={handleMarkClaimPaid}
+                            />
+                        ) : (
+                            <Statistic
+                                title="Total votes needed to pass"
+                                value={votesNeededToPass}
+                            />
+                        )}
+
                         {/* <Statistic 
                             title="Votes due in"
                             value={claim.voting_deadline} backend driven, not started yet

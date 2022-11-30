@@ -185,3 +185,16 @@ export const patchCurrentUserClaimVote = (
         }
     };
 };
+
+export const markClaimPaid = (
+    policyId: number,
+    claimId: number
+): ThunkAction<void, RootState, unknown, AnyAction> => {
+    return async (dispatch: any) => {
+        try {
+            await API.markClaimPaid(policyId, claimId);
+        } catch (error) {
+            console.log("error marking claim paid", error);
+        }
+    };
+};
