@@ -40,6 +40,8 @@ export default function EscrowPoolChart({}) {
         (state) => state.premiums.getPolicyPremiumsPending
     );
 
+    // todo! Account for paid claims draw
+
     useEffect(() => {
         if (!premiums && !getPolicyPremiumsPending && policyId) {
             dispatch(getPolicyPremiums(policyId));

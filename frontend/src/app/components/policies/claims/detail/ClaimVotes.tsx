@@ -74,7 +74,7 @@ export default function ClaimVotes() {
     };
 
     const handleMarkClaimPaid = () => {
-        dispatch(markClaimPaid(claim.id, policy.id));
+        dispatch(markClaimPaid(policy.id, claim.id));
     };
 
     return (

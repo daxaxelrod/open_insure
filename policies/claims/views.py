@@ -44,6 +44,11 @@ class ClaimViewSet(ModelViewSet):
                 status=HTTP_403_FORBIDDEN,
             )
         if claim.is_approved():
+            if claim.paid_on:
+                return Response(
+                    {"error": "This claim has already been paid out"},
+                    status=HTTP_400_BAD_REQUEST,
+                )
             policy.pool_balance -= claim.amount
             policy.save()
 
