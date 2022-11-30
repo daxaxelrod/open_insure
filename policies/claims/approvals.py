@@ -14,6 +14,12 @@ def conditionally_create_claim_approvals(claim):
             send_notification_of_new_claim_vote(claim, pod_members_except_claimant)
 
 def conditionally_approve_claim(claim: Claim):
+    # TODO what happens when the claim is > pool_balance? Tough cookies?
+
+    # if everything is all good, mark the claim as approved but yet to be paid out
+    # Maybe there should be another record for claim payouts, similar to policy closeouts
+    # for now its just another field on the claim, is_paid
+
     policy_type = claim.policy.governance_type
     if policy_type == "direct_democracy":
         if claim.is_approved(): 

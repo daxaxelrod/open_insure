@@ -54,17 +54,19 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(_json["paid_on"], None)
     
     def test_claim_gets_approved_when_majority_threshold_percent_dictated_by_policy_is_passed(self):
-        # the claim gets marked as paid and the policy pool gets debited
+        
         # main user creates a claim, 1 of the other two then approve it
         #   - (main user doesnt get a vote on their claim)
+        # expected: the claim gets marked as approved
+        
         self.policy.pool_balance = 5000
-        self.policy.
+        self.policy.claim_approval_threshold_percentage = 50 # percent
         self.policy.save()
 
         evidence = self.create_evidence()
         payload = {
             "title": "Test Claim",
-            "description": "A claim to test user attribution",
+            "description": "A claim that will be approved",
             "policy": self.policy.id,
             "amount": 1000, # $10
             "evidence": [evidence.id,]
@@ -75,6 +77,8 @@ class ClaimsTestCase(TestCase):
             main_user_claim = Claim.objects.get(policy=self.policy, claimant=self.main_user)
         except Claim.DoesNotExist:
             self.assertTrue(False)
+
+        self.assertFalse(main_user_claim.is_approved())
 
         member_claim_approval = ClaimApproval.objects.get(claim=main_user_claim, approver=self.member_user)
 
@@ -90,7 +94,30 @@ class ClaimsTestCase(TestCase):
         self.assertEquals(claim_creation_response.status_code, HTTP_201_CREATED)
         self.assertEquals(member_1_approval_response.status_code, HTTP_200_OK)
         self.assertTrue(main_user_claim.is_approved())
-        self.assertEquals(self.policy.pool_balance, 4000)
+
+    def test_approved_claim_can_be_marked_as_paid_by_escrow_agent(self):
+        # a claim is created and approved
+        # the escrow agent now has the go ahead to pay the claim
+        # expected: claim marked as paid and the policy pool gets debited
+        
+        claim = create_paid_claim_for_user(self.main_user, self.policy, 2500)
+        claim.paid_on = None # slightly modify the helper function
+        claim.save()
+
+        self.policy.pool_balance = 5000
+        self.policy.save()
+
+        self.assertIsNone(claim.paid_on)
+
+        claim_creation_response = client.post(f"/api/v1/policies/{self.policy.id}/claims/{claim.id}/payout/", {})
+
+        self.policy.refresh_from_db()
+        claim.refresh_from_db()
+        
+        self.assertEquals(claim_creation_response.status_code, HTTP_200_OK)
+        self.assertIsNotNone(claim.paid_on)
+        self.assertEquals(self.policy.pool_balance, 2500)
+
 
     def test_claim_creation_fails_if_user_is_not_member_of_pod(self):
         intruder = User.objects.create_user("intruder@gmail.com", password="password")

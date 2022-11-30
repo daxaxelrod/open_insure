@@ -265,7 +265,7 @@ class Claim(models.Model):
         validators=[MinValueValidator(1)], help_text="in cents"
     )
     approved_on = models.DateTimeField(null=True, blank=True, help_text="The first instant where enough votes were cast to approve the claim")
-    paid_on = models.DateField(
+    paid_on = models.DateTimeField(
         null=True, blank=True, help_text="Null means not paid yet"
     )
     

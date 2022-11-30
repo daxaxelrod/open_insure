@@ -31,7 +31,7 @@ class ClaimViewSet(ModelViewSet):
         conditionally_create_claim_approvals(claim)
 
     @action(detail=True, methods=["post"])
-    def payout(self, request, pk=None):
+    def payout(self, request, policy_pk=None, pk=None):
         # a route that only the escrow agent can call
         # pays out the claim (and deducts from the policy reserves)
         # also maybe sends an email in the future
@@ -52,8 +52,6 @@ class ClaimViewSet(ModelViewSet):
             
             return Response(data={"message": "Claim paid out", "claim": ClaimSerializer(claim).data}, status=HTTP_200_OK)
         return Response(data={"message": "Claim not approved, cannot pay out"}, status=HTTP_400_BAD_REQUEST)
-        
-        
             
 
 class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
@@ -66,12 +64,7 @@ class ClaimApprovalViewSet(RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         approval = serializer.save()
         claim = approval.claim
-        policy = claim.policy
 
-        # TODO what happens when the claim is > pool_balance? Tough cookies?
-
-        # Everything is all good, mark the claim as something to be paid out
-        # Maybe there should be another record for claim payouts, similar to policy closeouts
         conditionally_approve_claim(claim)
 
 class ClaimEvidenceAPIView(CreateAPIView):

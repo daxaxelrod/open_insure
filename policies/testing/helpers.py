@@ -50,8 +50,10 @@ def create_paid_claim_for_user(user, policy, amount):
     for member in other_pod_members:
         ClaimApproval.objects.create(claim=claim, approver=member, approved=True)
 
+    claim.approved_on = timezone.now()
     claim.paid_on = timezone.now()
     claim.save()
+    return claim
 
 
 def prepay_all_premiums_for_user(user, policy):
@@ -83,6 +85,7 @@ def create_test_policy(
         premium_payment_frequency=1,  # 1 means monthly
         coverage_duration=12,  # months
         coverage_start_date=start_date,
+        escrow_manager=pod.creator,
     )
     create_test_risks_for_policy_members(policy)
     schedule_premiums(policy)
