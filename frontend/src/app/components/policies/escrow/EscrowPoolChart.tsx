@@ -14,7 +14,7 @@ import { getPolicyPremiums } from "../../../../redux/actions/premiums";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { useParams } from "react-router-dom";
 import moment from "moment-timezone";
-import { Premium } from "../../../../redux/reducers/commonTypes";
+import { Policy, Premium } from "../../../../redux/reducers/commonTypes";
 
 ChartJS.register(
     CategoryScale,
@@ -39,6 +39,12 @@ export default function EscrowPoolChart({}) {
     const getPolicyPremiumsPending = useAppSelector(
         (state) => state.premiums.getPolicyPremiumsPending
     );
+
+    const policy: Policy = useAppSelector((state) =>
+        state.policies.publicPolicies.find((p: Policy) => p?.id === policyId)
+    );
+
+    let paidPolicyClaims = policy.claims.filter((c) => c.paid_on !== null);
 
     // todo! Account for paid claims draw
 
@@ -67,6 +73,8 @@ export default function EscrowPoolChart({}) {
 
     const options = {};
 
+    console.log({ paidPolicyClaims });
+
     const paidPremiumsPerMonth = Object.keys(premiumsBinnedByDueDate)
         // .filter((date: string) => {
         //     // filter out premiums later than now
@@ -74,14 +82,27 @@ export default function EscrowPoolChart({}) {
         //     return premiumDueDateInQuestion.isSameOrBefore(now);
         // })
         .map((date: string, index: number, array) => {
+            let paidClaimsInMonth = paidPolicyClaims.filter((c) => {
+                return (
+                    c.paid_on && moment(c.paid_on).isSame(moment(date), "month")
+                );
+            });
+            let netPaidClaimsInMonth = paidClaimsInMonth.reduce(
+                (acc, claim) => {
+                    return acc + claim.amount / 100;
+                },
+                0
+            );
+
             let premiumsOnDueDate = premiumsBinnedByDueDate[date];
-            return premiumsOnDueDate
+            let netPremiumsPaidInMonth = premiumsOnDueDate
                 .filter((premium: Premium) => {
                     return premium.paid;
                 })
                 .reduce((acc: number, premium: Premium) => {
                     return (acc += premium.amount / 100);
                 }, 0);
+            return netPremiumsPaidInMonth - netPaidClaimsInMonth;
         });
 
     const cummulativePaidPremiums = paidPremiumsPerMonth.reduce(
@@ -97,6 +118,10 @@ export default function EscrowPoolChart({}) {
         },
         []
     );
+
+    console.log("cummulativePaidPremiums", cummulativePaidPremiums);
+
+    // paidPolicyClaims;
 
     const data = {
         labels: Object.keys(premiumsBinnedByDueDate).map((dateStr) => {

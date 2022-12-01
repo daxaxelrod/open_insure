@@ -37,13 +37,7 @@ export default function PolicyClaimsBriefCard({ policy }: { policy: Policy }) {
                     title={
                         "Claims that have been submitted but not voted on yet"
                     }
-                >
-                    <Statistic
-                        title="Pending Claims"
-                        value={numPendingClaims}
-                        suffix="%"
-                    />
-                </Tooltip>
+                ></Tooltip>
             </Row>
         </Card>
     );
