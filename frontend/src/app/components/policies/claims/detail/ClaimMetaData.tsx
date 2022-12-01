@@ -6,14 +6,16 @@ import colors from "../../../../constants/colors";
 import { SideText, CaptionText, ClaimMetaDataContainer } from "./Styled";
 import ClaimEvidence from "./ClaimEvidence";
 import ClaimantShortDisplay from "./ClaimantShortDisplay";
+import { useAppSelector } from "../../../../../redux/hooks";
 
 const { Title, Paragraph } = Typography;
 
 export default function ClaimMetaData() {
     const { claim, claimant } = useContext(ClaimDetailContext);
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
 
     return (
-        <ClaimMetaDataContainer>
+        <ClaimMetaDataContainer top={currentUser?.id === claimant?.id}>
             <Row style={{ marginBottom: "1.5rem" }}>
                 <Col
                     span={3}

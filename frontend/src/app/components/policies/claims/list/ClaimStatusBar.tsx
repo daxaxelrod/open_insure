@@ -13,14 +13,11 @@ export default function ClaimStatusBar({
     let approvalsNeeded = Math.ceil(
         claim.approvals.length * (policyMajorityThreshold / 100)
     );
-    let denialsNeededToReject = claim.approvals.length - approvalsNeeded;
-    // let approvedVotes = claim.approvals.filter((a) => a.approved).length;
+    let denialsNeededToReject = claim.approvals.length - approvalsNeeded || 1;
     let deniedVotes = claim.approvals.filter(
         (a) => a.approved === false
     ).length;
-    // let pendingVotes = claim.approvals.filter(
-    //     (a) => a.approved === null
-    // ).length;
+
     let isClaimDenied = deniedVotes >= denialsNeededToReject;
 
     if (!hasEvidence) {
@@ -38,7 +35,7 @@ export default function ClaimStatusBar({
                     {claim?.paid_on ? (
                         <Tag color="green">Paid</Tag>
                     ) : claim.is_approved ? (
-                        <Tag color="blue">"Approved"</Tag>
+                        <Tag color="purple">Approved</Tag>
                     ) : isClaimDenied ? (
                         <Tag color="red">Rejected</Tag>
                     ) : (

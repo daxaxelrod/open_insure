@@ -17,6 +17,8 @@ export const ClaimVotingBox = styled.div({
     padding: "1.25rem",
 });
 
-export const ClaimMetaDataContainer = styled.div({
-    marginTop: "2rem",
-});
+export const ClaimMetaDataContainer = styled.div(
+    ({ top }: { top: boolean }) => ({
+        marginTop: top ? "2rem" : 0,
+    })
+);

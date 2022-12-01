@@ -63,6 +63,10 @@ class ClaimSerializer(serializers.ModelSerializer):
     )  # serializers.hiddenfield doesnt work because it doesnt return the representation to the client
     approvals = ClaimApprovalSerializer(many=True, read_only=True)
     evidence = serializers.PrimaryKeyRelatedField(many=True, queryset=ClaimEvidence.objects.all())
+    is_approved = serializers.SerializerMethodField()
+
+    def get_is_approved(self, obj):
+        return obj.is_approved()
 
     def validate(self, attrs):
 
@@ -137,6 +141,7 @@ class ClaimSerializer(serializers.ModelSerializer):
         read_only_fields = ["paid_on"]
 
 class FullClaimSerializer(ClaimSerializer):
+    # note that this evidence is a full serializer, not a primary key[]
     evidence = ClaimEvidenceSerializer(many=True, read_only=True)
 
 

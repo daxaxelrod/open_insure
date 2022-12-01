@@ -26,7 +26,7 @@ export default function ClaimVotes() {
     let votes = claim?.approvals;
 
     let submittedVotes = votes?.filter((vote: ClaimApproval) => {
-        return vote.approved !== undefined;
+        return vote.approved !== null;
     });
     let votesNotCast = votes.length - submittedVotes.length;
 

@@ -25,7 +25,7 @@ export default function ClaimCommentsList() {
         if (claim && claim.id && policy && policy.id) {
             dispatch(getClaimComments(policy.id, claim.id));
         }
-    }, [claim, policy]);
+    }, [claim?.id, policy?.id]);
 
     return (
         <Row>
