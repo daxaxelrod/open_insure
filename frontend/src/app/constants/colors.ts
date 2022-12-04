@@ -17,4 +17,5 @@ export default {
     alert2: "#fa541c",
     good: "#52c41a",
     lightGood: "#64E392",
+    linkColor: "#1890ff",
 };

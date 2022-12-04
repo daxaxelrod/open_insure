@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Col, notification, Row, Statistic, Typography } from "antd";
 import {
     markClaimPaid,
@@ -10,12 +10,15 @@ import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import ClaimVoteStatus from "../list/ClaimVoteStatus";
 import { SideText, ClaimVotingBox } from "./Styled";
 import MarkClaimPaidButton from "./MarkClaimPaidButton";
+import VotesListDisplayModal from "./VotesListDisplayModal";
+import colors from "../../../../constants/colors";
 
 const { Paragraph } = Typography;
 
 export default function ClaimVotes() {
     const { claim, policy, claimant } = useContext(ClaimDetailContext);
     const dispatch = useAppDispatch();
+    const [votesModalVisible, setVotesModalVisible] = useState(false);
     const [api, context] = notification.useNotification();
     const currentUser = useAppSelector((state) => state.auth.currentUser);
 
@@ -77,12 +80,28 @@ export default function ClaimVotes() {
         dispatch(markClaimPaid(policy.id, claim.id));
     };
 
+    const openVotesModal = () => {
+        setVotesModalVisible(true);
+    };
+
     return (
         <Row style={{ margin: "20px 0" }}>
+            <VotesListDisplayModal
+                isOpen={votesModalVisible}
+                close={() => setVotesModalVisible(false)}
+            />
             {context}
             <Col span={3} style={{ marginTop: 8 }}>
                 <SideText>{submittedVotes.length} Cast</SideText>
                 <SideText>{votesNotCast} Not cast</SideText>
+                {submittedVotes.length ? (
+                    <SideText
+                        onClick={() => setVotesModalVisible(true)}
+                        style={{ color: colors.linkColor, cursor: "pointer" }}
+                    >
+                        View Votes
+                    </SideText>
+                ) : null}
             </Col>
             <Col span={21}>
                 <Row align={"middle"}>
