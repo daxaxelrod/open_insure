@@ -3,6 +3,7 @@ import { Typography } from "antd";
 import { User } from "../../../../../redux/reducers/commonTypes";
 import colors from "../../../../constants/colors";
 import { Link } from "react-router-dom";
+import { getUserPhotoUrl } from "../../utils/photoUtils";
 
 const Paragraph = Typography.Paragraph;
 
@@ -17,7 +18,7 @@ export default function ClaimantShortDisplay({
         <Paragraph style={{ color: colors.gray8, fontSize: "1.2rem" }}>
             {claimant?.picture ? (
                 <img
-                    src={claimant?.picture}
+                    src={getUserPhotoUrl(claimant?.picture)}
                     style={{
                         height: 25,
                         width: 25,

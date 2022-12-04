@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Col,
     Image,
@@ -8,7 +8,6 @@ import {
     Tooltip,
     Upload,
     UploadProps,
-    message,
 } from "antd";
 import "../styles/dashboard/profile.css";
 import { useNavigate } from "react-router-dom";
@@ -17,16 +16,21 @@ import moment from "moment-timezone";
 import { logout } from "../../networking/auth";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { User } from "../../redux/reducers/commonTypes";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { uploadProfilePicture } from "../../networking/users";
-import { updateProfilePhoto } from "../../redux/actions/users";
+import { updateProfile } from "../../redux/actions/users";
+
+import colors from "../constants/colors";
+import { getUserPhotoUrl } from "../components/policies/utils/photoUtils";
 
 const { Title, Paragraph } = Typography;
 
 export default function UserProfile() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const [visible, setVisible] = useState(false);
+
     const user: User = useAppSelector((state) => state.auth.currentUser);
 
     const logoutHandler = () => {
@@ -35,6 +39,7 @@ export default function UserProfile() {
     };
 
     const changProfilePicProps: UploadProps = {
+        showUploadList: false,
         customRequest: async (options: UploadRequestOption) => {
             const { onSuccess, onError, file, onProgress } = options;
             if (!onSuccess || !onProgress || !onError) {
@@ -51,10 +56,10 @@ export default function UserProfile() {
                     onProgress({ percent });
                 },
             };
-            fmData.append("image", file);
+            fmData.append("profile_picture", file);
             try {
                 const res = await uploadProfilePicture(fmData, config);
-                dispatch(updateProfilePhoto(res.data.images));
+                dispatch(updateProfile(res.data));
                 onSuccess("Ok");
             } catch (err: any) {
                 onError({
@@ -73,23 +78,46 @@ export default function UserProfile() {
                     <Image
                         width={200}
                         style={{ borderRadius: 14 }}
-                        src={
-                            user?.picture ||
-                            `https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`
-                        }
-                    />
-                    <div
-                        style={{
-                            position: "absolute",
-                            right: 45,
-                            bottom: 13,
-                            zIndex: 100,
+                        src={getUserPhotoUrl(user?.picture)}
+                        preview={{
+                            visible: visible,
+                            onVisibleChange: (value) => {
+                                setVisible(value);
+                            },
+
+                            mask: (
+                                <div>
+                                    <EyeOutlined /> Preview
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            right: 5,
+                                            bottom: 5,
+                                            zIndex: 100,
+                                        }}
+                                    >
+                                        <Upload {...changProfilePicProps}>
+                                            <div
+                                                style={{
+                                                    background: colors.gray2,
+                                                    padding: "4px 8px",
+                                                    borderRadius: 20,
+                                                }}
+                                            >
+                                                <EditOutlined
+                                                    style={{
+                                                        color: "black",
+                                                        cursor: "pointer",
+                                                    }}
+                                                />
+                                                {" Edit"}
+                                            </div>
+                                        </Upload>
+                                    </div>
+                                </div>
+                            ),
                         }}
-                    >
-                        <Upload {...changProfilePicProps}>
-                            <EditOutlined style={{ color: "white" }} />
-                        </Upload>
-                    </div>
+                    />
                 </Col>
                 <Col span={16}>
                     <div>

@@ -9,7 +9,7 @@ router.register(r"users", UserViewSet)
 
 urlpatterns = [
     path(
-        "me",
+        "me/",
         SelfView.as_view(),
         name="me",
     ),

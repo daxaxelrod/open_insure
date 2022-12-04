@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { User } from "../../../../../redux/reducers/commonTypes";
 import { createClaimComment } from "../../../../../redux/actions/claims";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
+import { getUserPhotoUrl } from "../../utils/photoUtils";
 
 const { TextArea } = Input;
 
@@ -55,7 +56,10 @@ export default function ClaimCommentForm() {
                     justifyContent: "flex-end",
                 }}
             >
-                <Avatar src={currentUser?.picture} alt="user avatar" />
+                <Avatar
+                    src={getUserPhotoUrl(currentUser?.picture)}
+                    alt="user avatar"
+                />
             </Col>
             <Col span={21}>
                 <Form form={form} requiredMark={true} onFinish={postComment}>

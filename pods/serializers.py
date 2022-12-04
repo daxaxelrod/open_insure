@@ -1,3 +1,5 @@
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 from rest_framework.serializers import (
     ModelSerializer,
     ValidationError,
@@ -7,6 +9,7 @@ from rest_framework.serializers import (
     ImageField,
 )
 from pods.models import Pod, User
+
 from pods.utils.custom_serializers import FieldExcludableModelSerializer
 
 
@@ -78,7 +81,20 @@ class UserSerializer(ModelSerializer):
 
 class PatchableUserSerializer(ModelSerializer):
 
-    picture = ImageField()
+    profile_picture = ImageField(write_only=True, required=False)
+
+    def update(self, instance, validated_data):
+        if 'profile_picture' in validated_data:
+            picture_name = FileSystemStorage(
+                location=settings.MEDIA_ROOT + "/profile_pictures"
+                ).save(f"user_{instance.id}_" + validated_data["profile_picture"].name, validated_data["profile_picture"])
+            validated_data["picture"] = settings.MEDIA_URL + "profile_pictures/" + picture_name
+        
+        user = super().update(instance, validated_data)
+        if "password" in validated_data:
+            user.set_password(validated_data["password"])
+            user.save()
+        return user
     class Meta:
         model = User
         fields = [
@@ -86,7 +102,9 @@ class PatchableUserSerializer(ModelSerializer):
             "last_name",
             "email",
             "picture",
+            "profile_picture"
         ]
+        read_only_fields = ["picture"]
             
 
 class InviteSerializer(Serializer):

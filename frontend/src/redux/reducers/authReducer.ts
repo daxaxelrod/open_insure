@@ -7,6 +7,7 @@ import {
     LOGIN_PENDING,
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
+    UPDATE_OWN_PROFILE,
 } from "../actions/types";
 import { User } from "./commonTypes";
 
@@ -69,6 +70,14 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 registerPending: false,
                 currentUser: null,
                 registrationError: { overall: payload },
+            };
+        case UPDATE_OWN_PROFILE:
+            return {
+                ...state,
+                currentUser: {
+                    ...state.currentUser,
+                    ...payload,
+                },
             };
 
         default:

@@ -3,9 +3,5 @@
 import { axiosInstance } from "./api";
 
 export function uploadProfilePicture(formData: any, config: any) {
-    return axiosInstance.post(
-        `/api/v1/users/me/upload_profile_picture/`,
-        formData,
-        config
-    );
+    return axiosInstance.patch(`/api/v1/me/`, formData, config);
 }

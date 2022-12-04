@@ -38,6 +38,7 @@ export default function VotesListDisplayModal({
                 .map((approval) => {
                     return (
                         <ApprovalListItem
+                            key={`approval-${approval.id}`}
                             approval={approval}
                             podMembers={policy?.pod?.members}
                         />
@@ -77,11 +78,24 @@ function ApprovalListItem({
                             Vote cast {moment(approval.updated_at).fromNow()}
                         </Paragraph>
                     </Col>
-                    <Col span={12}>
+                    <Col
+                        span={12}
+                        style={{ justifyContent: "center", display: "flex" }}
+                    >
                         {approval.approved ? (
-                            <CheckOutlined style={{ fontSize: 30 }} />
+                            <span>
+                                Approved
+                                <CheckOutlined
+                                    style={{ marginLeft: 8, fontSize: 20 }}
+                                />
+                            </span>
                         ) : (
-                            <CloseOutlined />
+                            <span>
+                                Rejected
+                                <CloseOutlined
+                                    style={{ marginLeft: 8, fontSize: 20 }}
+                                />
+                            </span>
                         )}
                     </Col>
                 </Row>

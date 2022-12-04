@@ -5,6 +5,7 @@ import { ClaimComment as ClaimCommentType } from "../../../../../redux/reducers/
 import { useAppSelector } from "../../../../../redux/hooks";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import styled from "styled-components";
+import { getUserPhotoUrl } from "../../utils/photoUtils";
 
 const { Paragraph } = Typography;
 
@@ -37,7 +38,7 @@ export default function ClaimComment({
                 }}
             >
                 <Avatar
-                    src={commentorProfile?.picture}
+                    src={getUserPhotoUrl(commentorProfile?.picture)}
                     alt={commentorProfile?.first_name}
                 />
             </Col>
