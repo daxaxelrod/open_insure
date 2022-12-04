@@ -47,7 +47,9 @@ export default function ClaimMetaData() {
             <Row>
                 <Col span={6} offset={3}>
                     <CaptionText>Description</CaptionText>
-                    <Paragraph>{claim?.description}</Paragraph>
+                    <Paragraph style={{ marginBottom: ".5rem" }}>
+                        {claim?.description}
+                    </Paragraph>
                     <CaptionText>Loss happened on</CaptionText>
                     <Paragraph>
                         {moment(claim?.occurance_date).format("MM-DD-YYYY")}
@@ -55,7 +57,9 @@ export default function ClaimMetaData() {
                 </Col>
                 <Col span={10}>
                     <CaptionText>Location</CaptionText>
-                    <Paragraph>{claim?.location_description}</Paragraph>
+                    <Paragraph style={{ marginBottom: ".5rem" }}>
+                        {claim?.location_description}
+                    </Paragraph>
                     <CaptionText>Filed by</CaptionText>
                     <ClaimantShortDisplay claimant={claimant} linkToProfile />
                 </Col>

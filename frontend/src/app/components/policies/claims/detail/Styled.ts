@@ -14,7 +14,7 @@ export const CaptionText = styled.div({
 export const ClaimVotingBox = styled.div({
     display: "flex",
     flexDirection: "column",
-    padding: "1.25rem",
+    padding: ".75rem",
 });
 
 export const ClaimMetaDataContainer = styled.div(

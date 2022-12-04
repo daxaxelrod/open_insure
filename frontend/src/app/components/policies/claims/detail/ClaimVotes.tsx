@@ -110,9 +110,17 @@ export default function ClaimVotes() {
                             <Col span={12}>
                                 {claimant?.id === currentUser.id ? (
                                     <ClaimVotingBox>
+                                        <Paragraph
+                                            strong
+                                            style={{
+                                                marginBottom: 0,
+                                                fontSize: "1.1rem",
+                                            }}
+                                        >
+                                            You are the claimant.
+                                        </Paragraph>
                                         <Paragraph>
-                                            You are the claimant. You can't vote
-                                            on your claim
+                                            You can't vote on your claim
                                         </Paragraph>
                                     </ClaimVotingBox>
                                 ) : isUserPodMember ? (

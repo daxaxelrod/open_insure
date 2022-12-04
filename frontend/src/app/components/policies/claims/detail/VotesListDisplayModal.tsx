@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { Avatar, Col, Modal, Row, Typography } from "antd";
+import { Avatar, Button, Col, Divider, Modal, Row, Typography } from "antd";
 import { ClaimApproval, User } from "../../../../../redux/reducers/commonTypes";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import moment from "moment-timezone";
 
 const { Title, Paragraph } = Typography;
@@ -23,7 +24,13 @@ export default function VotesListDisplayModal({
             okText="Ok"
             onCancel={close}
             cancelText=""
+            footer={[
+                <Button key="back" onClick={close}>
+                    Close
+                </Button>,
+            ]}
         >
+            <Divider />
             {claim?.approvals
                 .filter((approval) => {
                     return approval.approved !== null;
@@ -55,13 +62,13 @@ function ApprovalListItem({
         <Row>
             <Col span={4}>
                 <Avatar
-                    size={68}
+                    size={58}
                     src={voter?.picture || "https://joeschmoe.io/api/v1/random"}
                     alt=""
                 />
             </Col>
             <Col span={20}>
-                <Row>
+                <Row style={{ alignItems: "center" }}>
                     <Col span={12}>
                         <Title level={5}>
                             {voter?.first_name} {voter?.last_name}
@@ -71,7 +78,11 @@ function ApprovalListItem({
                         </Paragraph>
                     </Col>
                     <Col span={12}>
-                        {approval.approved ? "Approved" : "Denied"}
+                        {approval.approved ? (
+                            <CheckOutlined style={{ fontSize: 30 }} />
+                        ) : (
+                            <CloseOutlined />
+                        )}
                     </Col>
                 </Row>
             </Col>
