@@ -10,7 +10,7 @@ export const LOGIN_PENDING = "auth/LOGIN_PENDING";
 export const LOGIN_SUCCESS = "auth/LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "auth/LOGIN_FAILURE";
 
-export const PATCH_USER = "auth/PATCH_USER";
+export const UPDATE_OWN_PROFILE = "auth/UPDATE_OWN_PROFILE";
 
 // policies
 export const GET_AVAILABLE_POLICIES_PENDING =

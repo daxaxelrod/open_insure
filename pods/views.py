@@ -8,8 +8,10 @@ from rest_framework.status import (
     HTTP_200_OK,
     HTTP_400_BAD_REQUEST,
 )
+from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from rest_framework.generics import RetrieveUpdateAPIView
 from pods.models import Pod, PodInvite, User
-from pods.serializers import InviteSerializer, PodSerializer, UserSerializer
+from pods.serializers import InviteSerializer, PodSerializer, UserSerializer, PatchableUserSerializer
 from policies.premiums import remove_future_premiums
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.mail import EmailMultiAlternatives
@@ -116,8 +118,19 @@ class UserViewSet(ModelViewSet):
         # setup default picture
         serializer.save(picture='https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&name=' + serializer.validated_data['first_name'] + '+' + serializer.validated_data['last_name'])
 
-    @action(detail=False, methods=["GET"])
-    def me(self, request):
-        return Response(
-            self.get_serializer_class()(request.user).data, status=HTTP_200_OK
-        )
+
+class SelfView(
+    RetrieveUpdateAPIView
+):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method in SAFE_METHODS:
+            return UserSerializer
+        return PatchableUserSerializer
+
+    def get_object(self):
+        return self.request.user
+    
+

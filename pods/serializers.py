@@ -4,6 +4,7 @@ from rest_framework.serializers import (
     CharField,
     Serializer,
     EmailField,
+    ImageField,
 )
 from pods.models import Pod, User
 from pods.utils.custom_serializers import FieldExcludableModelSerializer
@@ -75,6 +76,18 @@ class UserSerializer(ModelSerializer):
             "pods",
         ]
 
+class PatchableUserSerializer(ModelSerializer):
+
+    picture = ImageField()
+    class Meta:
+        model = User
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "picture",
+        ]
+            
 
 class InviteSerializer(Serializer):
     email = EmailField()
