@@ -146,11 +146,11 @@ export default function PolicyDetails() {
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Claims" key="5">
                     <Row>
-                        <PolicyDetailCol span={14}>
+                        <PolicyDetailCol span={16}>
                             <PolicyClaimsList />
                         </PolicyDetailCol>
                         <PolicyDetailCol
-                            span={10}
+                            span={8}
                             style={{
                                 paddingRight: 10,
                                 paddingLeft: 10,
