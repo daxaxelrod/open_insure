@@ -59,7 +59,7 @@ export default function UserPolicyQuotePrompt({
                             {risk?.premium_amount
                                 ? `${risk?.premium_amount / 100} / month`
                                 : isEarlyQuoter
-                                ? `You'll be the first one to get a quote for the ${policy.name} policy!`
+                                ? `You'll be the first one to get a quote for the ${policy.name}!`
                                 : `Join this popular policy!`}
                         </Paragraph>
                     </span>

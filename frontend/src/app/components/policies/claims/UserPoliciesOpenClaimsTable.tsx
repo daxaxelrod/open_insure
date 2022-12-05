@@ -1,9 +1,10 @@
 import React from "react";
 import { Table, Typography } from "antd";
-import { Claim, Policy } from "../../../../redux/reducers/commonTypes";
+import { Claim, Policy, User } from "../../../../redux/reducers/commonTypes";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../../../redux/hooks";
 import type { ColumnsType } from "antd/es/table";
+import ClaimantShortDisplay from "./detail/ClaimantShortDisplay";
 
 const { Title } = Typography;
 
@@ -37,15 +38,31 @@ export default function UserPoliciesOpenClaimsTable() {
         {
             title: "Claimant",
             dataIndex: "claimant",
-            render: (text, record) => (
-                <Link to={`/policies/${record.policy}/claims/${record.id}`}>
-                    {text}
-                </Link>
-            ),
+            render: (text, record) => {
+                // flatten the array to just be an user[] and then search that for the claimant
+                let claimant = userPolicies
+                    ?.map((policy: Policy) => {
+                        return policy?.pod?.members;
+                    })
+                    .flat()
+                    .find((member: User) => member.id === record.claimant);
+                return claimant ? (
+                    <ClaimantShortDisplay
+                        claimant={claimant}
+                        linkToProfile
+                        smallTextSize
+                    />
+                ) : (
+                    "Unknown"
+                );
+            },
             key: "claimant",
         },
         {
             title: "Amount",
+            render(value, record, index) {
+                return <span>${record.amount / 100}</span>;
+            },
             dataIndex: "amount",
             key: "address",
         },

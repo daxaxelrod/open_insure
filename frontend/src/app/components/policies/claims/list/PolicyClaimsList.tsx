@@ -17,11 +17,15 @@ export default function PolicyClaimsList() {
     const policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find((p: Policy) => p.id === policyId)
     );
+    const [newestFirst, setNewestFirst] = useState(true);
 
     const claims = useAppSelector(
         (state) => state.claims.claims?.[policyId]
     )?.sort((a: Claim, b: Claim) => {
-        return moment(b.created_at).isBefore(moment(a.created_at));
+        // if (newestFirst) {
+        //     result = moment(b.created_at).isBefore(moment(a.created_at));
+        // }
+        return moment(b.created_at).isAfter(moment(a.created_at)) ? 1 : -1;
     });
 
     const goToClaimSetup = () => {
