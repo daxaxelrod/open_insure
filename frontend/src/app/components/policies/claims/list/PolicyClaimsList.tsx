@@ -18,7 +18,11 @@ export default function PolicyClaimsList() {
         state.policies.publicPolicies.find((p: Policy) => p.id === policyId)
     );
 
-    const claims = useAppSelector((state) => state.claims.claims?.[policyId]);
+    const claims = useAppSelector(
+        (state) => state.claims.claims?.[policyId]
+    )?.sort((a: Claim, b: Claim) => {
+        return moment(b.created_at).isBefore(moment(a.created_at));
+    });
 
     const goToClaimSetup = () => {
         let coverageStartDate = moment(policy.coverage_start_date);

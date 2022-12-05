@@ -8,6 +8,7 @@ import ClaimEvidenceImages from "./ClaimEvidenceImages";
 import ClaimVoteStatus from "./ClaimVoteStatus";
 import colors from "../../../../constants/colors";
 import ClaimantShortDisplay from "../detail/ClaimantShortDisplay";
+import moment from "moment-timezone";
 
 const { Title, Paragraph } = Typography;
 
@@ -35,7 +36,13 @@ export default function PolicyClaimCard({ claim, policy }: props) {
     );
 
     return (
-        <Col xs={24} sm={24} md={12} lg={12}>
+        <Col
+            xs={24}
+            sm={24}
+            md={12}
+            lg={12}
+            className="claim-policy-card-container"
+        >
             <Link to={`/policy/${policy.id}/claims/${claim.id}`}>
                 <Card
                     title={
@@ -64,7 +71,21 @@ export default function PolicyClaimCard({ claim, policy }: props) {
                         </Col>
                         <Col span={14} offset={1}>
                             <ClaimTitle claim={claim} claimant={claimant} />
-                            <ClaimVoteStatus claim={claim} policy={policy} />
+                            <ClaimVoteStatus
+                                claim={claim}
+                                policy={policy}
+                                withRedLine={false}
+                            />
+                            <span
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                    color: colors.gray7,
+                                    fontSize: "0.65rem",
+                                }}
+                            >
+                                {moment(claim.created_at).fromNow()}
+                            </span>
                         </Col>
                     </Row>
                 </Card>

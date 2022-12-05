@@ -1,0 +1,10 @@
+.claim-policy-card-container
+    .ant-progress.ant-progress-show-info
+    .ant-progress-outer {
+    margin-inline-end: calc(-1em - 8px);
+    padding-inline-end: calc(1em + 8px);
+}
+
+.claim-policy-card-container .ant-progress .ant-progress-text {
+    width: 1em;
+}

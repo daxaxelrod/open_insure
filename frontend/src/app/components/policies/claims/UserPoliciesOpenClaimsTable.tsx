@@ -27,10 +27,12 @@ export default function UserPoliciesOpenClaimsTable() {
         {
             title: "Policy",
             render: (text, record) => (
-                <Link to={`/policies/${record.policy}`}>{text}</Link>
+                <Link to={`/policy/${record.policy}/claims/${record.id}`}>
+                    {text}
+                </Link>
             ),
-            dataIndex: "name",
-            key: "name",
+            dataIndex: "title",
+            key: "title",
         },
         {
             title: "Claimant",

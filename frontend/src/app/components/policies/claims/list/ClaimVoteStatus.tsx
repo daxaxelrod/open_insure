@@ -7,6 +7,8 @@ import {
 } from "../../../../../redux/reducers/commonTypes";
 import colors from "../../../../constants/colors";
 
+import "../../../../styles/dashboard/claims/ClaimVoteStatus.css";
+
 function ThresholdBar({
     location,
     strokeWidth = 10,
@@ -33,10 +35,12 @@ export default function ClaimVoteStatus({
     claim,
     policy,
     strokeWidth = 10,
+    withRedLine = true,
 }: {
     claim: Claim;
     policy: Policy;
     strokeWidth?: number;
+    withRedLine?: boolean;
 }) {
     let approvals = claim.approvals;
     let acceptances = approvals.filter((a: ClaimApproval) => a.approved).length;
@@ -60,10 +64,12 @@ export default function ClaimVoteStatus({
                         : "normal"
                 }
             />
-            <ThresholdBar
-                strokeWidth={strokeWidth}
-                location={policy.claim_approval_threshold_percentage}
-            />
+            {withRedLine && (
+                <ThresholdBar
+                    strokeWidth={strokeWidth}
+                    location={policy.claim_approval_threshold_percentage}
+                />
+            )}
         </div>
     );
 }

@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { Link } from "react-router-dom";
 import { getPodById } from "../../../../redux/actions/pods";
 import type { ColumnsType } from "antd/es/table";
+import { getUserPhotoUrl } from "../utils/photoUtils";
 
 const { Title } = Typography;
 
@@ -66,7 +67,7 @@ export default function MembersTable({ policy }: { policy: Policy }) {
                 <Link to={`/members/${record.id}`}>
                     {record.picture && (
                         <Avatar
-                            src={record.picture}
+                            src={getUserPhotoUrl(record.picture)}
                             size={"default"}
                             style={{ marginRight: 6 }}
                         />

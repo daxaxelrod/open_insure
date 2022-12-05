@@ -15,7 +15,13 @@ export default function ClaimantShortDisplay({
     linkToProfile?: boolean;
 }) {
     return (
-        <Paragraph style={{ color: colors.gray8, fontSize: "1.2rem" }}>
+        <Paragraph
+            style={{
+                color: colors.gray8,
+                fontSize: "1.2rem",
+                marginBottom: ".5rem",
+            }}
+        >
             {claimant?.picture ? (
                 <img
                     src={getUserPhotoUrl(claimant?.picture)}

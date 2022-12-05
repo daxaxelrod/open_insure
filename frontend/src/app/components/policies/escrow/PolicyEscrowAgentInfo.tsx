@@ -11,6 +11,7 @@ import { titleCase } from "../../../utils/stringUtils";
 import EscrowPoolAddressInlineDisplay from "../premiums/EscrowPoolAddressInlineDisplay";
 import colors from "../../../constants/colors";
 import PoolAddressSetupModal from "./PoolAddressSetupModal";
+import { getUserPhotoUrl } from "../utils/photoUtils";
 
 const { Paragraph } = Typography;
 
@@ -36,7 +37,7 @@ export default function PolicyEscrowAgentInfo({ policy }: { policy: Policy }) {
                 <Avatar
                     size={68}
                     src={
-                        escrowManager?.picture ||
+                        getUserPhotoUrl(escrowManager?.picture) ||
                         "https://joeschmoe.io/api/v1/random"
                     }
                     alt=""
