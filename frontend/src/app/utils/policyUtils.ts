@@ -27,7 +27,7 @@ export function getGovernanceTypeHumanReadable(coverageType: string): string {
 
 export function isPolicyMember(currentUser: User, policy: Policy): boolean {
     return (
-        currentUser.id !== undefined &&
+        currentUser?.id !== undefined &&
         policy?.pod &&
         policy?.pod?.members?.some((m: User) => m.id === currentUser.id)
     );
