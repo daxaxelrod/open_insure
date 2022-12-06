@@ -22,6 +22,7 @@ import {
     PATCH_CLAIM_APPROVAL_PENDING,
     PATCH_CLAIM_APPROVAL_SUCCESS,
     PATCH_CLAIM_APPROVAL_FAILURE,
+    GET_CLAIM_COMMENTS_PENDING_OFF,
 } from "../actions/types";
 import { Claim } from "../reducers/commonTypes";
 
@@ -86,11 +87,15 @@ export const getClaimComments =
         try {
             dispatch({ type: GET_CLAIM_COMMENTS_PENDING });
             const response = await API.getClaimComments(policyId, claimId);
-            dispatch({
-                type: GET_CLAIM_COMMENTS_SUCCESS,
-                payload: response.data,
-                claimId,
-            });
+            if (response.data?.length) {
+                dispatch({
+                    type: GET_CLAIM_COMMENTS_SUCCESS,
+                    payload: response.data,
+                    claimId,
+                });
+            } else {
+                dispatch({ type: GET_CLAIM_COMMENTS_PENDING_OFF });
+            }
         } catch (error) {
             dispatch({
                 type: GET_CLAIM_COMMENTS_FAILURE,

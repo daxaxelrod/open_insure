@@ -22,6 +22,7 @@ export default function ClaimCommentsList() {
     );
 
     useEffect(() => {
+        // fetch the claim comments if not already in state
         if (claim && claim.id && policy && policy.id) {
             dispatch(getClaimComments(policy.id, claim.id));
         }

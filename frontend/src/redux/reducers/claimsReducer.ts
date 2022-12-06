@@ -14,6 +14,7 @@ import {
     CREATE_CLAIM_COMMENT_SUCCESS,
     CREATE_CLAIM_COMMENT_FAILURE,
     PATCH_CLAIM_APPROVAL_SUCCESS,
+    GET_CLAIM_COMMENTS_PENDING_OFF,
 } from "../actions/types";
 import {
     Claim,
@@ -97,6 +98,11 @@ export default (
             return {
                 ...state,
                 commentsPending: true,
+            };
+        case GET_CLAIM_COMMENTS_PENDING_OFF:
+            return {
+                ...state,
+                commentsPending: false,
             };
         case GET_CLAIM_COMMENTS_SUCCESS:
             return {

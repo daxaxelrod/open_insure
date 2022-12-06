@@ -4,6 +4,7 @@ import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 
 import { EllipsisOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
+import moment from "moment-timezone";
 
 export default function ClaimSteps() {
     const { claim, isClaimApproved } = useContext(ClaimDetailContext);
@@ -23,7 +24,7 @@ export default function ClaimSteps() {
         },
     ];
 
-    const items = [
+    let items = [
         { title: "File Claim" },
         { title: "Vote", description: "Members vote on your claim" },
         { title: "Outcome", description: "Claim is approved or denied" },
@@ -33,9 +34,13 @@ export default function ClaimSteps() {
 
     if (isClaimApproved) {
         current = 3;
-    }
-
-    if (claim && claim?.evidence?.length > 0) {
+        items[2] = {
+            title: claim?.paid_on ? "Paid" : "Approved",
+            description: claim?.paid_on
+                ? `Paid on ${moment(claim?.paid_on).format("MM/DD/YY")}`
+                : "Pending payout",
+        };
+    } else if (claim && claim?.evidence?.length > 0) {
         current = 1;
     }
 

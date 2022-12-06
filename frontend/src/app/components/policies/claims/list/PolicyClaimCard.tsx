@@ -2,7 +2,6 @@ import React from "react";
 import { Card, Col, Row, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { Claim, Policy, User } from "../../../../../redux/reducers/commonTypes";
-import { useAppSelector } from "../../../../../redux/hooks";
 import ClaimStatusBar from "./ClaimStatusBar";
 import ClaimEvidenceImages from "./ClaimEvidenceImages";
 import ClaimVoteStatus from "./ClaimVoteStatus";
@@ -10,7 +9,7 @@ import colors from "../../../../constants/colors";
 import ClaimantShortDisplay from "../detail/ClaimantShortDisplay";
 import moment from "moment-timezone";
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 type props = {
     claim: Claim;

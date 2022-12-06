@@ -14,9 +14,10 @@ export default function PolicyClaimsList() {
     const policyId = parseInt(id || "");
     const navigate = useNavigate();
     const [api, notificationContext] = notification.useNotification();
-    const policy: Policy = useAppSelector((state) =>
-        state.policies.publicPolicies.find((p: Policy) => p.id === policyId)
+    const policies: Policy[] = useAppSelector(
+        (state) => state.policies.publicPolicies
     );
+    const policy = policies.find((p: Policy) => p.id === policyId);
     const [newestFirst, setNewestFirst] = useState(true);
 
     const claims = useAppSelector(
@@ -29,7 +30,7 @@ export default function PolicyClaimsList() {
     });
 
     const goToClaimSetup = () => {
-        let coverageStartDate = moment(policy.coverage_start_date);
+        let coverageStartDate = moment(policy?.coverage_start_date);
         let hasPolicyStarted = moment().isAfter(coverageStartDate);
         if (hasPolicyStarted) {
             navigate("/policy/" + policyId + "/claims/new");
@@ -80,6 +81,10 @@ export default function PolicyClaimsList() {
             </div>
         );
     };
+
+    if (!policy) {
+        return null;
+    }
 
     return (
         <>
