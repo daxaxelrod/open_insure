@@ -56,7 +56,7 @@ export default function ClaimVotes() {
 
     const submitClaimVote = (decision: boolean) => {
         const userVote = votes.find((vote: ClaimApproval) => {
-            return vote.approver === currentUser.id;
+            return vote.approver === currentUser?.id;
         });
         if (userVote) {
             dispatch(
@@ -108,7 +108,7 @@ export default function ClaimVotes() {
                     <Col span={12}>
                         <Row>
                             <Col span={12}>
-                                {claimant?.id === currentUser.id ? (
+                                {claimant?.id === currentUser?.id ? (
                                     <ClaimVotingBox>
                                         <Paragraph
                                             strong

@@ -21,7 +21,7 @@ export default function ClaimsStatusInlineDisplay({
     let pendingClaimsWhereUserVoteNotSubmitted = pendingClaims.filter(
         (claim) => {
             return !claim.approvals.some(
-                (approval) => approval.approver === currentUser.id
+                (approval) => approval.approver === currentUser?.id
             );
         }
     );

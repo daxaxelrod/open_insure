@@ -39,7 +39,7 @@ export default function UserPolicyCalendar({
             policy.premiums.forEach((premium) => {
                 if (
                     moment(premium.due_date).isSame(value) &&
-                    premium.payer === currentUser.id
+                    premium.payer === currentUser?.id
                 ) {
                     if (premium.paid) {
                         listData.push({

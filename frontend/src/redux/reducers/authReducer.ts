@@ -12,7 +12,7 @@ import {
 import { User } from "./commonTypes";
 
 export interface AuthState {
-    currentUser?: User | null;
+    currentUser?: User | {};
     loginPending: boolean;
     loginError?: any;
     registerPending: boolean;
@@ -20,7 +20,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-    currentUser: null,
+    currentUser: {},
     loginPending: false,
     registerPending: false,
     registrationError: null,
@@ -50,7 +50,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
         case LOGOUT:
             return {
                 ...state,
-                currentUser: null,
+                currentUser: {},
                 loginError: null,
             };
         case REGISTER_PENDING:
@@ -68,7 +68,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 registerPending: false,
-                currentUser: null,
+                currentUser: {},
                 registrationError: { overall: payload },
             };
         case UPDATE_OWN_PROFILE:

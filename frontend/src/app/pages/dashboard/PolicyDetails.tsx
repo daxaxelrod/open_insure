@@ -59,9 +59,9 @@ export default function PolicyDetails() {
     }
 
     let isMember =
-        currentUser.id !== undefined &&
+        currentUser?.id !== undefined &&
         policy?.pod &&
-        policy?.pod.members?.some((m: User) => m.id === currentUser.id);
+        policy?.pod.members?.some((m: User) => m.id === currentUser?.id);
 
     let memberHasFilledOutRisk =
         currentUser?.id !== undefined && focusedRisk?.premium_amount;
