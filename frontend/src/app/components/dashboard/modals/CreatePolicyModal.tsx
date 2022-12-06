@@ -123,12 +123,16 @@ export default function CreatePolicyModal({
                 </div>
 
                 <Divider />
-                <Row justify="space-between">
+                <Row
+                    justify="space-between"
+                    onClick={toggleAdvanced}
+                    style={{
+                        cursor: "pointer",
+                    }}
+                >
                     <Title level={4}>Advanced Settings</Title>
                     <div
-                        onClick={toggleAdvanced}
                         style={{
-                            cursor: "pointer",
                             padding: "2px 10px",
                             display: "flex",
                             justifyContent: "center",

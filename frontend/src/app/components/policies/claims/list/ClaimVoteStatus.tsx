@@ -1,4 +1,4 @@
-import { Progress } from "antd";
+import { Progress, Tooltip } from "antd";
 import React from "react";
 import {
     Claim,
@@ -17,17 +17,21 @@ function ThresholdBar({
     strokeWidth?: number;
 }) {
     return (
-        <div
-            style={{
-                position: "absolute",
-                left: `${location * 0.81}%`,
-                width: "1px",
-                height: `${strokeWidth * 2}px`,
-                top: -0.1 * strokeWidth,
-                bottom: 0,
-                borderRight: `2px dashed ${colors.alert2}`,
-            }}
-        />
+        <Tooltip color="black" title={`${location}% required to be approved`}>
+            <div
+                style={{
+                    position: "absolute",
+                    left: `${location * 0.81}%`,
+                    width: "1px",
+                    height: `${strokeWidth * 2}px`,
+                    top: -0.1 * strokeWidth,
+                    bottom: 0,
+                    borderRight: `2px dashed ${colors.alert2}`,
+                    padding: "10px",
+                    cursor: "pointer",
+                }}
+            />
+        </Tooltip>
     );
 }
 
