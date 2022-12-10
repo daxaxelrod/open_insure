@@ -21,6 +21,8 @@ export default function ClaimDetails() {
         state.claims.claims?.[policyId]?.find((c: Claim) => c.id === claimIdInt)
     );
     const isClaimApproved = !!claim?.is_approved;
+    console.log();
+    
     const currentUser = useAppSelector((state) => state.auth.currentUser);
     const claimant = policy?.pod?.members.find(
         (member) => member.id === claim.claimant

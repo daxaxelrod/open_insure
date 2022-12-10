@@ -81,6 +81,11 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             };
 
         default:
-            return state;
+            return {
+                ...state,
+                registrationError: {},
+                registerPending: false,
+                loginPending: false,
+            };
     }
 };

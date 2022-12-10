@@ -56,7 +56,7 @@ export default function MembersTable({ policy }: { policy: Policy }) {
         [];
 
     const isMember = members?.find((member) => {
-        return member.id === currentUser.id;
+        return member.id === currentUser?.id;
     });
 
     const columns: ColumnsType<MemberRowType> = [

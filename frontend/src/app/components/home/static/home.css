@@ -164,11 +164,6 @@ h6 {
     height: 50px;
     margin: 20px 0;
 }
-.page1 .card:hover {
-    text-decoration: none;
-    transform: translateY(-12px);
-    box-shadow: 0 12px 24px rgba(84, 48, 132, 0.06);
-}
 
 .page4 {
     min-height: 715px;

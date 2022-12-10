@@ -15,12 +15,13 @@ export default function Page1() {
     const children = page1.map((card, i) => (
         <Col
             key={i.toString()}
-            lg={{ span: 6, offset: i === 0 ? 3 : 0 }}
-            md={{ span: 12, offset: i === 0 ? 2 : 0 }}
+            lg={{ span: 6 }}
+            md={{ span: 12 }}
             sm={24}
             style={{
                 height: "100%",
                 justifyContent: "center",
+                backgroundColor: "red",
             }}
         >
             <Card
@@ -34,7 +35,7 @@ export default function Page1() {
                 <Title level={3} style={{ textAlign: "center" }}>
                     {card.title}
                 </Title>
-                
+
                 <div className="card-body">
                     <Paragraph className="description text-secondary">
                         {card.description}
@@ -56,7 +57,7 @@ export default function Page1() {
                 component={Row}
                 type="bottom"
                 delay={500}
-                componentProps={{ gutter: 16 }}
+                componentProps={{ gutter: 16, justify: "center" }}
             >
                 {children}
             </QueueAnim>
