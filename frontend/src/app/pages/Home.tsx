@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Banner from "../components/home/Banner";
 import Page1 from "../components/home/Page1";
-import WhyDoSelfInsurance from '../components/home/WhyDoSelfInsurance'
+import WhyDoSelfInsurance from "../components/home/WhyDoSelfInsurance";
 import Page2 from "../components/home/Page2";
 import Page3 from "../components/home/Page3";
 import Footer from "../components/home/Footer";
@@ -13,7 +13,7 @@ export default function Home() {
         <Layout>
             <Layout.Content>
                 <Banner key="banner" />
-                <Page1 key="page1" />
+                {/* <Page1 key="page1" /> */}
                 <WhyDoSelfInsurance />
                 <Page2 key="page2" />
                 <Page3 key="page3" />

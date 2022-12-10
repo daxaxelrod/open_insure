@@ -24,8 +24,8 @@ class Banner extends React.PureComponent {
             >
                 <Row>
                     <Col
-                        xl={{ span: 6, offset: 5 }}
-                        lg={{ span: 6, offset: 3 }}
+                        xl={{ span: 8, offset: 4 }}
+                        lg={{ span: 8, offset: 3 }}
                         md={{ span: 12, offset: 2 }}
                         sm={24}
                         className={`${className}-text-wrapper`}
@@ -41,7 +41,7 @@ class Banner extends React.PureComponent {
                                 fontSize: "3rem",
                             }}
                         >
-                            The cheapest insurance legally possible
+                            A free self insurance platform
                         </Title>
                         <p
                             className="main-info"
@@ -54,32 +54,24 @@ class Banner extends React.PureComponent {
                                 color: "rgba(0, 0, 0, 0.65)",
                             }}
                         >
-                            Insure your cell phone with friends. Join a group,
-                            manage members, premiums, and claims while cutting
-                            out the middle man.
+                            Save 30-50% on cell phone protection plans by
+                            insuring yourself with friends and family.
                         </p>
-                        <Space size={26}>
-                            <Link to={"/join"}>
-                                <Button
-                                    type="primary"
-                                    size="large"
-                                    style={{ fontWeight: "bold" }}
-                                >
-                                    Sign up
-                                </Button>
-                            </Link>
-                            {/* <Link to={"/login"}>
-                                <Button
-                                    type="primary"
-                                    size="large"
-                                    style={{ fontWeight: "bold" }}
-                                >
-                                    Login
-                                </Button>
-                            </Link> */}
-                        </Space>
+
+                        <Link to={"/join"} style={{ display: "flex", flex: 1 }}>
+                            <Button
+                                type="primary"
+                                size="large"
+                                style={{
+                                    fontWeight: "bold",
+                                    width: "100%",
+                                }}
+                            >
+                                Browse Plans
+                            </Button>
+                        </Link>
                     </Col>
-                    <Col md={10} s={22}>
+                    <Col md={12} s={{ span: 22, offset: 2 }}>
                         <img width="100%" src={heroImage} alt="" />
                     </Col>
                 </Row>

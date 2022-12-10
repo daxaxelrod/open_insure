@@ -21,7 +21,7 @@ export default function Page1() {
             style={{
                 height: "100%",
                 justifyContent: "center",
-                backgroundColor: "red",
+                backgroundColor: "transparent",
             }}
         >
             <Card

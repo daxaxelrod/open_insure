@@ -1,0 +1,55 @@
+<svg height="600" width="600" xmlns="http://www.w3.org/2000/svg">
+<title>Your Diagram Title</title>
+<!-- Generated with SankeyMATIC: 12/10/2022, 5:22:30 PM -->
+<rect height="600" width="600" fill='white'></rect>
+<g transform="translate(12,18)">
+<g id="sankey_flows">
+<path id="flow0" d="M9 176.96012C146.25 176.96012 146.25 133.00875 283.5 133.00875" fill="none" stroke-width="266.0175" stroke="#595959" opacity="0.45"><title>Premiums → Claims: 630</title></path>
+<path id="flow1" d="M9 341.63762C146.25 341.63762 146.25 416.47375 283.5 416.47375" fill="none" stroke-width="63.3375" stroke="#d62728" opacity="0.45"><title>Premiums → Lost money: 150</title></path>
+<path id="flow4" d="M292.5 416.47375C429.75 416.47375 429.75 333.86125 567 333.86125" fill="none" stroke-width="63.3375" stroke="#d62728" opacity="0.45"><title>Gross Profit → Commissions: 150</title></path>
+<path id="flow2" d="M9 400.75262C146.25 400.75262 146.25 475.58875 283.5 475.58875" fill="none" stroke-width="54.8925" stroke="#d62728" opacity="0.45"><title>Premiums → Lost money: 130</title></path>
+<path id="flow5" d="M292.5 475.58875C429.75 475.58875 429.75 438.76375 567 438.76375" fill="none" stroke-width="54.8925" stroke="#d62728" opacity="0.45"><title>Gross Profit → Salaries: 130</title></path>
+<path id="flow3" d="M9 447.20012C146.25 447.20012 146.25 522.03625 283.5 522.03625" fill="none" stroke-width="38.0025" stroke="#d62728" opacity="0.45"><title>Premiums → Lost Money: 90</title></path>
+<path id="flow6" d="M292.5 522.03625C429.75 522.03625 429.75 542.99875 567 542.99875" fill="none" stroke-width="38.0025" stroke="#d62728" opacity="0.45"><title>Gross Profit → Marketing: 90</title></path>
+</g>
+<g id="sankey_nodes">
+<g class="node">
+<rect id="r0" class="for_r0" x="0" y="43.95137" height="422.25" width="9" fill="#17becf" fill-opacity="1"><title>Premiums:
+1,000</title></rect>
+</g>
+<g class="node">
+<rect id="r1" class="for_r1" x="283.5" y="0" height="266.0175" width="9" fill="#595959" fill-opacity="1"><title>Claims:
+630</title></rect>
+</g>
+<g class="node">
+<rect id="r2" class="for_r2" x="283.5" y="384.805" height="156.2325" width="9" fill="#d62728" fill-opacity="1"><title>Gross Profit:
+370</title></rect>
+</g>
+<g class="node">
+<rect id="r3" class="for_r3" x="567" y="168.1925" height="63.3375" width="9" fill="#d62728" fill-opacity="1" transform="translate(0,134)"><title>Commissions:
+150</title></rect>
+</g>
+<g class="node">
+<rect id="r4" class="for_r4" x="567" y="350.3175" height="54.8925" width="9" fill="#d62728" fill-opacity="1" transform="translate(0,61)"><title>Salaries:
+130</title></rect>
+</g>
+<g class="node">
+<rect id="r5" class="for_r5" x="567" y="523.9975" height="38.0025" width="9" fill="#d62728" fill-opacity="1"><title>Marketing:
+90</title></rect>
+</g>
+</g>
+<g id="sankey_labels" font-family="sans-serif" font-size="16px" font-weight="400" fill="#000000">
+<rect id="label0_bg" class="for_r0" x="10.6327" y="243.04138" width="130.66704" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0"></rect>
+<text id="label0" class="for_r0" text-anchor="start" x="15.29754" y="255.07637" dy="5.364999999999999">Premiums: 1,000</text>
+<rect id="label1_bg" class="for_r1" x="187.6612" y="120.97375" width="94.20609" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0"></rect>
+<text id="label1" class="for_r1" text-anchor="end" x="277.20246" y="133.00875" dy="5.364999999999999">Claims: 630</text>
+<rect id="label2_bg" class="for_r2" x="152.09089" y="450.88625" width="129.77641" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0"></rect>
+<text id="label2" class="for_r2" text-anchor="end" x="277.20246" y="462.92125" dy="5.364999999999999">Lost Money: 370</text>
+<rect id="label3_bg" class="for_r3" x="424.0362" y="187.82626" width="141.33109" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0" transform="translate(0,134)"></rect>
+<text id="label3" class="for_r3" text-anchor="end" x="560.70246" y="199.86125" dy="5.364999999999999" transform="translate(0,134)">Commissions: 150</text>
+<rect id="label4_bg" class="for_r4" x="462.24714" y="365.72875" width="103.12016" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0" transform="translate(0,61)"></rect>
+<text id="label4" class="for_r4" text-anchor="end" x="560.70246" y="377.76375" dy="5.364999999999999" transform="translate(0,61)">Salaries: 130</text>
+<rect id="label5_bg" class="for_r5" x="458.70027" y="530.96377" width="106.66703" height="23.33906" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0"></rect>
+<text id="label5" class="for_r5" text-anchor="end" x="560.70246" y="542.99875" dy="5.364999999999999">Marketing: 90</text>
+</g>
+</g></svg>

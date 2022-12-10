@@ -39,7 +39,7 @@ export default function ClaimStatusBar({
                     ) : isClaimDenied ? (
                         <Tag color="red">Rejected</Tag>
                     ) : (
-                        <Tag color="blue">Activly Voting</Tag>
+                        <Tag color="blue">Actively Voting</Tag>
                     )}
                 </span>
             </div>

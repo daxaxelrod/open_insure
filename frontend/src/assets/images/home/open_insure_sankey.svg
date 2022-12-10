@@ -1,0 +1,32 @@
+<svg height="600" width="600" xmlns="http://www.w3.org/2000/svg">
+<title>Your Diagram Title</title>
+<!-- Generated with SankeyMATIC: 12/10/2022, 5:37:33 PM -->
+<rect height="600" width="600" fill='white'></rect>
+<g transform="translate(12,18)">
+<g id="sankey_flows">
+<path id="flow0" d="M9 197.89C288 197.89 288 176.83 567 176.83" fill="none" stroke-width="177.66" stroke="#595959" opacity="0.45"><title>Premiums → Claims: 630</title></path>
+<path id="flow1" d="M9 338.89C288 338.89 288 368.83 567 368.83" fill="none" stroke-width="104.34" stroke="#52c41a" opacity="0.45"><title>Premiums → Returned to Policy Holders: 370</title></path>
+</g>
+<g id="sankey_nodes">
+<g class="node">
+<rect id="r0" class="for_r0" x="0" y="109.06" height="282" width="9" fill="#17becf" fill-opacity="1"><title>Premiums:
+1,000</title></rect>
+</g>
+<g class="node">
+<rect id="r1" class="for_r1" x="567" y="21" height="177.66" width="9" fill="#595959" fill-opacity="1" transform="translate(0,67)"><title>Claims:
+630</title></rect>
+</g>
+<g class="node">
+<rect id="r2" class="for_r2" x="567" y="436.66" height="104.34" width="9" fill="#52c41a" fill-opacity="1" transform="translate(0,-120)"><title>Returned to Policy Holders:
+370</title></rect>
+</g>
+</g>
+<g id="sankey_labels" font-family="sans-serif" font-size="16px" font-weight="400" fill="#000000">
+<rect id="label0_bg" class="for_r0" x="10.6327" y="238.025" width="130.66704" height="23.29998" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0"></rect>
+<text id="label0" class="for_r0" text-anchor="start" x="15.29754" y="250.06" dy="5.364999999999999">Premiums: 1,000</text>
+<rect id="label1_bg" class="for_r1" x="471.1612" y="97.795" width="94.20609" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0" transform="translate(0,67)"></rect>
+<text id="label1" class="for_r1" text-anchor="end" x="560.70246" y="109.83" dy="5.364999999999999" transform="translate(0,67)">Claims: 630</text>
+<rect id="label2_bg" class="for_r2" x="400.73933" y="476.79498" width="165.62797" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0" transform="translate(0,-120)"></rect>
+<text id="label2" class="for_r2" text-anchor="end" x="560.70246" y="488.83" dy="5.364999999999999" transform="translate(0,-120)">Returned to You: 370</text>
+</g>
+</g></svg>
