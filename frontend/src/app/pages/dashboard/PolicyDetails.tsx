@@ -66,6 +66,8 @@ export default function PolicyDetails() {
     let memberHasFilledOutRisk =
         currentUser?.id !== undefined && focusedRisk?.premium_amount;
 
+    console.log({ currentUser });
+
     const PolicyDetailCol = Col;
     return (
         <div>

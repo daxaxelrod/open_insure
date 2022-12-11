@@ -12,7 +12,7 @@ import {
 import { User } from "./commonTypes";
 
 export interface AuthState {
-    currentUser?: User | {};
+    currentUser?: User | any;
     loginPending: boolean;
     loginError?: any;
     registerPending: boolean;
@@ -81,11 +81,6 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             };
 
         default:
-            return {
-                ...state,
-                registrationError: {},
-                registerPending: false,
-                loginPending: false,
-            };
+            return state;
     }
 };

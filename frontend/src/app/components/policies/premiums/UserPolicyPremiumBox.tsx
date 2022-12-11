@@ -19,6 +19,8 @@ export default function UserPolicyPremiumBox({
 }) {
     const riskPending = useAppSelector((state) => state.risk.getRisksPending);
 
+    console.log({ memberHasFilledOutRisk });
+
     return (
         <Card
             style={{

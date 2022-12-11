@@ -41,7 +41,7 @@ export default function PolicyDescriptionRow({
     const renderPolicyStatusTag = () => {
         return hasPolicyStarted ? (
             <Tag color="success" style={{ marginLeft: 10 }}>
-                In Force
+                Coverage Active
             </Tag>
         ) : (
             <Tag color="warning" style={{ marginLeft: 10 }}>

@@ -28,8 +28,14 @@ const persistConfig = {
     whitelist: ["auth"],
 };
 
+const authPersistConfig = {
+    key: "auth",
+    storage,
+    blacklist: ["loginPending", "registerPending"],
+};
+
 const reducers = combineReducers({
-    auth: authReducer,
+    auth: persistReducer(authPersistConfig, authReducer),
     pods: podsReducer,
     policies: policiesReducer,
     risk: riskReducer,

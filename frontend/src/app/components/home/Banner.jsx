@@ -41,7 +41,7 @@ class Banner extends React.PureComponent {
                                 fontSize: "3rem",
                             }}
                         >
-                            A free self insurance platform
+                            A free self-insurance platform
                         </Title>
                         <p
                             className="main-info"
@@ -58,7 +58,7 @@ class Banner extends React.PureComponent {
                             insuring yourself with friends and family.
                         </p>
 
-                        <Link to={"/join"} style={{ display: "flex", flex: 1 }}>
+                        <Link to={"/join"} style={{ display: "flex" }}>
                             <Button
                                 type="primary"
                                 size="large"
@@ -67,7 +67,7 @@ class Banner extends React.PureComponent {
                                     width: "100%",
                                 }}
                             >
-                                Browse Plans
+                                Browse Policies
                             </Button>
                         </Link>
                     </Col>
