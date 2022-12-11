@@ -55,8 +55,8 @@ export default function WhyDoSelfInsurance() {
                 align="middle"
                 style={{ marginTop: "2rem" }}
             >
-                <Col md={12} lg={{ span: 8, offset: 4 }}>
-                    <ImageHeading>Insurance Company</ImageHeading>
+                <Col md={12} lg={{ span: 8, offset: 2 }}>
+                    <ImageHeading>Conventional Insurance</ImageHeading>
                     <img
                         src={traditional_companies_sankey}
                         style={{ width: "100%" }}

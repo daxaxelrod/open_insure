@@ -22,12 +22,12 @@ class Banner extends React.PureComponent {
                 component="section"
                 className={`${className}-wrapper page`}
             >
-                <Row>
+                <Row style={{ padding: "16px 16px" }} justify="center">
                     <Col
                         xl={{ span: 8, offset: 4 }}
                         lg={{ span: 8, offset: 3 }}
-                        md={{ span: 12, offset: 2 }}
-                        sm={24}
+                        md={{ span: 16, offset: 4 }}
+                        sm={{ span: 16, offset: 4 }}
                         className={`${className}-text-wrapper`}
                         delay={300}
                         style={{
@@ -38,7 +38,7 @@ class Banner extends React.PureComponent {
                     >
                         <Title
                             style={{
-                                fontSize: "3rem",
+                                fontSize: "2.75rem",
                             }}
                         >
                             A free self-insurance platform
@@ -55,7 +55,7 @@ class Banner extends React.PureComponent {
                             }}
                         >
                             Save 30-50% on cell phone protection plans by
-                            insuring yourself with friends and family.
+                            insuring yourself with peers.
                         </p>
 
                         <Link to={"/join"} style={{ display: "flex" }}>
@@ -71,7 +71,11 @@ class Banner extends React.PureComponent {
                             </Button>
                         </Link>
                     </Col>
-                    <Col md={12} s={{ span: 22, offset: 2 }}>
+                    <Col
+                        lg={{ span: 12, offset: 0 }}
+                        md={{ span: 24, offset: 0 }}
+                        sm={{ span: 24, offset: 0 }}
+                    >
                         <img width="100%" src={heroImage} alt="" />
                     </Col>
                 </Row>
