@@ -13,6 +13,7 @@ import Dashboard from "./app/pages/dashboard/Dashboard";
 import Onboarding from "./app/pages/Onboarding";
 import Login from "./app/pages/Login";
 import Index from "./app/pages/Home";
+import FAQs from "./app/pages/FrequentlyAskedQuestions";
 import NavBar from "./app/components/NavBar";
 import PolicyListSearch from "./app/components/dashboard/PolicyListSearch";
 import UserPolicies from "./app/pages/UserPolicies";
@@ -44,6 +45,7 @@ root.render(
                         <Routes>
                             <Route path="/join" element={<Onboarding />} />
                             <Route path="/login" element={<Login />} />
+                            <Route path="/faqs" element={<FAQs />} />
                             {!isLoggedIn() && (
                                 <Route path="/" element={<Index />} />
                             )}

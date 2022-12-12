@@ -24,6 +24,10 @@
     background-color: #fff;
 }
 
+.ant-layout .ant-layout-header {
+    line-height: 40px;
+}
+
 .ant-layout {
     min-height: 100vh;
 }

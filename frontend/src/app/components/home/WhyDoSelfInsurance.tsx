@@ -1,15 +1,15 @@
 import React from "react";
-import securityOnRe from "../../../assets/images/undraw_security_on_re_e491.svg";
-import { Col, Typography, Row } from "antd";
+import { Col, Typography, Row, Grid } from "antd";
 import traditional_companies_sankey from "../../../assets/images/home/traditional_companies_sankey.svg";
 import open_insure_sankey from "../../../assets/images/home/open_insure_sankey.svg";
 import colors from "../../constants/colors";
 import styled from "styled-components";
 
 const { Title, Paragraph } = Typography;
+const { useBreakpoint } = Grid;
 
 const StyledParagraph = styled(Paragraph)({
-    fontSize: "1.2rem",
+    fontSize: "1.1rem",
     lineHeight: "1.8rem",
 });
 
@@ -20,8 +20,10 @@ const ImageHeading = styled(Paragraph)({
 });
 
 export default function WhyDoSelfInsurance() {
+    const screens = useBreakpoint();
+    const isMobile = !screens.lg;
     return (
-        <div style={{ backgroundColor: "white" }}>
+        <div style={{ backgroundColor: "white", padding: "35px" }}>
             <Row>
                 <Col md={{ span: 12, offset: 4 }} lg={{ span: 8, offset: 4 }}>
                     <Title
@@ -34,7 +36,7 @@ export default function WhyDoSelfInsurance() {
                 </Col>
             </Row>
             <Row>
-                <Col md={{ span: 12, offset: 4 }} lg={{ span: 8, offset: 4 }}>
+                <Col md={{ span: 20, offset: 4 }} lg={{ span: 8, offset: 4 }}>
                     <StyledParagraph>
                         Self-insurance is a way of protecting yourself or your
                         things without using an insurance company. Instead of
@@ -43,7 +45,7 @@ export default function WhyDoSelfInsurance() {
                         claim.
                     </StyledParagraph>
                 </Col>
-                <Col md={{ span: 12, offset: 1 }} lg={{ span: 7, offset: 0 }}>
+                <Col md={{ span: 20, offset: 4 }} lg={{ span: 7, offset: 1 }}>
                     <StyledParagraph>
                         An insurance company makes a profit by collecting more
                         in premiums than it pays out in claims.
@@ -55,17 +57,26 @@ export default function WhyDoSelfInsurance() {
                 align="middle"
                 style={{ marginTop: "2rem" }}
             >
-                <Col md={12} lg={{ span: 8, offset: 2 }}>
+                <Col md={{ span: 24, offset: 4 }} lg={{ span: 8, offset: 2 }}>
                     <ImageHeading>Conventional Insurance</ImageHeading>
                     <img
                         src={traditional_companies_sankey}
-                        style={{ width: "100%" }}
+                        style={{ width: isMobile ? "95%" : "100%" }}
                         alt="Image one"
                     />
                 </Col>
-                <Col md={12} lg={{ span: 8, offset: 1 }}>
-                    <ImageHeading>Open Insure</ImageHeading>
-                    <img src={open_insure_sankey} style={{ width: "100%" }} />
+                <Col md={{ span: 24, offset: 4 }} lg={{ span: 8, offset: 1 }}>
+                    <ImageHeading
+                        style={{
+                            marginTop: isMobile ? 40 : 0,
+                        }}
+                    >
+                        Open Insure
+                    </ImageHeading>
+                    <img
+                        src={open_insure_sankey}
+                        style={{ width: isMobile ? "95%" : "100%", zIndex: 1 }}
+                    />
                 </Col>
             </Row>
         </div>

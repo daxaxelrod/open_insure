@@ -9,10 +9,10 @@ export default function Login() {
     return (
         <div style={{ padding: 24 }}>
             <Row>
-                <Col span={4}>
+                <Col lg={{ span: 4 }} sm={{ span: 22, offset: 2 }}>
                     <Title level={2}>Login</Title>
                 </Col>
-                <Col span={12}>
+                <Col lg={{ span: 12 }} sm={{ span: 22, offset: 2 }}>
                     <LoginForm />
                 </Col>
             </Row>

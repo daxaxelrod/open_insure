@@ -22,7 +22,7 @@ class Banner extends React.PureComponent {
                 component="section"
                 className={`${className}-wrapper page`}
             >
-                <Row style={{ padding: "16px 16px" }} justify="center">
+                <Row style={{ padding: "35px" }} justify="start" align="middle">
                     <Col
                         xl={{ span: 8, offset: 4 }}
                         lg={{ span: 8, offset: 3 }}
@@ -75,6 +75,7 @@ class Banner extends React.PureComponent {
                         lg={{ span: 12, offset: 0 }}
                         md={{ span: 24, offset: 0 }}
                         sm={{ span: 24, offset: 0 }}
+                        style={{ marginTop: 20 }}
                     >
                         <img width="100%" src={heroImage} alt="" />
                     </Col>
