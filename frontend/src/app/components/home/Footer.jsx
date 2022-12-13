@@ -9,6 +9,7 @@ function OpenInsureFooter() {
 
     return (
         <Footer className="dark" style={{ marginBottom: 60 }}>
+            {contextHolder}
             <div className="footer-wrap">
                 <Row>
                     <Col
