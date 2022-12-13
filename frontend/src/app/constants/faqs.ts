@@ -2,7 +2,7 @@ export default [
     {
         key: "claimAsk",
         question: "How do I make a claim?",
-        answer: "You submit a claim to your policy where you'll have to convince the other members of your claims validity. All the policy members get an opportunity to review the claim and vote on it. If the claim is approved, the money is paid out to the you.",
+        answer: "You submit a claim to your policy where you'll have to convince the other members of your claim's validity. All the policy members get an opportunity to review the claim and vote on it. If the claim is approved, the money is paid out to the you.",
     },
     {
         key: "escrowAsk",

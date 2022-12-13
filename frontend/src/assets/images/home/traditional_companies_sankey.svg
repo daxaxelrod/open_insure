@@ -39,8 +39,8 @@
 </g>
 </g>
 <g id="sankey_labels" font-family="sans-serif" font-size="16px" font-weight="400" fill="#000000">
-<rect id="label0_bg" class="for_r0" x="2.6327" y="243.04138" width="138.66704" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0"></rect>
-<text id="label0" class="for_r0" text-anchor="start" x="5.29754" y="255.07637" dy="5.364999999999999">Premiums: $1,000</text>
+<rect id="label0_bg" class="for_r0" x="10.6327" y="243.04138" width="138.66704" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0"></rect>
+<text id="label0" class="for_r0" text-anchor="start" x="14.29754" y="255.07637" dy="5.364999999999999">Premiums: $1,000</text>
 <rect id="label1_bg" class="for_r1" x="177.6612" y="120.97375" width="104.20609" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0"></rect>
 <text id="label1" class="for_r1" text-anchor="end" x="277.20246" y="133.00875" dy="5.364999999999999">Claims: $630</text>
 <rect id="label2_bg" class="for_r2" x="142.09089" y="450.88625" width="139.77641" height="23.3" rx="4" fill="#fff" fill-opacity="0.55" stroke="none" stroke-width="0" stroke-opacity="0"></rect>

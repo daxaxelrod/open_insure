@@ -57,7 +57,7 @@ export default function WhyDoSelfInsurance() {
                 align="middle"
                 style={{ marginTop: "2rem" }}
             >
-                <Col md={{ span: 24, offset: 4 }} lg={{ span: 8, offset: 2 }}>
+                <Col md={{ span: 20, offset: 2 }} lg={{ span: 8, offset: 2 }}>
                     <ImageHeading>Conventional Insurance</ImageHeading>
                     <img
                         src={traditional_companies_sankey}
@@ -65,7 +65,7 @@ export default function WhyDoSelfInsurance() {
                         alt="Image one"
                     />
                 </Col>
-                <Col md={{ span: 24, offset: 4 }} lg={{ span: 8, offset: 1 }}>
+                <Col md={{ span: 20, offset: 2 }} lg={{ span: 8, offset: 1 }}>
                     <ImageHeading
                         style={{
                             marginTop: isMobile ? 40 : 0,

@@ -12,7 +12,6 @@ export default function Page2() {
     const screens = Grid.useBreakpoint();
     const isMobile = screens.xs || screens.sm || screens.md;
     const isLarge = screens.lg || screens.xl || screens.xxl;
-    console.log("render");
     return (
         <div style={{ backgroundColor: "white", paddingTop: "1.5rem" }}>
             <Title
