@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 
-from pods.models import Pod, PodInvite, User
+from pods.models import Pod, PodInvite, User, WaitlistMember
 
 
 class MembershipInline(admin.TabularInline):
@@ -24,3 +24,4 @@ class UserAdmin(UserAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(Pod, PodModelAdmin)
 admin.site.register(PodInvite)
+admin.site.register(WaitlistMember)

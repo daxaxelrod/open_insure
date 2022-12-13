@@ -1,5 +1,6 @@
 import React from "react";
 import { Collapse, Row, Col, Typography, Button, Grid } from "antd";
+import { RightOutlined } from "@ant-design/icons";
 
 import "./static/indexSectionTwo.css";
 import faqs from "../../constants/faqs";
@@ -13,7 +14,13 @@ export default function Page2() {
     const isMobile = screens.xs || screens.sm || screens.md;
     const isLarge = screens.lg || screens.xl || screens.xxl;
     return (
-        <div style={{ backgroundColor: "white", paddingTop: "1.5rem" }}>
+        <div
+            style={{
+                backgroundColor: "#f8fafe",
+                paddingTop: "4rem",
+                paddingBottom: "2rem",
+            }}
+        >
             <Title
                 style={{
                     textAlign: "center",
@@ -55,9 +62,11 @@ export default function Page2() {
                             </Panel>
                         ))}
                     </Collapse>
-                    <Row justify={"end"} style={{ padding: "1rem 0" }}>
+                    <Row justify={"end"} style={{ padding: "2rem 0 0" }}>
                         <Link to="/faqs">
-                            <Button type="primary">More FAQs</Button>
+                            <Button type="text">
+                                More FAQs <RightOutlined />
+                            </Button>
                         </Link>
                     </Row>
                 </Col>

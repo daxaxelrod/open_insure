@@ -1,4 +1,3 @@
-from email import policy
 from django.conf import settings
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -6,11 +5,13 @@ from rest_framework.decorators import action
 from rest_framework.status import (
     HTTP_403_FORBIDDEN,
     HTTP_200_OK,
+    HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
 )
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
 from rest_framework.generics import RetrieveUpdateAPIView
-from pods.models import Pod, PodInvite, User
+from rest_framework.views import APIView
+from pods.models import Pod, PodInvite, User, WaitlistMember
 from pods.serializers import InviteSerializer, PodSerializer, UserSerializer, PatchableUserSerializer
 from policies.premiums import remove_future_premiums
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -119,9 +120,7 @@ class UserViewSet(ModelViewSet):
         serializer.save(picture='https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&name=' + serializer.validated_data['first_name'] + '+' + serializer.validated_data['last_name'])
 
 
-class SelfView(
-    RetrieveUpdateAPIView
-):
+class SelfView(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
@@ -133,4 +132,14 @@ class SelfView(
     def get_object(self):
         return self.request.user
     
+
+class WaitlistView(APIView):
+    serializer_class = InviteSerializer
+    
+    def post(self, request, format=None):
+        serializer = InviteSerializer(data=request.data)
+        if serializer.is_valid():
+            WaitlistMember.objects.create(email=serializer.validated_data["email"])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 

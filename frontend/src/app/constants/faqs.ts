@@ -2,12 +2,12 @@ export default [
     {
         key: "claimAsk",
         question: "How do I make a claim?",
-        answer: "You submit a claim to your policy where you'll have to convince the other members of your claim's validity. All the policy members get an opportunity to review the claim and vote on it. If the claim is approved, the money is paid out to the you.",
+        answer: "You submit a claim to your policy where you will have to convince the other members of your claim's validity. All the policy members get an opportunity to review, comment, and vote on the claim. If the claim is approved, the money is paid out to the you.",
     },
     {
         key: "escrowAsk",
         question: "Who manages the money?",
-        answer: "The money is managed by the escrow agent who is the most trusted member of your policy. The escrow agent is responsible for keeping track of premiums and paying claims that the group agree on.",
+        answer: "The money is managed by the most trusted member of your policy. This person is referred to as the Escrow Agent and is elected by your group. The escrow agent is responsible for keeping track of premiums and paying claims that the group agree on.",
     },
     {
         key: "shadyAsk",
