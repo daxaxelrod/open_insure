@@ -36,7 +36,7 @@ export default function Page3() {
                 </Col>
                 <Col
                     key={"githubExplainer"}
-                    md={9}
+                    md={{span: 11, offset: 1}}
                     xs={24}
                     style={{
                         display: "flex",
