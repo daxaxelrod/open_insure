@@ -21,7 +21,8 @@ const ImageHeading = styled(Paragraph)({
 
 export default function WhyDoSelfInsurance() {
     const screens = useBreakpoint();
-    const isMobile = !screens.lg;
+    const isMobile = screens.xs || screens.sm || screens.md;
+
     return (
         <div style={{ backgroundColor: "white", padding: "35px" }}>
             <Row>
@@ -38,6 +39,12 @@ export default function WhyDoSelfInsurance() {
             <Row>
                 <Col md={{ span: 20, offset: 4 }} lg={{ span: 8, offset: 4 }}>
                     <StyledParagraph>
+                        A conventional insurance company makes a profit by
+                        collecting more in premiums than it pays out in claims.
+                    </StyledParagraph>
+                </Col>
+                <Col md={{ span: 20, offset: 4 }} lg={{ span: 7, offset: 1 }}>
+                    <StyledParagraph>
                         Self-insurance is a way of protecting yourself or your
                         things without using an insurance company. Instead of
                         paying someone else to help you if something bad
@@ -45,19 +52,12 @@ export default function WhyDoSelfInsurance() {
                         claim.
                     </StyledParagraph>
                 </Col>
-                <Col md={{ span: 20, offset: 4 }} lg={{ span: 7, offset: 1 }}>
-                    <StyledParagraph>
-                        An insurance company makes a profit by collecting more
-                        in premiums than it pays out in claims.
-                    </StyledParagraph>
-                </Col>
             </Row>
-            <Row
-                justify={"center"}
-                align="middle"
-                style={{ marginTop: "2rem" }}
-            >
-                <Col md={{ span: 20, offset: 2 }} lg={{ span: 8, offset: 2 }}>
+            <Row align="middle" style={{ marginTop: "2rem" }}>
+                <Col
+                    md={{ span: 20, offset: isMobile ? 4 : 0 }}
+                    lg={{ span: 8, offset: isMobile ? 1 : 0 }}
+                >
                     <ImageHeading>Conventional Insurance</ImageHeading>
                     <img
                         src={traditional_companies_sankey}
@@ -65,7 +65,7 @@ export default function WhyDoSelfInsurance() {
                         alt="Image one"
                     />
                 </Col>
-                <Col md={{ span: 20, offset: 2 }} lg={{ span: 8, offset: 1 }}>
+                <Col md={{ span: 20, offset: 4 }} lg={{ span: 8, offset: 1 }}>
                     <ImageHeading
                         style={{
                             marginTop: isMobile ? 40 : 0,
