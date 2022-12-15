@@ -21,7 +21,7 @@ const ImageHeading = styled(Paragraph)({
 
 export default function WhyDoSelfInsurance() {
     const screens = useBreakpoint();
-    const isMobile = screens.xs || screens.sm || screens.md;
+    const isMobile = !screens.lg;
 
     return (
         <div style={{ backgroundColor: "white", padding: "35px" }}>
@@ -56,7 +56,7 @@ export default function WhyDoSelfInsurance() {
             <Row align="middle" style={{ marginTop: "2rem" }}>
                 <Col
                     md={{ span: 20, offset: isMobile ? 4 : 0 }}
-                    lg={{ span: 8, offset: isMobile ? 1 : 0 }}
+                    lg={{ span: 8, offset: isMobile ? 1 : 4 }}
                 >
                     <ImageHeading>Conventional Insurance</ImageHeading>
                     <img
