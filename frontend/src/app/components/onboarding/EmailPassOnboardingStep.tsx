@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Alert, Button, Checkbox, Col, Form, Input, Row } from "antd";
 
 import { useWizard } from "react-use-wizard";
-import { register } from "../../../redux/actions/onboarding";
+import { clearAuthPending, register } from "../../../redux/actions/onboarding";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { isLoggedIn } from "axios-jwt";
 import { useNavigate } from "react-router-dom";
@@ -50,6 +50,7 @@ export default function EmailPassOnboardingStep({}) {
             name="onboarding-email-form"
             onFinish={isLastStep ? createUser : nextStep}
             labelCol={{ span: 8 }}
+            onFocus={() => dispatch(clearAuthPending())}
             wrapperCol={{ span: 16 }}
             onFinishFailed={() => {
                 console.log("Failed");

@@ -8,6 +8,7 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
     UPDATE_OWN_PROFILE,
+    CLEAR_AUTH_PENDING,
 } from "../actions/types";
 import { User } from "./commonTypes";
 
@@ -29,6 +30,13 @@ const initialState: AuthState = {
 
 export default (state = initialState, { type, payload }: AnyAction) => {
     switch (type) {
+        case CLEAR_AUTH_PENDING:
+            return {
+                ...state,
+                loginPending: false,
+                registerPending: false,
+                loginError: null,
+            };
         case LOGIN_PENDING:
             return {
                 ...state,

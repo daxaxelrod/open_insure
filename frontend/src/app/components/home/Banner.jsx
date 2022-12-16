@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Space, Row, Typography } from "antd";
 import { Element } from "rc-scroll-anim";
-import heroImage from "../../../assets/images/hero_open_insure.png";
+import heroImage from "../../../assets/images/home/hero_v2.jpeg";
 import { Link } from "react-router-dom";
 
 const { Title } = Typography;
@@ -75,9 +75,14 @@ class Banner extends React.PureComponent {
                         lg={{ span: 12, offset: 0 }}
                         md={{ span: 24, offset: 0 }}
                         sm={{ span: 24, offset: 0 }}
-                        style={{ marginTop: 20 }}
+                        style={{
+                            marginTop: 20,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
                     >
-                        <img width="100%" src={heroImage} alt="" />
+                        <img width="70%" height="70%" src={heroImage} alt="" />
                     </Col>
                 </Row>
             </Element>

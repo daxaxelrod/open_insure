@@ -2,7 +2,7 @@ import { Alert, Button, Col, Form, Input, Row } from "antd";
 import { getAccessToken, isLoggedIn } from "axios-jwt";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../../redux/actions/onboarding";
+import { clearAuthPending, login } from "../../../redux/actions/onboarding";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 export default function LoginForm() {
@@ -30,6 +30,7 @@ export default function LoginForm() {
             name="onboarding-email-form"
             onFinish={loginUser}
             labelCol={{ span: 8 }}
+            onFocus={() => dispatch(clearAuthPending())}
             wrapperCol={{ span: 16 }}
             onFinishFailed={() => {
                 console.log("Failed");

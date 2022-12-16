@@ -8,6 +8,7 @@ import {
     LOGIN_PENDING,
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
+    CLEAR_AUTH_PENDING,
 } from "../actions/types";
 import { RootState } from "../store";
 
@@ -42,3 +43,7 @@ export const login =
             dispatch({ type: LOGIN_FAILURE, payload: error.response.data });
         }
     };
+
+export const clearAuthPending = (): AnyAction => ({
+    type: CLEAR_AUTH_PENDING,
+});
