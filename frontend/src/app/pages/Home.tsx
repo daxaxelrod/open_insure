@@ -8,13 +8,15 @@ import Page2 from "../components/home/Page2";
 import Page3 from "../components/home/Page3";
 import Footer from "../components/home/Footer";
 import styled from "styled-components";
-import { Layout } from "antd";
+import { Grid, Layout } from "antd";
 
 export default function Home() {
+    const screens = Grid.useBreakpoint();
+    const isMobile = !screens.lg;
     return (
         <Layout>
             <Layout.Content>
-                <Banner key="banner" />
+                <Banner key="banner" isMobile={isMobile} />
                 {/* <Page1 key="page1" /> */}
                 <WhyDoSelfInsurance />
 

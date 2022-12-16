@@ -16,7 +16,7 @@ class Banner extends React.PureComponent {
         className: "banner",
     };
     render() {
-        const { className } = this.props;
+        const { className, isMobile } = this.props;
         return (
             <Element
                 component="section"
@@ -82,7 +82,12 @@ class Banner extends React.PureComponent {
                             alignItems: "center",
                         }}
                     >
-                        <img width="70%" height="70%" src={heroImage} alt="" />
+                        <img
+                            width={isMobile ? "100%" : "70%"}
+                            height={isMobile ? "100%" : "70%"}
+                            src={heroImage}
+                            alt=""
+                        />
                     </Col>
                 </Row>
             </Element>
