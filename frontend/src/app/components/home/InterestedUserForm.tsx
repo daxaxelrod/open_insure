@@ -58,7 +58,7 @@ export default function InterestedUserForm() {
                     ]}
                 >
                     <Input
-                        style={{ minWidth: 220 }}
+                        style={{ minWidth: 230 }}
                         placeholder="Edward@lloyds.com"
                     />
                 </Form.Item>

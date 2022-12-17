@@ -20,6 +20,8 @@ export default function AskForEmail() {
                 backgroundColor: "white",
                 paddingBottom: "5rem",
                 paddingTop: "3rem",
+                paddingLeft: "2rem",
+                paddingRight: "2rem",
             }}
         >
             <Row>

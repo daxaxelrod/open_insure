@@ -35,7 +35,8 @@ export default function Page2() {
                 <Col
                     lg={{ span: 12, offset: 6 }}
                     md={{ span: 20, offset: 2 }}
-                    sm={{ span: 22, offset: 1 }}
+                    sm={{ span: 20, offset: 2 }}
+                    xs={{ span: 20, offset: 2 }}
                 >
                     <Collapse>
                         {faqs.slice(0, 3).map((faq, index) => (
