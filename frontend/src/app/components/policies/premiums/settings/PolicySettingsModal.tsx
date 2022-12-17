@@ -18,6 +18,7 @@ import {
     SettingOutlined,
     ArrowUpOutlined,
     ArrowDownOutlined,
+    QuestionCircleOutlined,
 } from "@ant-design/icons";
 
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
@@ -350,34 +351,58 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                             marginBottom: "2rem",
                         }}
                     >
-                        <Col span={12}>
+                        <Col span={8}>
                             <Title level={4} style={{ margin: 0 }}>
                                 Set policy variables
                             </Title>
                         </Col>
-                        <Col span={12}>
+                        <Col span={16}>
                             <Row justify="end">
                                 <Paragraph
                                     style={{
                                         color: colors.gray7,
-                                        marginRight: ".5rem",
+
                                         marginBottom: 0,
                                         display: "flex",
                                         alignItems: "center",
                                     }}
                                 >
-                                    Presets:&nbsp;
+                                    Premium Presets:&nbsp;
                                 </Paragraph>
+                                <Tooltip
+                                    color="black"
+                                    placement="top"
+                                    title={() => (
+                                        <div style={{ padding: 10 }}>
+                                            Higher premiums mean your policy is
+                                            more likely to be able to cover all
+                                            expenses. Lower premiums, while
+                                            cheaper today, might leave you in a
+                                            position of not being able to pay
+                                            out all claims. Discuss this with
+                                            your policy members. It's very
+                                            important.
+                                        </div>
+                                    )}
+                                >
+                                    <QuestionCircleOutlined
+                                        style={{
+                                            color: colors.gray7,
+                                            marginLeft: 4,
+                                            marginRight: ".5rem",
+                                        }}
+                                    />
+                                </Tooltip>
                                 <Radio.Group
                                     options={[
-                                        { label: "Low Risk", value: "low" },
+                                        { label: "Low", value: "high" },
                                         {
                                             label: "Medium",
                                             value: "medium",
                                         },
                                         {
-                                            label: "High Risk",
-                                            value: "high",
+                                            label: "High",
+                                            value: "low",
                                         },
                                         { label: "Reset", value: "reset" },
                                     ]}

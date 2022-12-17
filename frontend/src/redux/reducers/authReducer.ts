@@ -50,10 +50,15 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 currentUser: payload,
             };
         case LOGIN_FAILURE:
+            console.log({ payload });
+
             return {
                 ...state,
                 loginPending: false,
-                loginError: { overall: payload.detail },
+                loginError: {
+                    overall:
+                        payload?.detail ?? "Something went wrong, try again",
+                },
             };
         case LOGOUT:
             return {

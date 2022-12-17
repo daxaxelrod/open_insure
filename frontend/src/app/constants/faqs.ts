@@ -10,9 +10,9 @@ export default [
         answer: "The money is managed by an elected member of your policy. This person is referred to as the Escrow Agent and is responsible for keeping track of premiums and paying the claims approved by the group.",
     },
     {
-        key: "shadyAsk",
-        question: "So how do you make money?",
-        answer: "We don't, this is a free service.",
+        key: "escrowLocationAsk",
+        question: "Where do I send my premiums?",
+        answer: "We using Venmo to send money to the escrow agent",
     },
     {
         key: "premiumAsk",
