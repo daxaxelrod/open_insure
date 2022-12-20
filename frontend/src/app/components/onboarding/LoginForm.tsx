@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Form, Input, Row } from "antd";
+import { Alert, Button, Col, Form, Input, Row, Grid } from "antd";
 import { getAccessToken, isLoggedIn } from "axios-jwt";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 export default function LoginForm() {
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const screens = Grid.useBreakpoint();
+    const isMobile = !screens.lg;
     const isLoginPending = useAppSelector((state) => state.auth.loginPending);
     const loginError = useAppSelector(
         (state) => state.auth.loginError?.overall
@@ -29,9 +31,23 @@ export default function LoginForm() {
             form={form}
             name="onboarding-email-form"
             onFinish={loginUser}
-            labelCol={{ span: 8 }}
+            labelCol={{
+                xs: { span: 4 },
+                sm: { span: 4 },
+                md: { span: 8 },
+                lg: { span: 8 },
+                xl: { span: 8 },
+                xxl: { span: 8 },
+            }}
             onFocus={() => dispatch(clearAuthPending())}
-            wrapperCol={{ span: 16 }}
+            wrapperCol={{
+                xs: { span: 20 },
+                sm: { span: 20 },
+                md: { span: 16 },
+                lg: { span: 16 },
+                xl: { span: 16 },
+                xxl: { span: 16 },
+            }}
             onFinishFailed={() => {
                 console.log("Failed");
             }}
@@ -61,8 +77,14 @@ export default function LoginForm() {
                 <Input.Password autoComplete="current-password" />
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Form.Item
+                wrapperCol={{
+                    offset: isMobile ? 4 : 8,
+                    span: isMobile ? 20 : 16,
+                }}
+            >
                 <Button
+                    block={isMobile ? true : false}
                     type="primary"
                     htmlType="submit"
                     loading={isLoginPending}

@@ -12,7 +12,7 @@ export default [
     {
         key: "escrowLocationAsk",
         question: "Where do I send my premiums?",
-        answer: "We using Venmo to send money to the escrow agent",
+        answer: "Use Venmo to send money to the escrow agent. You can use Open Insure to keep track of your payments, but please note that no actual money is exchanged on the platform.",
     },
     {
         key: "premiumAsk",

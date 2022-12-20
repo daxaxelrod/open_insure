@@ -28,15 +28,15 @@ export default function NavBar() {
                     </Title>
                 )}
 
-                <a href="/">
+                <Link to="/">
                     <Title level={4} style={{ margin: 0 }}>
                         Open Insure&nbsp;
                     </Title>
-                </a>
+                </Link>
                 {!loggedIn && (
-                    <a href={"/login"}>
+                    <Link to={"/login"}>
                         <Button type="link">Login</Button>
-                    </a>
+                    </Link>
                 )}
             </Row>
         </Header>

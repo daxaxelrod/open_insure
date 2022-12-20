@@ -40,8 +40,8 @@ root.render(
         <Provider store={store}>
             <PersistGate persistor={persistor}>
                 <Layout>
-                    <NavBar />
                     <BrowserRouter>
+                        <NavBar />
                         <Routes>
                             <Route path="/join" element={<Onboarding />} />
                             <Route path="/login" element={<Login />} />
