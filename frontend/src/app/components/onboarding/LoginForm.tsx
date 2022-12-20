@@ -94,8 +94,8 @@ export default function LoginForm() {
             </Form.Item>
 
             {loginError ? (
-                <Row>
-                    <Col xs={{ offset: 8, span: 16 }}>
+                <Row style={{ marginBottom: "2rem" }}>
+                    <Col xs={{ offset: 0, span: 24 }}>
                         <Alert message={loginError} type="error" />
                     </Col>
                 </Row>

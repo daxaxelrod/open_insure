@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Typography, Grid } from "antd";
 
 import { Wizard } from "react-use-wizard";
 import EmailPassOnboardingStep from "../components/onboarding/EmailPassOnboardingStep";
@@ -8,13 +8,30 @@ import EmailPassOnboardingStep from "../components/onboarding/EmailPassOnboardin
 const { Title, Paragraph } = Typography;
 
 export default function Onboarding() {
+    const screens = Grid.useBreakpoint();
+    const isMobile = !screens.lg;
     return (
         <div style={{ padding: 24 }}>
             <Row>
-                <Col span={4}>
-                    <Title level={2}>Register</Title>
+                <Col
+                    lg={{ span: 6 }}
+                    md={{ span: 24 }}
+                    sm={{ span: 24 }}
+                    xs={{ span: 24 }}
+                >
+                    <Title
+                        level={2}
+                        style={{ textAlign: isMobile ? "center" : "start" }}
+                    >
+                        Register
+                    </Title>
                 </Col>
-                <Col span={12}>
+                <Col
+                    lg={{ span: 10 }}
+                    md={{ span: 24 }}
+                    sm={{ span: 24 }}
+                    xs={{ span: 24 }}
+                >
                     <Wizard>
                         <EmailPassOnboardingStep />
                     </Wizard>

@@ -8,7 +8,7 @@ import {
     UserOutlined,
     SearchOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu } from "antd";
+import { Grid, Layout, Menu } from "antd";
 import "../../styles/dashboard/main.css";
 import { getAvailablePolicies } from "../../../redux/actions/policies";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
@@ -21,7 +21,9 @@ function getPageNameFromLocation(path: string) {
 
 export default function Home(props: any) {
     const navigate = useNavigate();
-    const [collapsed, setCollapsed] = useState(false);
+    const screens = Grid.useBreakpoint();
+    const isMobile = !screens.lg;
+    const [collapsed, setCollapsed] = useState(isMobile);
     const [pageTitle, setPageTitle] = useState("Find Policies");
     const pageNum = useAppSelector(
         (state) => state.policies.nextPublicPoliciesPage

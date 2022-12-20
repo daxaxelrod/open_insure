@@ -17,7 +17,12 @@ export default function PolicyCard({ policy }: { policy: Policy }) {
     let lowestPremiumInPolicy = determineLowestPremium(policyRisks);
 
     return (
-        <Col span={8}>
+        <Col
+            lg={{ span: 8 }}
+            md={{ span: 12 }}
+            sm={{ span: 24 }}
+            xs={{ span: 24 }}
+        >
             <div
                 style={{
                     paddingTop: 20,

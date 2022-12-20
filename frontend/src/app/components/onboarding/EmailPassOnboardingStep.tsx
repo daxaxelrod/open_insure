@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Alert, Button, Checkbox, Col, Form, Input, Row } from "antd";
+import { Alert, Button, Grid, Col, Form, Input, Row } from "antd";
 
 import { useWizard } from "react-use-wizard";
 import { clearAuthPending, register } from "../../../redux/actions/onboarding";
@@ -10,7 +10,8 @@ import { useNavigate } from "react-router-dom";
 export default function EmailPassOnboardingStep({}) {
     const { handleStep, nextStep, isLastStep } = useWizard();
     const dispatch = useAppDispatch();
-
+    const screens = Grid.useBreakpoint();
+    const isMobile = !screens.lg;
     const [form] = Form.useForm();
 
     handleStep(() => {
@@ -49,9 +50,23 @@ export default function EmailPassOnboardingStep({}) {
             form={form}
             name="onboarding-email-form"
             onFinish={isLastStep ? createUser : nextStep}
-            labelCol={{ span: 8 }}
+            labelCol={{
+                xs: { span: 4 },
+                sm: { span: 4 },
+                md: { span: 8 },
+                lg: { span: 8 },
+                xl: { span: 8 },
+                xxl: { span: 8 },
+            }}
             onFocus={() => dispatch(clearAuthPending())}
-            wrapperCol={{ span: 16 }}
+            wrapperCol={{
+                xs: { span: 20 },
+                sm: { span: 20 },
+                md: { span: 16 },
+                lg: { span: 16 },
+                xl: { span: 16 },
+                xxl: { span: 16 },
+            }}
             onFinishFailed={() => {
                 console.log("Failed");
             }}
@@ -104,8 +119,14 @@ export default function EmailPassOnboardingStep({}) {
                 <Input.Password autoComplete="current-password" />
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Form.Item
+                wrapperCol={{
+                    offset: isMobile ? 4 : 8,
+                    span: isMobile ? 20 : 16,
+                }}
+            >
                 <Button
+                    block={isMobile ? true : false}
                     type="primary"
                     htmlType="submit"
                     loading={isRegisterPending}
@@ -114,8 +135,8 @@ export default function EmailPassOnboardingStep({}) {
                 </Button>
             </Form.Item>
             {registerError ? (
-                <Row>
-                    <Col xs={{ offset: 8, span: 16 }}>
+                <Row style={{ marginBottom: "2rem" }}>
+                    <Col xs={{ offset: 0, span: 24 }}>
                         <Alert message={registerError} type="error" />
                     </Col>
                 </Row>
