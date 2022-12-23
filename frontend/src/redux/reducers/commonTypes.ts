@@ -1,10 +1,3 @@
-export interface PodMembership {
-    id: number;
-    risk_penalty: number;
-    is_user_friend_of_the_pod: boolean;
-    joined_at: string;
-}
-
 export interface User {
     id: number;
     first_name: string;
@@ -14,7 +7,6 @@ export interface User {
     created_at: string;
     updated_at: string;
     verified_email: boolean;
-    membership?: PodMembership; // optional, only returned when a user is nested in a pod
 }
 
 export interface Premium {
@@ -80,6 +72,15 @@ export interface Claim {
     comments: ClaimComment[];
 }
 
+export interface PodMembership {
+    id: number;
+    pod: number;
+    user: number;
+    risk_penalty: number;
+    is_user_friend_of_the_pod: boolean;
+    joined_at: string; // aka created_at
+}
+
 export interface Pod {
     id: number;
     name: string;
@@ -89,6 +90,7 @@ export interface Pod {
     updated_at: string;
     creator: number;
     members: User[];
+    memberships: PodMembership[];
     max_pod_size: number;
     allow_joiners_after_policy_start: boolean;
 }

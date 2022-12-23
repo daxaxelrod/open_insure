@@ -13,6 +13,7 @@ import {
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
+    PodMembership,
     Policy,
     Premium,
     Risk,
@@ -166,14 +167,17 @@ export default function PolicyPremiums() {
                             (user: User) =>
                                 user.id === userSpecificInfo?.marked_paid_by
                         );
-                        let userData = policy?.pod?.members?.find(
-                            (member: User) => member.id === user.id
+                        let userMembership = policy?.pod?.memberships?.find(
+                            (membership: PodMembership) => {
+                                return membership.user === user.id;
+                            }
                         );
-                        let userMembership = userData?.membership;
 
-                        let isPremiumDueBeforeJoining = moment(
-                            userMembership?.created_at
-                        ).isAfter(moment(record.dueDate));
+                        let isPremiumDueBeforeJoining = userMembership
+                            ? moment(userMembership?.joined_at).isAfter(
+                                  moment(record.dueDate)
+                              )
+                            : false;
 
                         let isPending = userSpecificInfo?.pending;
 
@@ -189,43 +193,51 @@ export default function PolicyPremiums() {
                                     okText="Yes"
                                     cancelText="No"
                                 >
-                                    <Checkbox
-                                        onChange={(e: CheckboxChangeEvent) =>
-                                            togglePremiumPaid(
-                                                e.target.checked,
-                                                userSpecificInfo?.premiumId
-                                            )
-                                        }
-                                        checked={userSpecificInfo?.paid}
-                                    >
-                                        {isPremiumDueBeforeJoining ? (
-                                            "-"
-                                        ) : userSpecificInfo?.paid ? (
-                                            <Tooltip
-                                                trigger={"hover"}
-                                                title={`Marked Paid by ${
-                                                    accountingUser?.first_name
-                                                        ? `${accountingUser?.first_name} ${accountingUser?.last_name}`
-                                                        : "an admin user, don't know who"
-                                                } on ${moment(
-                                                    userSpecificInfo?.paid_date
-                                                ).format("MMMM Do, YYYY")}`}
-                                                color="black"
-                                            >
-                                                <span className="premium-paid-link-tooltip-text">
-                                                    Paid
+                                    {isPremiumDueBeforeJoining ? (
+                                        <span style={{ color: colors.gray6 }}>
+                                            User joined late
+                                        </span>
+                                    ) : (
+                                        <Checkbox
+                                            onChange={(
+                                                e: CheckboxChangeEvent
+                                            ) =>
+                                                togglePremiumPaid(
+                                                    e.target.checked,
+                                                    userSpecificInfo?.premiumId
+                                                )
+                                            }
+                                            checked={userSpecificInfo?.paid}
+                                        >
+                                            {userSpecificInfo?.paid ? (
+                                                <Tooltip
+                                                    trigger={"hover"}
+                                                    title={`Marked Paid by ${
+                                                        accountingUser?.first_name
+                                                            ? `${accountingUser?.first_name} ${accountingUser?.last_name}`
+                                                            : "an admin user, don't know who"
+                                                    } on ${moment(
+                                                        userSpecificInfo?.paid_date
+                                                    ).format("MMMM Do, YYYY")}`}
+                                                    color="black"
+                                                >
+                                                    <span className="premium-paid-link-tooltip-text">
+                                                        Paid
+                                                    </span>
+                                                </Tooltip>
+                                            ) : isPremiumPastDue ? (
+                                                <span
+                                                    style={{
+                                                        color: colors.alert1,
+                                                    }}
+                                                >
+                                                    Overdue
                                                 </span>
-                                            </Tooltip>
-                                        ) : isPremiumPastDue ? (
-                                            <span
-                                                style={{ color: colors.alert1 }}
-                                            >
-                                                Overdue
-                                            </span>
-                                        ) : (
-                                            "Not paid"
-                                        )}
-                                    </Checkbox>
+                                            ) : (
+                                                "Not paid"
+                                            )}
+                                        </Checkbox>
+                                    )}
                                 </Popconfirm>
                             )
                         ) : null;

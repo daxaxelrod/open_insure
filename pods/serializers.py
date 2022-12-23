@@ -7,7 +7,8 @@ from rest_framework.serializers import (
     Serializer,
     EmailField,
     ImageField,
-    SerializerMethodField,
+    # SerializerMethodField,
+    DateTimeField
 )
 from pods.models import Pod, User, UserPod
 
@@ -15,24 +16,19 @@ from pods.utils.custom_serializers import FieldExcludableModelSerializer
 
 
 class PodMembershipSerializer(ModelSerializer):
-    joined_at = SerializerMethodField(source='created_at')
+    joined_at = DateTimeField(source='created_at')
 
     class Meta:
         model = UserPod
         fields = [
             "id",
+            "pod",
+            "user",
             "risk_penalty",
             "is_user_friend_of_the_pod",
             "joined_at", # alias for created_at
         ]
 class PublicMemberSerializer(ModelSerializer):
-    membership = SerializerMethodField()
-
-    # UserPod.objects.get(pod=policy.pod, user=risk.user):
-    def get_membership(self, user: User):
-        parent = self.parent.object
-        qset = UserPod.objects.filter(user=user, pod=parent)
-        return PodMembershipSerializer(qset).data
 
     class Meta:
         model = User
@@ -45,12 +41,12 @@ class PublicMemberSerializer(ModelSerializer):
             "updated_at",
             "picture",
             "verified_email",
-            "membership"
         ]
 
 
 class PodSerializer(FieldExcludableModelSerializer):
     members = PublicMemberSerializer(many=True, read_only=True)
+    memberships = PodMembershipSerializer(source='userpod_set', many=True, read_only=True)
 
 
     def create(self, validated_data):
