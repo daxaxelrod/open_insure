@@ -161,10 +161,20 @@ export default function PolicyPremiums() {
                         let isPremiumPastDue = moment().isAfter(
                             moment(record.dueDate)
                         );
+
                         let accountingUser = policy?.pod?.members?.find(
                             (user: User) =>
                                 user.id === userSpecificInfo?.marked_paid_by
                         );
+                        let userData = policy?.pod?.members?.find(
+                            (member: User) => member.id === user.id
+                        );
+                        let userMembership = userData?.membership;
+
+                        let isPremiumDueBeforeJoining = moment(
+                            userMembership?.created_at
+                        ).isAfter(moment(record.dueDate));
+
                         let isPending = userSpecificInfo?.pending;
 
                         return userSpecificInfo ? (
@@ -188,7 +198,9 @@ export default function PolicyPremiums() {
                                         }
                                         checked={userSpecificInfo?.paid}
                                     >
-                                        {userSpecificInfo?.paid ? (
+                                        {isPremiumDueBeforeJoining ? (
+                                            "-"
+                                        ) : userSpecificInfo?.paid ? (
                                             <Tooltip
                                                 trigger={"hover"}
                                                 title={`Marked Paid by ${
