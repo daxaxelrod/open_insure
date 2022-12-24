@@ -41,7 +41,7 @@ class Banner extends React.PureComponent {
                                 fontSize: "2.75rem",
                             }}
                         >
-                            A free self-insurance platform
+                            Power to the policy holder.
                         </Title>
                         <p
                             className="main-info"

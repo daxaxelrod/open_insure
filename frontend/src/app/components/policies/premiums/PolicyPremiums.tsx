@@ -194,9 +194,9 @@ export default function PolicyPremiums() {
                                     cancelText="No"
                                 >
                                     {isPremiumDueBeforeJoining ? (
-                                        <span style={{ color: colors.gray6 }}>
-                                            User joined late
-                                        </span>
+                                        <span
+                                            style={{ color: colors.gray6 }}
+                                        ></span>
                                     ) : (
                                         <Checkbox
                                             onChange={(

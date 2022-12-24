@@ -45,11 +45,9 @@ export default function WhyDoSelfInsurance() {
                 </Col>
                 <Col md={{ span: 20, offset: 4 }} lg={{ span: 7, offset: 1 }}>
                     <StyledParagraph>
-                        Self-insurance is a way of protecting yourself or your
-                        things without using an insurance company. Instead of
-                        paying someone else to help you if something bad
-                        happens, you save up your own money to use in case of an
-                        claim.
+                        With localized insurance, your money stays between you
+                        and your policy group. When your policy expires, get
+                        your unused premiums back.
                     </StyledParagraph>
                 </Col>
             </Row>
