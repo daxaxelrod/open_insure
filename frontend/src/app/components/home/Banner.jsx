@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Space, Row, Typography } from "antd";
 import { Element } from "rc-scroll-anim";
-import heroImage from "../../../assets/images/home/hero_v2.jpeg";
+import heroImage from "../../../assets/images/home/hero_v2.png";
 import { Link } from "react-router-dom";
 
 const { Title } = Typography;
@@ -16,7 +16,7 @@ class Banner extends React.PureComponent {
         className: "banner",
     };
     render() {
-        const { className, isMobile } = this.props;
+        const { className, isMobile, isSmall, isXSmall } = this.props;
         return (
             <Element
                 component="section"
@@ -26,8 +26,8 @@ class Banner extends React.PureComponent {
                     <Col
                         xl={{ span: 8, offset: 4 }}
                         lg={{ span: 8, offset: 3 }}
-                        md={{ span: 16, offset: 4 }}
-                        sm={{ span: 16, offset: 4 }}
+                        md={{ span: 18, offset: 4 }}
+                        sm={{ span: 18, offset: 4 }}
                         className={`${className}-text-wrapper`}
                         delay={300}
                         style={{
@@ -80,11 +80,20 @@ class Banner extends React.PureComponent {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
+                            ...(!isMobile
+                                ? { transform: "translateX(30%)" }
+                                : isSmall
+                                ? {
+                                      transform: "translateX(2%)",
+                                  }
+                                : isXSmall
+                                ? { transform: "translateX(-2%)" }
+                                : {}),
                         }}
                     >
                         <img
-                            width={isMobile ? "100%" : "70%"}
-                            height={isMobile ? "100%" : "70%"}
+                            width={isMobile ? "95%" : "180%"}
+                            height={isMobile ? "90%" : "180%"}
                             src={heroImage}
                             alt=""
                         />

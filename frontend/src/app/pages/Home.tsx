@@ -16,7 +16,12 @@ export default function Home() {
     return (
         <Layout>
             <Layout.Content>
-                <Banner key="banner" isMobile={isMobile} />
+                <Banner
+                    key="banner"
+                    isMobile={isMobile}
+                    isSmall={screens.sm}
+                    isXSmall={screens.xs}
+                />
                 {/* <Page1 key="page1" /> */}
                 <WhyDoSelfInsurance />
 
