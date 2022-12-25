@@ -16,7 +16,7 @@ class PoliciesConfig(AppConfig):
         from policies.risk.email_scheduler import schedule_email_premium_notification_emails
 
         # setup scheduler
-        if os.environ.get("RUN_MAIN") and settings.IS_MAIN_SCHEDULER:
+        if settings.IS_MAIN_SCHEDULER:
             from open_insure.scheduler import create_scheduler
 
             scheduler = create_scheduler()

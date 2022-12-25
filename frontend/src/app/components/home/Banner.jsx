@@ -81,7 +81,10 @@ class Banner extends React.PureComponent {
                             justifyContent: "center",
                             alignItems: "center",
                             ...(!isMobile
-                                ? { transform: "translateX(30%)" }
+                                ? {
+                                      transform: "translateX(30%)",
+                                      marginBottom: "1.5rem",
+                                  }
                                 : isSmall
                                 ? {
                                       transform: "translateX(2%)",
