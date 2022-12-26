@@ -110,7 +110,7 @@ def send_unpaid_premium_should_have_been_marked_paid(premium: Premium):
     
     premium_due = premium.amount / 100
 
-    print(premium.due_date)
+    logger.info(premium.due_date)
 
     html_message = render_to_string(
             "premiums/unpaid_premium_past_due_and_not_marked_paid.html",
