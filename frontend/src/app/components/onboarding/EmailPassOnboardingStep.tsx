@@ -11,7 +11,8 @@ export default function EmailPassOnboardingStep({}) {
     const { handleStep, nextStep, isLastStep } = useWizard();
     const dispatch = useAppDispatch();
     const screens = Grid.useBreakpoint();
-    const isMobile = !screens.lg;
+    const isMobile = !screens.md;
+    const isMediumOrSmaller = !screens.lg;
     const [form] = Form.useForm();
 
     handleStep(() => {
@@ -51,18 +52,18 @@ export default function EmailPassOnboardingStep({}) {
             name="onboarding-email-form"
             onFinish={isLastStep ? createUser : nextStep}
             labelCol={{
-                xs: { span: 4 },
-                sm: { span: 4 },
-                md: { span: 8 },
+                xs: { span: 0 },
+                sm: { span: 0 },
+                md: { span: 4 },
                 lg: { span: 8 },
                 xl: { span: 8 },
                 xxl: { span: 8 },
             }}
             onFocus={() => dispatch(clearAuthPending())}
             wrapperCol={{
-                xs: { span: 20 },
-                sm: { span: 20 },
-                md: { span: 16 },
+                xs: { span: 24 },
+                sm: { span: 24 },
+                md: { span: 20 },
                 lg: { span: 16 },
                 xl: { span: 16 },
                 xxl: { span: 16 },
@@ -71,7 +72,10 @@ export default function EmailPassOnboardingStep({}) {
                 console.log("Failed");
             }}
         >
-            <Form.Item label="Full Name" style={{ marginBottom: 0 }}>
+            <Form.Item
+                label={isMobile ? null : "Full Name"}
+                style={{ marginBottom: 0 }}
+            >
                 <Form.Item
                     name="firstName"
                     rules={[{ required: true, message: "First name required" }]}
@@ -96,7 +100,7 @@ export default function EmailPassOnboardingStep({}) {
             </Form.Item>
 
             <Form.Item
-                label="Email"
+                label={isMobile ? null : "Email"}
                 name="email"
                 rules={[
                     {
@@ -110,7 +114,7 @@ export default function EmailPassOnboardingStep({}) {
             </Form.Item>
 
             <Form.Item
-                label="Password"
+                label={isMobile ? null : "Password"}
                 name="password"
                 rules={[
                     { required: true, message: "Please input your password!" },
@@ -121,12 +125,12 @@ export default function EmailPassOnboardingStep({}) {
 
             <Form.Item
                 wrapperCol={{
-                    offset: isMobile ? 4 : 8,
-                    span: isMobile ? 20 : 16,
+                    offset: isMediumOrSmaller ? 0 : 8,
+                    span: isMediumOrSmaller ? 24 : 16,
                 }}
             >
                 <Button
-                    block={isMobile ? true : false}
+                    block={isMediumOrSmaller ? true : false}
                     type="primary"
                     htmlType="submit"
                     loading={isRegisterPending}

@@ -32,8 +32,8 @@ export default function LoginForm() {
             name="onboarding-email-form"
             onFinish={loginUser}
             labelCol={{
-                xs: { span: 4 },
-                sm: { span: 4 },
+                xs: { span: 0 },
+                sm: { span: 0 },
                 md: { span: 8 },
                 lg: { span: 8 },
                 xl: { span: 8 },
@@ -41,8 +41,8 @@ export default function LoginForm() {
             }}
             onFocus={() => dispatch(clearAuthPending())}
             wrapperCol={{
-                xs: { span: 20 },
-                sm: { span: 20 },
+                xs: { span: 24 },
+                sm: { span: 24 },
                 md: { span: 16 },
                 lg: { span: 16 },
                 xl: { span: 16 },
@@ -54,7 +54,7 @@ export default function LoginForm() {
             autoComplete="on"
         >
             <Form.Item
-                label="Email"
+                label={isMobile ? null : "Email"}
                 name="email"
                 rules={[
                     {
@@ -68,7 +68,7 @@ export default function LoginForm() {
             </Form.Item>
 
             <Form.Item
-                label="Password"
+                label={isMobile ? null : "Password"}
                 name="password"
                 rules={[
                     { required: true, message: "Please input your password!" },
