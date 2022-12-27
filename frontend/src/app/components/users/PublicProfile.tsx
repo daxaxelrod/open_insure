@@ -2,22 +2,31 @@ import React from "react";
 import { useParams } from "react-router-dom";
 // import { useAppSelector } from "../../../redux/hooks";
 import { Col, Row, Typography } from "antd";
+import { useAppSelector } from "../../../redux/hooks";
+import UserLargeImage from "./profile/UserLargeImage";
+import UserHeader from "./profile/UserHeader";
+import UserOpenInsureRating from "./profile/UserOpenInsureRating";
 
 const { Title, Paragraph } = Typography;
 
 export default function PublicProfile({}) {
     let { id } = useParams();
+    const userId = parseInt(id || "");
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
+    const user = useAppSelector((state) => state.users.users[userId]);
+    let isSelf = currentUser.id === userId;
 
     return (
         <>
             <Row align="middle">
-                <Col span={12}>
-                    User image
-                    <Title>Public Profile for user {id}</Title>
+                <Col span={4}>
+                    <UserLargeImage user={user} editable={isSelf} />
                 </Col>
-                <Col>
-                    user credit score
-                    <Title level={3}>99% trustworthy</Title>
+                <Col span={8}>
+                    <UserHeader user={user} />
+                </Col>
+                <Col span={8}>
+                    <UserOpenInsureRating user={user} />
                 </Col>
             </Row>
             <Row>

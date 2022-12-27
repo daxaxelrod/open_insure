@@ -71,10 +71,6 @@ export default function EscrowPoolChart({}) {
             return acc;
         }, {});
 
-    const options = {};
-
-    console.log({ paidPolicyClaims });
-
     const paidPremiumsPerMonth = Object.keys(premiumsBinnedByDueDate)
         // .filter((date: string) => {
         //     // filter out premiums later than now

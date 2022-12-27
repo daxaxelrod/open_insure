@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Col, Row, Space, Tabs, Typography } from "antd";
+import { Col, Grid, Row, Space, Tabs, Typography } from "antd";
 import { Policy, User } from "../../../redux/reducers/commonTypes";
 
 import moment from "moment-timezone";
@@ -28,13 +28,16 @@ const { Title } = Typography;
 
 export default function PolicyDetails() {
     let { id } = useParams();
-
+    let screens = Grid.useBreakpoint();
+    const [isMobileWarningModalVisible, setisMobileWarningModalVisible] =
+        useState(screens.md);
     let dispatch = useAppDispatch();
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
             (p: Policy) => p.id === parseInt(id || "")
         )
     );
+
     const policyDetailTabIndex = useAppSelector(
         (state) => state.ui.policyDetailTabKey
     );
@@ -65,8 +68,6 @@ export default function PolicyDetails() {
 
     let memberHasFilledOutRisk =
         currentUser?.id !== undefined && focusedRisk?.premium_amount;
-
-    console.log({ currentUser });
 
     const PolicyDetailCol = Col;
     return (
@@ -166,6 +167,10 @@ export default function PolicyDetails() {
                     </Row>
                 </Tabs.TabPane>
             </Tabs>
+            <MobileResponsiveWarningModal
+                visible={isMobileWarningModalVisible}
+                setVisible={setisMobileWarningModalVisible}
+            />
         </div>
     );
 }
