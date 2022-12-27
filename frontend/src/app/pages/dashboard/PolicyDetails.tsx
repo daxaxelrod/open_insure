@@ -23,14 +23,17 @@ import PolicyPremiums from "../../components/policies/premiums/PolicyPremiums";
 import "../../styles/dashboard/PolicyDetails.css";
 import PolicyClaimsList from "../../components/policies/claims/list/PolicyClaimsList";
 import { setPolicyDetailTabKey } from "../../../redux/actions/ui";
+import MobileResponsiveWarningModal from "../../components/policies/utils/MobileResponsiveWarningModal";
+import useWindowSize from "../../components/hooks/useWindowSize";
 
 const { Title } = Typography;
 
 export default function PolicyDetails() {
     let { id } = useParams();
-    let screens = Grid.useBreakpoint();
+    let size = useWindowSize();
     const [isMobileWarningModalVisible, setisMobileWarningModalVisible] =
-        useState(screens.md);
+        useState(false);
+
     let dispatch = useAppDispatch();
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
@@ -56,6 +59,17 @@ export default function PolicyDetails() {
             dispatch(getOrCreateRisk(policy?.id, {}));
         }
     }, [policy, focusedRisk]);
+
+    useEffect(() => {
+        if (
+            size.width !== undefined &&
+            size.width < 768 &&
+            !isMobileWarningModalVisible
+        ) {
+            console.log("showing modal", size);
+            setisMobileWarningModalVisible(true);
+        }
+    }, [size, setisMobileWarningModalVisible]);
 
     if (!policy) {
         return <PolicyDetailSkeleton />;
