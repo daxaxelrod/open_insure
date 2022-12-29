@@ -33,7 +33,7 @@ def send_notification_of_new_claim_vote(claim: Claim, pod_members_except_claiman
                 },
             )
             plain_message = strip_tags(html_message)
-            from_email = "Open Insure <noreply@openinsure.io>"
+            from_email = "Open Insure <noreply@openinsure.app>"
             to = member.email
             subject = f"Action Required: New claim against {policy.name}!"
 

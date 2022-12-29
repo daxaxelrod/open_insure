@@ -357,7 +357,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                             </Title>
                         </Col>
                         <Col span={16}>
-                            <Row justify="end">
+                            <Row justify="end" align={"middle"}>
                                 <Paragraph
                                     style={{
                                         color: colors.gray7,
@@ -387,6 +387,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                                 >
                                     <QuestionCircleOutlined
                                         style={{
+                                            display: "flex",
                                             color: colors.gray7,
                                             marginLeft: 4,
                                             marginRight: ".5rem",

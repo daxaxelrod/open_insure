@@ -28,7 +28,7 @@ def send_risk_update_email(user: User, policy: Policy, changer: User, old_risk: 
             },
         )
         plain_message = strip_tags(html_message)
-        from_email = "Open Insure <noreply@openinsure.io>"
+        from_email = "Open Insure <noreply@openinsure.app>"
         to = user.email
         subject = f"{changer.first_name} made changes to {policy.name}!"
 
@@ -82,7 +82,7 @@ def send_unpaid_premium_due_soon(premium: Premium):
             },
     )
     plain_message = strip_tags(html_message)
-    from_email = "Open Insure <noreply@openinsure.io>"
+    from_email = "Open Insure <noreply@openinsure.app>"
     to = user.email
     subject = f"${premium_due} is due today!"
     
@@ -124,7 +124,7 @@ def send_unpaid_premium_should_have_been_marked_paid(premium: Premium):
     )
 
     plain_message = strip_tags(html_message)
-    from_email = "Open Insure <noreply@openinsure.io>"
+    from_email = "Open Insure <noreply@openinsure.app>"
     to = user.email
     subject = f"You risk losing coverage"
 

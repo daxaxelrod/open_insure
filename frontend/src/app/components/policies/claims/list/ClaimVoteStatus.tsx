@@ -60,7 +60,7 @@ export default function ClaimVoteStatus({
             }}
         >
             <Progress
-                percent={percent}
+                percent={parseFloat(percent.toFixed(0))}
                 strokeWidth={strokeWidth}
                 status={
                     percent >= policy.claim_approval_threshold_percentage

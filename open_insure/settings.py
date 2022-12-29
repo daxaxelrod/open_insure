@@ -24,6 +24,7 @@ env = environ.Env(
     PG_USER=(str, "postgres"),
     PG_PASSWORD=(str, "postgres"),
     PG_DBNAME=(str, "open_insure"),
+    NOTIFY_ADMINS_OF_EVENTS=(bool, False),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -219,6 +220,10 @@ FRONTEND_URL = env("FRONTEND_URL")
 LOG_DIR = os.path.join(BASE_DIR, 'logs')
 LOG_FILE = '/api.log'
 LOG_PATH = LOG_DIR + LOG_FILE
+
+# send admins an email when important events happen
+NOTIFY_ADMINS_OF_EVENTS = env('NOTIFY_ADMINS_OF_EVENTS')
+DEFAULT_FROM_EMAIL = "Open Insure <noreply@openinsure.app>" # todo, env-ify
 
 LOGGING = {
     'version': 1,

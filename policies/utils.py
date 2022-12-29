@@ -10,6 +10,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
+from open_insure.admin.emails import send_notif_email_to_admins
+
 uuid_regex = "[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}"
 hash_regex = "[0-9a-f]{64}"
 
@@ -61,7 +63,7 @@ def send_user_welcome_email(user: User, policy: Policy):
             },
         )
         plain_message = strip_tags(html_message)
-        from_email = "Open Insure <noreply@openinsure.io>"
+        from_email = "Open Insure <noreply@openinsure.app>"
         to = user.email
         subject = f"Welcome to {policy.name}!"
 
@@ -75,5 +77,9 @@ def send_user_welcome_email(user: User, policy: Policy):
         message.attach_alternative(html_message, "text/html")
 
         message.send()
+
+        if settings.NOTIFY_ADMINS_OF_EVENTS:
+            send_notif_email_to_admins(title="new user joined policy", description=f"User {user.email} joined {policy.name}!")
+
     except Exception as e:
         logger.warning(f"Failed to send welcome email to {user.email}: {e}")

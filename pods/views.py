@@ -16,6 +16,7 @@ from pods.serializers import InviteSerializer, PodSerializer, UserSerializer, Pa
 from policies.premiums import remove_future_premiums
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.mail import EmailMultiAlternatives
+from open_insure.admin.emails import send_notif_email_to_admins
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -83,7 +84,7 @@ class PodViewSet(ModelViewSet):
             },
         )
         plain_message = strip_tags(html_message)
-        from_email = "Open Insure <noreply@openinsure.io>"
+        from_email = "Open Insure <noreply@openinsure.app>"
         to = invite_serializer.validated_data["email"]
 
         message = EmailMultiAlternatives(
@@ -113,6 +114,8 @@ class UserViewSet(ModelViewSet):
         refresh = RefreshToken.for_user(user)
         response.data["refresh"] = str(refresh)
         response.data["access"] = str(refresh.access_token)
+        if settings.NOTIFY_ADMINS_OF_EVENTS:
+            send_notif_email_to_admins(title="New User", description=f"email: {user.email}, id: {user.id} Just signed up! You should welcome them")
         return response
 
     def perform_create(self, serializer):
@@ -140,6 +143,8 @@ class WaitlistView(APIView):
         serializer = InviteSerializer(data=request.data)
         if serializer.is_valid():
             WaitlistMember.objects.create(email=serializer.validated_data["email"])
+            if settings.NOTIFY_ADMINS_OF_EVENTS:
+                send_notif_email_to_admins(title="New waitlist member", description=f"{serializer.validated_data['email']} joined the waitlist! Go say hello")
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
