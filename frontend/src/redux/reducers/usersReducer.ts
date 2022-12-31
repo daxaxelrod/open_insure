@@ -1,16 +1,20 @@
 import { AnyAction } from "@reduxjs/toolkit";
 import {
     GET_AVAILABLE_POLICIES_SUCCESS,
-    SET_POLICY_DETAIL_TAB_KEY,
+    GET_USER_DETAIL_PENDING,
+    GET_USER_DETAIL_SUCCESS,
+    GET_USER_DETAIL_FAILURE,
 } from "../actions/types";
 import { User, Policy } from "./commonTypes";
 
 export interface UIState {
+    getUserDetailPending: boolean;
     users: Record<number, User>;
 }
 
 const initialState: UIState = {
     users: {},
+    getUserDetailPending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
@@ -29,6 +33,25 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                             return acc;
                         }, {}),
                 },
+            };
+        case GET_USER_DETAIL_PENDING:
+            return {
+                ...state,
+                getUserDetailPending: true,
+            };
+        case GET_USER_DETAIL_SUCCESS:
+            return {
+                ...state,
+                getUserDetailPending: false,
+                users: {
+                    ...state.users,
+                    [payload.id]: payload,
+                },
+            };
+        case GET_USER_DETAIL_FAILURE:
+            return {
+                ...state,
+                getUserDetailPending: false,
             };
 
         default:
