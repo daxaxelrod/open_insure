@@ -39,7 +39,6 @@ export const getRisksForPolicy =
                     risks: response.data,
                 },
             });
-            dispatch({ type: CLEAR_FOCUSED_RISK });
         } catch (error) {
             dispatch({ type: GET_RISK_FOR_POLICY_FAILURE, payload: error });
         }

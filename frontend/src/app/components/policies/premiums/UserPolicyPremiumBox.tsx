@@ -17,7 +17,9 @@ export default function UserPolicyPremiumBox({
     policy: Policy;
     openRiskDrawer: () => void;
 }) {
-    const riskPending = useAppSelector((state) => state.risk.getRisksPending);
+    const focusedRiskPending = useAppSelector(
+        (state) => state.risk.modifyRiskPending
+    );
 
     return (
         <Card
@@ -31,7 +33,7 @@ export default function UserPolicyPremiumBox({
             }}
             bordered={false}
         >
-            {riskPending ? (
+            {focusedRiskPending ? (
                 <Skeleton />
             ) : isMember && memberHasFilledOutRisk ? (
                 <UserMainPremiumObligation policy={policy} />
