@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 // import { useAppSelector } from "../../../redux/hooks";
 import { Col, Row, Typography } from "antd";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import UserLargeImage from "./profile/UserLargeImage";
 import UserHeader from "./profile/UserHeader";
 import UserOpenInsureRating from "./profile/UserOpenInsureRating";
+import { getDetailedUserProfile } from "../../../redux/actions/users";
 
 const { Title, Paragraph } = Typography;
 
@@ -14,7 +15,14 @@ export default function PublicProfile({}) {
     const userId = parseInt(id || "");
     const currentUser = useAppSelector((state) => state.auth.currentUser);
     const user = useAppSelector((state) => state.users.users[userId]);
+    const dispatch = useAppDispatch();
     let isSelf = currentUser.id === userId;
+
+    useEffect(() => {
+        if (user === undefined) {
+            dispatch(getDetailedUserProfile(userId));
+        }
+    }, [userId]);
 
     return (
         <>

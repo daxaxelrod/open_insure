@@ -36,6 +36,7 @@ import PremiumFormulaDisplay from "./PremiumFormulaDisplay";
 import SlidablePolicyRiskSetting from "./SlidablePolicyRiskSetting";
 import { computeHypotheticalPremiums } from "../../../../../networking/risk";
 import { get_icon_for_insured_asset_type } from "../../quotes/RisksTable";
+import PolicyDangerZone from "./PolicyDangerZone";
 
 const { Title, Paragraph } = Typography;
 
@@ -310,7 +311,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
     return (
         <Row justify="end" align="middle">
             <Modal
-                title="Policy Premiums Settings"
+                title="Policy Settings"
                 okText="Update"
                 cancelText={"Close"}
                 visible={visible}
@@ -509,6 +510,7 @@ export default function PolicySettingsModal({ policy }: { policy: Policy }) {
                     columns={columns}
                     pagination={{ hideOnSinglePage: true }}
                 />
+                <PolicyDangerZone policy={policy} />
             </Modal>
 
             <Button type="default" onClick={() => setVisible(true)}>
