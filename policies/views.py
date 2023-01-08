@@ -118,6 +118,17 @@ class PolicyViewSet(ModelViewSet):
             status=HTTP_201_CREATED,
         )
 
+    @action(detail=True, methods=["POST"], permission_classes=[IsAuthenticated])
+    def extend(self, request, pk=None):
+        policy = self.get_object()
+        if not policy.is_policy_active():
+            return Response(
+                {"message": "Policy is not active"}, status=HTTP_403_FORBIDDEN
+            )
+        policy.end_date = policy.end_date + timezone.timedelta(days=365)
+        policy.save()
+        return Response(FullPolicySerializer(policy).data, status=HTTP_200_OK)
+
 
 class PremiumViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Premium.objects.all()
