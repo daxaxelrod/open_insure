@@ -69,6 +69,7 @@ class UserPod(models.Model):
     )  # is the user trusted by the rest of the POD? IE are they friends with the other members
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    left_at = models.DateTimeField(null=True, blank=True) # when the user left the pod/policy
 
 
 class PodInvite(models.Model):

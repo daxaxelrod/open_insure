@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "pods",
     "policies",
+    "elections",
 ]
 IS_MAIN_SCHEDULER = env("IS_MAIN_SCHEDULER")
 if IS_MAIN_SCHEDULER:

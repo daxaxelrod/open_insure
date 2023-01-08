@@ -17,6 +17,7 @@ from policies.model_choices import (
 )
 from policies.risk.models import *
 from policies.perils.models import *
+from elections.models import Election
 
 
 
@@ -251,6 +252,12 @@ class PolicyCloseout(models.Model):
     premiums_returned_amount = models.IntegerField(
         validators=[MinValueValidator(1)], help_text="in cents"
     )  # or satoshis I guess
+
+class Renewal(models.Model):
+    policy = models.OneToOneField(
+        Policy, related_name="renewals", on_delete=models.CASCADE
+    )
+    election = models.ForeignKey(Election, on_delete=models.CASCADE, related_name="renewals")
 
 
 class Claim(models.Model):
