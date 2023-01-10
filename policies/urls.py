@@ -23,6 +23,8 @@ from policies.claims.views import (
     ClaimCommentsViewSet
 )
 
+from policies.renewals.views import RenewalModelViewSet
+
 router = routers.DefaultRouter()
 
 router.register(r"policies", PolicyViewSet)
@@ -32,6 +34,7 @@ policy_nested_router = routers.NestedSimpleRouter(router, r"policies", lookup="p
 policy_nested_router.register(r"risk", PolicyRiskViewSet, basename="policy-risks")
 policy_nested_router.register(r"premiums", PolicyPremiumViewSet, basename="policy-premium")
 policy_nested_router.register(r"claims", ClaimViewSet, basename="policy-claims")
+policy_nested_router.register(r"renewals", RenewalModelViewSet, basename="policy-renewals")
 
 # unsure if i can nest a router in an already nested router, to test
 # if so then refactor, would be cleaner that way

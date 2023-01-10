@@ -85,7 +85,7 @@ class PolicyViewSet(ModelViewSet):
                     }
                 )
 
-    @action(detail=True, methods=["POST"])
+    @action(detail=True, methods=["POST"], permission_classes=[IsAuthenticated])
     def join(self, request, pk=None):
         # there should be gaurdrails for a new user to join
         # namely based the risk that this user personally carries

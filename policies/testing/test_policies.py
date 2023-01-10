@@ -240,7 +240,19 @@ class PolicyTestCase(TestCase):
 
         # make sure the election is created
         # make sure the policy end date gets pushed back
-        self.assertTrue(False)
+        _, policy = create_test_policy(self.pod)
+        response = client.post(
+            f"/api/v1/policies/{policy.id}/renewals/",
+            data={
+                "date_extension": timezone.now() + timezone.timedelta(days=30),
+            },
+            content_type="application/json",
+        )
+        
+        response_json = response.json()
+
+        self.assertEquals(response.status_code, HTTP_201_CREATED)
+        self.assertEquals(response_json["election"], 1) # should be first election created
 
     def test_on_policy_renewal_acceptance_premiums_get_created(self):
         # creates premiums for the new policy

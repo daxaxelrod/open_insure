@@ -7,12 +7,12 @@ from django.utils import timezone
 class RenewalSerializer(ModelSerializer):
 
     def create(self, validated_data):
-        renewal = super().create(validated_data)
+        request = self.context["request"]
+        renewal = super().create(dict(**validated_data, initiator=request.user))
 
         # create an election
-        policy = renewal.policy.prefetch_related("pod__members")
-        pod = policy.pod
-        pod_members = policy.pod.members.all()
+        pod = renewal.policy.pod
+        pod_members = renewal.policy.pod.members.all()
         election = Election.objects.create(
             name=f"{renewal.policy.id} Renewal",
             pod=pod,
@@ -25,10 +25,14 @@ class RenewalSerializer(ModelSerializer):
         for member in pod_members:
             Vote.objects.create(election=election, voter=member)
 
-        
-    
+        renewal.election = election
+        renewal.save()
+
+        return renewal
 
     class Meta:
         model = Renewal
         fields = "__all__"
+        read_only_fields = ("initiator", "election")
+        extra_kwargs = {'policy': {'required': False}} # passed from url
         
