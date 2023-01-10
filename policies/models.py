@@ -253,13 +253,6 @@ class PolicyCloseout(models.Model):
         validators=[MinValueValidator(1)], help_text="in cents"
     )  # or satoshis I guess
 
-class Renewal(models.Model):
-    policy = models.OneToOneField(
-        Policy, related_name="renewals", on_delete=models.CASCADE
-    )
-    election = models.ForeignKey(Election, on_delete=models.CASCADE, related_name="renewals")
-
-
 class Claim(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="claims")
     claimant = models.ForeignKey(

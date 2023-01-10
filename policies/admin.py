@@ -18,6 +18,8 @@ from policies.models import (
     Risk,
 )
 
+from policies.renewals.models import Renewal
+
 from policies.risk.models import (
     PhoneRisk,
     AudioEquipmentRisk,
@@ -103,6 +105,7 @@ admin.site.register(Policy, PolicyAdmin)
 admin.site.register(Claim, ClaimAdmin)
 admin.site.register(Premium, PremiumAdmin)
 admin.site.register(PolicyCloseout)
+admin.site.register(Renewal)
 admin.site.register(ClaimEvidence)
 admin.site.register(ClaimApproval)
 admin.site.register(Risk, RiskAdmin)

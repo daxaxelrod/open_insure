@@ -233,6 +233,23 @@ class PolicyTestCase(TestCase):
         self.assertEquals(response.status_code, HTTP_201_CREATED)
         self.assertEquals(_json["escrow_manager"], self.main_user.id)
 
+    def test_policy_renewal_initiation(self):
+        # creates a renewal object
+        # creates an election for the renewal
+        # sends out emails to members about the vote
+
+        # make sure the election is created
+        # make sure the policy end date gets pushed back
+        self.assertTrue(False)
+
+    def test_on_policy_renewal_acceptance_premiums_get_created(self):
+        # creates premiums for the new policy
+        self.assertTrue(False)
+
+    def test_only_pod_members_can_initiate_a_renewal(self):
+        self.assertTrue(False)
+
+
 
 def setUpModule():
     logging.disable()

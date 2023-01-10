@@ -24,6 +24,8 @@ class Election(models.Model):
     object_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey()
 
+    
+
 
 class Vote(models.Model):
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
