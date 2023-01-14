@@ -63,8 +63,26 @@ def schedule_premiums(policy: Policy, for_users: List[User] = None):
             f"Created premiums {len(premiums)} for policy {policy.id} for user {user.id}"
         )
 
+
 # useful for when a user leaves a policy but we want to keep a record of the premiums they paid/didnt pay
 def remove_future_premiums(user: User, policy: Policy):
     now = timezone.now()
     premiums = Premium.objects.filter(policy=policy, payer=user, due_date__gt=now)
     return premiums.delete()
+
+
+# used for renewals
+def extend_premiums(policy: Policy, user: User):
+    premiums = Premium.objects.filter(policy=policy, payer=user).order_by("due_date")
+    last_premium = premiums.last()
+    number_of_missing_premiums = policy.coverage_duration - len(premiums)
+    for month_num in range(number_of_missing_premiums):
+        p = Premium.objects.create(
+            policy=policy,
+            payer=user,
+            amount=last_premium.amount,  # maybe premiums should change in the new segment?
+            due_date=last_premium.due_date + relativedelta(months=month_num + 1),
+        )
+        logger.info(
+            f"Created premium for policy extension {p.due_date} for user {user.id}"
+        )

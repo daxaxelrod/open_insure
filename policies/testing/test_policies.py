@@ -212,15 +212,15 @@ class PolicyTestCase(TestCase):
     # semi temporary case, we will eventually want to allow users to vote on who the agent will be
     def test_policy_creator_gets_marked_as_escrow_agent(self):
         payload = {
-            "name":"$10 Small electronics policy",
-            "description":"No pool cap, $500 claim payout limit",
-            "coverage_type":"m_property",
-            "premium_pool_type":"perpetual_pool",
-            "governance_type":"direct_democracy",
+            "name": "$10 Small electronics policy",
+            "description": "No pool cap, $500 claim payout limit",
+            "coverage_type": "m_property",
+            "premium_pool_type": "perpetual_pool",
+            "governance_type": "direct_democracy",
             "available_underlying_insured_types": ["cell_phone"],
-            "premium_payment_frequency":1,  # 1 means monthly
-            "coverage_duration":12,  # months
-            "coverage_start_date":timezone.now() + timezone.timedelta(days=30),
+            "premium_payment_frequency": 1,  # 1 means monthly
+            "coverage_duration": 12,  # months
+            "coverage_start_date": timezone.now() + timezone.timedelta(days=30),
         }
 
         response = client.post(
@@ -228,7 +228,7 @@ class PolicyTestCase(TestCase):
             data=payload,
             content_type="application/json",
         )
-        
+
         _json = response.json()
 
         self.assertEquals(response.status_code, HTTP_201_CREATED)
@@ -239,8 +239,6 @@ class PolicyTestCase(TestCase):
         # creates an election for the renewal
         # sends out emails to members about the vote
 
-        # make sure the election is created
-        # make sure the policy end date gets pushed back
         _, policy = create_test_policy(self.pod)
         response = client.post(
             f"/api/v1/policies/{policy.id}/renewals/",
@@ -254,23 +252,31 @@ class PolicyTestCase(TestCase):
         response_json = response.json()
         election = Election.objects.get(id=response_json["election"])
         votes = Vote.objects.filter(election=election)
-        
+
+        # make sure the election is created
+        # make sure the policy end date gets pushed back
         self.assertEquals(response.status_code, HTTP_201_CREATED)
-        self.assertEquals(response_json["election"], 1) # should be first election created
+        self.assertEquals(
+            response_json["election"], 1
+        )  # should be first election created
         self.assertEquals(votes.count(), policy.pod.members.count())
         self.assertEquals(policy.coverage_duration, 13)
-        
 
     def test_on_policy_renewal_acceptance_premiums_get_created(self):
         # renewal and attached election are created
         # as each member accepts, their extended premiums get created
         _, policy = create_test_policy(self.pod)
-        self.assertEquals(policy.premiums.count(), policy.pod.members.count() * policy.coverage_duration)
-        
+        inital_premiums = policy.premiums.count()
+        self.assertEquals(
+            inital_premiums,
+            policy.pod.members.count() * policy.coverage_duration,
+        )
+        num_months_extension = 3
+
         response = client.post(
             f"/api/v1/policies/{policy.id}/renewals/",
             data={
-                "months_extension": 1,
+                "months_extension": num_months_extension,
             },
             content_type="application/json",
         )
@@ -278,17 +284,32 @@ class PolicyTestCase(TestCase):
         _json = response.json()
         election = Election.objects.get(id=_json["election"])
         vote = Vote.objects.get(election=election, voter=self.main_user)
+        policy.refresh_from_db()
 
         # voter accepts the renewal
-        vote_response = client.patch(f"/api/v1/elections/{election.id}/votes/{vote.id}/", data={"affirmed": True})
+        vote_response = client.patch(
+            f"/api/v1/elections/{election.id}/votes/{vote.id}/",
+            data={"affirmed": True},
+            content_type="application/json",
+        )
+        premiums = Premium.objects.filter(policy=policy, payer=self.main_user).order_by(
+            "due_date"
+        )
 
         self.assertEquals(vote_response.status_code, HTTP_200_OK)
-        self.assertEquals(policy.premiums.count(), 13)
-        
+        self.assertEquals(
+            policy.premiums.count(), inital_premiums + num_months_extension
+        )
+
+        # check that the premiums are created for the correct months
+        for x in range(policy.coverage_duration):
+            self.assertEquals(
+                premiums[x].due_date,
+                (policy.coverage_start_date + relativedelta(months=x)).date(),
+            )
 
     def test_only_pod_members_can_initiate_a_renewal(self):
         self.assertTrue(False)
-
 
 
 def setUpModule():
