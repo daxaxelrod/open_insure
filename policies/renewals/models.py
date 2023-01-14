@@ -2,13 +2,19 @@ from django.db import models
 from policies.models import Policy
 from elections.models import Election
 from pods.models import User
+from dateutil.relativedelta import relativedelta
 
 class Renewal(models.Model):
     policy = models.OneToOneField(
         Policy, related_name="renewals", on_delete=models.CASCADE
     )
     election = models.ForeignKey(Election, on_delete=models.CASCADE, related_name="renewals", null=True, blank=True)
-    date_extension = models.DateTimeField(help_text="The date the policy will be extended to")
+    months_extension = models.IntegerField(help_text="The number of months to extend the policy by")
+    
     initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_renewals", null=True, blank=True)
 
-    # needs to update coverage_duration on the parent policy model
+    @property
+    def date_extension(self):
+        return self.policy.coverage_start_date + relativedelta(
+            months=self.policy.coverage_duration) + relativedelta(
+                months=self.months_extension)

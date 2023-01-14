@@ -13,6 +13,7 @@ from policies.testing.helpers import (
     create_test_policy,
     create_test_user_risk_for_policy,
 )
+from elections.models import Election, Vote
 
 # initialize the APIClient app
 client = Client()
@@ -244,19 +245,46 @@ class PolicyTestCase(TestCase):
         response = client.post(
             f"/api/v1/policies/{policy.id}/renewals/",
             data={
-                "date_extension": timezone.now() + timezone.timedelta(days=30),
+                "months_extension": 1,
             },
             content_type="application/json",
         )
-        
-        response_json = response.json()
 
+        policy.refresh_from_db()
+        response_json = response.json()
+        election = Election.objects.get(id=response_json["election"])
+        votes = Vote.objects.filter(election=election)
+        
         self.assertEquals(response.status_code, HTTP_201_CREATED)
         self.assertEquals(response_json["election"], 1) # should be first election created
+        self.assertEquals(votes.count(), policy.pod.members.count())
+        self.assertEquals(policy.coverage_duration, 13)
+        
 
     def test_on_policy_renewal_acceptance_premiums_get_created(self):
-        # creates premiums for the new policy
-        self.assertTrue(False)
+        # renewal and attached election are created
+        # as each member accepts, their extended premiums get created
+        _, policy = create_test_policy(self.pod)
+        self.assertEquals(policy.premiums.count(), policy.pod.members.count() * policy.coverage_duration)
+        
+        response = client.post(
+            f"/api/v1/policies/{policy.id}/renewals/",
+            data={
+                "months_extension": 1,
+            },
+            content_type="application/json",
+        )
+
+        _json = response.json()
+        election = Election.objects.get(id=_json["election"])
+        vote = Vote.objects.get(election=election, voter=self.main_user)
+
+        # voter accepts the renewal
+        vote_response = client.patch(f"/api/v1/elections/{election.id}/votes/{vote.id}/", data={"affirmed": True})
+
+        self.assertEquals(vote_response.status_code, HTTP_200_OK)
+        self.assertEquals(policy.premiums.count(), 13)
+        
 
     def test_only_pod_members_can_initiate_a_renewal(self):
         self.assertTrue(False)

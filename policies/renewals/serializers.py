@@ -1,18 +1,24 @@
 from rest_framework.serializers import ModelSerializer
+from policies.models import Policy
 from policies.renewals.models import Renewal
 from django.contrib.contenttypes.models import ContentType
 from elections.models import Election, Vote
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 
 class RenewalSerializer(ModelSerializer):
 
     def create(self, validated_data):
         request = self.context["request"]
         renewal = super().create(dict(**validated_data, initiator=request.user))
+        policy: Policy = renewal.policy
+        
+        policy.coverage_duration += renewal.months_extension
+        policy.save()
 
         # create an election
-        pod = renewal.policy.pod
-        pod_members = renewal.policy.pod.members.all()
+        pod = policy.pod
+        pod_members = policy.pod.members.all()
         election = Election.objects.create(
             name=f"{renewal.policy.id} Renewal",
             pod=pod,

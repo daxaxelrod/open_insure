@@ -26,8 +26,9 @@ class Election(models.Model):
 
     
 
-
 class Vote(models.Model):
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
     voter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="voter")
     affirmed = models.BooleanField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
