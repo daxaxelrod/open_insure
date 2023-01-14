@@ -5,10 +5,17 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_200_OK
+from rest_framework.status import (
+    HTTP_400_BAD_REQUEST,
+    HTTP_201_CREATED,
+    HTTP_200_OK,
+    HTTP_403_FORBIDDEN,
+    HTTP_404_NOT_FOUND,
+)
 
 from pods.models import Pod, User
 from policies.models import Premium
+from policies.renewals.models import Renewal
 from policies.testing.helpers import (
     create_test_policy,
     create_test_user_risk_for_policy,
@@ -28,6 +35,7 @@ class PolicyTestCase(TestCase):
             "member@gmail.com", password="password", email="member@gmail.com"
         )
         self.pod = Pod.objects.create(name="Test Pod", creator=self.main_user)
+        self.pod.members.add(self.main_user)
         self.pod.members.add(self.member_user)
 
         client.login(username=self.main_user.username, password="password")
@@ -309,7 +317,53 @@ class PolicyTestCase(TestCase):
             )
 
     def test_only_pod_members_can_initiate_a_renewal(self):
-        self.assertTrue(False)
+        imposter = User.objects.create_user(
+            "imposter@gmail.com", password="password", email="imposter@gmail.com"
+        )
+
+        _, policy = create_test_policy(self.pod)
+
+        client.login(username=imposter.username, password="password")
+        response = client.post(
+            f"/api/v1/policies/{policy.id}/renewals/",
+            data={
+                "months_extension": 1,
+            },
+            content_type="application/json",
+        )
+        self.assertEquals(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertEquals(Renewal.objects.count(), 0)
+
+    def test_only_pod_members_can_accept_a_renewal(self):
+        _, policy = create_test_policy(self.pod)
+
+        response = client.post(
+            f"/api/v1/policies/{policy.id}/renewals/",
+            data={
+                "months_extension": 1,
+            },
+            content_type="application/json",
+        )
+
+        _json = response.json()
+        election = Election.objects.get(id=_json["election"])
+        vote = Vote.objects.get(election=election, voter=self.main_user)
+
+        imposter = User.objects.create_user(
+            "imposter@gmail.com", password="password", email="imposter@gmail.com"
+        )
+        client.login(username=imposter.username, password="password")
+
+        imposter_vote_response = client.patch(
+            f"/api/v1/elections/{election.id}/votes/{vote.id}/",
+            data={"affirmed": True},
+            content_type="application/json",
+        )
+
+        vote.refresh_from_db()
+
+        self.assertEquals(imposter_vote_response.status_code, HTTP_404_NOT_FOUND)
+        self.assertEquals(vote.affirmed, None)
 
 
 def setUpModule():
