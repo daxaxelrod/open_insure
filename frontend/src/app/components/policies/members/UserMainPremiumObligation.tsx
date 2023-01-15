@@ -3,7 +3,11 @@ import moment from "moment-timezone";
 import React from "react";
 import styled from "styled-components";
 import { useAppSelector } from "../../../../redux/hooks";
-import { Policy, Premium } from "../../../../redux/reducers/commonTypes";
+import {
+    PodMembership,
+    Policy,
+    Premium,
+} from "../../../../redux/reducers/commonTypes";
 import colors from "../../../constants/colors";
 import { ConditionalWrapper } from "../../../utils/componentUtils";
 
@@ -29,10 +33,19 @@ export default function UserMainPremiumObligation({
             return accumulator + value.amount;
         }, 0);
 
+    let userMembership = policy?.pod?.memberships?.find(
+        (membership: PodMembership) => {
+            return membership.user === currentUser.id;
+        }
+    );
+
     let nextPaymentDue;
     let isNextPaymentLate = false;
     let now = moment();
-    const unpaidPremiums = userPremiums.filter((p) => !p.paid);
+    let joinDate = moment(userMembership?.joined_at);
+    const unpaidPremiums = userPremiums.filter(
+        (p) => !p.paid && moment(p.due_date).isAfter(joinDate)
+    );
     if (unpaidPremiums.length > 0) {
         nextPaymentDue = moment(unpaidPremiums[0].due_date);
         if (now.isAfter(nextPaymentDue)) {
@@ -40,6 +53,7 @@ export default function UserMainPremiumObligation({
         }
     }
     const userPremiumObligation = focusedRisk?.premium_amount;
+
     return (
         <Container>
             <ConditionalWrapper

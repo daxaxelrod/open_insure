@@ -43,7 +43,7 @@ def schedule_premiums(policy: Policy, for_users: List[User] = None):
             logger.error(
                 f"User {user.id} has multiple risks for policy {policy.id}. This should not happen."
             )
-            user_risk = user.risks.get(policy=policy)[0]
+            user_risk = user.risks.filter(policy=policy)[0]
             continue
 
         premiums_schedule = [
