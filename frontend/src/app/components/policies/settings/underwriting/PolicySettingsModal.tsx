@@ -36,7 +36,7 @@ import PremiumFormulaDisplay from "./PremiumFormulaDisplay";
 import SlidablePolicyRiskSetting from "./SlidablePolicyRiskSetting";
 import { computeHypotheticalPremiums } from "../../../../../networking/risk";
 import { get_icon_for_insured_asset_type } from "../../quotes/RisksTable";
-import PolicyDangerZone from "./PolicyDangerZone";
+import PolicyDangerZone from "../PolicyDangerZone";
 
 const { Title, Paragraph } = Typography;
 

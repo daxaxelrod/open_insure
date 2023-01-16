@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Col, Grid, Row, Space, Tabs, Typography } from "antd";
+import { Button, Col, Row, Space, Tabs, Typography } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
 import { Policy, User } from "../../../redux/reducers/commonTypes";
 
 import moment from "moment-timezone";
@@ -17,7 +18,7 @@ import MembersTable from "../../components/policies/members/MembersTable";
 import PolicyClaimsBriefCard from "../../components/policies/claims/PolicyClaimsBriefCard";
 import { getOrCreateRisk } from "../../../redux/actions/risk";
 import EscrowBalanceCard from "../../components/policies/premiums/EscrowBalanceCard";
-import PolicySettingsModal from "../../components/policies/premiums/settings/PolicySettingsModal";
+import PolicySettingsModal from "../../components/policies/settings/underwriting/PolicySettingsModal";
 import PolicyPremiums from "../../components/policies/premiums/PolicyPremiums";
 
 import "../../styles/dashboard/PolicyDetails.css";
@@ -25,8 +26,9 @@ import PolicyClaimsList from "../../components/policies/claims/list/PolicyClaims
 import { setPolicyDetailTabKey } from "../../../redux/actions/ui";
 import MobileResponsiveWarningModal from "../../components/policies/utils/MobileResponsiveWarningModal";
 import useWindowSize from "../../components/hooks/useWindowSize";
+import colors from "../../constants/colors";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 export default function PolicyDetails() {
     let { id } = useParams();
@@ -108,7 +110,15 @@ export default function PolicyDetails() {
                                 <InviteFriendToPolicy policy={policy} />
                             )}
                             {isMember && (
-                                <PolicySettingsModal policy={policy} />
+                                <Link to={`/policy/${policy.id}/settings`}>
+                                    <Button type="default">
+                                        <Paragraph
+                                            style={{ color: colors.gray8 }}
+                                        >
+                                            <SettingOutlined /> Settings
+                                        </Paragraph>
+                                    </Button>
+                                </Link>
                             )}
                         </Space>
                     </Col>
