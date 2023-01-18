@@ -1,6 +1,16 @@
 import React, { useState } from "react";
-import { Button, Col, DatePicker, Row, Typography } from "antd";
+import {
+    Button,
+    Col,
+    DatePicker,
+    Input,
+    notification,
+    Row,
+    Typography,
+} from "antd";
 import { Policy } from "../../../../redux/reducers/commonTypes";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { updatePolicyDuration } from "../../../../redux/actions/renewals";
 
 const { Title, Paragraph } = Typography;
 
@@ -10,11 +20,19 @@ export default function PolicyExtensionSettings({
     policy: Policy;
 }) {
     const [policyDesiredExtension, setPolicyDesiredExtension] = useState<
-        string | null
+        number | null | undefined
     >();
+    const dispatch = useAppDispatch();
 
     const requestPolicyExtension = () => {
         console.log("Requesting extension to", policyDesiredExtension);
+        if (policyDesiredExtension) {
+            dispatch(updatePolicyDuration(policy.id, policyDesiredExtension));
+        } else {
+            notification.warning({
+                message: "Please enter a valid number",
+            });
+        }
     };
 
     return (
@@ -32,11 +50,13 @@ export default function PolicyExtensionSettings({
                 </Col>
                 <Col span={18}>
                     <div style={{ display: "flex" }}>
-                        <DatePicker
-                            onChange={(_, dateString) =>
-                                setPolicyDesiredExtension(dateString)
+                        <Input
+                            type="number"
+                            onChange={(e) =>
+                                setPolicyDesiredExtension(
+                                    parseInt(e.target.value)
+                                )
                             }
-                            picker="month"
                         />
                         <Button onClick={requestPolicyExtension}>
                             Extend Policy{" "}

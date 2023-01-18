@@ -50,13 +50,13 @@ export default function PolicyUnderwritingSettings({
         (state) => state.risk.getPolicyRiskSettingsPending
     );
     const riskSettings: RiskSettings = useAppSelector(
-        (state) => state.risk.policyRiskSettings?.[policy.id]
+        (state) => state.risk.policyRiskSettings?.[policy?.id]
     );
     const patchPolicyRiskSettingsPending = useAppSelector(
         (state) => state.risk.patchPolicyRiskSettingsPending
     );
     const policyRisks: Risk[] = useAppSelector(
-        (state) => state.risk.policyRisks?.[policy.id]
+        (state) => state.risk.policyRisks?.[policy?.id]
     );
     const currentUser = useAppSelector((state) => state.auth.currentUser);
     const [chosenPreset, setChosenPreset] = useState("");
@@ -148,9 +148,9 @@ export default function PolicyUnderwritingSettings({
     }
 
     const policyHasCellPhoneEnabled =
-        policy.available_underlying_insured_types.includes("cell_phone");
+        policy?.available_underlying_insured_types.includes("cell_phone");
     const policyHasAudioEquipmentEnabled =
-        policy.available_underlying_insured_types.includes("audio_equipment");
+        policy?.available_underlying_insured_types.includes("audio_equipment");
 
     const columns = [
         {

@@ -365,6 +365,10 @@ class PolicyTestCase(TestCase):
         self.assertEquals(imposter_vote_response.status_code, HTTP_404_NOT_FOUND)
         self.assertEquals(vote.affirmed, None)
 
+    def test_policy_renewal_rerequest_updates_existing_election(self):
+        # makes sure we dont duplicate elections
+        self.assertTrue(False)
+
 
 def setUpModule():
     logging.disable()
