@@ -477,11 +477,7 @@ export default function PolicyUnderwritingSettings({
                 columns={columns}
                 pagination={{ hideOnSinglePage: true }}
             />
-            <Row>
-                <Button key="back" onClick={handleCancel}>
-                    Do nothing & Close
-                </Button>
-                ,
+            <Row style={{ marginTop: 10, marginBottom: 10 }}>
                 <Popconfirm
                     title="This will update the premiums for all members of this policy. Are you sure? All members will be emailed about the change."
                     onConfirm={handleOk}
@@ -494,10 +490,9 @@ export default function PolicyUnderwritingSettings({
                         type="primary"
                         loading={patchPolicyRiskSettingsPending}
                     >
-                        Submit
+                        Change Underwriting settings
                     </Button>
                 </Popconfirm>
-                ,
             </Row>
         </div>
     );
