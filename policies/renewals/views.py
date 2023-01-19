@@ -10,6 +10,10 @@ class RenewalModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated & InPolicyPod]
     serializer_class = RenewalSerializer
 
+    def get_queryset(self):
+        policy = Policy.objects.get(id=self.kwargs["policy_pk"])
+        return policy.renewals.all()
+
     # gets the policy from the url from the nested serializer
     def perform_create(self, serializer):
         policy = Policy.objects.get(id=self.kwargs["policy_pk"])

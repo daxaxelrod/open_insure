@@ -3,15 +3,19 @@ import {
     Button,
     Col,
     DatePicker,
+    Descriptions,
+    Divider,
     Input,
     notification,
     Row,
+    Space,
     Typography,
 } from "antd";
-import { Policy } from "../../../../redux/reducers/commonTypes";
-import { useAppDispatch } from "../../../../redux/hooks";
+import { Policy, Renewal } from "../../../../redux/reducers/commonTypes";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { updatePolicyDuration } from "../../../../redux/actions/renewals";
 import RenewalsListTable from "./renewals/RenewalsListTable";
+import moment from "moment-timezone";
 
 const { Title, Paragraph } = Typography;
 
@@ -24,6 +28,13 @@ export default function PolicyExtensionSettings({
         number | null | undefined
     >();
     const dispatch = useAppDispatch();
+    const renewals: Renewal[] =
+        useAppSelector((state) => state.policies.renewals?.[policy.id]) || [];
+    const createRenewalPending = useAppSelector(
+        (state) => state.policies.createRenewalPending
+    );
+
+    const numberOfPolicyExtensions = renewals?.length || 0;
 
     const requestPolicyExtension = () => {
         console.log("Requesting extension to", policyDesiredExtension);
@@ -38,38 +49,54 @@ export default function PolicyExtensionSettings({
 
     return (
         <>
+            <Title level={4}>Extend</Title>
             <Row>
-                <Title level={4}>Extend</Title>
-                <Col span={6}>
+                <Col span={13}>
                     <Paragraph>
-                        The current policy period started on{" "}
-                        {policy.coverage_start_date} and goes on for{" "}
-                        {policy.coverage_duration} months. You can use this form
-                        to extend the policy period but note that each user will
-                        get the choice to opt out of the extension.
+                        Extend a policy beyond its original start date. You can
+                        use this form to extend the policy period but note that
+                        each user will get the choice to opt out of the
+                        extension.
                     </Paragraph>
+                    <Descriptions title="Policy Details">
+                        <Descriptions.Item label="Original Start Date">
+                            {moment(policy.coverage_start_date).format("LL")}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Duration in months">
+                            {policy.coverage_duration}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Number of renewals">
+                            {numberOfPolicyExtensions}
+                        </Descriptions.Item>
+                    </Descriptions>
                 </Col>
-                <Col span={18}>
+                <Col span={10}>
                     <div style={{ display: "flex" }}>
-                        <Input
-                            type="number"
-                            onChange={(e) =>
-                                setPolicyDesiredExtension(
-                                    parseInt(e.target.value)
-                                )
-                            }
-                        />
-                        <Button onClick={requestPolicyExtension}>
-                            Extend Policy{" "}
-                            {policyDesiredExtension
-                                ? `to ${policyDesiredExtension}`
-                                : ""}
-                        </Button>
+                        <Space>
+                            <Input
+                                type="number"
+                                onChange={(e) =>
+                                    setPolicyDesiredExtension(
+                                        parseInt(e.target.value)
+                                    )
+                                }
+                            />
+                            <Button
+                                onClick={requestPolicyExtension}
+                                loading={createRenewalPending}
+                            >
+                                Extend Policy{" "}
+                                {policyDesiredExtension
+                                    ? `${policyDesiredExtension} months`
+                                    : ""}
+                            </Button>
+                        </Space>
                     </div>
                 </Col>
             </Row>
             <div>
-                <Title level={4}>Renewals</Title>
+                <Divider />
+                <Title level={5}>Existing Renewals</Title>
                 <RenewalsListTable policy={policy} />
             </div>
         </>

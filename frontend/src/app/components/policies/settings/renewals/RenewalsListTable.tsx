@@ -11,10 +11,6 @@ import {
     User,
 } from "../../../../../redux/reducers/commonTypes";
 
-interface RenewalRowType extends Renewal {
-    key: React.Key;
-}
-
 export default function RenewalsListTable({ policy }: { policy: Policy }) {
     const dispatch = useAppDispatch();
     const renewals: Renewal[] =

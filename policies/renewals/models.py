@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 
 
 class Renewal(models.Model):
-    policy = models.OneToOneField(
+    policy = models.ForeignKey(
         Policy, related_name="renewals", on_delete=models.CASCADE
     )
     election = models.ForeignKey(

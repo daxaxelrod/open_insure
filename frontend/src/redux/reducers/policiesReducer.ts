@@ -16,6 +16,9 @@ import {
     PATCH_POLICY_SUCCESS,
     PATCH_POLICY_PENDING,
     PATCH_POLICY_FAILURE,
+    INITIATE_POLICY_EXTENSION_PENDING,
+    INITIATE_POLICY_EXTENSION_SUCCESS,
+    INITIATE_POLICY_EXTENSION_FAILURE,
     GET_RENEWALS_PENDING,
     GET_RENEWALS_SUCCESS,
     GET_RENEWALS_FAILURE,
@@ -31,6 +34,7 @@ export interface PoliciesState {
     createPolicyPending: boolean;
     joinPolicyPending: boolean;
     patchPolicyPending: boolean;
+    createRenewalPending: boolean;
     renewals: Record<string, Renewal[]>;
     getRenewalsPending: boolean;
 }
@@ -44,6 +48,7 @@ const initialState: PoliciesState = {
     createPolicyPending: false,
     joinPolicyPending: false,
     patchPolicyPending: false,
+    createRenewalPending: false,
     renewals: {},
     getRenewalsPending: false,
 };
@@ -155,6 +160,17 @@ export default (
             return {
                 ...state,
                 joinPolicyPending: false,
+            };
+        case INITIATE_POLICY_EXTENSION_PENDING:
+            return {
+                ...state,
+                createRenewalPending: true,
+            };
+        case INITIATE_POLICY_EXTENSION_FAILURE:
+        case INITIATE_POLICY_EXTENSION_SUCCESS:
+            return {
+                ...state,
+                createRenewalPending: false,
             };
         case GET_RENEWALS_PENDING:
             return {
