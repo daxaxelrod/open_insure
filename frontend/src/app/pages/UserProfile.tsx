@@ -8,6 +8,7 @@ import { logout } from "../../networking/auth";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { User } from "../../redux/reducers/commonTypes";
 import UserLargeImage from "../components/users/profile/UserLargeImage";
+import { LOGOUT } from "../../redux/actions/types";
 
 const { Title, Paragraph } = Typography;
 
@@ -19,6 +20,7 @@ export default function UserProfile() {
     const user: User = useAppSelector((state) => state.auth.currentUser);
 
     const logoutHandler = () => {
+        dispatch({ type: LOGOUT });
         logout();
         navigate("/login");
     };

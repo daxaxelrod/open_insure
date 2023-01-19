@@ -8,3 +8,7 @@ export function initatePolicyExtension(
         months_extension: extensionDate,
     });
 }
+
+export function getRenewals(policyId: number) {
+    return axiosInstance.get(`/api/v1/policies/${policyId}/renewals/`);
+}

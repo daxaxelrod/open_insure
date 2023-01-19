@@ -26,7 +26,15 @@ import uiReducer from "./reducers/uiReducer";
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["auth"],
+    whitelist: [
+        "auth",
+        "pods",
+        "policies",
+        "risk",
+        "premiums",
+        "claims",
+        "users",
+    ],
 };
 
 const authPersistConfig = {

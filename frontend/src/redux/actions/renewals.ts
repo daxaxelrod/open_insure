@@ -6,6 +6,9 @@ import {
     INITIATE_POLICY_EXTENSION_PENDING,
     INITIATE_POLICY_EXTENSION_SUCCESS,
     INITIATE_POLICY_EXTENSION_FAILURE,
+    GET_RENEWALS_PENDING,
+    GET_RENEWALS_SUCCESS,
+    GET_RENEWALS_FAILURE,
 } from "./types";
 
 export const updatePolicyDuration =
@@ -24,6 +27,8 @@ export const updatePolicyDuration =
                 type: INITIATE_POLICY_EXTENSION_SUCCESS,
                 payload: response.data,
             });
+            // fetch the latest renewals
+            dispatch(getRenewals(policyId));
             return response.data;
         } catch (error) {
             dispatch({
@@ -31,5 +36,24 @@ export const updatePolicyDuration =
                 payload: error,
             });
             return null;
+        }
+    };
+
+export const getRenewals =
+    (policyId: number): ThunkAction<void, RootState, unknown, AnyAction> =>
+    async (dispatch) => {
+        dispatch({ type: GET_RENEWALS_PENDING });
+        try {
+            const response = await API.getRenewals(policyId);
+            dispatch({
+                type: GET_RENEWALS_SUCCESS,
+                payload: response.data,
+                policyId,
+            });
+        } catch (error) {
+            dispatch({
+                type: GET_RENEWALS_FAILURE,
+                payload: error,
+            });
         }
     };

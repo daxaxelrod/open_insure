@@ -1,33 +1,28 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
-  },
-  "include": [
-    "src"
-  ],
-  // need to eject the project first
-  // "paths": {
-  //   "@components/*": ["./src/app/components/*"],
-  //   "@constants/*": ["./src/app/constants/*"],
-  //   "@redux/*": ["./src/redux/*"],
-  //   "@networking/*": ["./src/networking/*"],
-  // }
+    "compilerOptions": {
+        "target": "es5",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        // "baseUrl": "src", doesnt work
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx"
+    },
+    "include": ["src"]
+    // need to eject the project first
+    // "paths": {
+    //   "@components/*": ["./src/app/components/*"],
+    //   "@constants/*": ["./src/app/constants/*"],
+    //   "@redux/*": ["./src/redux/*"],
+    //   "@networking/*": ["./src/networking/*"],
+    // }
 }

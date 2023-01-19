@@ -16,8 +16,11 @@ import {
     PATCH_POLICY_SUCCESS,
     PATCH_POLICY_PENDING,
     PATCH_POLICY_FAILURE,
+    GET_RENEWALS_PENDING,
+    GET_RENEWALS_SUCCESS,
+    GET_RENEWALS_FAILURE,
 } from "../actions/types";
-import { Policy } from "./commonTypes";
+import { Policy, Renewal } from "./commonTypes";
 
 export interface PoliciesState {
     publicPolicies: Policy[];
@@ -28,6 +31,8 @@ export interface PoliciesState {
     createPolicyPending: boolean;
     joinPolicyPending: boolean;
     patchPolicyPending: boolean;
+    renewals: Record<string, Renewal[]>;
+    getRenewalsPending: boolean;
 }
 
 const initialState: PoliciesState = {
@@ -39,9 +44,14 @@ const initialState: PoliciesState = {
     createPolicyPending: false,
     joinPolicyPending: false,
     patchPolicyPending: false,
+    renewals: {},
+    getRenewalsPending: false,
 };
 
-export default (state = initialState, { type, payload }: AnyAction) => {
+export default (
+    state = initialState,
+    { type, payload, policyId }: AnyAction
+) => {
     switch (type) {
         case GET_AVAILABLE_POLICIES_PENDING:
             return {
@@ -145,6 +155,23 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 joinPolicyPending: false,
+            };
+        case GET_RENEWALS_PENDING:
+            return {
+                ...state,
+                getRenewalsPending: true,
+            };
+
+        case GET_RENEWALS_SUCCESS:
+            return {
+                ...state,
+                renewals: { ...state.renewals, [policyId]: payload },
+                getRenewalsPending: false,
+            };
+        case GET_RENEWALS_FAILURE:
+            return {
+                ...state,
+                getRenewalsPending: false,
             };
         default:
             return state;

@@ -11,6 +11,7 @@ import {
 import { Policy } from "../../../../redux/reducers/commonTypes";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { updatePolicyDuration } from "../../../../redux/actions/renewals";
+import RenewalsListTable from "./renewals/RenewalsListTable";
 
 const { Title, Paragraph } = Typography;
 
@@ -67,6 +68,10 @@ export default function PolicyExtensionSettings({
                     </div>
                 </Col>
             </Row>
+            <div>
+                <Title level={4}>Renewals</Title>
+                <RenewalsListTable policy={policy} />
+            </div>
         </>
     );
 }

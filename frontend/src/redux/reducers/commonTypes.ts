@@ -216,3 +216,14 @@ export interface ClaimComment {
     created_at: string;
     updated_at: string;
 }
+
+export interface Renewal {
+    id: number;
+    policy: number;
+    election: number;
+    months_extension: number;
+    initiator: number;
+    date_extension?: string;
+    created_at: string;
+    updated_at: string;
+}

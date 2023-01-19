@@ -365,9 +365,31 @@ class PolicyTestCase(TestCase):
         self.assertEquals(imposter_vote_response.status_code, HTTP_404_NOT_FOUND)
         self.assertEquals(vote.affirmed, None)
 
-    def test_policy_renewal_rerequest_updates_existing_election(self):
-        # makes sure we dont duplicate elections
-        self.assertTrue(False)
+    # not gonna need this, each renewal will be a new election
+    # def test_policy_renewal_rerequest_updates_existing(self):
+    #     # makes sure we dont duplicate elections
+    #     _, policy = create_test_policy(self.pod)
+
+    #     response = client.post(
+    #         f"/api/v1/policies/{policy.id}/renewals/",
+    #         data={
+    #             "months_extension": 1,
+    #         },
+    #         content_type="application/json",
+    #     )
+
+    #     _json = response.json()
+    #     initial_election = Election.objects.get(id=_json["election"])
+
+    #     second_response = client.post(
+    #         f"/api/v1/policies/{policy.id}/renewals/",
+    #         data={
+    #             "months_extension": 3,
+    #         },
+    #         content_type="application/json",
+    #     )
+
+    #     self.assertTrue(False)
 
 
 def setUpModule():
