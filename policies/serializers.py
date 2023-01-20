@@ -1,4 +1,5 @@
 from email import policy
+import logging
 from django.db import IntegrityError
 from django.utils import timezone
 from rest_framework import serializers
@@ -19,6 +20,8 @@ from policies.perils.models import Peril
 from policies.premiums import schedule_premiums
 
 from policies.risk.serializer_fields import RiskContentObjectRelatedField
+
+logger = logging.getLogger(__name__)
 
 policy_fields = [
     "id",
@@ -114,7 +117,7 @@ class PolicySerializer(serializers.ModelSerializer):
 class FullPolicySerializer(serializers.ModelSerializer):
     # meant for get, has a few nested joins
     pod = PodSerializer(read_only=True)
-    premiums = PremiumSerializer(many=True, read_only=True) 
+    premiums = PremiumSerializer(many=True, read_only=True)
     claims = FullClaimSerializer(many=True, read_only=True)
     close_out = PolicyCloseoutSerializer(many=False, read_only=True)
     available_underlying_insured_types = MultipleChoiceField(
@@ -136,7 +139,7 @@ class RiskSerializer(serializers.ModelSerializer):
                 policy=validated_data.get("policy"), user=validated_data.get("user")
             )  # cant use get_or_create due to other data that comes in validated data
         except Risk.DoesNotExist:
-            print("creating risk for user", validated_data.get("user"))
+            logger.info("creating risk for user", validated_data.get("user"))
             risk = Risk.objects.create(**validated_data)
         except Risk.MultipleObjectsReturned:
             # this should never happen
@@ -160,13 +163,9 @@ class RiskSerializer(serializers.ModelSerializer):
         )
         fields = "__all__"
 
+
 class PolicyRiskSettingsSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = PolicyRiskSettings
         fields = "__all__"
-        read_only_fields = (
-            "id",
-            "policy",
-            "created_at"
-        )
+        read_only_fields = ("id", "policy", "created_at")
