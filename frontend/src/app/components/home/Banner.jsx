@@ -41,7 +41,7 @@ class Banner extends React.PureComponent {
                                 fontSize: "2.75rem",
                             }}
                         >
-                            Power to the policy holder.
+                            Save 30-50% on cell phone insurance
                         </Title>
                         <p
                             className="main-info"
@@ -54,8 +54,8 @@ class Banner extends React.PureComponent {
                                 color: "rgba(0, 0, 0, 0.65)",
                             }}
                         >
-                            Save 30-50% on cell phone protection plans by
-                            insuring yourself with peers.
+                            Create & manage a self insurance policy with people
+                            you already trust.
                         </p>
 
                         <Link to={"/join"} style={{ display: "flex" }}>
@@ -67,7 +67,7 @@ class Banner extends React.PureComponent {
                                     width: "100%",
                                 }}
                             >
-                                Browse Policies
+                                Create a Policy
                             </Button>
                         </Link>
                     </Col>
