@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { getPodById } from "../../../../redux/actions/pods";
 import type { ColumnsType } from "antd/es/table";
 import { getUserPhotoUrl } from "../utils/photoUtils";
+import { isPolicyMember } from "../../../utils/policyUtils";
 
 const { Title } = Typography;
 
@@ -23,6 +24,8 @@ export default function MembersTable({ policy }: { policy: Policy }) {
         )
     );
     const currentUser = useAppSelector((state) => state.auth.currentUser);
+
+    const isPolicyPodMember = isPolicyMember(currentUser, policy);
 
     useEffect(() => {
         if (policy && typeof policy.pod === "number") {
@@ -78,11 +81,13 @@ export default function MembersTable({ policy }: { policy: Policy }) {
                 </Link>
             ),
         },
-        {
-            title: "Email",
-            width: "20rem",
-            render: (text, record) => record.email,
-        },
+        isPolicyPodMember
+            ? {
+                  title: "Email",
+                  width: "20rem",
+                  render: (text, record) => record.email,
+              }
+            : {},
         {
             title: "Verified Email",
             dataIndex: "verified_email",
