@@ -365,6 +365,42 @@ class PolicyTestCase(TestCase):
         self.assertEquals(imposter_vote_response.status_code, HTTP_404_NOT_FOUND)
         self.assertEquals(vote.affirmed, None)
 
+    @patch("django.utils.timezone.now")
+    def test_can_only_create_renewal_if_policy_is_about_to_expire(self, mock_timezone):
+
+        start_date = timezone.datetime(2022, 1, 1, tzinfo=timezone.utc)
+        mock_timezone.return_value = start_date
+
+        _, policy = create_test_policy(self.pod, start_date)
+
+        # attempt to create renewal, shouldnt be allowed
+
+        response = client.post(
+            f"/api/v1/policies/{policy.id}/renewals/",
+            data={
+                "months_extension": 6,
+            },
+            content_type="application/json",
+        )
+        self.assertEquals(response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEquals(Renewal.objects.count(), 0)
+
+        # move time forward to 2 months before policy expires
+        future_now = timezone.datetime(2022, 11, 2, tzinfo=timezone.utc)
+        mock_timezone.return_value = future_now
+
+        # renewal should be allowed now
+        response = client.post(
+            f"/api/v1/policies/{policy.id}/renewals/",
+            data={
+                "months_extension": 6,
+            },
+            content_type="application/json",
+        )
+
+        self.assertEquals(response.status_code, HTTP_201_CREATED)
+        self.assertEquals(Renewal.objects.count(), 1)
+
     # not gonna need this, each renewal will be a new election
     # def test_policy_renewal_rerequest_updates_existing(self):
     #     # makes sure we dont duplicate elections

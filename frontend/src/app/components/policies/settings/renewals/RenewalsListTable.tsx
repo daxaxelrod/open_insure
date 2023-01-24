@@ -10,6 +10,7 @@ import {
     Renewal,
     User,
 } from "../../../../../redux/reducers/commonTypes";
+import moment from "moment-timezone";
 
 export default function RenewalsListTable({ policy }: { policy: Policy }) {
     const dispatch = useAppDispatch();
@@ -21,12 +22,11 @@ export default function RenewalsListTable({ policy }: { policy: Policy }) {
 
     const columns: ColumnsType<Renewal> = [
         {
-            title: "Created",
-            render: (text, renewal: Renewal) => {
-                return <div>{renewal.created_at}</div>;
+            title: "Renewal Number",
+            render: (text, renewal: Renewal, index: number) => {
+                return <div>{index + 1}</div>;
             },
-            dataIndex: "created_at",
-            key: "created_at",
+            width: 100,
         },
         {
             title: "Extension Length",
@@ -35,6 +35,14 @@ export default function RenewalsListTable({ policy }: { policy: Policy }) {
             },
             dataIndex: "months_extension",
             key: "months_extension",
+        },
+        {
+            title: "Created",
+            render: (text, renewal: Renewal) => {
+                return <div>{moment(renewal.created_at).fromNow()}</div>;
+            },
+            dataIndex: "created_at",
+            key: "created_at",
         },
         {
             title: "Initiator",

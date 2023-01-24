@@ -48,7 +48,7 @@ export default function PolicyExtensionSettings({
 
     return (
         <>
-            <Title level={4}>Extend</Title>
+            <Title level={4}>Extend Policy</Title>
             <Row>
                 <Col span={13}>
                     <Paragraph>
@@ -57,7 +57,7 @@ export default function PolicyExtensionSettings({
                         each user will get the choice to opt out of the
                         extension.
                     </Paragraph>
-                    <Descriptions title="Policy Details">
+                    {/* <Descriptions title="Policy Details">
                         <Descriptions.Item label="Original Start Date">
                             {moment(policy.coverage_start_date).format("LL")}
                         </Descriptions.Item>
@@ -67,7 +67,7 @@ export default function PolicyExtensionSettings({
                         <Descriptions.Item label="Number of renewals">
                             {numberOfPolicyExtensions}
                         </Descriptions.Item>
-                    </Descriptions>
+                    </Descriptions> */}
                 </Col>
                 <Col span={10}>
                     <div style={{ display: "flex" }}>
@@ -94,8 +94,6 @@ export default function PolicyExtensionSettings({
                 </Col>
             </Row>
             <div>
-                <Divider />
-                <Title level={5}>Existing Renewals</Title>
                 <RenewalsListTable policy={policy} />
             </div>
         </>

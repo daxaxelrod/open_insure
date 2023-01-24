@@ -37,3 +37,6 @@ class Renewal(models.Model):
             + relativedelta(months=self.policy.coverage_duration)
             + relativedelta(months=self.months_extension)
         )
+
+    def __str__(self):
+        return f"Renewal for {self.policy} - {self.date_extension}"
