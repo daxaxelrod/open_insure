@@ -43,9 +43,9 @@ export default function PolicySettings() {
             <Divider />
             <PolicyExtensionSettings policy={policy} />
             <Divider />
-            <PolicyMemebershipSettings policy={policy} />
-            <Divider />
-            <PolicyDangerZone policy={policy} />
+            {/* <PolicyMemebershipSettings policy={policy} /> */}
+            {/* <Divider />
+            <PolicyDangerZone policy={policy} /> */}
         </div>
     );
 }

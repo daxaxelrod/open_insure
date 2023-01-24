@@ -18,7 +18,8 @@ class RenewalSerializer(ModelSerializer):
             valid_renewal_date = policy_end_date - relativedelta(months=2)
             if timezone.now() < valid_renewal_date:
                 raise ValidationError(
-                    "Renewal must be within 2 months of policy end date"
+                    "Renewal must be within 2 months of policy end date. You can renew on "
+                    + valid_renewal_date.strftime("%x")
                 )
         return attrs
 

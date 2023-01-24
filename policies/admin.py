@@ -25,11 +25,11 @@ from policies.risk.models import (
     AudioEquipmentRisk,
     ImageAlbum,
     PropertyImage,
-    
 )
 
 from policies.perils.models import Peril
 from policies.claims.models import ClaimView
+
 
 class PropertyImageInline(admin.TabularInline):
     model = PropertyImage
@@ -61,7 +61,7 @@ class RiskAdmin(admin.ModelAdmin):
 
     def get_premium_amount(self, obj):
         if obj.premium_amount:
-            return obj.premium_amount/100
+            return obj.premium_amount / 100
         return "Not Quoted"
 
 
@@ -75,7 +75,6 @@ class PolicyAdmin(admin.ModelAdmin):
     inlines = [RiskInline]
 
 
-
 class PremiumChangeForm(forms.ModelForm):
     class Meta:
         model = Premium
@@ -85,27 +84,41 @@ class PremiumChangeForm(forms.ModelForm):
         super(PremiumChangeForm, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        if self.cleaned_data['paid']:
+        if self.cleaned_data["paid"]:
             self.instance.paid_date = timezone.now()
-            self.instance.save() # have to do it this way because the model form changed fields cant be edited after the form is created
+            self.instance.save()  # have to do it this way because the model form changed fields cant be edited after the form is created
         return super(PremiumChangeForm, self).save(*args, **kwargs)
 
 
 class PremiumAdmin(admin.ModelAdmin):
-    list_editable = ('paid',)
-    list_display = ('policy', 'payer', 'amount', 'paid', 'due_date', 'paid_date', 'marked_paid_by')
+    list_editable = ("paid",)
+    list_display = (
+        "policy",
+        "payer",
+        "amount",
+        "paid",
+        "due_date",
+        "paid_date",
+        "marked_paid_by",
+    )
 
     def get_changelist_form(self, request, **kwargs):
         return PremiumChangeForm
 
+
 class ClaimAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'amount', 'created_at')
+    list_display = ("__str__", "amount", "created_at")
+
+
+class RenewalAdmin(admin.ModelAdmin):
+    list_display = ("id", "policy", "months_extension", "date_extension", "created_at")
+
 
 admin.site.register(Policy, PolicyAdmin)
 admin.site.register(Claim, ClaimAdmin)
 admin.site.register(Premium, PremiumAdmin)
 admin.site.register(PolicyCloseout)
-admin.site.register(Renewal)
+admin.site.register(Renewal, RenewalAdmin)
 admin.site.register(ClaimEvidence)
 admin.site.register(ClaimApproval)
 admin.site.register(Risk, RiskAdmin)

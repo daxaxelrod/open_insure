@@ -3,8 +3,6 @@ import {
     Alert,
     Button,
     Col,
-    Descriptions,
-    Divider,
     Input,
     notification,
     Row,
@@ -15,7 +13,6 @@ import { Policy, Renewal } from "../../../../redux/reducers/commonTypes";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { updatePolicyDuration } from "../../../../redux/actions/renewals";
 import RenewalsListTable from "./renewals/RenewalsListTable";
-import moment from "moment-timezone";
 
 const { Title, Paragraph } = Typography;
 
