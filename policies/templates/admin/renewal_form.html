@@ -1,0 +1,20 @@
+{% extends 'admin/base_site.html' %}
+
+{% block content %}
+<form action="" method="post">
+  {% csrf_token %}
+  {% for item in items %}
+  <input type="hidden" name="_selected_action" value="{{ item.pk }}" />
+  {% endfor %}
+
+  {{ form }}
+  <p>Apply to the following policies:</p>
+  <ul>{{ items|unordered_list }}</ul>
+  <div class="submit-row">
+    <input type="hidden" name="action" value="{{action}}" />
+    <input type="submit" name="confirmation" value="Confirm" />
+    <a href="#" onclick="window.history.back(); return false;" class="button cancel-link">No, take me back</a>
+  </div>
+
+</form>
+{% endblock %}

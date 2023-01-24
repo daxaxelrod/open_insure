@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.utils.html import format_html, mark_safe
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django import forms
 
@@ -71,8 +73,40 @@ class RiskInline(admin.TabularInline):
     verbose_name_plural = "risks"
 
 
+class RenewalForm(forms.ModelForm):
+    class Meta:
+        model = Renewal
+        fields = ["months_extension"]
+
+
+@admin.action(description="Extend Policy and create extension premiums")
+def extend_policy(modeladmin, request, queryset):
+
+    if "months_extension" in request.POST:
+        form = RenewalForm(request.POST)
+        if form.is_valid():
+            months_extension = form.cleaned_data["months_extension"]
+            modeladmin.message_user(request, "You selected - %s" % months_extension)
+            # for policy in queryset:
+            #     policy.coverage_duration += 12
+            #     policy.save()
+            #     for premium in policy.premiums.all():
+            #         premium.due_date += relativedelta(months=12)
+            #         premium.save()
+        return HttpResponseRedirect(request.get_full_path())
+    else:
+        form = RenewalForm()
+
+    return render(
+        request,
+        "admin/renewal_form.html",
+        {"items": queryset.order_by("pk"), "form": form, "action": "extend_policy"},
+    )
+
+
 class PolicyAdmin(admin.ModelAdmin):
     inlines = [RiskInline]
+    actions = [extend_policy]
 
 
 class PremiumChangeForm(forms.ModelForm):
