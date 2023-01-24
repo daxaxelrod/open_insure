@@ -247,7 +247,10 @@ class PolicyTestCase(TestCase):
         # creates an election for the renewal
         # sends out emails to members about the vote
 
-        _, policy = create_test_policy(self.pod)
+        _, policy = create_test_policy(
+            self.pod, timezone.now() - relativedelta(months=12)
+        )
+
         response = client.post(
             f"/api/v1/policies/{policy.id}/renewals/",
             data={
@@ -273,12 +276,16 @@ class PolicyTestCase(TestCase):
     def test_on_policy_renewal_acceptance_premiums_get_created(self):
         # renewal and attached election are created
         # as each member accepts, their extended premiums get created
-        _, policy = create_test_policy(self.pod)
+        _, policy = create_test_policy(
+            self.pod, timezone.now() - relativedelta(months=12)
+        )
+
         inital_premiums = policy.premiums.count()
         self.assertEquals(
             inital_premiums,
             policy.pod.members.count() * policy.coverage_duration,
         )
+
         num_months_extension = 3
 
         response = client.post(
@@ -322,6 +329,8 @@ class PolicyTestCase(TestCase):
         )
 
         _, policy = create_test_policy(self.pod)
+        policy.coverage_duration = 6
+        policy.save()
 
         client.login(username=imposter.username, password="password")
         response = client.post(
@@ -336,6 +345,8 @@ class PolicyTestCase(TestCase):
 
     def test_only_pod_members_can_accept_a_renewal(self):
         _, policy = create_test_policy(self.pod)
+        policy.coverage_duration = 6
+        policy.save()
 
         response = client.post(
             f"/api/v1/policies/{policy.id}/renewals/",
