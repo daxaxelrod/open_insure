@@ -30,10 +30,10 @@ export const updatePolicyDuration =
             // fetch the latest renewals
             dispatch(getRenewals(policyId));
             return response.data;
-        } catch (error) {
+        } catch (error: any) {
             dispatch({
                 type: INITIATE_POLICY_EXTENSION_FAILURE,
-                payload: error,
+                payload: error.response.data,
             });
             return null;
         }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+    Alert,
     Button,
     Col,
     Descriptions,
@@ -29,11 +30,12 @@ export default function PolicyExtensionSettings({
     const dispatch = useAppDispatch();
     const renewals: Renewal[] =
         useAppSelector((state) => state.policies.renewals?.[policy.id]) || [];
+    const extensionError = useAppSelector(
+        (state) => state.policies.extensionError
+    );
     const createRenewalPending = useAppSelector(
         (state) => state.policies.createRenewalPending
     );
-
-    const numberOfPolicyExtensions = renewals?.length || 0;
 
     const requestPolicyExtension = () => {
         console.log("Requesting extension to", policyDesiredExtension);
@@ -49,6 +51,13 @@ export default function PolicyExtensionSettings({
     return (
         <>
             <Title level={4}>Extend Policy</Title>
+            {extensionError && (
+                <Alert
+                    style={{ marginBottom: "1rem" }}
+                    message={extensionError?.non_field_errors?.[0]}
+                    type="error"
+                />
+            )}
             <Row>
                 <Col span={13}>
                     <Paragraph>

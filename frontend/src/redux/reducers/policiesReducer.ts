@@ -37,6 +37,7 @@ export interface PoliciesState {
     createRenewalPending: boolean;
     renewals: Record<string, Renewal[]>;
     getRenewalsPending: boolean;
+    extensionError: any;
 }
 
 const initialState: PoliciesState = {
@@ -51,6 +52,7 @@ const initialState: PoliciesState = {
     createRenewalPending: false,
     renewals: {},
     getRenewalsPending: false,
+    extensionError: null,
 };
 
 export default (
@@ -165,8 +167,14 @@ export default (
             return {
                 ...state,
                 createRenewalPending: true,
+                extensionError: null,
             };
         case INITIATE_POLICY_EXTENSION_FAILURE:
+            return {
+                ...state,
+                createRenewalPending: false,
+                extensionError: payload,
+            };
         case INITIATE_POLICY_EXTENSION_SUCCESS:
             return {
                 ...state,
