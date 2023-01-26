@@ -49,16 +49,18 @@ export default function RenewalsListTable({ policy }: { policy: Policy }) {
             render: (text, renewal: Renewal) => {
                 let initiator = renewal.initiator;
                 let user = users?.[initiator];
-                if (user.id) {
+                if (user?.id) {
                     return (
                         <Link to={`/members/${user.id}`}>
                             {user.first_name} {user.last_name}
                         </Link>
                     );
                 } else {
-                    <Link to={`/members/${initiator}`}>
-                        User Id #{initiator}
-                    </Link>;
+                    return (
+                        <Link to={`/members/${initiator}`}>
+                            User Id #{initiator} (Likely an admin)
+                        </Link>
+                    );
                 }
             },
             dataIndex: "initiator",
