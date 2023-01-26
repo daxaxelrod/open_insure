@@ -17,8 +17,6 @@ from policies.model_choices import (
 )
 from policies.risk.models import *
 from policies.perils.models import *
-from elections.models import Election
-
 
 
 class Policy(models.Model):

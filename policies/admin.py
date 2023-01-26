@@ -19,6 +19,7 @@ from policies.models import (
     ClaimComment,
     Risk,
 )
+from policies.premiums import extend_premiums
 
 from policies.renewals.models import Renewal
 
@@ -79,20 +80,24 @@ class RenewalForm(forms.ModelForm):
         fields = ["months_extension"]
 
 
-@admin.action(description="Extend Policy and create extension premiums")
+@admin.action(description="Extend Policy and create extended premiums")
 def extend_policy(modeladmin, request, queryset):
 
     if "months_extension" in request.POST:
         form = RenewalForm(request.POST)
         if form.is_valid():
             months_extension = form.cleaned_data["months_extension"]
-            modeladmin.message_user(request, "You selected - %s" % months_extension)
-            # for policy in queryset:
-            #     policy.coverage_duration += 12
-            #     policy.save()
-            #     for premium in policy.premiums.all():
-            #         premium.due_date += relativedelta(months=12)
-            #         premium.save()
+
+            for policy in queryset:
+                policy.coverage_duration += months_extension
+                policy.save()
+
+                for user in policy.pod.members.all():
+                    extend_premiums(policy, user)
+
+            modeladmin.message_user(
+                request, "Executed a %s month policy extension" % months_extension
+            )
         return HttpResponseRedirect(request.get_full_path())
     else:
         form = RenewalForm()
@@ -107,6 +112,11 @@ def extend_policy(modeladmin, request, queryset):
 class PolicyAdmin(admin.ModelAdmin):
     inlines = [RiskInline]
     actions = [extend_policy]
+    list_display = [
+        "__str__",
+        "coverage_start_date",
+        "coverage_duration",
+    ]
 
 
 class PremiumChangeForm(forms.ModelForm):
