@@ -15,7 +15,7 @@ import moment from "moment-timezone";
 export default function RenewalsListTable({ policy }: { policy: Policy }) {
     const dispatch = useAppDispatch();
     const renewals: Renewal[] =
-        useAppSelector((state) => state.policies.renewals?.[policy.id]) || [];
+        useAppSelector((state) => state.policies.renewals?.[policy?.id]) || [];
     const users: Record<string, User> = useAppSelector(
         (state) => state.users.users
     );

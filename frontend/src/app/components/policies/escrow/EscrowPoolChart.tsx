@@ -115,8 +115,6 @@ export default function EscrowPoolChart({}) {
         []
     );
 
-    console.log("cummulativePaidPremiums", cummulativePaidPremiums);
-
     // paidPolicyClaims;
 
     const data = {

@@ -51,8 +51,7 @@ ALLOWED_HOSTS = [
     "[::1]",
 ]
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://localhost:8000"]
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
-
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 
 
 ADMIN_EMAIL = env("ADMIN_EMAIL")
@@ -166,8 +165,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = "/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -180,6 +179,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }
 # tried to do this inline, but it didn't work
@@ -218,44 +220,51 @@ else:
 
 FRONTEND_URL = env("FRONTEND_URL")
 
-LOG_DIR = os.path.join(BASE_DIR, 'logs')
-LOG_FILE = '/api.log'
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+LOG_FILE = "/api.log"
 LOG_PATH = LOG_DIR + LOG_FILE
 
 # send admins an email when important events happen
-NOTIFY_ADMINS_OF_EVENTS = env('NOTIFY_ADMINS_OF_EVENTS')
-DEFAULT_FROM_EMAIL = "Open Insure <noreply@openinsure.app>" # todo, env-ify
+NOTIFY_ADMINS_OF_EVENTS = env("NOTIFY_ADMINS_OF_EVENTS")
+DEFAULT_FROM_EMAIL = "Open Insure <noreply@openinsure.app>"  # todo, env-ify
 
 LOGGING = {
-    'version': 1,
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+    "version": 1,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
         },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
+        "simple": {"format": "%(levelname)s %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": LOG_PATH,
+            "formatter": "simple",
+        },
+        "request_handler": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": LOG_DIR + "/requests.log",
+            "formatter": "verbose",
         },
     },
-    'handlers': {
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": True,
         },
-        
-        
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': LOG_PATH,
-            'formatter': 'simple'
-        }
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True,
+        "django.request": {
+            "handlers": ["request_handler"],
+            "level": "DEBUG",
+            "propagate": False,
         },
     },
 }
@@ -263,8 +272,8 @@ LOGGING = {
 # for deeper debugging, uncomment the following
 if DEBUG:
     # make all loggers use the console.
-    for logger in LOGGING['loggers']:
-        LOGGING['loggers'][logger]['handlers'] = ['console']
+    for logger in LOGGING["loggers"]:
+        LOGGING["loggers"][logger]["handlers"] = ["console"]
 
 if TESTING:
     LOGGING = {}
