@@ -223,7 +223,6 @@ export interface Renewal {
     election: number;
     months_extension: number;
     initiator: number;
-    date_extension?: string;
     created_at: string;
     updated_at: string;
 }

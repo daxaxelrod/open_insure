@@ -2,7 +2,6 @@ from django.db import models
 from policies.models import Policy
 from elections.models import Election
 from pods.models import User
-from dateutil.relativedelta import relativedelta
 
 
 class Renewal(models.Model):
@@ -30,13 +29,5 @@ class Renewal(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    @property
-    def date_extension(self):
-        return (
-            self.policy.coverage_start_date
-            + relativedelta(months=self.policy.coverage_duration)
-            + relativedelta(months=self.months_extension)
-        )
-
     def __str__(self):
-        return f"Renewal for {self.policy} - {self.date_extension}"
+        return f"Renewal for {self.policy} - {self.months_extension} month extension"

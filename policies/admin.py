@@ -91,7 +91,11 @@ def extend_policy(modeladmin, request, queryset):
             for policy in queryset:
                 policy.coverage_duration += months_extension
                 policy.save()
-
+                Renewal.objects.create(
+                    policy=policy,
+                    months_extension=months_extension,
+                    initiator=request.user,
+                )
                 for user in policy.pod.members.all():
                     extend_premiums(policy, user)
 
@@ -155,7 +159,7 @@ class ClaimAdmin(admin.ModelAdmin):
 
 
 class RenewalAdmin(admin.ModelAdmin):
-    list_display = ("id", "policy", "months_extension", "date_extension", "created_at")
+    list_display = ("id", "policy", "months_extension", "created_at")
 
 
 admin.site.register(Policy, PolicyAdmin)
