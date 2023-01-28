@@ -35,7 +35,7 @@ export default function SlidablePolicyRiskSetting({
                     step={stepSize}
                     onChange={(val) =>
                         sliderOnChange(
-                            inBasisPoints ? val * 100 : val,
+                            inBasisPoints ? Math.round(val * 100) : val,
                             identifier
                         )
                     }

@@ -46,8 +46,16 @@ export default function PremiumFormulaDisplay({
     );
 
     return (
-        <div>
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ position: "relative" }}>
+            <div
+                style={{
+                    justifyContent: "flex-end",
+                    position: "absolute",
+                    zIndex: 1,
+                    top: 0,
+                    right: 0,
+                }}
+            >
                 <Tooltip
                     color="black"
                     placement="leftTop"
@@ -193,7 +201,9 @@ export default function PremiumFormulaDisplay({
                                 {riskSettings?.cell_phone_screen_protector_discount /
                                     100}
                                 % less likely to have a total loss if you have a
-                                screen protector
+                                <strong style={{ fontWeight: "800" }}>
+                                    &nbsp;screen protector
+                                </strong>
                             </Paragraph>
                         </Row>
                         <Row style={{ marginBottom: ".5rem" }}>
@@ -206,7 +216,10 @@ export default function PremiumFormulaDisplay({
                                 &nbsp;&nbsp;You are&nbsp;
                                 {riskSettings?.cell_phone_case_discount / 100}%
                                 less likely to have a total loss if you have a
-                                phone case
+                                <strong style={{ fontWeight: "800" }}>
+                                    {" "}
+                                    phone case
+                                </strong>
                             </Paragraph>
                         </Row>
                     </>

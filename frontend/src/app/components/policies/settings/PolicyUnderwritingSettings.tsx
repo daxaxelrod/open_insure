@@ -11,6 +11,7 @@ import {
     Tooltip,
     Typography,
     Select,
+    Space,
 } from "antd";
 import {
     ArrowUpOutlined,
@@ -33,6 +34,7 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { get_icon_for_insured_asset_type } from "../quotes/RisksTable";
 import SlidablePolicyRiskSetting from "./underwriting/SlidablePolicyRiskSetting";
 import BoxWithTitleLine from "../../common/BoxWithTitleLine";
+import { AxiosResponse } from "axios";
 
 const { Title, Paragraph } = Typography;
 
@@ -135,7 +137,7 @@ export default function PolicyUnderwritingSettings({
         try {
             let response = await computeHypotheticalPremiums(policy.id, values);
             setHypotheticalPremiums(response.data);
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
         } finally {
             setHypotheticalPremiumsPending(false);
@@ -489,21 +491,30 @@ export default function PolicyUnderwritingSettings({
                 pagination={{ hideOnSinglePage: true }}
             />
             <Row style={{ marginTop: 10, marginBottom: 10 }}>
-                <Popconfirm
-                    title="This will update the premiums for all members of this policy. Are you sure? All members will be emailed about the change."
-                    onConfirm={handleOk}
-                    onCancel={() => {}}
-                    okText="Yes, update"
-                    cancelText="No"
-                >
-                    <Button
-                        key="submit"
-                        type="primary"
-                        loading={patchPolicyRiskSettingsPending}
+                <Space>
+                    <Popconfirm
+                        title="This will update the premiums for all members of this policy. Are you sure? All members will be emailed about the change."
+                        onConfirm={handleOk}
+                        onCancel={() => {}}
+                        okText="Yes, update"
+                        cancelText="No"
                     >
-                        Change Underwriting settings
+                        <Button
+                            key="submit"
+                            type="primary"
+                            loading={patchPolicyRiskSettingsPending}
+                        >
+                            Change Underwriting settings
+                        </Button>
+                    </Popconfirm>
+                    <Button
+                        key="reset"
+                        type="default"
+                        onClick={() => setPresetOption("reset")}
+                    >
+                        Reset
                     </Button>
-                </Popconfirm>
+                </Space>
             </Row>
         </BoxWithTitleLine>
     );

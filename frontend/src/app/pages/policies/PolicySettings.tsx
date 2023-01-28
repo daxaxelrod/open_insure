@@ -31,9 +31,12 @@ export default function PolicySettings() {
     useEffect(() => {
         if (riskSettings === undefined) {
             dispatch(getPolicyRiskSettings(policy?.id));
-            setPageTitle("Policy Settings");
         }
     }, [policy?.id]);
+
+    useEffect(() => {
+        setPageTitle("Policy Settings");
+    }, []);
 
     if (!policy || !riskSettings) {
         return <div>Policy Not Found</div>;
