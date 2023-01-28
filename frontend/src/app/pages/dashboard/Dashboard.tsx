@@ -12,6 +12,7 @@ import { Grid, Layout, Menu } from "antd";
 import "../../styles/dashboard/main.css";
 import { getAvailablePolicies } from "../../../redux/actions/policies";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { DashboardContext } from "../../components/contexts/DashboardContext";
 
 const { Header, Sider, Content } = Layout;
 
@@ -133,7 +134,14 @@ export default function Home(props: any) {
                         minHeight: 280,
                     }}
                 >
-                    <Outlet />
+                    <DashboardContext.Provider
+                        value={{
+                            pageTitle,
+                            setPageTitle,
+                        }}
+                    >
+                        <Outlet />
+                    </DashboardContext.Provider>
                 </Content>
             </Layout>
         </Layout>

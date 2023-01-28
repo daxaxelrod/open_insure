@@ -22,6 +22,7 @@ import {
     GET_RENEWALS_PENDING,
     GET_RENEWALS_SUCCESS,
     GET_RENEWALS_FAILURE,
+    CLEAR_RENEWAL_ERROR,
 } from "../actions/types";
 import { Policy, Renewal } from "./commonTypes";
 
@@ -179,6 +180,11 @@ export default (
             return {
                 ...state,
                 createRenewalPending: false,
+            };
+        case CLEAR_RENEWAL_ERROR:
+            return {
+                ...state,
+                extensionError: null,
             };
         case GET_RENEWALS_PENDING:
             return {

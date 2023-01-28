@@ -11,8 +11,12 @@ import {
 } from "antd";
 import { Policy, Renewal } from "../../../../redux/reducers/commonTypes";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { updatePolicyDuration } from "../../../../redux/actions/renewals";
+import {
+    clearRenewalError,
+    updatePolicyDuration,
+} from "../../../../redux/actions/renewals";
 import RenewalsListTable from "./renewals/RenewalsListTable";
+import BoxWithTitleLine from "../../common/BoxWithTitleLine";
 
 const { Title, Paragraph } = Typography;
 
@@ -34,6 +38,10 @@ export default function PolicyExtensionSettings({
         (state) => state.policies.createRenewalPending
     );
 
+    const clearExtensionError = () => {
+        dispatch(clearRenewalError());
+    };
+
     const requestPolicyExtension = () => {
         console.log("Requesting extension to", policyDesiredExtension);
         if (policyDesiredExtension) {
@@ -46,13 +54,14 @@ export default function PolicyExtensionSettings({
     };
 
     return (
-        <>
-            <Title level={4}>Extend Policy</Title>
+        <BoxWithTitleLine title={"Renew Policy"} level={4}>
             {extensionError && (
                 <Alert
                     style={{ marginBottom: "1rem" }}
                     message={extensionError?.non_field_errors?.[0]}
                     type="error"
+                    onClose={clearExtensionError}
+                    closable
                 />
             )}
             <Row>
@@ -102,6 +111,6 @@ export default function PolicyExtensionSettings({
             <div>
                 <RenewalsListTable policy={policy} />
             </div>
-        </>
+        </BoxWithTitleLine>
     );
 }

@@ -5,16 +5,14 @@ import {
     Form,
     notification,
     Popconfirm,
-    RadioChangeEvent,
-    Radio,
     Row,
     Spin,
     Table,
     Tooltip,
     Typography,
+    Select,
 } from "antd";
 import {
-    SettingOutlined,
     ArrowUpOutlined,
     ArrowDownOutlined,
     QuestionCircleOutlined,
@@ -34,6 +32,7 @@ import PremiumFormulaDisplay from "./underwriting/PremiumFormulaDisplay";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { get_icon_for_insured_asset_type } from "../quotes/RisksTable";
 import SlidablePolicyRiskSetting from "./underwriting/SlidablePolicyRiskSetting";
+import BoxWithTitleLine from "../../common/BoxWithTitleLine";
 
 const { Title, Paragraph } = Typography;
 
@@ -92,12 +91,8 @@ export default function PolicyUnderwritingSettings({
             })
         );
     };
-    const handleCancel = () => {
-        form.resetFields();
-    };
 
-    const setPresetOption = (option: RadioChangeEvent) => {
-        let preset = option.target.value;
+    const setPresetOption = (preset: string) => {
         setChosenPreset(preset);
 
         if (preset === "reset") {
@@ -299,10 +294,10 @@ export default function PolicyUnderwritingSettings({
         }
     }, [riskSettings, getRiskSettingsPending]);
 
-    const formLayout: any = {
+    const formLayout = {
         labelCol: {
             xs: { span: 10 },
-            sm: { span: 6 },
+            sm: { span: 8 },
         },
         wrapperCol: {
             xs: { span: 14 },
@@ -310,168 +305,184 @@ export default function PolicyUnderwritingSettings({
         },
     };
 
+    const presets = ["Low", "Medium", "High", "Rest"];
+
     return (
-        <div>
-            <Title level={4}>Underwriting Settings</Title>
-            <PremiumFormulaDisplay
-                riskSettings={riskSettings}
-                userRisk={userRisk}
-                {...draggingValue}
-            />
-            <Spin spinning={getRiskSettingsPending}>
-                <Row
-                    style={{
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        marginBottom: "2rem",
-                    }}
-                >
-                    <Col span={8}>
-                        <Title level={4} style={{ margin: 0 }}>
-                            Set policy variables
-                        </Title>
-                    </Col>
-                    <Col span={16}>
-                        <Row justify="end" align={"middle"}>
-                            <Paragraph
-                                style={{
-                                    color: colors.gray7,
+        <BoxWithTitleLine left title={"Underwriting Settings"} level={4}>
+            <Row style={{ padding: "1rem" }} gutter={16}>
+                <Col lg={{ span: 12 }} sm={{ span: 24 }}>
+                    <Spin spinning={getRiskSettingsPending}>
+                        <Row
+                            style={{
+                                alignItems: "center",
+                                marginBottom: "2rem",
+                            }}
+                        >
+                            <Col span={15} offset={8}>
+                                <Row justify="end" align={"middle"}>
+                                    <Paragraph
+                                        style={{
+                                            color: colors.gray7,
 
-                                    marginBottom: 0,
-                                    display: "flex",
-                                    alignItems: "center",
-                                }}
-                            >
-                                Premium Presets:&nbsp;
-                            </Paragraph>
-                            <Tooltip
-                                color="black"
-                                placement="top"
-                                title={() => (
-                                    <div style={{ padding: 10 }}>
-                                        Higher premiums mean your policy is more
-                                        likely to be able to cover all expenses.
-                                        Lower premiums, while cheaper today,
-                                        might leave you in a position of not
-                                        being able to pay out all claims.
-                                        Discuss this with your policy members.
-                                        It's very important.
-                                    </div>
-                                )}
-                            >
-                                <QuestionCircleOutlined
-                                    style={{
-                                        display: "flex",
-                                        color: colors.gray7,
-                                        marginLeft: 4,
-                                        marginRight: ".5rem",
-                                    }}
-                                />
-                            </Tooltip>
-                            <Radio.Group
-                                options={[
-                                    { label: "Low", value: "high" },
-                                    {
-                                        label: "Medium",
-                                        value: "medium",
-                                    },
-                                    {
-                                        label: "High",
-                                        value: "low",
-                                    },
-                                    { label: "Reset", value: "reset" },
-                                ]}
-                                onChange={setPresetOption}
-                                value={chosenPreset}
-                                optionType="button"
-                                buttonStyle="solid"
-                            />
+                                            marginBottom: 0,
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        Premium Presets:&nbsp;
+                                    </Paragraph>
+                                    <Tooltip
+                                        color="black"
+                                        placement="top"
+                                        title={() => (
+                                            <div style={{ padding: 10 }}>
+                                                Higher premiums mean your policy
+                                                is more likely to be able to
+                                                cover all expenses. Lower
+                                                premiums, while cheaper today,
+                                                might leave you in a position of
+                                                not being able to pay out all
+                                                claims. Discuss this with your
+                                                policy members. It's very
+                                                important.
+                                            </div>
+                                        )}
+                                    >
+                                        <QuestionCircleOutlined
+                                            style={{
+                                                display: "flex",
+                                                color: colors.gray7,
+                                                marginLeft: 4,
+                                                marginRight: ".5rem",
+                                            }}
+                                        />
+                                    </Tooltip>
+                                    <Select
+                                        showArrow
+                                        onChange={setPresetOption}
+                                        value={chosenPreset || "Custom"}
+                                    >
+                                        {presets.map((item, idx) => (
+                                            <Select.Option
+                                                value={item.toLowerCase()}
+                                            >
+                                                {item}
+                                            </Select.Option>
+                                        ))}
+                                    </Select>
+                                </Row>
+                            </Col>
                         </Row>
-                    </Col>
-                </Row>
-                <Form form={form} initialValues={riskSettings} {...formLayout}>
-                    {policyHasCellPhoneEnabled && (
-                        <Form.Item
-                            label="Cell Phone Loss Rate"
-                            name={"cell_phone_peril_rate"}
+                        <Form
+                            form={form}
+                            initialValues={riskSettings}
+                            colon={false}
+                            {...formLayout}
                         >
-                            <SlidablePolicyRiskSetting
-                                sliderOnChange={sliderOnChange}
-                                setDraggingValue={setDraggingValue}
-                                draggingValue={draggingValue}
-                                identifier={"cell_phone_peril_rate"}
-                                value={cellPhonePerilRate}
-                            />
-                        </Form.Item>
-                    )}
-                    {policyHasAudioEquipmentEnabled && (
-                        <Form.Item
-                            label="Audio Equipment Claim Probability"
-                            name={"audio_equipment_peril_rate"}
-                        >
-                            <SlidablePolicyRiskSetting
-                                sliderOnChange={sliderOnChange}
-                                setDraggingValue={setDraggingValue}
-                                draggingValue={draggingValue}
-                                identifier={"audio_equipment_peril_rate"}
-                                value={audioEquipmentPerilRate}
-                            />
-                        </Form.Item>
-                    )}
-                    <Form.Item
-                        label="Conservative Factor"
-                        name={"conservative_factor"}
-                    >
-                        <SlidablePolicyRiskSetting
-                            min={0}
-                            sliderOnChange={sliderOnChange}
-                            setDraggingValue={setDraggingValue}
-                            draggingValue={draggingValue}
-                            identifier={"conservative_factor"}
-                            value={conservativeValue}
-                        />
-                    </Form.Item>
-                    {policyHasCellPhoneEnabled && (
-                        <>
+                            {policyHasCellPhoneEnabled && (
+                                <Form.Item
+                                    label="Cell Phone Loss Rate"
+                                    name={"cell_phone_peril_rate"}
+                                >
+                                    <SlidablePolicyRiskSetting
+                                        sliderOnChange={sliderOnChange}
+                                        setDraggingValue={setDraggingValue}
+                                        draggingValue={draggingValue}
+                                        identifier={"cell_phone_peril_rate"}
+                                        value={cellPhonePerilRate}
+                                    />
+                                </Form.Item>
+                            )}
+                            {policyHasAudioEquipmentEnabled && (
+                                <Form.Item
+                                    label="Audio Equipment Loss Rate"
+                                    name={"audio_equipment_peril_rate"}
+                                >
+                                    <SlidablePolicyRiskSetting
+                                        sliderOnChange={sliderOnChange}
+                                        setDraggingValue={setDraggingValue}
+                                        draggingValue={draggingValue}
+                                        identifier={
+                                            "audio_equipment_peril_rate"
+                                        }
+                                        value={audioEquipmentPerilRate}
+                                    />
+                                </Form.Item>
+                            )}
                             <Form.Item
-                                label="Screen Protector Discount"
-                                name={"cell_phone_screen_protector_discount"}
+                                label="Conservative Factor"
+                                name={"conservative_factor"}
                             >
                                 <SlidablePolicyRiskSetting
                                     min={0}
-                                    max={5}
-                                    stepSize={0.05}
-                                    inBasisPoints
                                     sliderOnChange={sliderOnChange}
                                     setDraggingValue={setDraggingValue}
                                     draggingValue={draggingValue}
-                                    identifier={
-                                        "cell_phone_screen_protector_discount"
-                                    }
-                                    value={cellPhoneScreenProtectorDiscount}
+                                    identifier={"conservative_factor"}
+                                    value={conservativeValue}
                                 />
                             </Form.Item>
-                            <Form.Item
-                                label="Case Discount"
-                                name={"cell_phone_case_discount"}
-                            >
-                                <SlidablePolicyRiskSetting
-                                    min={0}
-                                    max={5}
-                                    stepSize={0.05}
-                                    inBasisPoints
-                                    sliderOnChange={sliderOnChange}
-                                    setDraggingValue={setDraggingValue}
-                                    draggingValue={draggingValue}
-                                    identifier={"cell_phone_case_discount"}
-                                    value={cellPhoneCaseDiscount}
-                                />
-                            </Form.Item>
-                        </>
-                    )}
-                </Form>
-            </Spin>
-
+                            {policyHasCellPhoneEnabled && (
+                                <>
+                                    <Form.Item
+                                        label="Screen Protector Discount"
+                                        name={
+                                            "cell_phone_screen_protector_discount"
+                                        }
+                                    >
+                                        <SlidablePolicyRiskSetting
+                                            min={0}
+                                            max={5}
+                                            stepSize={0.05}
+                                            inBasisPoints
+                                            sliderOnChange={sliderOnChange}
+                                            setDraggingValue={setDraggingValue}
+                                            draggingValue={draggingValue}
+                                            identifier={
+                                                "cell_phone_screen_protector_discount"
+                                            }
+                                            value={
+                                                cellPhoneScreenProtectorDiscount
+                                            }
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="Case Discount"
+                                        name={"cell_phone_case_discount"}
+                                    >
+                                        <SlidablePolicyRiskSetting
+                                            min={0}
+                                            max={5}
+                                            stepSize={0.05}
+                                            inBasisPoints
+                                            sliderOnChange={sliderOnChange}
+                                            setDraggingValue={setDraggingValue}
+                                            draggingValue={draggingValue}
+                                            identifier={
+                                                "cell_phone_case_discount"
+                                            }
+                                            value={cellPhoneCaseDiscount}
+                                        />
+                                    </Form.Item>
+                                </>
+                            )}
+                        </Form>
+                    </Spin>
+                </Col>
+                <Col lg={{ span: 12 }} sm={{ span: 24 }}>
+                    <PremiumFormulaDisplay
+                        riskSettings={riskSettings}
+                        userRisk={userRisk}
+                        {...draggingValue}
+                    />
+                </Col>
+            </Row>
+            <Paragraph style={{ color: colors.gray9, padding: "1rem" }}>
+                Use the sliders and then hit the "Hypothetical Premiums" button.
+                This will let you see what premiums would be like if you
+                actually changed the settings. When you're ready to actually
+                change premiums, hit the "Change Underwriting Settings" buttong
+            </Paragraph>
             <Table
                 dataSource={pricedRisks}
                 columns={columns}
@@ -494,6 +505,6 @@ export default function PolicyUnderwritingSettings({
                     </Button>
                 </Popconfirm>
             </Row>
-        </div>
+        </BoxWithTitleLine>
     );
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import "katex/dist/katex.min.css";
-import { Divider, Row, Tooltip, Typography } from "antd";
+import { Col, Divider, Row, Tooltip, Typography } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import {
     Policy,
     Risk,
@@ -46,10 +47,23 @@ export default function PremiumFormulaDisplay({
 
     return (
         <div>
-            <Row justify="space-between">
-                <Title level={5} style={{ marginBottom: 5 }}>
-                    This is how premiums are calculated
-                </Title>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Tooltip
+                    color="black"
+                    placement="leftTop"
+                    title={() => (
+                        <div style={{ padding: 10 }}>
+                            This is how your premiums are calculated
+                        </div>
+                    )}
+                >
+                    <QuestionCircleOutlined
+                        style={{
+                            color: colors.gray7,
+                            padding: "3px 10px 10px 3px",
+                        }}
+                    />
+                </Tooltip>
                 {riskSettings?.last_updated_by && userWhoLastUpdated && (
                     <Paragraph style={{ color: colors.gray7 }}>
                         Last updated by{" "}
@@ -58,7 +72,7 @@ export default function PremiumFormulaDisplay({
                         } ${moment(riskSettings.last_updated_at).fromNow()}`}
                     </Paragraph>
                 )}
-            </Row>
+            </div>
             <div
                 className="premium-formula-affix-container"
                 style={{
@@ -96,7 +110,7 @@ export default function PremiumFormulaDisplay({
                         color: colors.gray9,
                         textDecoration: "underline",
                         textUnderlineOffset: "2px",
-                        marginBottom: ".5rem",
+                        marginBottom: ".75rem",
                     }}
                 >
                     Fundamentals
@@ -198,11 +212,6 @@ export default function PremiumFormulaDisplay({
                     </>
                 ) : null}
             </div>
-
-            <Divider
-                orientation="right"
-                style={{ fontSize: ".8rem" }}
-            ></Divider>
         </div>
     );
 }

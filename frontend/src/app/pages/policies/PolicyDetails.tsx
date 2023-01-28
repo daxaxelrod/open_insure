@@ -18,7 +18,6 @@ import MembersTable from "../../components/policies/members/MembersTable";
 import PolicyClaimsBriefCard from "../../components/policies/claims/PolicyClaimsBriefCard";
 import { getOrCreateRisk } from "../../../redux/actions/risk";
 import EscrowBalanceCard from "../../components/policies/premiums/EscrowBalanceCard";
-import PolicySettingsModal from "../../components/policies/settings/underwriting/PolicySettingsModal";
 import PolicyPremiums from "../../components/policies/premiums/PolicyPremiums";
 
 import "../../styles/dashboard/PolicyDetails.css";

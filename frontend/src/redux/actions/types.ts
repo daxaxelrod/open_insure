@@ -65,6 +65,8 @@ export const GET_RENEWALS_PENDING = "policies/GET_RENEWALS_PENDING";
 export const GET_RENEWALS_SUCCESS = "policies/GET_RENEWALS_SUCCESS";
 export const GET_RENEWALS_FAILURE = "policies/GET_RENEWALS_FAILURE";
 
+export const CLEAR_RENEWAL_ERROR = "policies/CLEAR_RENEWAL_ERROR";
+
 // pods
 export const GET_SINGLE_POD_PENDING = "pods/GET_SINGLE_POD_PENDING";
 export const GET_SINGLE_POD_SUCCESS = "pods/GET_SINGLE_POD_SUCCESS";

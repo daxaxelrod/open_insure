@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Col, Divider, Row, Typography } from "antd";
 
 import PolicyUnderwritingSettings from "../../components/policies/settings/PolicyUnderwritingSettings";
@@ -9,12 +9,14 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useParams } from "react-router-dom";
 import PolicyDangerZone from "../../components/policies/settings/PolicyDangerZone";
 import { getPolicyRiskSettings } from "../../../redux/actions/policies";
+import { DashboardContext } from "../../components/contexts/DashboardContext";
 
 const { Title } = Typography;
 
 export default function PolicySettings() {
     let { id } = useParams();
     const dispatch = useAppDispatch();
+    const { setPageTitle } = useContext(DashboardContext);
 
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
@@ -29,6 +31,7 @@ export default function PolicySettings() {
     useEffect(() => {
         if (riskSettings === undefined) {
             dispatch(getPolicyRiskSettings(policy?.id));
+            setPageTitle("Policy Settings");
         }
     }, [policy?.id]);
 
@@ -38,12 +41,10 @@ export default function PolicySettings() {
 
     return (
         <div>
-            <Title level={3}>Policy Settings</Title>
             <PolicyUnderwritingSettings policy={policy} />
-            <Divider />
+
             <PolicyExtensionSettings policy={policy} />
-            <Divider />
-            {/* <PolicyMemebershipSettings policy={policy} /> */}
+            <PolicyMemebershipSettings policy={policy} />
             {/* <Divider />
             <PolicyDangerZone policy={policy} /> */}
         </div>

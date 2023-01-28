@@ -9,6 +9,7 @@ import {
     GET_RENEWALS_PENDING,
     GET_RENEWALS_SUCCESS,
     GET_RENEWALS_FAILURE,
+    CLEAR_RENEWAL_ERROR,
 } from "./types";
 
 export const updatePolicyDuration =
@@ -57,3 +58,7 @@ export const getRenewals =
             });
         }
     };
+
+export const clearRenewalError = () => ({
+    type: CLEAR_RENEWAL_ERROR,
+});
