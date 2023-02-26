@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Input, Row, Typography } from "antd";
+import { Button, Col, Grid, Input, Row, Typography } from "antd";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { Policy } from "../../../redux/reducers/commonTypes";
@@ -14,6 +14,7 @@ const { Title } = Typography;
 export default function PolicyListSearch() {
     const [search, setSearch] = useState("");
     const [isVisible, setIsVisible] = useState(false);
+    const screens = Grid.useBreakpoint();
     const dispatch = useAppDispatch();
     const policies: Policy[] = useAppSelector(
         (state) => state.policies.publicPolicies
@@ -27,6 +28,8 @@ export default function PolicyListSearch() {
         dispatch(setPolicyDetailTabKey("1"));
     }, []);
 
+    const isMobile = !screens.lg;
+
     return (
         <div>
             <Row justify="space-between">
@@ -34,30 +37,44 @@ export default function PolicyListSearch() {
                 <Col
                     md={8}
                     lg={6}
-                    sm={12}
+                    sm={24}
                     style={{
                         flexDirection: "row",
                         display: "flex",
                         alignItems: "center",
+                        width: "100%",
                     }}
                 >
-                    <Button
-                        style={{ marginRight: 20 }}
-                        type="primary"
-                        onClick={() => setIsVisible(true)}
-                        icon={<PlusOutlined />}
-                    >
-                        Create
-                    </Button>
+                    {isMobile ? null : (
+                        <Button
+                            style={{ marginRight: 16 }}
+                            type="primary"
+                            onClick={() => setIsVisible(true)}
+                            icon={<PlusOutlined />}
+                        >
+                            Create
+                        </Button>
+                    )}
+
                     <Input
                         prefix={<SearchOutlined />}
                         placeholder="Search"
                         onChange={(e) => setSearch(e.target.value)}
                         value={search}
                     />
+                    {!isMobile ? null : (
+                        <Button
+                            style={{ marginLeft: 16 }}
+                            type="primary"
+                            onClick={() => setIsVisible(true)}
+                            icon={<PlusOutlined />}
+                        >
+                            Create
+                        </Button>
+                    )}
                 </Col>
             </Row>
-            <Row gutter={[16, 16]}>
+            <Row gutter={isMobile ? [4, 4] : [16, 16]}>
                 {policies.map((policy) => (
                     <PolicyCard key={policy.id} policy={policy} />
                 ))}

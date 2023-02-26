@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Dropdown, Menu, Row } from "antd";
+import { Card, Col, Dropdown, Grid, Menu, Row } from "antd";
 import { Policy } from "../../../../redux/reducers/commonTypes";
 import { Link } from "react-router-dom";
 import Title from "./Title";
@@ -8,13 +8,17 @@ import LowestPremiumDisplay from "./LowestPremiumDisplay";
 import CoverageRow from "./CoverageRow";
 import { useAppSelector } from "../../../../redux/hooks";
 import { determineLowestPremium } from "../utils/riskUtils";
+import useWindowSize from "../../hooks/useWindowSize";
 
 export default function PolicyCard({ policy }: { policy: Policy }) {
+    const screens = Grid.useBreakpoint();
     const policyRisks = useAppSelector(
         (state) => state.risk.policyRisks?.[policy.id]
     );
     const risksPending = useAppSelector((state) => state.risk.getRisksPending);
     let lowestPremiumInPolicy = determineLowestPremium(policyRisks);
+
+    const isMobile = screens.xs || screens.sm || screens.md;
 
     return (
         <Col
@@ -25,10 +29,10 @@ export default function PolicyCard({ policy }: { policy: Policy }) {
         >
             <div
                 style={{
-                    paddingTop: 20,
-                    paddingBottom: 10,
-                    paddingLeft: 10,
-                    paddingRight: 10,
+                    paddingTop: isMobile ? 20 : 20,
+                    paddingBottom: isMobile ? 0 : 10,
+                    paddingLeft: isMobile ? 0 : 10,
+                    paddingRight: isMobile ? 0 : 10,
                 }}
             >
                 <Link to={`/policy/${policy.id}`}>
