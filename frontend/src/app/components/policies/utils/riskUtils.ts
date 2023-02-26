@@ -7,7 +7,9 @@ export function determineLowestPremium(risks: Risk[]) {
     }
     risks.forEach((risk) => {
         if (risk.premium_amount < lowestPremium || lowestPremium === 0) {
-            lowestPremium = risk.premium_amount;
+            if (risk.premium_amount) {
+                lowestPremium = risk.premium_amount;
+            }
         }
     });
     return lowestPremium;
