@@ -6,7 +6,7 @@ import {
     MenuUnfoldOutlined,
     HomeOutlined,
     UserOutlined,
-    SearchOutlined,
+    FileOutlined,
 } from "@ant-design/icons";
 import { Grid, Layout, Menu } from "antd";
 import "../../styles/dashboard/main.css";
@@ -70,21 +70,21 @@ export default function Home(props: any) {
                     items={[
                         {
                             key: "1",
-                            icon: <SearchOutlined />,
+                            icon: <HomeOutlined />,
                             label: (
                                 <Link
                                     to={"/home"}
                                     onClick={() => {
-                                        setPageTitle("Find Policies");
+                                        setPageTitle("Home");
                                     }}
                                 >
-                                    Browse
+                                    Home
                                 </Link>
                             ),
                         },
                         {
                             key: "2",
-                            icon: <HomeOutlined />,
+                            icon: <FileOutlined />,
                             label: (
                                 <Link
                                     to={"policies"}

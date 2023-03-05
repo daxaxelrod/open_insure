@@ -14,7 +14,7 @@ import { Squeeze as Hamburger } from "hamburger-react";
 import { useAppSelector } from "../../redux/hooks";
 import { isLoggedIn } from "axios-jwt";
 import { Link } from "react-router-dom";
-import { DownOutlined } from "@ant-design/icons";
+import { HomeOutlined, FileOutlined, UserOutlined } from "@ant-design/icons";
 
 const { Header } = Layout;
 
@@ -23,15 +23,18 @@ const { Title } = Typography;
 const items: MenuProps["items"] = [
     {
         label: <Link to={"/home"}>Home</Link>,
+        icon: <HomeOutlined />,
         key: "0",
     },
     {
         label: <Link to={"/policies"}>Policies</Link>,
+        icon: <FileOutlined />,
         key: "1",
     },
 
     {
         label: <Link to={"/me"}>Profile</Link>,
+        icon: <UserOutlined />,
         key: "3",
     },
     {
