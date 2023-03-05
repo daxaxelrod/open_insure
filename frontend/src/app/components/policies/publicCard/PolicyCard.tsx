@@ -8,7 +8,6 @@ import LowestPremiumDisplay from "./LowestPremiumDisplay";
 import CoverageRow from "./CoverageRow";
 import { useAppSelector } from "../../../../redux/hooks";
 import { determineLowestPremium } from "../utils/riskUtils";
-import useWindowSize from "../../hooks/useWindowSize";
 
 export default function PolicyCard({ policy }: { policy: Policy }) {
     const screens = Grid.useBreakpoint();
@@ -18,7 +17,8 @@ export default function PolicyCard({ policy }: { policy: Policy }) {
     const risksPending = useAppSelector((state) => state.risk.getRisksPending);
     let lowestPremiumInPolicy = determineLowestPremium(policyRisks);
 
-    const isMobile = screens.xs || screens.sm || screens.md;
+    const isMobile = screens.xs || (screens.sm && !screens.md);
+    const isMed = screens.md && !screens.lg;
 
     return (
         <Col
@@ -29,10 +29,8 @@ export default function PolicyCard({ policy }: { policy: Policy }) {
         >
             <div
                 style={{
-                    paddingTop: isMobile ? 20 : 20,
+                    paddingTop: isMobile ? 20 : 10,
                     paddingBottom: isMobile ? 0 : 10,
-                    paddingLeft: isMobile ? 0 : 10,
-                    paddingRight: isMobile ? 0 : 10,
                 }}
             >
                 <Link to={`/policy/${policy.id}`}>

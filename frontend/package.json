@@ -18,6 +18,7 @@
         "axios-jwt": "^1.8.0",
         "chart.js": "^3.8.2",
         "gaussian": "^1.2.0",
+        "hamburger-react": "^2.5.0",
         "moment-timezone": "^0.5.34",
         "rc-queue-anim": "^2.0.0",
         "rc-scroll-anim": "^2.1.0",

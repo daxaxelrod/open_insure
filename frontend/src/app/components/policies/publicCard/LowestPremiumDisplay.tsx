@@ -6,7 +6,6 @@ import { maybePluralize } from "../../../utils/stringUtils";
 const { Title, Paragraph } = Typography;
 
 // just meant for advertising
-
 export default function LowestPremiumDisplay({
     amount,
     risksPending,

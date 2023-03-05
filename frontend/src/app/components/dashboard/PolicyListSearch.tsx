@@ -74,7 +74,7 @@ export default function PolicyListSearch() {
                     )}
                 </Col>
             </Row>
-            <Row gutter={isMobile ? [4, 4] : [16, 16]}>
+            <Row gutter={[{ xs: 4, sm: 8, md: 12, lg: 16 }, 0]}>
                 {policies.map((policy) => (
                     <PolicyCard key={policy.id} policy={policy} />
                 ))}
