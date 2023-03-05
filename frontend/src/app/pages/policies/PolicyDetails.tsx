@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Button, Col, Row, Space, Tabs, Typography } from "antd";
+import { Button, Col, Grid, Row, Space, Tabs, Typography } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 import { Policy, User } from "../../../redux/reducers/commonTypes";
 
@@ -35,12 +35,17 @@ export default function PolicyDetails() {
     const [isMobileWarningModalVisible, setisMobileWarningModalVisible] =
         useState(false);
 
+    const [hasBeenDismissed, setHasBeenDismissed] = useState(false);
+    const sizes = Grid.useBreakpoint();
+
     let dispatch = useAppDispatch();
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
             (p: Policy) => p.id === parseInt(id || "")
         )
     );
+    const isMobile =
+        (sizes.sm || sizes.xs) && !sizes.md && !sizes.lg && !sizes.xl;
 
     const policyDetailTabIndex = useAppSelector(
         (state) => state.ui.policyDetailTabKey
@@ -65,9 +70,10 @@ export default function PolicyDetails() {
         if (
             size.width !== undefined &&
             size.width < 768 &&
-            !isMobileWarningModalVisible
+            !isMobileWarningModalVisible &&
+            !hasBeenDismissed
         ) {
-            console.log("showing modal", size);
+            setHasBeenDismissed(true);
             setisMobileWarningModalVisible(true);
         }
     }, [size, setisMobileWarningModalVisible]);
@@ -88,15 +94,26 @@ export default function PolicyDetails() {
     return (
         <div>
             <div>
-                <Row align="middle">
-                    <Col span={19}>
-                        <Title style={{ marginBottom: "1.8rem" }} level={2}>
-                            {policy?.name}
-                        </Title>
+                <Row>
+                    <Col
+                        lg={{ span: 19 }}
+                        md={{ span: 19 }}
+                        sm={{ span: 24 }}
+                        xs={{ span: 24 }}
+                    >
+                        <Title level={2}>{policy?.name}</Title>
                     </Col>
                     <Col
-                        span={5}
-                        style={{ display: "flex", justifyContent: "flex-end" }}
+                        lg={{ span: 5 }}
+                        md={{ span: 5 }}
+                        sm={{ span: 24 }}
+                        xs={{ span: 24 }}
+                        style={{
+                            display: "flex",
+                            justifyContent: isMobile
+                                ? "flex-start"
+                                : "flex-end",
+                        }}
                     >
                         <Space>
                             {(!isMember || !memberHasFilledOutRisk) && (
@@ -125,7 +142,10 @@ export default function PolicyDetails() {
             </div>
             <Row align="stretch">
                 <PolicyDetailCol
-                    span={8}
+                    lg={{ span: 8 }}
+                    md={{ span: 12 }}
+                    sm={{ span: 24 }}
+                    xs={{ span: 24 }}
                     style={{
                         paddingRight: 10,
                         display: "flex",

@@ -37,13 +37,6 @@ const items: MenuProps["items"] = [
         icon: <UserOutlined />,
         key: "3",
     },
-    {
-        type: "divider",
-    },
-    {
-        label: "Logout",
-        key: "4",
-    },
 ];
 
 export default function NavBar() {

@@ -73,7 +73,7 @@ export default function UserMainPremiumObligation({
                     </Col>
                 </Row>
                 <Row justify="space-between">
-                    <Col span={12}>
+                    <Col span={14}>
                         <Statistic
                             title="Total premiums you've paid"
                             value={(totalPremiumsPaidToPolicy / 100).toFixed(2)}
@@ -83,7 +83,7 @@ export default function UserMainPremiumObligation({
                             }}
                         />
                     </Col>
-                    <Col span={12}>
+                    <Col span={10}>
                         {nextPaymentDue && (
                             <div>
                                 <Statistic
