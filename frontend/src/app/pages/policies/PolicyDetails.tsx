@@ -140,7 +140,7 @@ export default function PolicyDetails() {
                     </Col>
                 </Row>
             </div>
-            <Row align="stretch">
+            <Row>
                 <PolicyDetailCol
                     lg={{ span: 8 }}
                     md={{ span: 12 }}
@@ -162,7 +162,12 @@ export default function PolicyDetails() {
                         }}
                     />
                 </PolicyDetailCol>
-                <PolicyDetailCol span={16} style={{ flex: 1 }}>
+                <PolicyDetailCol
+                    lg={{ span: 16 }}
+                    md={{ span: 12 }}
+                    sm={{ span: 24 }}
+                    xs={{ span: 24 }}
+                >
                     <PolicyDescriptionRow
                         policy={policy}
                         hasPolicyStarted={hasPolicyStarted}

@@ -109,7 +109,11 @@ export default function MembersTable({ policy }: { policy: Policy }) {
     return (
         <div style={{ marginBottom: ".5rem" }}>
             <Title level={4}>Policy Members</Title>
-            <Table dataSource={members} columns={columns} />
+            <Table
+                dataSource={members}
+                columns={columns}
+                scroll={{ x: true }}
+            />
         </div>
     );
 }

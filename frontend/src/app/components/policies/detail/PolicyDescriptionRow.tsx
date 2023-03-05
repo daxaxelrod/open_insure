@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row, Space, Statistic, Tag, Typography } from "antd";
+import { Col, Grid, Row, Space, Statistic, Tag, Typography } from "antd";
 import { Peril, Policy } from "../../../../redux/reducers/commonTypes";
 import PerilGridDisplay from "./PerilGridDisplay";
 import { CalendarOutlined } from "@ant-design/icons";
@@ -38,6 +38,10 @@ export default function PolicyDescriptionRow({
     policy: Policy;
     hasPolicyStarted: boolean;
 }) {
+    const sizes = Grid.useBreakpoint();
+    const isMedOrBelow =
+        (sizes.sm || sizes.xs || sizes.md) && !sizes.lg && !sizes.xl;
+
     const renderPolicyStatusTag = () => {
         return hasPolicyStarted ? (
             <Tag color="success" style={{ marginLeft: 10 }}>
@@ -53,7 +57,6 @@ export default function PolicyDescriptionRow({
     return (
         <div
             style={{
-                padding: "24px 0px 2rem 3rem",
                 marginLeft: "1rem",
 
                 display: "flex",
@@ -62,12 +65,15 @@ export default function PolicyDescriptionRow({
         >
             <Row>
                 <Col
-                    span={12}
+                    lg={{ span: 12 }}
+                    md={{ span: 24 }}
+                    sm={{ span: 24 }}
+                    xs={{ span: 24 }}
                     style={{
                         display: "flex",
                         flexDirection: "column",
-                        justifyContent: "space-between",
-                        paddingRight: "1.8rem",
+                        justifyContent: "flex-start",
+                        marginTop: isMedOrBelow ? "1.5rem" : 0,
                     }}
                 >
                     <Title
@@ -97,7 +103,12 @@ export default function PolicyDescriptionRow({
                         </Space>
                     </Row>
                 </Col>
-                <Col span={12}>
+                <Col
+                    lg={{ span: 12 }}
+                    md={{ span: 0 }}
+                    sm={{ span: 0 }}
+                    xs={{ span: 0 }}
+                >
                     <Title level={4} style={{ textAlign: "left" }}>
                         Covered Events
                     </Title>
