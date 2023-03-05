@@ -23,19 +23,13 @@ import PolicyPremiums from "../../components/policies/premiums/PolicyPremiums";
 import "../../styles/dashboard/PolicyDetails.css";
 import PolicyClaimsList from "../../components/policies/claims/list/PolicyClaimsList";
 import { setPolicyDetailTabKey } from "../../../redux/actions/ui";
-import MobileResponsiveWarningModal from "../../components/policies/utils/MobileResponsiveWarningModal";
-import useWindowSize from "../../components/hooks/useWindowSize";
 import colors from "../../constants/colors";
 
 const { Title, Paragraph } = Typography;
 
 export default function PolicyDetails() {
     let { id } = useParams();
-    let size = useWindowSize();
-    const [isMobileWarningModalVisible, setisMobileWarningModalVisible] =
-        useState(false);
 
-    const [hasBeenDismissed, setHasBeenDismissed] = useState(false);
     const sizes = Grid.useBreakpoint();
 
     let dispatch = useAppDispatch();
@@ -65,18 +59,6 @@ export default function PolicyDetails() {
             dispatch(getOrCreateRisk(policy?.id, {}));
         }
     }, [policy, focusedRisk]);
-
-    useEffect(() => {
-        if (
-            size.width !== undefined &&
-            size.width < 768 &&
-            !isMobileWarningModalVisible &&
-            !hasBeenDismissed
-        ) {
-            setHasBeenDismissed(true);
-            setisMobileWarningModalVisible(true);
-        }
-    }, [size, setisMobileWarningModalVisible]);
 
     if (!policy) {
         return <PolicyDetailSkeleton />;
@@ -215,10 +197,6 @@ export default function PolicyDetails() {
                     </Row>
                 </Tabs.TabPane>
             </Tabs>
-            <MobileResponsiveWarningModal
-                visible={isMobileWarningModalVisible}
-                setVisible={setisMobileWarningModalVisible}
-            />
         </div>
     );
 }

@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import PolicyDangerZone from "../../components/policies/settings/PolicyDangerZone";
 import { getPolicyRiskSettings } from "../../../redux/actions/policies";
 import { DashboardContext } from "../../components/contexts/DashboardContext";
+import MobileResponsiveWarningModal from "../../components/policies/utils/MobileResponsiveWarningModal";
 
 const { Title } = Typography;
 
@@ -50,6 +51,8 @@ export default function PolicySettings() {
             <PolicyMemebershipSettings policy={policy} />
             {/* <Divider />
             <PolicyDangerZone policy={policy} /> */}
+
+            <MobileResponsiveWarningModal />
         </div>
     );
 }

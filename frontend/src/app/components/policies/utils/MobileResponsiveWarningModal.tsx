@@ -1,23 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Typography, Button } from "antd";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const { Title, Paragraph } = Typography;
 
-export default function MobileResponsiveWarningModal({
-    visible,
-    setVisible,
-}: {
-    visible: boolean;
-    setVisible: (visible: boolean) => void;
-}) {
+export default function MobileResponsiveWarningModal() {
+    const [hasBeenDismissed, setHasBeenDismissed] = useState(false);
+    let size = useWindowSize();
+    const [isMobileWarningModalVisible, setisMobileWarningModalVisible] =
+        useState(false);
+
+    useEffect(() => {
+        if (
+            size.width !== undefined &&
+            size.width < 768 &&
+            !isMobileWarningModalVisible &&
+            !hasBeenDismissed
+        ) {
+            setisMobileWarningModalVisible(true);
+        }
+    }, [size, setisMobileWarningModalVisible]);
+
     const handleOk = () => {
-        setVisible(false);
+        setisMobileWarningModalVisible(false);
+        setHasBeenDismissed(true);
     };
 
     return (
         <Modal
             title={<Title>🚨 Notice</Title>}
-            open={visible}
+            open={isMobileWarningModalVisible}
             onCancel={handleOk}
             footer={[
                 <Button
