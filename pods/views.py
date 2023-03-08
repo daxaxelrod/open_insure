@@ -8,11 +8,16 @@ from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
 )
-from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from rest_framework.permissions import IsAuthenticated, AllowAny, SAFE_METHODS
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.views import APIView
 from pods.models import Pod, PodInvite, User, WaitlistMember
-from pods.serializers import InviteSerializer, PodSerializer, UserSerializer, PatchableUserSerializer
+from pods.serializers import (
+    InviteSerializer,
+    PodSerializer,
+    UserSerializer,
+    PatchableUserSerializer,
+)
 from policies.premiums import remove_future_premiums
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.mail import EmailMultiAlternatives
@@ -105,6 +110,11 @@ class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def get_permissions(self):
+        if self.action == "create":
+            return [AllowAny()]
+        return super().get_permissions()
+
     # Register
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
@@ -115,12 +125,20 @@ class UserViewSet(ModelViewSet):
         response.data["refresh"] = str(refresh)
         response.data["access"] = str(refresh.access_token)
         if settings.NOTIFY_ADMINS_OF_EVENTS:
-            send_notif_email_to_admins(title="New User", description=f"email: {user.email}, id: {user.id} Just signed up! You should welcome them")
+            send_notif_email_to_admins(
+                title="New User",
+                description=f"email: {user.email}, id: {user.id} Just signed up! You should welcome them",
+            )
         return response
 
     def perform_create(self, serializer):
         # setup default picture
-        serializer.save(picture='https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&name=' + serializer.validated_data['first_name'] + '+' + serializer.validated_data['last_name'])
+        serializer.save(
+            picture="https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=128&name="
+            + serializer.validated_data["first_name"]
+            + "+"
+            + serializer.validated_data["last_name"]
+        )
 
 
 class SelfView(RetrieveUpdateAPIView):
@@ -134,17 +152,19 @@ class SelfView(RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
-    
+
 
 class WaitlistView(APIView):
     serializer_class = InviteSerializer
-    
+
     def post(self, request, format=None):
         serializer = InviteSerializer(data=request.data)
         if serializer.is_valid():
             WaitlistMember.objects.create(email=serializer.validated_data["email"])
             if settings.NOTIFY_ADMINS_OF_EVENTS:
-                send_notif_email_to_admins(title="New waitlist member", description=f"{serializer.validated_data['email']} joined the waitlist! Go say hello")
+                send_notif_email_to_admins(
+                    title="New waitlist member",
+                    description=f"{serializer.validated_data['email']} joined the waitlist! Go say hello",
+                )
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
