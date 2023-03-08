@@ -1,5 +1,5 @@
 import { Alert, Button, Col, Form, Input, Row, Grid } from "antd";
-import { getAccessToken, isLoggedIn } from "axios-jwt";
+import { isLoggedIn } from "axios-jwt";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { clearAuthPending, login } from "../../../redux/actions/onboarding";
@@ -79,8 +79,8 @@ export default function LoginForm() {
 
             <Form.Item
                 wrapperCol={{
-                    offset: isMobile ? 4 : 8,
-                    span: isMobile ? 20 : 16,
+                    offset: isMobile ? 0 : 8,
+                    span: isMobile ? 0 : 16,
                 }}
             >
                 <Button
