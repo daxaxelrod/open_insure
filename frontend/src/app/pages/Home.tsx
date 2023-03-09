@@ -11,17 +11,10 @@ import styled from "styled-components";
 import { Grid, Layout } from "antd";
 
 export default function Home() {
-    const screens = Grid.useBreakpoint();
-    const isMobile = !screens.lg;
     return (
         <Layout>
             <Layout.Content>
-                <Banner
-                    key="banner"
-                    isMobile={isMobile}
-                    isSmall={screens.sm}
-                    isXSmall={screens.xs}
-                />
+                <Banner key="banner" />
                 {/* <Page1 key="page1" /> */}
                 <WhyDoSelfInsurance />
 

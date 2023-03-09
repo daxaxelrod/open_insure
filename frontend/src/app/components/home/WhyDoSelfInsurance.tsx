@@ -67,13 +67,20 @@ export default function WhyDoSelfInsurance() {
                     <ImageHeading
                         style={{
                             marginTop: isMobile ? 40 : 0,
+                            position: "relative",
+                            ...(isMobile ? { zIndex: 10 } : {}),
                         }}
                     >
                         Open Insure
                     </ImageHeading>
                     <img
                         src={open_insure_sankey}
-                        style={{ width: isMobile ? "95%" : "100%", zIndex: 1 }}
+                        style={{
+                            width: isMobile ? "95%" : "100%",
+                            zIndex: 1,
+                            position: "relative",
+                            ...(isMobile ? { marginTop: -20 } : {}),
+                        }}
                     />
                 </Col>
             </Row>
