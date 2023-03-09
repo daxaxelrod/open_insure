@@ -29,6 +29,45 @@ import PolicyPremiumDetails from "./app/components/policies/premiums/PolicyPremi
 import ClaimCreate from "./app/pages/claims/ClaimCreate";
 import PolicySettings from "./app/pages/policies/PolicySettings";
 
+const App = () => {
+    let loggedIn = isLoggedIn(); // called too often?
+    return (
+        <BrowserRouter>
+            <NavBar />
+            <Routes>
+                <Route path="/join" element={<Onboarding />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/faqs" element={<FAQs />} />
+                {!loggedIn && <Route path="/" element={<Index />} />}
+                <Route path="/" element={<Dashboard />}>
+                    <Route path="home" element={<PolicyListSearch />} />
+                    <Route path="policy/:id" element={<PolicyDetails />} />
+                    <Route
+                        path="policy/:id/settings"
+                        element={<PolicySettings />}
+                    />
+                    <Route
+                        path="policy/:id/claims/new"
+                        element={<ClaimCreate />}
+                    />
+                    <Route
+                        path="policy/:id/claims/:claimId"
+                        element={<ClaimDetails />}
+                    />
+                    <Route
+                        path="policy/:id/pool"
+                        element={<PolicyPoolDetails />}
+                    />
+                    <Route path="policies" element={<UserPolicies />} />
+                    <Route path="me" element={<UserProfile />} />
+                    <Route path="/members/:id" element={<PublicProfile />} />
+                    <Route path="*" element={<NotFound />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
+};
+
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 let persistor = persistStore(store);
@@ -41,53 +80,7 @@ root.render(
         <Provider store={store}>
             <PersistGate persistor={persistor}>
                 <Layout>
-                    <BrowserRouter>
-                        <NavBar />
-                        <Routes>
-                            <Route path="/join" element={<Onboarding />} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/faqs" element={<FAQs />} />
-                            {!isLoggedIn() && (
-                                <Route path="/" element={<Index />} />
-                            )}
-                            <Route path="/" element={<Dashboard />}>
-                                <Route
-                                    path="home"
-                                    element={<PolicyListSearch />}
-                                />
-                                <Route
-                                    path="policy/:id"
-                                    element={<PolicyDetails />}
-                                />
-                                <Route
-                                    path="policy/:id/settings"
-                                    element={<PolicySettings />}
-                                />
-                                <Route
-                                    path="policy/:id/claims/new"
-                                    element={<ClaimCreate />}
-                                />
-                                <Route
-                                    path="policy/:id/claims/:claimId"
-                                    element={<ClaimDetails />}
-                                />
-                                <Route
-                                    path="policy/:id/pool"
-                                    element={<PolicyPoolDetails />}
-                                />
-                                <Route
-                                    path="policies"
-                                    element={<UserPolicies />}
-                                />
-                                <Route path="me" element={<UserProfile />} />
-                                <Route
-                                    path="/members/:id"
-                                    element={<PublicProfile />}
-                                />
-                                <Route path="*" element={<NotFound />} />
-                            </Route>
-                        </Routes>
-                    </BrowserRouter>
+                    <App />
                 </Layout>
             </PersistGate>
         </Provider>
