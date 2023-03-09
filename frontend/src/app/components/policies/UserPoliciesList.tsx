@@ -81,6 +81,7 @@ export default function UserPoliciesList({ policies }: { policies: Policy[] }) {
 
     return (
         <Table
+            scroll={{ x: true }}
             rowClassName="cursor-pointer"
             dataSource={policies}
             columns={columns}

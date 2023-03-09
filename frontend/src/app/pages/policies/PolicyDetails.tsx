@@ -1,8 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Button, Col, Grid, Row, Space, Tabs, Typography } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import {
+    Button,
+    Col,
+    Dropdown,
+    Grid,
+    Row,
+    Space,
+    Tabs,
+    Typography,
+} from "antd";
+import { SettingOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { Policy, User } from "../../../redux/reducers/commonTypes";
 
 import moment from "moment-timezone";
@@ -33,6 +42,7 @@ export default function PolicyDetails() {
     const sizes = Grid.useBreakpoint();
 
     let dispatch = useAppDispatch();
+
     let policy: Policy = useAppSelector((state) =>
         state.policies.publicPolicies.find(
             (p: Policy) => p.id === parseInt(id || "")
@@ -80,16 +90,16 @@ export default function PolicyDetails() {
                     <Col
                         lg={{ span: 19 }}
                         md={{ span: 19 }}
-                        sm={{ span: 24 }}
-                        xs={{ span: 24 }}
+                        sm={{ span: 22 }}
+                        xs={{ span: 22 }}
                     >
                         <Title level={2}>{policy?.name}</Title>
                     </Col>
                     <Col
                         lg={{ span: 5 }}
                         md={{ span: 5 }}
-                        sm={{ span: 24 }}
-                        xs={{ span: 24 }}
+                        sm={{ span: 2 }}
+                        xs={{ span: 2 }}
                         style={{
                             display: "flex",
                             justifyContent: isMobile
@@ -97,28 +107,104 @@ export default function PolicyDetails() {
                                 : "flex-end",
                         }}
                     >
-                        <Space>
-                            {(!isMember || !memberHasFilledOutRisk) && (
-                                <PolicyQuoteRequestForm
-                                    policy={policy}
-                                    ref={policyQuoteDrawerFormRef}
-                                />
-                            )}
-                            {isMember && (
-                                <InviteFriendToPolicy policy={policy} />
-                            )}
-                            {isMember && (
-                                <Link to={`/policy/${policy.id}/settings`}>
-                                    <Button type="default">
-                                        <Paragraph
-                                            style={{ color: colors.gray8 }}
-                                        >
-                                            <SettingOutlined /> Settings
-                                        </Paragraph>
-                                    </Button>
-                                </Link>
-                            )}
-                        </Space>
+                        {(sizes.sm || sizes.xs) && !sizes.md ? (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Dropdown
+                                    menu={{
+                                        items: [
+                                            !isMember || !memberHasFilledOutRisk
+                                                ? {
+                                                      key: "quote",
+                                                      label: (
+                                                          <PolicyQuoteRequestForm
+                                                              policy={policy}
+                                                              ref={
+                                                                  policyQuoteDrawerFormRef
+                                                              }
+                                                          />
+                                                      ),
+                                                  }
+                                                : null,
+                                            isMember
+                                                ? {
+                                                      key: "invite",
+                                                      label: (
+                                                          <InviteFriendToPolicy
+                                                              policy={policy}
+                                                          />
+                                                      ),
+                                                  }
+                                                : null,
+                                            isMember
+                                                ? {
+                                                      key: "settings",
+                                                      label: (
+                                                          <Link
+                                                              to={`/policy/${policy.id}/settings`}
+                                                          >
+                                                              <Button type="default">
+                                                                  <Paragraph
+                                                                      style={{
+                                                                          color: colors.gray8,
+                                                                      }}
+                                                                  >
+                                                                      <SettingOutlined />{" "}
+                                                                      Settings
+                                                                  </Paragraph>
+                                                              </Button>
+                                                          </Link>
+                                                      ),
+                                                  }
+                                                : null,
+                                        ].filter((i) => i !== null),
+                                    }}
+                                    trigger={["hover"]}
+                                >
+                                    <div
+                                        style={{
+                                            padding: 10,
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        <EllipsisOutlined
+                                            style={{
+                                                fontSize: 20,
+                                                transform: "rotate(90deg)",
+                                            }}
+                                        />
+                                    </div>
+                                </Dropdown>
+                            </div>
+                        ) : (
+                            <Space>
+                                {(!isMember || !memberHasFilledOutRisk) && (
+                                    <PolicyQuoteRequestForm
+                                        policy={policy}
+                                        ref={policyQuoteDrawerFormRef}
+                                    />
+                                )}
+                                {isMember && (
+                                    <InviteFriendToPolicy policy={policy} />
+                                )}
+                                {isMember && (
+                                    <Link to={`/policy/${policy.id}/settings`}>
+                                        <Button type="default">
+                                            <Paragraph
+                                                style={{ color: colors.gray8 }}
+                                            >
+                                                <SettingOutlined /> Settings
+                                            </Paragraph>
+                                        </Button>
+                                    </Link>
+                                )}
+                            </Space>
+                        )}
                     </Col>
                 </Row>
             </div>
