@@ -34,7 +34,7 @@ export default function LoginForm() {
             labelCol={{
                 xs: { span: 0 },
                 sm: { span: 0 },
-                md: { span: 8 },
+                md: { span: 12 },
                 lg: { span: 8 },
                 xl: { span: 8 },
                 xxl: { span: 8 },
@@ -43,7 +43,7 @@ export default function LoginForm() {
             wrapperCol={{
                 xs: { span: 24 },
                 sm: { span: 24 },
-                md: { span: 16 },
+                md: { span: 12, offset: !screens.lg ? 6 : 0 },
                 lg: { span: 16 },
                 xl: { span: 16 },
                 xxl: { span: 16 },
@@ -79,8 +79,12 @@ export default function LoginForm() {
 
             <Form.Item
                 wrapperCol={{
-                    offset: isMobile ? 0 : 8,
-                    span: isMobile ? 0 : 16,
+                    xs: { span: 24 },
+                    sm: { span: 24 },
+                    md: { span: 12, offset: !screens.lg ? 6 : 12 },
+                    lg: { span: 0, offset: 8 },
+                    xl: { span: 0, offset: 8 },
+                    xxl: { span: 0, offset: 8 },
                 }}
             >
                 <Button
