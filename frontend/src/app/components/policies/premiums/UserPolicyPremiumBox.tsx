@@ -1,4 +1,4 @@
-import { Card, Skeleton } from "antd";
+import { Card, Grid, Skeleton } from "antd";
 import React from "react";
 import { useAppSelector } from "../../../../redux/hooks";
 import { Policy } from "../../../../redux/reducers/commonTypes";
@@ -20,18 +20,22 @@ export default function UserPolicyPremiumBox({
     const focusedRiskPending = useAppSelector(
         (state) => state.risk.modifyRiskPending
     );
+    const sizes = Grid.useBreakpoint();
+    const isMobile = sizes.xs || (sizes.sm && !sizes.md);
+    const Container = isMobile ? "div" : Card;
 
     return (
-        <Card
+        <Container
             style={{
                 display: "flex",
                 flex: 1,
+                padding: isMobile ? ".75rem" : 0,
             }}
             bodyStyle={{
                 display: "flex",
                 flex: 1,
             }}
-            bordered={false}
+            bordered={true}
         >
             {focusedRiskPending ? (
                 <Skeleton />
@@ -45,6 +49,6 @@ export default function UserPolicyPremiumBox({
             ) : (
                 <UserPolicyQuotePrompt openRiskDrawer={openRiskDrawer} />
             )}
-        </Card>
+        </Container>
     );
 }

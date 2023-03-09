@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
     Typography,
     Layout,
@@ -20,31 +20,37 @@ const { Header } = Layout;
 
 const { Title } = Typography;
 
-const items: MenuProps["items"] = [
-    {
-        label: <Link to={"/home"}>Home</Link>,
-        icon: <HomeOutlined />,
-        key: "0",
-    },
-    {
-        label: <Link to={"/policies"}>Policies</Link>,
-        icon: <FileOutlined />,
-        key: "1",
-    },
-
-    {
-        label: <Link to={"/me"}>Profile</Link>,
-        icon: <UserOutlined />,
-        key: "3",
-    },
-];
-
 export default function NavBar() {
     const currentUser = useAppSelector((state) => state.auth.currentUser);
     const [isOpen, setOpen] = useState(false);
 
     const loggedIn = isLoggedIn();
     const sizes = Grid.useBreakpoint();
+
+    const items: MenuProps["items"] = useMemo(
+        () => [
+            {
+                label: <Link to={"/home"}>Home</Link>,
+                icon: <HomeOutlined />,
+                onClick: () => setOpen(false),
+                key: "0",
+            },
+            {
+                label: <Link to={"/policies"}>Policies</Link>,
+                icon: <FileOutlined />,
+                onClick: () => setOpen(false),
+                key: "1",
+            },
+
+            {
+                label: <Link to={"/me"}>Profile</Link>,
+                icon: <UserOutlined />,
+                onClick: () => setOpen(false),
+                key: "3",
+            },
+        ],
+        []
+    );
 
     // use hamburger menu on mobile
     const isMedOrBelow = !sizes.lg && !sizes.xl && !sizes.xxl;
@@ -67,7 +73,7 @@ export default function NavBar() {
                     </Title>
                 )}
 
-                {isMedOrBelow ? (
+                {isMedOrBelow && loggedIn ? (
                     <Dropdown
                         menu={{ items }}
                         trigger={["click"]}

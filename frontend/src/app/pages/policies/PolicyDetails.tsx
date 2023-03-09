@@ -149,6 +149,9 @@ export default function PolicyDetails() {
                     md={{ span: 12 }}
                     sm={{ span: 24 }}
                     xs={{ span: 24 }}
+                    style={{
+                        marginBottom: isMobile ? "1.5rem" : 0,
+                    }}
                 >
                     <PolicyDescriptionRow
                         policy={policy}
