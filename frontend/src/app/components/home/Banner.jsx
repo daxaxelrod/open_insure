@@ -17,7 +17,11 @@ const Banner = ({ className = "banner" }) => {
 
     return (
         <Element component="section" className={`${className}-wrapper page`}>
-            <Row style={{ padding: "35px" }} justify="start" align="middle">
+            <Row
+                style={{ padding: "35px", overflow: "hidden" }}
+                justify="start"
+                align="middle"
+            >
                 <Col
                     xl={{ span: 8, offset: 4 }}
                     lg={{ span: 8, offset: 3 }}
