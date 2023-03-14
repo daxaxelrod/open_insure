@@ -19,7 +19,7 @@ from policies.permissions import (
     InPolicyPod,
     InPolicyPremiumPod,
     IsPhotoOwner,
-    InRiskSettingsPolicyPod
+    InRiskSettingsPolicyPod,
 )
 from policies.premiums import schedule_premiums
 from policies.risk.emails import send_risk_update_email
@@ -59,9 +59,13 @@ class PolicyViewSet(ModelViewSet):
     def get_queryset(self):
         if where_member := self.request.query_params.get("where_member", None):
             if where_member:
-                return Policy.objects.filter(pod__members__id=self.request.user.id).order_by('-created_at')
+                return Policy.objects.filter(
+                    pod__members__id=self.request.user.id
+                ).order_by("-created_at")
             else:
-                return Policy.objects.exclude(pod__members__id=self.request.user.id).order_by('-created_at')
+                return Policy.objects.exclude(
+                    pod__members__id=self.request.user.id
+                ).order_by("-created_at")
         return Policy.objects.all()
 
     def get_serializer_class(self):
@@ -118,6 +122,7 @@ class PolicyViewSet(ModelViewSet):
             status=HTTP_201_CREATED,
         )
 
+
 class PremiumViewSet(RetrieveUpdateDestroyAPIView):
     queryset = Premium.objects.all()
     serializer_class = PremiumSerializer
@@ -127,25 +132,24 @@ class PremiumViewSet(RetrieveUpdateDestroyAPIView):
     # available on the policy detail page
     # for now we dont handle direct debiting, just allowing the pod to keep track of it
 
+
 class RiskSettingsViewSet(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated & InRiskSettingsPolicyPod]
     serializer_class = PolicyRiskSettingsSerializer
     lookup_url_kwarg = "policy_id"
-    
+
     def get_object(self):
         try:
             return PolicyRiskSettings.objects.get(policy__id=self.kwargs["policy_id"])
         except PolicyRiskSettings.DoesNotExist:
-            raise ValidationError({
-                "message": "Risk settings not found"
-                })
+            raise ValidationError({"message": "Risk settings not found"})
 
     def perform_update(self, serializer):
         # existing_risk_settings = copy.copy(serializer.instance.__dict__)
         risk_settings = serializer.save(last_updated_by=self.request.user)
         policy = risk_settings.policy
-        
-        # we need to recompute the risk scores and premiums    
+
+        # we need to recompute the risk scores and premiums
         for risk in risk_settings.policy.risks.filter(premium_amount__isnull=False):
             old_risk = copy(risk.__dict__)
             risk.risk_score = compute_risk_score(risk, risk_settings)
@@ -161,41 +165,42 @@ class RiskSettingsViewSet(RetrieveUpdateAPIView):
                     policy=policy,
                     changer=self.request.user,
                     old_risk=old_risk,
-                    new_risk=risk
+                    new_risk=risk,
                 )
-                logger.info(f"Updated risk {risk.id} from after risk settings update. Email notification sent to {risk.user.email}")
+                logger.info(
+                    f"Updated risk {risk.id} from after risk settings update. Email notification sent to {risk.user.email}"
+                )
 
         # recompute the premiums
         policy.premiums.all().delete()
         schedule_premiums(policy)
-        
-        
+
         return risk_settings
 
-    
 
 class RiskSettingsHyptotheticalApiView(APIView):
     permission_classes = [IsAuthenticated & InRiskSettingsPolicyPod]
     serializer_class = PolicyRiskSettingsSerializer
-    
 
     def post(self, request, *args, **kwargs):
         """
-            Compute the hypothetical premium amount for a proposed risk setting
+        Compute the hypothetical premium amount for a proposed risk setting
 
-            returns:
-                user_id -> hypothetical_premium
+        returns:
+            user_id -> hypothetical_premium
         """
         try:
-            risk_settings = PolicyRiskSettings.objects.get(policy__id=self.kwargs["policy_id"])
+            risk_settings = PolicyRiskSettings.objects.get(
+                policy__id=self.kwargs["policy_id"]
+            )
         except PolicyRiskSettings.DoesNotExist:
-            raise ValidationError({
-                "message": "Risk settings not found"
-                })
+            raise ValidationError({"message": "Risk settings not found"})
         risk_settings_serializer = PolicyRiskSettingsSerializer(data=request.data)
         risk_settings_serializer.is_valid(raise_exception=True)
         # DO NOT SAVE THE RISK SETTINGS
-        proposed_risk_settings = PolicyRiskSettings(**risk_settings_serializer.validated_data, policy=risk_settings.policy)
+        proposed_risk_settings = PolicyRiskSettings(
+            **risk_settings_serializer.validated_data, policy=risk_settings.policy
+        )
 
         # compute the hypothetical premium amount for each user
         hypothetical_premiums = {}
@@ -208,7 +213,8 @@ class RiskSettingsHyptotheticalApiView(APIView):
             hypothetical_premiums,
             status=HTTP_200_OK,
         )
-        
+
+
 class PolicyRiskViewSet(ModelViewSet):
     serializer_class = RiskSerializer
 
@@ -284,9 +290,9 @@ class PolicyRiskViewSet(ModelViewSet):
 
         # handle the case where the policy creator (who gets auto added to the pod)
         # starts to create their first risk
-        
-        if self.request.user == risk.policy.pod.creator: # be lazy
-            policy = risk.policy # ok special case, be eager
+
+        if self.request.user == risk.policy.pod.creator:  # be lazy
+            policy = risk.policy  # ok special case, be eager
             if policy.premiums.filter(payer=self.request.user).count() == 0:
                 schedule_premiums(policy, for_users=[self.request.user])
                 send_user_welcome_email(self.request.user, policy)
@@ -327,13 +333,21 @@ class RiskViewSet(ModelViewSet):
 class PolicyPremiumViewSet(UpdateModelMixin, ReadOnlyModelViewSet):
     serializer_class = PremiumSerializer
     permission_classes = [IsAuthenticated & InPolicyPremiumPod]
-    
+
     def get_queryset(self):
         return Premium.objects.filter(policy=self.kwargs["policy_pk"])
 
     def perform_update(self, serializer):
         kwargs = {}
+
+        premium = self.get_object()
+        policy = premium.policy
+
         if serializer.validated_data["paid"]:
             kwargs["paid_date"] = timezone.now().date()
             kwargs["marked_paid_by"] = self.request.user
+            policy.pool_balance += premium.amount
+        elif serializer.validated_data["paid"] is False:
+            policy.pool_balance -= premium.amount
+        policy.save()
         serializer.save(**kwargs)

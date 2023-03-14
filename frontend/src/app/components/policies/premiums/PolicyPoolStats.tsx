@@ -14,6 +14,7 @@ export default function PolicyPoolStats({ policy }: { policy: Policy }) {
     const premiumsPerMonth = getPremiumsPaidThisMonth(premiums, policy).toFixed(
         2
     );
+
     const claimsThisMonth = 0;
 
     return policy && Object.keys(policy).length > 0 ? (
