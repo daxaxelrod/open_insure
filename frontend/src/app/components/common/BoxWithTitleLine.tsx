@@ -20,11 +20,12 @@ export default function BoxWithTitleLine({
             style={{
                 borderRadius: 8,
                 borderColor: colors.gray4,
+                paddingTop: left ? "1.25rem" : "0",
                 borderWidth: 2,
                 borderStyle: "solid",
                 padding: ".75rem",
                 position: "relative",
-                marginBottom: "1.5rem",
+                marginBottom: "2rem",
             }}
         >
             <Title

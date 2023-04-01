@@ -71,10 +71,10 @@ export default function PhoneRiskForm({
                 label="Model"
                 name={"model"}
                 rules={[
-                    { required: true, message: "Iphone 13, Google Pixel 6" },
+                    { required: true, message: "Iphone 14, Google Pixel 7" },
                 ]}
             >
-                <Input placeholder="Iphone 13" />
+                <Input placeholder="Iphone 14" />
             </Form.Item>
 
             <Form.Item

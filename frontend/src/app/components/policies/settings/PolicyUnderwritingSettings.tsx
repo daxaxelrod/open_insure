@@ -86,11 +86,22 @@ export default function PolicyUnderwritingSettings({
     const handleOk = async () => {
         let values = await form.validateFields();
         dispatch(
-            updatePolicyRiskSettings(policy?.id, values, () => {
-                notification.success({
-                    message: "Updated underwriting settings",
-                });
-            })
+            updatePolicyRiskSettings(
+                policy?.id,
+                values,
+                () => {
+                    notification.success({
+                        message: "Updated underwriting settings",
+                    });
+                },
+                (error) => {
+                    notification.error({
+                        style: { border: `3px solid ${colors.alert1}88` },
+                        message: "Failed to update underwriting settings",
+                        description: error?.message || "",
+                    });
+                }
+            )
         );
     };
 

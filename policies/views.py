@@ -145,7 +145,16 @@ class RiskSettingsViewSet(RetrieveUpdateAPIView):
             raise ValidationError({"message": "Risk settings not found"})
 
     def perform_update(self, serializer):
-        # existing_risk_settings = copy.copy(serializer.instance.__dict__)
+
+        # dont allow risk settings to change if the policy is already active
+        # might be moved to a vote in the future but a hard stop for now is better than allowing changes during an active policy
+        coverage_start_date = self.get_object().policy.coverage_start_date
+
+        if coverage_start_date and coverage_start_date < timezone.now():
+            raise ValidationError(
+                {"message": "Risk settings cannot be changed once the policy is active"}
+            )
+
         risk_settings = serializer.save(last_updated_by=self.request.user)
         policy = risk_settings.policy
 

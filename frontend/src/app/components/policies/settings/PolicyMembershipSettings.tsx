@@ -12,7 +12,7 @@ export default function PolicyMembershipSettings({
     policy: Policy;
 }) {
     return (
-        <BoxWithTitleLine title="Membership Settings" level={4}>
+        <BoxWithTitleLine left title="Membership Settings" level={4}>
             <Tabs>
                 <Tabs.TabPane tab="invites" key="1">
                     <InvitesList policy={policy} />

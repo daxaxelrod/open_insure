@@ -141,7 +141,8 @@ export const updatePolicyRiskSettings =
     (
         policyId: number,
         values: Partial<RiskSettings>,
-        onSuccess: () => void
+        onSuccess: () => void,
+        onError: (err: any) => void = () => {} // can be ommited
     ): ThunkAction<void, RootState, unknown, AnyAction> =>
     async (dispatch) => {
         dispatch({ type: PATCH_POLICY_RISK_SETTINGS_PENDING });
@@ -164,5 +165,6 @@ export const updatePolicyRiskSettings =
                     policy: policyId,
                 },
             });
+            onError(error);
         }
     };

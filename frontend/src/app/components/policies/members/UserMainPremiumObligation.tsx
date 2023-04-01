@@ -23,9 +23,8 @@ export default function UserMainPremiumObligation({
     const policyPremiums: Premium[] = useAppSelector(
         (state) => state.premiums.premiums?.[policy.id]
     );
-    const userPremiums = policyPremiums?.filter(
-        (p) => p.payer === currentUser.id
-    );
+    const userPremiums =
+        policyPremiums?.filter((p) => p.payer === currentUser.id) || [];
 
     const totalPremiumsPaidToPolicy: number = userPremiums
         .filter((p) => p.paid)

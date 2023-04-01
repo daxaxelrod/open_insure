@@ -87,7 +87,13 @@ export default function PolicyDescriptionRow({
                     <Row justify="start">
                         <Space size={50}>
                             <Statistic
-                                title="Starts"
+                                title={
+                                    moment(policy.coverage_start_date).isBefore(
+                                        moment()
+                                    )
+                                        ? "Started"
+                                        : "Starts"
+                                }
                                 value={moment(
                                     policy.coverage_start_date
                                 ).format("MMMM Do YYYY")}

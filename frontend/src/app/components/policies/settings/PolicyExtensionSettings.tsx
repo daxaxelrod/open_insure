@@ -54,7 +54,7 @@ export default function PolicyExtensionSettings({
     };
 
     return (
-        <BoxWithTitleLine title={"Renew Policy"} level={4}>
+        <BoxWithTitleLine left title={"Renew Policy"} level={4}>
             {extensionError && (
                 <Alert
                     style={{ marginBottom: "1rem" }}
