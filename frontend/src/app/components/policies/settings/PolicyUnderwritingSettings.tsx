@@ -98,7 +98,7 @@ export default function PolicyUnderwritingSettings({
                     notification.error({
                         style: { border: `3px solid ${colors.alert1}88` },
                         message: "Failed to update underwriting settings",
-                        description: error?.message || "",
+                        description: error?.response?.data?.message || "",
                     });
                 }
             )
