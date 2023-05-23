@@ -7,6 +7,8 @@ import UserLargeImage from "./profile/UserLargeImage";
 import UserHeader from "./profile/UserHeader";
 import UserOpenInsureRating from "./profile/UserOpenInsureRating";
 import { getDetailedUserProfile } from "../../../redux/actions/users";
+import UserPublicPolicyMembershipsCard from "./profile/policies/UserPublicPolicyMembershipsCard";
+import PublicProfileProvider from "../contexts/PublicProfileContext";
 
 const { Title, Paragraph } = Typography;
 
@@ -25,7 +27,7 @@ export default function PublicProfile({}) {
     }, [userId]);
 
     return (
-        <>
+        <PublicProfileProvider user={user}>
             <Row align="middle">
                 <Col span={4}>
                     <UserLargeImage user={user} editable={isSelf} />
@@ -38,8 +40,12 @@ export default function PublicProfile({}) {
                 </Col>
             </Row>
             <Row>
-                <Paragraph>Member of which policies</Paragraph>
-                <Paragraph>Premiums paid</Paragraph>
+                <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={8}>
+                    <UserPublicPolicyMembershipsCard />
+                </Col>
+                <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={8}>
+                    <Paragraph>Premiums paid</Paragraph>
+                </Col>
             </Row>
             <Row>
                 <Paragraph>Claim history</Paragraph>
@@ -47,6 +53,6 @@ export default function PublicProfile({}) {
             <Row>
                 <Paragraph>Voting history</Paragraph>
             </Row>
-        </>
+        </PublicProfileProvider>
     );
 }
