@@ -27,7 +27,11 @@ export default function PublicProfile({}) {
     }, [userId]);
 
     return (
-        <PublicProfileProvider user={user}>
+        <PublicProfileProvider
+            user={user}
+            policies={user?.policies}
+            pods={user?.pods}
+        >
             <Row align="middle">
                 <Col span={4}>
                     <UserLargeImage user={user} editable={isSelf} />

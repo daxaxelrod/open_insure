@@ -129,6 +129,7 @@ export interface Policy {
     premiums: Premium[];
     claims: Claim[];
     perils: Peril[];
+    mutual?: boolean;
     pod: Pod; // always look up the pod in the pod reducer
     available_underlying_insured_types: UnderlyingInsuredTypes;
 }

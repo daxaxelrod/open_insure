@@ -29,7 +29,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                         .map((p: Policy) => p.pod.members)
                         .flat()
                         .reduce((acc: Record<number, User>, user: User) => {
-                            acc[user.id] = user;
+                            acc[user.id] = { ...state.users[user.id], ...user };
                             return acc;
                         }, {}),
                 },
