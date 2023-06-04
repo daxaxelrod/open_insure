@@ -172,7 +172,7 @@ class UserViewSet(ModelViewSet):
         claim_approvals = ClaimApproval.objects.filter(approver=instance)
         claim_approvals_serializer = ClaimApprovalSerializer(claim_approvals, many=True)
 
-        all_premiums = instance.premiums.all()
+        all_premiums = instance.premiums_paid.all()
         total_payments = all_premiums.filter(paid=True)
         on_time_premiums = total_payments.filter(
             paid=True, paid_date__lte=F("due_date")

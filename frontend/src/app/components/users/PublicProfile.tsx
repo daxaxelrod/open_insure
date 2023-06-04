@@ -10,7 +10,7 @@ import { getDetailedUserProfile } from "../../../redux/actions/users";
 import UserPublicPolicyMembershipsCard from "./profile/policies/UserPublicPolicyMembershipsCard";
 import PublicProfileProvider from "../contexts/PublicProfileContext";
 
-const { Title, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 export default function PublicProfile({}) {
     let { id } = useParams();
