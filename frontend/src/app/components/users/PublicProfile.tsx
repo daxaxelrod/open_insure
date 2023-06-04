@@ -21,7 +21,7 @@ export default function PublicProfile({}) {
     let isSelf = currentUser.id === userId;
 
     useEffect(() => {
-        if (user === undefined) {
+        if (userId) {
             dispatch(getDetailedUserProfile(userId));
         }
     }, [userId]);

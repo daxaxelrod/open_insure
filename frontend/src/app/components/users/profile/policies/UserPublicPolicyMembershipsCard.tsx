@@ -10,6 +10,7 @@ export default function UserPublicPolicyMembershipsCard() {
     return (
         <Card title="Policy Memberships" bordered={false}>
             <Paragraph>Policies for User id {user?.id}</Paragraph>
+            <pre>{JSON.stringify(user, null, 2)}</pre>
         </Card>
     );
 }

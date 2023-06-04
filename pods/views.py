@@ -18,6 +18,7 @@ from pods.serializers import (
     UserSerializer,
     PatchableUserSerializer,
 )
+from policies.models import Policy
 from policies.premiums import remove_future_premiums
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.mail import EmailMultiAlternatives
@@ -25,6 +26,8 @@ from open_insure.admin.emails import send_notif_email_to_admins
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
+from policies.serializers import PolicySerializer
 
 
 class PodViewSet(ModelViewSet):
@@ -139,6 +142,33 @@ class UserViewSet(ModelViewSet):
             + "+"
             + serializer.validated_data["last_name"]
         )
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        policies = Policy.objects.filter(pod__members__in=[instance.id])
+        serialized_policies = PolicySerializer(policies, many=True)
+        # if the requestor is in the same policy as the user, mark the policy 'mutual'
+        instance_pods = instance.pods.prefetch_related("members")
+        if (
+            instance_pods.filter(members__id=request.user.id).exists()
+            and request.user.id != instance.id
+        ):
+            requestor_pods = [
+                item["id"]
+                for item in instance_pods.filter(members__id=request.user.id).values(
+                    "id"
+                )
+            ]
+            for policy in serialized_policies.data:
+                if policy["pod"] in requestor_pods:
+                    policy["mutual"] = True
+
+                    instance.pods.prefetch_related("members").filter(
+                        name__icontains="tor", members__in=[2]
+                    ).first().members.all()
+
+        return Response({**serializer.data, "policies": serialized_policies.data})
 
 
 class SelfView(RetrieveUpdateAPIView):

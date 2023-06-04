@@ -8,7 +8,7 @@ from rest_framework.serializers import (
     EmailField,
     ImageField,
     # SerializerMethodField,
-    DateTimeField
+    DateTimeField,
 )
 from pods.models import Pod, User, UserPod
 
@@ -16,7 +16,7 @@ from pods.utils.custom_serializers import FieldExcludableModelSerializer
 
 
 class PodMembershipSerializer(ModelSerializer):
-    joined_at = DateTimeField(source='created_at')
+    joined_at = DateTimeField(source="created_at")
 
     class Meta:
         model = UserPod
@@ -26,10 +26,11 @@ class PodMembershipSerializer(ModelSerializer):
             "user",
             "risk_penalty",
             "is_user_friend_of_the_pod",
-            "joined_at", # alias for created_at
+            "joined_at",  # alias for created_at
         ]
-class PublicMemberSerializer(ModelSerializer):
 
+
+class PublicMemberSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = [
@@ -46,8 +47,9 @@ class PublicMemberSerializer(ModelSerializer):
 
 class PodSerializer(FieldExcludableModelSerializer):
     members = PublicMemberSerializer(many=True, read_only=True)
-    memberships = PodMembershipSerializer(source='userpod_set', many=True, read_only=True)
-
+    memberships = PodMembershipSerializer(
+        source="userpod_set", many=True, read_only=True
+    )
 
     def create(self, validated_data):
         return Pod.objects.create(**validated_data)
@@ -97,33 +99,34 @@ class UserSerializer(ModelSerializer):
             "pods",
         ]
 
+
 class PatchableUserSerializer(ModelSerializer):
 
     profile_picture = ImageField(write_only=True, required=False)
 
     def update(self, instance, validated_data):
-        if 'profile_picture' in validated_data:
+        if "profile_picture" in validated_data:
             picture_name = FileSystemStorage(
                 location=settings.MEDIA_ROOT + "/profile_pictures"
-                ).save(f"user_{instance.id}_" + validated_data["profile_picture"].name, validated_data["profile_picture"])
-            validated_data["picture"] = settings.MEDIA_URL + "profile_pictures/" + picture_name
-        
+            ).save(
+                f"user_{instance.id}_" + validated_data["profile_picture"].name,
+                validated_data["profile_picture"],
+            )
+            validated_data["picture"] = (
+                settings.MEDIA_URL + "profile_pictures/" + picture_name
+            )
+
         user = super().update(instance, validated_data)
         if "password" in validated_data:
             user.set_password(validated_data["password"])
             user.save()
         return user
+
     class Meta:
         model = User
-        fields = [
-            "first_name",
-            "last_name",
-            "email",
-            "picture",
-            "profile_picture"
-        ]
+        fields = ["first_name", "last_name", "email", "picture", "profile_picture"]
         read_only_fields = ["picture"]
-            
+
 
 class InviteSerializer(Serializer):
     email = EmailField()
