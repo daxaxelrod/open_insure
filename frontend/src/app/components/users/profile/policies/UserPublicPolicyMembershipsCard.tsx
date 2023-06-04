@@ -4,13 +4,15 @@ import { Badge, Card, Table, Typography } from "antd";
 import { Policy } from "../../../../../redux/reducers/commonTypes";
 import type { ColumnsType } from "antd/es/table";
 
-const { Paragraph } = Typography;
+const { Paragraph, Title } = Typography;
 
 interface PolicyRowType {
     key: React.Key;
     name: string;
     mutual?: boolean;
     coverage_duration: number;
+    premium_monthly_payments_made: number;
+    on_time_payments: number;
 }
 
 export default function UserPublicPolicyMembershipsCard() {
@@ -23,6 +25,8 @@ export default function UserPublicPolicyMembershipsCard() {
                 name: policy.name,
                 mutual: policy.mutual,
                 coverage_duration: policy.coverage_duration,
+                premium_monthly_payments_made: 12, // policy.premium_monthly_payments_made,
+                on_time_payments: 100, // policy.on_time_payments,
             };
         }
     );
@@ -40,6 +44,30 @@ export default function UserPublicPolicyMembershipsCard() {
             dataIndex: "coverage_duration",
             key: "coverage_duration",
         },
+        {
+            title: "Premiums Paid",
+            dataIndex: "premiums_paid",
+            key: "premiums_paid",
+            render: (
+                _,
+                { premium_monthly_payments_made, coverage_duration }
+            ) => (
+                <Paragraph>
+                    {premium_monthly_payments_made} / {coverage_duration} (
+                    {Math.round(
+                        (100 * premium_monthly_payments_made) /
+                            coverage_duration
+                    )}
+                    % paid)
+                </Paragraph>
+            ),
+        },
+        {
+            title: "On Time Payments",
+            dataIndex: "on_time_payments",
+            key: "on_time_payments",
+            render: (_, { on_time_payments }) => `${on_time_payments}%`,
+        },
     ];
 
     const anyMutual = policies?.some((policy: Policy) => policy.mutual);
@@ -50,7 +78,7 @@ export default function UserPublicPolicyMembershipsCard() {
             key: "mutual",
             render: (_, { mutual }) => (
                 <>
-                    {mutual && Math.random() > 0.2 ? (
+                    {mutual ? (
                         <Badge.Ribbon text="Both in policy">
                             <div style={{ width: "100%", height: "30px" }} />
                         </Badge.Ribbon>
@@ -61,8 +89,13 @@ export default function UserPublicPolicyMembershipsCard() {
     }
 
     return (
-        <Card title="Policy Memberships" bordered={false}>
-            <Table columns={tableColumns} dataSource={tableSource} />
+        <Card bordered={true} style={{ marginTop: 10, marginBottom: 10 }}>
+            <Title level={4}>Policy Memberships</Title>
+            <Table
+                columns={tableColumns}
+                dataSource={tableSource}
+                pagination={{ position: [] }}
+            />
         </Card>
     );
 }

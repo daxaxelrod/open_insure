@@ -1,16 +1,32 @@
 import React, { createContext, useMemo } from "react";
-import { Pod, Policy, User } from "../../../redux/reducers/commonTypes";
+import {
+    Claim,
+    ClaimApproval,
+    Pod,
+    Policy,
+    User,
+} from "../../../redux/reducers/commonTypes";
 
 export type PublicProfileContextType = {
     user: User | undefined;
     pods: Pod[] | undefined;
     policies: Policy[] | undefined;
+    votes: ClaimApproval[] | undefined;
+    onTimePremiums: number | undefined;
+    totalPayments: number | undefined;
+    totalPremiumsScheduled: number | undefined;
+    claims: Claim[] | undefined;
 };
 
 export const PublicProfileContext = createContext<PublicProfileContextType>({
     user: undefined,
     pods: undefined,
     policies: undefined,
+    votes: undefined,
+    onTimePremiums: undefined,
+    totalPayments: undefined,
+    totalPremiumsScheduled: undefined,
+    claims: undefined,
 });
 
 type PublicProfileProviderProps = PublicProfileContextType & {
@@ -22,14 +38,33 @@ function PublicProfileProvider({
     user,
     pods,
     policies,
+    votes,
+    onTimePremiums,
+    totalPayments,
+    totalPremiumsScheduled,
+    claims,
 }: PublicProfileProviderProps) {
     const props = useMemo(
         () => ({
             user,
             pods,
             policies,
+            votes,
+            onTimePremiums,
+            totalPayments,
+            totalPremiumsScheduled,
+            claims,
         }),
-        [pods, policies, user]
+        [
+            claims,
+            onTimePremiums,
+            pods,
+            policies,
+            totalPayments,
+            totalPremiumsScheduled,
+            user,
+            votes,
+        ]
     );
 
     return (

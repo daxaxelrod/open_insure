@@ -31,6 +31,11 @@ export default function PublicProfile({}) {
             user={user}
             policies={user?.policies}
             pods={user?.pods}
+            votes={user?.claim_approvals}
+            onTimePremiums={user?.on_time_premiums}
+            totalPayments={user?.total_payments}
+            totalPremiumsScheduled={user?.total_premiums_scheduled}
+            claims={user?.claims}
         >
             <Row align="middle">
                 <Col span={4}>
@@ -44,18 +49,18 @@ export default function PublicProfile({}) {
                 </Col>
             </Row>
             <Row>
-                <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={8}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <UserPublicPolicyMembershipsCard />
                 </Col>
-                <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={8}>
-                    <Paragraph>Premiums paid</Paragraph>
+            </Row>
+            <Row>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Paragraph>Claim history</Paragraph>
                 </Col>
-            </Row>
-            <Row>
-                <Paragraph>Claim history</Paragraph>
-            </Row>
-            <Row>
-                <Paragraph>Voting history</Paragraph>
+
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Paragraph>Voting history</Paragraph>
+                </Col>
             </Row>
         </PublicProfileProvider>
     );

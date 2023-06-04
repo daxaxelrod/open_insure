@@ -18,7 +18,8 @@ from pods.serializers import (
     UserSerializer,
     PatchableUserSerializer,
 )
-from policies.models import Policy
+from policies.claims.serializers import ClaimApprovalSerializer, ClaimSerializer
+from policies.models import ClaimApproval, Policy
 from policies.premiums import remove_future_premiums
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.mail import EmailMultiAlternatives
@@ -26,6 +27,7 @@ from open_insure.admin.emails import send_notif_email_to_admins
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.db.models import F
 
 from policies.serializers import PolicySerializer
 
@@ -167,8 +169,29 @@ class UserViewSet(ModelViewSet):
                     instance.pods.prefetch_related("members").filter(
                         name__icontains="tor", members__in=[2]
                     ).first().members.all()
+        claim_approvals = ClaimApproval.objects.filter(approver=instance)
+        claim_approvals_serializer = ClaimApprovalSerializer(claim_approvals, many=True)
 
-        return Response({**serializer.data, "policies": serialized_policies.data})
+        all_premiums = instance.premiums.all()
+        total_payments = all_premiums.filter(paid=True)
+        on_time_premiums = total_payments.filter(
+            paid=True, paid_date__lte=F("due_date")
+        )
+
+        claims = instance.claims.all()
+        claims_serializer = ClaimSerializer(claims, many=True)
+
+        return Response(
+            {
+                **serializer.data,
+                "policies": serialized_policies.data,
+                "claim_approvals": claim_approvals_serializer.data,
+                "on_time_premiums": on_time_premiums.count(),
+                "total_payments": total_payments.count(),
+                "total_premiums_scheduled": all_premiums.count(),
+                "claims": claims_serializer.data,
+            }
+        )
 
 
 class SelfView(RetrieveUpdateAPIView):
