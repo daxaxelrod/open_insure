@@ -27,6 +27,7 @@ import {
 import { getRisksForPolicy } from "./risk";
 import { RiskSettings } from "../reducers/commonTypes";
 import { setClaimsForPolicy } from "./claims";
+import { AxiosError } from "axios";
 
 export const getAvailablePolicies =
     (
@@ -51,8 +52,13 @@ export const getAvailablePolicies =
                 dispatch(getRisksForPolicy(policy.id));
                 dispatch(setClaimsForPolicy(policy.id, policy?.claims));
             }
-        } catch (error) {
-            dispatch({ type: GET_AVAILABLE_POLICIES_FAILURE, payload: error });
+        } catch (error: unknown) {
+            if (error instanceof AxiosError) {
+                dispatch({
+                    type: GET_AVAILABLE_POLICIES_FAILURE,
+                    payload: error.message,
+                });
+            }
         }
     };
 
@@ -66,8 +72,13 @@ export const getUserPolicies =
                 type: GET_USER_POLICIES_SUCCESS,
                 payload: response.data,
             });
-        } catch (error) {
-            dispatch({ type: GET_USER_POLICIES_FAILURE, payload: error });
+        } catch (error: unknown) {
+            if (error instanceof AxiosError) {
+                dispatch({
+                    type: GET_USER_POLICIES_FAILURE,
+                    payload: error.message,
+                });
+            }
         }
     };
 
