@@ -31,8 +31,6 @@ export default function UserPublicPolicyMembershipsCard() {
         }
     );
 
-    console.log("policies", policies);
-
     const tableColumns: ColumnsType<PolicyRowType> = [
         {
             title: "Name",

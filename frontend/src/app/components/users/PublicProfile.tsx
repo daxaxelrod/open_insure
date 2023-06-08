@@ -9,6 +9,7 @@ import UserOpenInsureRating from "./profile/UserOpenInsureRating";
 import { getDetailedUserProfile } from "../../../redux/actions/users";
 import UserPublicPolicyMembershipsCard from "./profile/policies/UserPublicPolicyMembershipsCard";
 import PublicProfileProvider from "../contexts/PublicProfileContext";
+import UserPublicPolicyClaimHistoryCard from "./profile/policies/UserPublicPolicyClaimHistoryCard";
 
 const { Paragraph } = Typography;
 
@@ -37,7 +38,7 @@ export default function PublicProfile({}) {
             totalPremiumsScheduled={user?.total_premiums_scheduled}
             claims={user?.claims}
         >
-            <Row align="middle">
+            <Row align="middle" style={{ marginBottom: 10 }}>
                 <Col span={4}>
                     <UserLargeImage user={user} editable={isSelf} />
                 </Col>
@@ -55,7 +56,7 @@ export default function PublicProfile({}) {
             </Row>
             <Row>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                    <Paragraph>Claim history</Paragraph>
+                    <UserPublicPolicyClaimHistoryCard />
                 </Col>
 
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
