@@ -18,7 +18,7 @@ from pods.serializers import (
     UserSerializer,
     PatchableUserSerializer,
 )
-from policies.claims.serializers import ClaimApprovalSerializer, ClaimSerializer
+from policies.claims.serializers import ClaimSerializer, FullClaimApprovalSerializer
 from policies.models import ClaimApproval, Policy
 from policies.premiums import remove_future_premiums
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -163,14 +163,13 @@ class UserViewSet(ModelViewSet):
                 )
             ]
             for policy in serialized_policies.data:
+                # mark the policy as mutual if the requestor is in the same policy as the user
                 if policy["pod"] in requestor_pods:
                     policy["mutual"] = True
 
-                    instance.pods.prefetch_related("members").filter(
-                        name__icontains="tor", members__in=[2]
-                    ).first().members.all()
         claim_approvals = ClaimApproval.objects.filter(approver=instance)
-        claim_approvals_serializer = ClaimApprovalSerializer(claim_approvals, many=True)
+        claim_approvals_serializer = FullClaimApprovalSerializer(
+            claim_approvals, many=True)
 
         all_premiums = instance.premiums_paid.all()
         total_payments = all_premiums.filter(paid=True)
@@ -213,7 +212,8 @@ class WaitlistView(APIView):
     def post(self, request, format=None):
         serializer = InviteSerializer(data=request.data)
         if serializer.is_valid():
-            WaitlistMember.objects.create(email=serializer.validated_data["email"])
+            WaitlistMember.objects.create(
+                email=serializer.validated_data["email"])
             if settings.NOTIFY_ADMINS_OF_EVENTS:
                 send_notif_email_to_admins(
                     title="New waitlist member",

@@ -20,7 +20,14 @@ export default function IconWithSubtext({
             }}
         >
             {icon}
-            <Paragraph>{subtext}</Paragraph>
+            <Paragraph
+                type="secondary"
+                style={{
+                    marginBottom: 0,
+                }}
+            >
+                {subtext}
+            </Paragraph>
         </div>
     );
 }

@@ -1,14 +1,10 @@
 from rest_framework import serializers
 from django.utils import timezone
+from pods.utils.custom_serializers import FieldExcludableModelSerializer
 from policies.models import Claim, ClaimApproval, ClaimEvidence, Premium, ClaimComment
 from policies.claims.models import ClaimView
 from policies.model_choices import CLAIM_EVIDENCE_TYPE_CHOICES
 from django.db.utils import IntegrityError
-
-class FullClaimApprovalSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ClaimApproval
-        fields = "__all__"
 
 
 class ClaimApprovalSerializer(serializers.ModelSerializer):
@@ -27,7 +23,8 @@ class ClaimApprovalSerializer(serializers.ModelSerializer):
             # check that other claims have not exceeded the policy payout limit
             # I dont love this logic, This needs to be a side effect of the claim getting paid out, not at the approval level
             if policy.lifetime_payout_limit:
-                all_user_policy_claims = policy.claims.filter(claimant=claim.claimant)
+                all_user_policy_claims = policy.claims.filter(
+                    claimant=claim.claimant)
                 total_paid_out = sum(
                     c.amount for c in all_user_policy_claims if c.paid_on
                 )
@@ -41,7 +38,8 @@ class ClaimApprovalSerializer(serializers.ModelSerializer):
                     for c in other_outstanding_claims:
                         c.is_claim_invalid = True
                         c.save()
-                    raise serializers.ValidationError("Claim payout limit exceeded")
+                    raise serializers.ValidationError(
+                        "Claim payout limit exceeded")
 
         return super().validate(attrs)
 
@@ -49,20 +47,25 @@ class ClaimApprovalSerializer(serializers.ModelSerializer):
         model = ClaimApproval
         fields = "__all__"
 
+
 class ClaimEvidenceSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=True)
-    evidence_type = serializers.ChoiceField(choices=CLAIM_EVIDENCE_TYPE_CHOICES)
+    evidence_type = serializers.ChoiceField(
+        choices=CLAIM_EVIDENCE_TYPE_CHOICES)
     photo_order = serializers.IntegerField(required=False)
+
     class Meta:
         model = ClaimEvidence
         fields = ["id", "evidence_type", 'image', 'photo_order']
+
 
 class ClaimSerializer(serializers.ModelSerializer):
     claimant = serializers.PrimaryKeyRelatedField(
         read_only=True
     )  # serializers.hiddenfield doesnt work because it doesnt return the representation to the client
     approvals = ClaimApprovalSerializer(many=True, read_only=True)
-    evidence = serializers.PrimaryKeyRelatedField(many=True, queryset=ClaimEvidence.objects.all())
+    evidence = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=ClaimEvidence.objects.all())
     is_approved = serializers.SerializerMethodField()
 
     def get_is_approved(self, obj):
@@ -106,7 +109,8 @@ class ClaimSerializer(serializers.ModelSerializer):
                 payer=self.context["request"].user,
                 due_date__lte=timezone.now(),
             )
-            missed_premiums = [x.short_description() for x in premiums if not x.paid]
+            missed_premiums = [x.short_description()
+                               for x in premiums if not x.paid]
             if len(missed_premiums):
                 raise serializers.ValidationError(
                     {
@@ -140,6 +144,7 @@ class ClaimSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ["paid_on"]
 
+
 class FullClaimSerializer(ClaimSerializer):
     # note that this evidence is a full serializer, not a primary key[]
     evidence = ClaimEvidenceSerializer(many=True, read_only=True)
@@ -150,8 +155,17 @@ class ClaimViewSerializer(serializers.ModelSerializer):
         model = ClaimView
         fields = "__all__"
 
+
 class ClaimCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClaimComment
         fields = "__all__"
         read_only_fields = ["commenter"]
+
+
+class FullClaimApprovalSerializer(FieldExcludableModelSerializer):
+    claim = FullClaimSerializer(read_only=True)
+
+    class Meta:
+        model = ClaimApproval
+        fields = "__all__"

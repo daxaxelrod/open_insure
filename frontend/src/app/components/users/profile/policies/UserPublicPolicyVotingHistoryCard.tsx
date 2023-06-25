@@ -7,9 +7,10 @@ import {
     Policy,
 } from "../../../../../redux/reducers/commonTypes";
 import type { ColumnsType } from "antd/es/table";
-import moment from "moment-timezone";
+import moment, { Moment } from "moment-timezone";
 import { CheckCircleOutlined, MinusOutlined } from "@ant-design/icons";
 import IconWithSubtext from "../../../common/IconWithSubtext";
+import { maybePluralize } from "../../../../utils/stringUtils";
 
 const { Title } = Typography;
 
@@ -18,31 +19,34 @@ interface ClaimVoteRowType extends Partial<ClaimApproval> {
     cast_on: string;
     original_cast_on: string;
     comment: string;
-    fullClaim: Claim | undefined;
     policy: Policy | undefined;
     timeTakenToVote: string | undefined;
 }
 
+function getTimeDiff(start: Moment, end: Moment) {
+    const duration = moment.duration(end.diff(start));
+    const days = duration.days();
+    const hours = duration.hours();
+    if (days === 0 && hours === 0) return "less than an hour";
+    if (days === 0) return `${hours} ${maybePluralize(hours, "hour")}`;
+    return `${days} ${maybePluralize(days, "day")} ${hours} ${maybePluralize(
+        hours,
+        "hour"
+    )}`;
+}
+
 export default function UserPublicPolicyVotingHistoryCard() {
     const { votes, policies, user } = useContext(PublicProfileContext);
-    const allClaimsForUserInvolvedPolicies: Claim[] | undefined =
-        policies?.reduce((claims: Claim[], policy: Policy) => {
-            return [...claims, ...policy.claims];
-        }, []);
 
     const tableSource: ClaimVoteRowType[] | undefined = votes?.map(
         (vote: ClaimApproval) => {
-            const relatedClaim: Claim | undefined =
-                allClaimsForUserInvolvedPolicies?.find(
-                    (claim: Claim) => claim.id === vote.claim
-                );
+            // @ts-ignore
+            const relatedClaim: Claim = vote.claim;
             const relatedPolicy: Policy | undefined = relatedClaim
                 ? policies?.find(
                       (policy: Policy) => policy.id === relatedClaim?.policy
                   )
                 : undefined;
-
-            vote.approved;
 
             return {
                 ...vote,
@@ -52,9 +56,9 @@ export default function UserPublicPolicyVotingHistoryCard() {
                 policy: relatedPolicy,
                 fullClaim: relatedClaim,
                 timeTakenToVote: relatedClaim
-                    ? moment(vote.created_at).diff(
-                          relatedClaim?.occurance_date,
-                          "hours"
+                    ? getTimeDiff(
+                          moment(relatedClaim?.occurance_date),
+                          moment(vote.created_at)
                       )
                     : undefined,
             };
@@ -74,7 +78,13 @@ export default function UserPublicPolicyVotingHistoryCard() {
             key: "claim",
             render: (claim?: Claim) =>
                 claim ? (
-                    <Button type="link" href={`/claims/${claim?.id}`}>
+                    <Button
+                        type="link"
+                        href={`/claims/${claim?.id}`}
+                        style={{
+                            padding: "0px",
+                        }}
+                    >
                         {claim?.title}
                     </Button>
                 ) : (
@@ -99,25 +109,25 @@ export default function UserPublicPolicyVotingHistoryCard() {
                 ),
         },
         {
-            title: "Approved",
-            dataIndex: "approved",
-            key: "approved",
-        },
-        {
-            title: "Paid On",
-            dataIndex: "paid_on",
-            key: "paid_on",
-            render: (date: Date) => moment(date).format("MMM Do,YYYY"),
+            title: "Time Taken To Vote",
+            dataIndex: "timeTakenToVote",
+            key: "timeTakenToVote",
+            render: (timeTakenToVote: string | undefined) => (
+                <span>{timeTakenToVote ? timeTakenToVote : "N/a"}</span>
+            ),
         },
     ];
 
     return (
         <Card bordered={true} style={{ marginTop: 10, marginBottom: 10 }}>
-            <Title level={4}>Claims</Title>
+            <Title level={4}>Voting History</Title>
             <Table
                 columns={tableColumns}
                 dataSource={tableSource}
-                pagination={{ position: [] }}
+                pagination={{
+                    position:
+                        votes && votes?.length >= 5 ? ["bottomRight"] : [],
+                }}
                 locale={{
                     emptyText: (
                         <span>
@@ -125,8 +135,8 @@ export default function UserPublicPolicyVotingHistoryCard() {
                                 image={Empty.PRESENTED_IMAGE_SIMPLE}
                                 description={
                                     <span>
-                                        {user?.first_name} has not made any
-                                        claims.
+                                        {user?.first_name} has not cast any
+                                        votes
                                     </span>
                                 }
                             />
