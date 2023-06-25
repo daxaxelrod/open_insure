@@ -10,6 +10,7 @@ import { getDetailedUserProfile } from "../../../redux/actions/users";
 import UserPublicPolicyMembershipsCard from "./profile/policies/UserPublicPolicyMembershipsCard";
 import PublicProfileProvider from "../contexts/PublicProfileContext";
 import UserPublicPolicyClaimHistoryCard from "./profile/policies/UserPublicPolicyClaimHistoryCard";
+import UserPublicPolicyVotingHistoryCard from "./profile/policies/UserPublicPolicyVotingHistoryCard";
 
 const { Paragraph } = Typography;
 
@@ -49,18 +50,18 @@ export default function PublicProfile({}) {
                     <UserOpenInsureRating user={user} />
                 </Col>
             </Row>
-            <Row>
+            <Row gutter={8}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <UserPublicPolicyMembershipsCard />
                 </Col>
             </Row>
-            <Row>
+            <Row gutter={8}>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                     <UserPublicPolicyClaimHistoryCard />
                 </Col>
 
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                    <Paragraph>Voting history</Paragraph>
+                    <UserPublicPolicyVotingHistoryCard />
                 </Col>
             </Row>
         </PublicProfileProvider>

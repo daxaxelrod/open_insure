@@ -3,6 +3,7 @@ import { PublicProfileContext } from "../../../contexts/PublicProfileContext";
 import { Button, Card, Empty, Table, Typography } from "antd";
 import { Claim } from "../../../../../redux/reducers/commonTypes";
 import type { ColumnsType } from "antd/es/table";
+import moment from "moment-timezone";
 
 const { Title } = Typography;
 
@@ -53,6 +54,7 @@ export default function UserPublicPolicyClaimHistoryCard() {
             title: "Paid On",
             dataIndex: "paid_on",
             key: "paid_on",
+            render: (date: Date) => moment(date).format("MMM Do, YYYY"),
         },
     ];
 

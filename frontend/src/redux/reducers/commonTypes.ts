@@ -200,6 +200,7 @@ export interface ClaimEvidence {
 }
 
 export interface ClaimApproval {
+    id: number;
     claim: number;
     approved: boolean;
     approved_on: string;
