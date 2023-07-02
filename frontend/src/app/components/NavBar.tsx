@@ -15,6 +15,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { isLoggedIn } from "axios-jwt";
 import { Link } from "react-router-dom";
 import { HomeOutlined, FileOutlined, UserOutlined } from "@ant-design/icons";
+import usePageTracking from "./hooks/usePageTracking";
 
 const { Header } = Layout;
 
@@ -23,6 +24,7 @@ const { Title } = Typography;
 export default function NavBar() {
     const currentUser = useAppSelector((state) => state.auth.currentUser);
     const [isOpen, setOpen] = useState(false);
+    usePageTracking();
 
     const loggedIn = isLoggedIn();
     const sizes = Grid.useBreakpoint();

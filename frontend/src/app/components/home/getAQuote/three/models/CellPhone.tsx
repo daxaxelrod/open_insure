@@ -5,6 +5,9 @@ export default function CellPhone() {
     const { scene } = useGLTF("iphone.glb", true, true, (model) => {
         // console.log("model", model);
     });
+    scene.scale.set(30, 30, 30);
+    scene.position.set(0, 0, 0);
+    scene.rotation.set(0, 270, 0);
     const phoneRef = useRef();
 
     return (

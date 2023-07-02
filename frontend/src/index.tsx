@@ -31,6 +31,7 @@ import PolicySettings from "./app/pages/policies/PolicySettings";
 
 const App = () => {
     let loggedIn = isLoggedIn(); // called too often?
+
     return (
         <BrowserRouter>
             <NavBar />
