@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@ant-design/colors": "^6.0.0",
+        "@react-spring/three": "^9.7.3",
         "@react-three/drei": "^9.77.6",
         "@react-three/fiber": "^8.13.4",
         "@reduxjs/toolkit": "^1.8.2",
