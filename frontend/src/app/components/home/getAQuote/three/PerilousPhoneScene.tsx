@@ -14,10 +14,10 @@ export default function PerilousPhoneScene() {
         <Canvas
             // onCreated={(state) => state.gl.setClearColor("red")}
             style={{
-                height: "500px",
+                height: "650px",
             }}
         >
-            <Stage shadows="accumulative">
+            <Stage shadows="accumulative" preset={"portrait"}>
                 <gridHelper args={[20, 20, 0xff0000, "teal"]} />
 
                 <Suspense fallback={<ModelLoader />}>

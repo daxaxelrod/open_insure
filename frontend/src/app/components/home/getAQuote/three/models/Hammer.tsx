@@ -2,44 +2,40 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import {
-    config,
-    useChain,
-    useSpringRef,
-    useTransition,
-} from "@react-spring/three";
+import { animated, config, useSpring, useSpringRef } from "@react-spring/three";
+import SpacialAudio from "../SpacialAudio";
+
+const Y_OFFSET = 5;
 
 export default function Hammer() {
     const [clicked, setClicked] = useState(false);
     const { scene } = useGLTF("hammer.glb", true, true, (model) => {});
-    scene.position.set(0, 0, 5);
+    scene.position.set(0, Y_OFFSET, 5);
 
     const hammerRef = useRef();
+    const audioRef = useRef();
     const { viewport, mouse, gl } = useThree();
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    // const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const rotationApi = useSpringRef();
-    const rotation = useTransition(rotationApi, {
-        ref: rotationApi,
-        config: config.stiff,
-        from: { rotation: [0, 0, 0] },
+    // const rotationApi = useSpringRef();
+    const rotation = useSpring({
+        config: {
+            tension: clicked ? 300 : 800,
+        },
+        from: {
+            position: [0, Y_OFFSET, clicked ? 0 : 5],
+            rotation: clicked ? [0, 0, 0] : [0.5, 0, 0],
+        },
         to: {
-            rotation: [0.5, 0, 0],
+            position: [0, Y_OFFSET, clicked ? 5 : 0],
+            rotation: clicked ? [0.5, 0, 0] : [0, 0, 0],
+        },
+        onRest: () => {
+            if (clicked) {
+                setClicked(false);
+            }
         },
     });
-    const backRotation = useTransition(rotationApi, {
-        ref: rotationApi,
-        config: config.stiff,
-        from: { rotation: [0.5, 0, 0] },
-        to: {
-            rotation: [0, 0, 0],
-        },
-    });
-
-    // useChain(
-    //     clicked ? [rotation, backRotation] : [backRotation, rotation],
-    //     [0, 0.5]
-    // );
 
     // Update hammer position based on mouse position
     useFrame(() => {
@@ -51,21 +47,18 @@ export default function Hammer() {
                 const { x, y } = mouse;
                 const { width, height } = viewport;
 
-                hammer.position.x = x * 1.5;
-                hammer.position.y = y * 1.5;
+                hammer.position.x = x * 3;
+                hammer.position.y = y * 5 - Y_OFFSET;
             }
-            // console.log("hammer", hammer, left, top, width, height);
-
-            // hammer.position.x = mouseX;
-            // hammer.position.y = mouseY;
         }
     });
 
     const smashHammer = () => {
         const hammer = hammerRef.current;
         if (hammer) {
+            console.log("smash");
+            audioRef?.current?.playSound();
             setClicked(true);
-            hammer.rotation.x = hammer.rotation.x === 0.5 ? 0`` : 0.5;
         }
     };
 
@@ -80,9 +73,15 @@ export default function Hammer() {
     }, [gl]);
 
     return (
-        // @ts-ignore
-        <group ref={hammerRef} receiveShadow>
-            <primitive object={scene} />
-        </group>
+        <animated.group ref={hammerRef} receiveShadow {...rotation}>
+            <SpacialAudio
+                ref={audioRef}
+                refDistance={
+                    hammerRef.current ? hammerRef.current.position.z : 5
+                }
+                url={"./audio/338694__natemarler__glass-bottle-break.wav"}
+            />
+            <animated.primitive object={scene} />
+        </animated.group>
     );
 }
