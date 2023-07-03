@@ -14,6 +14,8 @@ export default function Hammer() {
 
     const hammerRef = useRef();
     const audioRef = useRef();
+    const audioRef2 = useRef();
+    const audioRef3 = useRef();
     const { viewport, mouse, gl } = useThree();
     // const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -57,7 +59,13 @@ export default function Hammer() {
         const hammer = hammerRef.current;
         if (hammer) {
             console.log("smash");
-            audioRef?.current?.playSound();
+
+            const audios = [audioRef, audioRef2, audioRef3];
+            const randomAudio =
+                audios[Math.floor(Math.random() * audios.length)];
+            setTimeout(() => {
+                randomAudio?.current?.playSound();
+            }, 300);
             setClicked(true);
         }
     };
@@ -81,6 +89,22 @@ export default function Hammer() {
                 }
                 url={"./audio/338694__natemarler__glass-bottle-break.wav"}
             />
+            <SpacialAudio
+                ref={audioRef2}
+                refDistance={
+                    hammerRef.current ? hammerRef.current.position.z : 5
+                }
+                url={"./audio/221528__unfa__glass-break.wav"}
+            />
+
+            <SpacialAudio
+                ref={audioRef3}
+                refDistance={
+                    hammerRef.current ? hammerRef.current.position.z : 5
+                }
+                url={"./audio/500604__elenzack__breaking-glass_2.wav"}
+            />
+
             <animated.primitive object={scene} />
         </animated.group>
     );
