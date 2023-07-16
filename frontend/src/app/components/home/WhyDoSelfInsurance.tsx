@@ -31,7 +31,7 @@ export default function WhyDoSelfInsurance() {
                         level={4}
                         style={{ color: colors.linkColor, marginTop: "2.4rem" }}
                     >
-                        Why do self-insurance?
+                        Why self insure?
                     </Title>
                     <Title style={{ marginTop: 0 }}>Save Money</Title>
                 </Col>

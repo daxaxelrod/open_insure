@@ -119,6 +119,7 @@ export interface Policy {
     pool_address: string;
     pool_balance: number;
     escrow_manager: number;
+    is_public: boolean;
     premium_payment_frequency: number; // in # of months
     claim_approval_threshold_percentage: number;
     claim_payout_limit: number;
@@ -227,4 +228,21 @@ export interface Renewal {
     initiator: number;
     created_at: string;
     updated_at: string;
+}
+
+export interface InviteData {
+    email: string; // email of the person who was invited
+    pod: Partial<Pod>; // pod that the person was invited to
+    invitor: {
+        first_name: string;
+        last_name: string;
+        email: string;
+        picture: string;
+    };
+    created_at: string;
+
+    is_accepted: boolean;
+    is_revoked_by_user: boolean;
+    is_revoked_by_pod: boolean;
+    is_revoked_by_admin: boolean;
 }

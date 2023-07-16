@@ -1,15 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Col, Row, Typography, Grid } from "antd";
 
 import { Wizard } from "react-use-wizard";
 import EmailPassOnboardingStep from "../components/onboarding/EmailPassOnboardingStep";
+import { getInviteDataFromToken } from "../../networking/pods";
+import PublicInviteTokenBanner from "../components/onboarding/PublicInviteTokenBanner";
+import { InviteData } from "../../redux/reducers/commonTypes";
 
 const { Title, Paragraph } = Typography;
+
+function useQuery() {
+    const { search } = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 export default function Onboarding() {
     const screens = Grid.useBreakpoint();
     const isMobile = !screens.lg;
+    const [inviteData, setInviteData] = useState<InviteData>();
+
+    let query = useQuery();
+    const inviteToken = query.get("invite_token"); // todo: use this to prefill email and also allow to join to linked policy
+
+    useEffect(() => {
+        if (inviteToken) {
+            (async () => {
+                const response = await getInviteDataFromToken(inviteToken);
+                if (response.status === 200) {
+                    setInviteData(response.data);
+                }
+            })();
+        }
+    }, [inviteToken]);
+
     return (
         <div style={{ padding: 24 }}>
             <Row>
@@ -32,8 +57,25 @@ export default function Onboarding() {
                     sm={{ span: 24 }}
                     xs={{ span: 24 }}
                 >
+                    {inviteData ? (
+                        <Row>
+                            <Col
+                                lg={{ span: 19, offset: 5 }}
+                                md={{ span: 24 }}
+                                sm={{ span: 24 }}
+                                xs={{ span: 24 }}
+                            >
+                                <PublicInviteTokenBanner
+                                    inviteData={inviteData}
+                                />
+                            </Col>
+                        </Row>
+                    ) : null}
                     <Wizard>
-                        <EmailPassOnboardingStep />
+                        <EmailPassOnboardingStep
+                            prefilledEmail={inviteData?.email}
+                            inviteToken={inviteToken}
+                        />
                     </Wizard>
                 </Col>
             </Row>

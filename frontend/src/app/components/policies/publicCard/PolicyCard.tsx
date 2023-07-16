@@ -18,7 +18,7 @@ export default function PolicyCard({ policy }: { policy: Policy }) {
     let lowestPremiumInPolicy = determineLowestPremium(policyRisks);
 
     const isMobile = screens.xs || (screens.sm && !screens.md);
-    const isMed = screens.md && !screens.lg;
+    // const isMed = screens.md && !screens.lg;
 
     return (
         <Col
@@ -60,7 +60,11 @@ export default function PolicyCard({ policy }: { policy: Policy }) {
                                 />
                             </Col>
                         </Row>
-                        <Row style={{ marginTop: 10 }}>
+                        <Row
+                            style={{
+                                marginTop: 10 + (policy.is_public ? 15 : 0),
+                            }}
+                        >
                             <CoverageRow policy={policy} />
                         </Row>
                     </Card>

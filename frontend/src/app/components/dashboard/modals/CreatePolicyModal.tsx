@@ -11,11 +11,13 @@ import {
     Space,
     Checkbox,
     Row,
+    Switch,
 } from "antd";
 import { DownSquareOutlined, UpSquareOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { createPolicy } from "../../../../redux/actions/policies";
 import { getAvailableUnderlyingInsuredTypesForPolicyType } from "../../../utils/policyUtils";
+
 const { Title } = Typography;
 const { TextArea } = Input;
 
@@ -67,7 +69,7 @@ export default function CreatePolicyModal({
     return (
         <Modal
             title="Create a policy"
-            visible={isVisible}
+            open={isVisible}
             onOk={handleOk}
             okText="Create"
             confirmLoading={createPolicyPending}
@@ -121,6 +123,19 @@ export default function CreatePolicyModal({
                         </Form.Item>
                     </Space>
                 </div>
+                <Form.Item
+                    label="Make the policy public?"
+                    tooltip="Allow other users to view and join the policy"
+                    name="is_public"
+                    status="success"
+                >
+                    <Switch
+                        checkedChildren={"Yes"}
+                        unCheckedChildren={"No"}
+                        defaultChecked
+                        size="default"
+                    />
+                </Form.Item>
 
                 <Divider />
                 <Row
@@ -193,7 +208,7 @@ export default function CreatePolicyModal({
                             <InputNumber min={2} />
                         </Form.Item>
                         <Form.Item
-                            label="Allow members to join after policy start"
+                            label="Allow members to join after the policy starts"
                             name={"allow_joiners_after_policy_start"}
                             tooltip="Allow people to join the policy after the start date"
                         >
