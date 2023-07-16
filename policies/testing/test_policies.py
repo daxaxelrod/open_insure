@@ -194,7 +194,6 @@ class PolicyTestCase(TestCase):
 
     @patch("django.utils.timezone.now")
     def test_user_leaving_policy_only_deletes_future_premiums(self, mock_timezone):
-
         # create a year long policy that starts on jan 1st.
         # patch timezone.now to sometime in march
         # ensure that 3/4th of premiums are deleted, the ones in the first quarter remain
@@ -378,7 +377,6 @@ class PolicyTestCase(TestCase):
 
     @patch("django.utils.timezone.now")
     def test_can_only_create_renewal_if_policy_is_about_to_expire(self, mock_timezone):
-
         start_date = timezone.datetime(2022, 1, 1, tzinfo=timezone.utc)
         mock_timezone.return_value = start_date
 
