@@ -27,10 +27,14 @@ export default function UserPolicies() {
     const userPolicies = useAppSelector((state) => state.policies.userPolicies);
 
     const numOutstandingClaims = userPolicies
+        .filter(
+            (policy: Policy) =>
+                Array.isArray(policy.claims) && policy.claims.length > 0
+        )
         .reduce(
             (previousValue: Policy[], policy: Policy) => [
                 ...previousValue,
-                ...policy.claims,
+                ...(policy.claims || []),
             ],
             []
         )
