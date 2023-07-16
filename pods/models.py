@@ -96,6 +96,7 @@ class PodInvite(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     first_read_at = models.DateTimeField(null=True, blank=True)
     last_read_at = models.DateTimeField(null=True, blank=True)
+    accepted_at = models.DateTimeField(null=True, blank=True)
 
     is_accepted = models.BooleanField(
         default=False

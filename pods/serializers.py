@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from rest_framework.serializers import (
@@ -97,6 +98,7 @@ class UserSerializer(ModelSerializer):
                 )
                 invite.membership = new_membership
                 invite.is_accepted = True
+                invite.accepted_at = timezone.now()
                 invite.save()
 
             except PodInvite.DoesNotExist:

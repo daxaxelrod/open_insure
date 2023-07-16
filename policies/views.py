@@ -68,7 +68,7 @@ class PolicyViewSet(ModelViewSet):
                     pod__members__id=self.request.user.id
                 ).order_by("-created_at")
         return Policy.objects.filter(
-            Q(is_public=True) | Q(pod__members__id__in=[self.request.user.id])
+            Q(is_public=True) | Q(pod__members__in=[self.request.user.id])
         ).distinct()
 
     def get_serializer_class(self):
