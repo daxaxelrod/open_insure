@@ -18,6 +18,7 @@ export default function Title({ policy }: { policy: Policy }) {
                 style={{
                     display: "flex",
                     flexDirection: "column",
+                    justifyContent: "center",
                 }}
             >
                 <div>{policy.name}</div>
