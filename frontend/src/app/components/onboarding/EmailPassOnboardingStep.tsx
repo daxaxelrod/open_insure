@@ -7,7 +7,13 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { isLoggedIn } from "axios-jwt";
 import { useNavigate } from "react-router-dom";
 
-export default function EmailPassOnboardingStep({}) {
+export default function EmailPassOnboardingStep({
+    prefilledEmail,
+    inviteToken,
+}: {
+    prefilledEmail?: string;
+    inviteToken: string | null;
+}) {
     const { handleStep, nextStep, isLastStep } = useWizard();
     const dispatch = useAppDispatch();
     const screens = Grid.useBreakpoint();
@@ -36,6 +42,7 @@ export default function EmailPassOnboardingStep({}) {
                 last_name: lastName,
                 email: email.toLowerCase(),
                 password,
+                ...(inviteToken ? { invite_token: inviteToken } : {}),
             })
         );
     };
@@ -45,6 +52,12 @@ export default function EmailPassOnboardingStep({}) {
             navigate("/home");
         }
     }, [isRegisterPending]);
+
+    useEffect(() => {
+        if (prefilledEmail) {
+            form.setFieldsValue({ email: prefilledEmail });
+        }
+    }, [prefilledEmail]);
 
     return (
         <Form
@@ -110,7 +123,7 @@ export default function EmailPassOnboardingStep({}) {
                     },
                 ]}
             >
-                <Input placeholder="Email" />
+                <Input placeholder="Email" disabled={!!prefilledEmail} />
             </Form.Item>
 
             <Form.Item

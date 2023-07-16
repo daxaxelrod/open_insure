@@ -6,6 +6,7 @@ import { Wizard } from "react-use-wizard";
 import EmailPassOnboardingStep from "../components/onboarding/EmailPassOnboardingStep";
 import { getInviteDataFromToken } from "../../networking/pods";
 import PublicInviteTokenBanner from "../components/onboarding/PublicInviteTokenBanner";
+import { InviteData } from "../../redux/reducers/commonTypes";
 
 const { Title, Paragraph } = Typography;
 
@@ -18,7 +19,7 @@ function useQuery() {
 export default function Onboarding() {
     const screens = Grid.useBreakpoint();
     const isMobile = !screens.lg;
-    const [inviteData, setInviteData] = useState();
+    const [inviteData, setInviteData] = useState<InviteData>();
 
     let query = useQuery();
     const inviteToken = query.get("invite_token"); // todo: use this to prefill email and also allow to join to linked policy
@@ -71,7 +72,10 @@ export default function Onboarding() {
                         </Row>
                     ) : null}
                     <Wizard>
-                        <EmailPassOnboardingStep />
+                        <EmailPassOnboardingStep
+                            prefilledEmail={inviteData?.email}
+                            inviteToken={inviteToken}
+                        />
                     </Wizard>
                 </Col>
             </Row>
