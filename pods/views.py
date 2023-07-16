@@ -215,7 +215,7 @@ class PodInviteRetrieveUpdateView(RetrieveUpdateAPIView):
 
     def get_object(self):
         try:
-            return PodInvite.objects.get(token=self.kwargs["token"])
+            return PodInvite.objects.get(token=self.kwargs["token"], is_accepted=False)
         except PodInvite.DoesNotExist:
             raise NotFound(detail="Invite not found")
 
