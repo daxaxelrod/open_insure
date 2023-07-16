@@ -2,6 +2,7 @@ import logging
 from copy import copy
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 from pods.serializers import PodSerializer
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.mixins import UpdateModelMixin
@@ -66,7 +67,9 @@ class PolicyViewSet(ModelViewSet):
                 return Policy.objects.exclude(
                     pod__members__id=self.request.user.id
                 ).order_by("-created_at")
-        return Policy.objects.all()
+        return Policy.objects.filter(
+            Q(is_public=True) | Q(pod__members__id__in=[self.request.user.id])
+        )
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
@@ -145,7 +148,6 @@ class RiskSettingsViewSet(RetrieveUpdateAPIView):
             raise ValidationError({"message": "Risk settings not found"})
 
     def perform_update(self, serializer):
-
         # dont allow risk settings to change if the policy is already active
         # might be moved to a vote in the future but a hard stop for now is better than allowing changes during an active policy
         coverage_start_date = self.get_object().policy.coverage_start_date
@@ -231,7 +233,6 @@ class PolicyRiskViewSet(ModelViewSet):
         return Risk.objects.filter(policy=self.kwargs["policy_pk"])
 
     def perform_create(self, serializer):
-
         policy = Policy.objects.get(id=self.kwargs["policy_pk"])
 
         kwargs = {"underlying_insured_type": None}
