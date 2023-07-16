@@ -81,7 +81,7 @@ export default function EmailPassOnboardingStep({}) {
                     rules={[{ required: true, message: "First name required" }]}
                     style={{
                         display: "inline-block",
-                        width: "calc(50% - 8px)",
+                        width: "calc(50%)",
                     }}
                 >
                     <Input placeholder="First name" />
@@ -92,7 +92,7 @@ export default function EmailPassOnboardingStep({}) {
                     style={{
                         display: "inline-block",
                         width: "calc(50% - 8px)",
-                        margin: "0 8px",
+                        margin: "0px 0px 0px 8px",
                     }}
                 >
                     <Input placeholder="Last name" />
@@ -110,7 +110,7 @@ export default function EmailPassOnboardingStep({}) {
                     },
                 ]}
             >
-                <Input placeholder="email" />
+                <Input placeholder="Email" />
             </Form.Item>
 
             <Form.Item
@@ -120,7 +120,10 @@ export default function EmailPassOnboardingStep({}) {
                     { required: true, message: "Please input your password!" },
                 ]}
             >
-                <Input.Password autoComplete="current-password" />
+                <Input.Password
+                    autoComplete="current-password"
+                    placeholder="Password"
+                />
             </Form.Item>
 
             <Form.Item
