@@ -10,7 +10,7 @@ from rest_framework.serializers import (
     # SerializerMethodField,
     DateTimeField,
 )
-from pods.models import Pod, User, UserPod
+from pods.models import Pod, PodInvite, User, UserPod
 
 from pods.utils.custom_serializers import FieldExcludableModelSerializer
 
@@ -101,7 +101,6 @@ class UserSerializer(ModelSerializer):
 
 
 class PatchableUserSerializer(ModelSerializer):
-
     profile_picture = ImageField(write_only=True, required=False)
 
     def update(self, instance, validated_data):
@@ -130,3 +129,23 @@ class PatchableUserSerializer(ModelSerializer):
 
 class InviteSerializer(Serializer):
     email = EmailField()
+
+
+class PodInviteSerializer(ModelSerializer):
+    pod = PodSerializer(read_only=True, exclude=["memberships"])
+    invitor = PatchableUserSerializer(read_only=True)
+
+    class Meta:
+        model = PodInvite
+        fields = [
+            "email",
+            "pod",
+            "invitor",
+            "membership",
+            "created_at",
+            "is_accepted",
+            "is_revoked_by_user",
+            "is_revoked_by_pod",
+            "is_revoked_by_admin",
+            "is_revoked_by_system",
+        ]
