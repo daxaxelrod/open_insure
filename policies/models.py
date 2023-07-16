@@ -69,8 +69,9 @@ class Policy(models.Model):
         default=1,
         help_text="How often premiums are due, in months. 1 means monthly, 3 means quarterly, etc.",
     )
-    escrow_manager = models.ForeignKey("pods.User", on_delete=models.CASCADE, null=True, blank=True) # for now anyone in the policy can manage premiums but i expect this to be a dedicated user role.
-    
+    escrow_manager = models.ForeignKey(
+        "pods.User", on_delete=models.CASCADE, null=True, blank=True
+    )  # for now anyone in the policy can manage premiums but i expect this to be a dedicated user role.
 
     # an interface to some financial provider setup with settings/config
     # actually might be better to have an injected provider, one per instance of the app
@@ -95,14 +96,22 @@ class Policy(models.Model):
     #       Complicates claims process
     #       Encourages claim inflation
 
-    claim_approval_threshold_percentage = models.IntegerField(default=50, help_text="Percentage of members that must vote yes to approve a claim")
-    claim_approval_vote_due_number_of_days = models.IntegerField(default=7, help_text="Number of days after a claim is submitted that the vote is due without penalty")
+    claim_approval_threshold_percentage = models.IntegerField(
+        default=50,
+        help_text="Percentage of members that must vote yes to approve a claim",
+    )
+    claim_approval_vote_due_number_of_days = models.IntegerField(
+        default=7,
+        help_text="Number of days after a claim is submitted that the vote is due without penalty",
+    )
     perils = models.ManyToManyField(Peril, blank=True, related_name="policies")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    is_public = models.BooleanField(default=False)
+    is_public = models.BooleanField(
+        default=False
+    )  # determines whether or not the policy is visible to non-members
 
     def is_policy_active(self):
         return (
@@ -168,26 +177,51 @@ class Risk(models.Model):
     def __str__(self) -> str:
         return f"{self.user}'s' Risk - ({self.policy.name} Policy)"
 
-class PolicyRiskSettings(models.Model):
-    policy = models.OneToOneField(Policy, on_delete=models.CASCADE, related_name="risk_settings")
 
-    conservative_factor = models.IntegerField(default=0, help_text="how much do you want to pad the risk score by. The higher it is the more premiums everyone pays")
-    
+class PolicyRiskSettings(models.Model):
+    policy = models.OneToOneField(
+        Policy, on_delete=models.CASCADE, related_name="risk_settings"
+    )
+
+    conservative_factor = models.IntegerField(
+        default=0,
+        help_text="how much do you want to pad the risk score by. The higher it is the more premiums everyone pays",
+    )
+
     # todo JSON field with the risk settings for each risk type
     # want to punt on JSON field bc sqlite doesn't support it
     # or at least some kind of polymorphic thing where we can have a different risk settings for each risk type
-    cell_phone_peril_rate = models.IntegerField(default=10, help_text="cell_phone base peril rate, percent per year", validators=[MinValueValidator(1), MaxValueValidator(100)])
-    cell_phone_case_discount = models.IntegerField(default=100, help_text="cell_phone case discount, absolute basis points",)
-    cell_phone_screen_protector_discount = models.IntegerField(default=100, help_text="cell_phone case discount, absolute basis points")
-    audio_equipment_peril_rate = models.IntegerField(default=15, help_text="audio_equipment base peril rate", validators=[MinValueValidator(1), MaxValueValidator(100)])
+    cell_phone_peril_rate = models.IntegerField(
+        default=10,
+        help_text="cell_phone base peril rate, percent per year",
+        validators=[MinValueValidator(1), MaxValueValidator(100)],
+    )
+    cell_phone_case_discount = models.IntegerField(
+        default=100,
+        help_text="cell_phone case discount, absolute basis points",
+    )
+    cell_phone_screen_protector_discount = models.IntegerField(
+        default=100, help_text="cell_phone case discount, absolute basis points"
+    )
+    audio_equipment_peril_rate = models.IntegerField(
+        default=15,
+        help_text="audio_equipment base peril rate",
+        validators=[MinValueValidator(1), MaxValueValidator(100)],
+    )
 
-    annual_discount_rate = models.IntegerField(default=0, help_text="Annual interest rate that escrow balance could be invested at, in basis points. 100 = 1%")
+    annual_discount_rate = models.IntegerField(
+        default=0,
+        help_text="Annual interest rate that escrow balance could be invested at, in basis points. 100 = 1%",
+    )
 
-    last_updated_by = models.ForeignKey("pods.User", on_delete=models.SET_NULL, null=True, blank=True)
+    last_updated_by = models.ForeignKey(
+        "pods.User", on_delete=models.SET_NULL, null=True, blank=True
+    )
     last_updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f"{self.policy.name} Risk Settings -- Conservative Factor: {self.conservative_factor}%"
+
 
 class Premium(models.Model):
     policy = models.ForeignKey(
@@ -204,18 +238,24 @@ class Premium(models.Model):
     )
     paid = models.BooleanField(default=False)
     paid_date = models.DateField(null=True, blank=True)
-    marked_paid_by = models.ForeignKey("pods.User", on_delete=models.CASCADE, null=True, blank=True, related_name="premiums_marked_paid")
-    
+    marked_paid_by = models.ForeignKey(
+        "pods.User",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="premiums_marked_paid",
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def short_description(self):
-        return f"${self.amount/100} premium due on {self.due_date} for {self.policy.name}"
+        return (
+            f"${self.amount/100} premium due on {self.due_date} for {self.policy.name}"
+        )
 
     def __str__(self) -> str:
         return f"Premium for {self.policy.name} paid by {self.payer}, due on {self.due_date}"
-
-    
 
 
 class PolicyCloseout(models.Model):
@@ -251,6 +291,7 @@ class PolicyCloseout(models.Model):
         validators=[MinValueValidator(1)], help_text="in cents"
     )  # or satoshis I guess
 
+
 class Claim(models.Model):
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="claims")
     claimant = models.ForeignKey(
@@ -262,11 +303,15 @@ class Claim(models.Model):
     amount = models.IntegerField(
         validators=[MinValueValidator(1)], help_text="in cents"
     )
-    approved_on = models.DateTimeField(null=True, blank=True, help_text="The first instant where enough votes were cast to approve the claim")
+    approved_on = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="The first instant where enough votes were cast to approve the claim",
+    )
     paid_on = models.DateTimeField(
         null=True, blank=True, help_text="Null means not paid yet"
     )
-    
+
     # todo, not sure we have the infrastructure to support this yet
     # but def needs to be done in the future, cant have claims lying around forever, people need closure
     # votes_due_by = models.DateField() # based on the claim_approval_vote_due_number_of_days from the policy
@@ -275,10 +320,13 @@ class Claim(models.Model):
     location_long = models.FloatField(null=True, blank=True)
 
     # lat long covers precise location, allow people to say "NYC 23rd and 5th" or "my house"
-    location_description = models.TextField(null=True, blank=True, help_text="If the location is not precise, you can describe it here")
+    location_description = models.TextField(
+        null=True,
+        blank=True,
+        help_text="If the location is not precise, you can describe it here",
+    )
 
     occurance_date = models.DateField(null=True, blank=True)
-
 
     # does this need more context? Maybe another field with an explanation
     # its useful for allowing the system to mark claims as over the limit without having to recompute all the prior payouts each time
@@ -296,8 +344,9 @@ class Claim(models.Model):
         if all_approvals_count == 0:
             # approvals not created for some reason, shouldnt happen
             return False
-        return (approved_count / all_approvals_count) >= (self.policy.claim_approval_threshold_percentage / 100)
-        
+        return (approved_count / all_approvals_count) >= (
+            self.policy.claim_approval_threshold_percentage / 100
+        )
 
     def has_evidence(self):
         return self.evidence.count() > 0
@@ -337,25 +386,35 @@ class Claim(models.Model):
 
 class ClaimEvidence(models.Model):
     # Mainly just pictures of what happened. Just links to a url so could also be documents
-    claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="evidence", null=True, blank=True)
-    policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="claim_evidence")
-    owner = models.ForeignKey("pods.User", on_delete=models.CASCADE, related_name="claim_evidence")
+    claim = models.ForeignKey(
+        Claim, on_delete=models.CASCADE, related_name="evidence", null=True, blank=True
+    )
+    policy = models.ForeignKey(
+        Policy, on_delete=models.CASCADE, related_name="claim_evidence"
+    )
+    owner = models.ForeignKey(
+        "pods.User", on_delete=models.CASCADE, related_name="claim_evidence"
+    )
     evidence_type = models.CharField(max_length=16, choices=CLAIM_EVIDENCE_TYPE_CHOICES)
     image = models.ImageField(upload_to="claim_evidence_images", max_length=264)
-    photo_order = models.IntegerField(default=0, help_text="Order of photos in the claim", null=True, blank=True)
-    
+    photo_order = models.IntegerField(
+        default=0, help_text="Order of photos in the claim", null=True, blank=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         if self.claim:
-            return f"Claim evidence for {self.claim.policy.name} by {self.claim.claimant}"
+            return (
+                f"Claim evidence for {self.claim.policy.name} by {self.claim.claimant}"
+            )
         else:
             return f"Unattributed evidence for {self.policy.name} by {self.owner}"
 
 
 # think of these as votes
-class ClaimApproval(models.Model): 
+class ClaimApproval(models.Model):
     claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="approvals")
     approved = models.BooleanField(default=None, blank=True, null=True)
     approved_on = models.DateTimeField(null=True, blank=True)
@@ -381,6 +440,7 @@ class ClaimApproval(models.Model):
             repr_str = "not approved"
         return f"{self.approver} vote on claim {self.claim} - {repr_str}"
 
+
 class ClaimComment(models.Model):
     claim = models.ForeignKey(Claim, on_delete=models.CASCADE, related_name="comments")
     commenter = models.ForeignKey(
@@ -393,15 +453,22 @@ class ClaimComment(models.Model):
     def __str__(self):
         return f"{self.commenter} comment on claim {self.claim} - {self.comment}"
 
+
 # not used yet
 class EscrowAgentVote(models.Model):
     """
     The escrow agent is the user that holds the funds for the policy and pays out claims once they are approved
     """
 
-    policy = models.ForeignKey(Policy, on_delete=models.CASCADE, related_name="escrow_agent_choices")
-    voter = models.ForeignKey("pods.User", on_delete=models.CASCADE, related_name="escrow_agent_votes")
-    choice = models.ForeignKey("pods.User", on_delete=models.CASCADE, related_name="escrow_agent_choices")
+    policy = models.ForeignKey(
+        Policy, on_delete=models.CASCADE, related_name="escrow_agent_choices"
+    )
+    voter = models.ForeignKey(
+        "pods.User", on_delete=models.CASCADE, related_name="escrow_agent_votes"
+    )
+    choice = models.ForeignKey(
+        "pods.User", on_delete=models.CASCADE, related_name="escrow_agent_choices"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
