@@ -1,20 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Button, Col, Space, Row, Typography, Grid } from "antd";
+import { Col, Row, Typography } from "antd";
 import { Element } from "rc-scroll-anim";
-import heroImage from "../../../assets/images/home/hero_v2.png";
-import { Link } from "react-router-dom";
 
 const { Title } = Typography;
 const Banner = ({ className = "banner" }) => {
-    const sizes = Grid.useBreakpoint();
-
-    const isTablet = sizes.md && !sizes.lg;
-    const isDesktop = sizes.lg || sizes.xl;
-    const isMobile = (sizes.sm || sizes.xs) && !isDesktop;
-    const isSmall = sizes.sm;
-    const isXSmall = sizes.xs;
-
     return (
         <Element component="section" className={`${className}-wrapper page`}>
             <Row
