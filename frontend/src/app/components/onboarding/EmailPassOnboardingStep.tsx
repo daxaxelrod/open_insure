@@ -7,7 +7,13 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { isLoggedIn } from "axios-jwt";
 import { useNavigate } from "react-router-dom";
 
-export default function EmailPassOnboardingStep({}) {
+export default function EmailPassOnboardingStep({
+    prefilledEmail,
+    inviteToken,
+}: {
+    prefilledEmail?: string;
+    inviteToken: string | null;
+}) {
     const { handleStep, nextStep, isLastStep } = useWizard();
     const dispatch = useAppDispatch();
     const screens = Grid.useBreakpoint();
@@ -36,6 +42,7 @@ export default function EmailPassOnboardingStep({}) {
                 last_name: lastName,
                 email: email.toLowerCase(),
                 password,
+                ...(inviteToken ? { invite_token: inviteToken } : {}),
             })
         );
     };
@@ -45,6 +52,12 @@ export default function EmailPassOnboardingStep({}) {
             navigate("/home");
         }
     }, [isRegisterPending]);
+
+    useEffect(() => {
+        if (prefilledEmail) {
+            form.setFieldsValue({ email: prefilledEmail });
+        }
+    }, [prefilledEmail]);
 
     return (
         <Form
@@ -81,7 +94,7 @@ export default function EmailPassOnboardingStep({}) {
                     rules={[{ required: true, message: "First name required" }]}
                     style={{
                         display: "inline-block",
-                        width: "calc(50% - 8px)",
+                        width: "calc(50%)",
                     }}
                 >
                     <Input placeholder="First name" />
@@ -92,7 +105,7 @@ export default function EmailPassOnboardingStep({}) {
                     style={{
                         display: "inline-block",
                         width: "calc(50% - 8px)",
-                        margin: "0 8px",
+                        margin: "0px 0px 0px 8px",
                     }}
                 >
                     <Input placeholder="Last name" />
@@ -110,7 +123,7 @@ export default function EmailPassOnboardingStep({}) {
                     },
                 ]}
             >
-                <Input placeholder="email" />
+                <Input placeholder="Email" disabled={!!prefilledEmail} />
             </Form.Item>
 
             <Form.Item
@@ -120,7 +133,10 @@ export default function EmailPassOnboardingStep({}) {
                     { required: true, message: "Please input your password!" },
                 ]}
             >
-                <Input.Password autoComplete="current-password" />
+                <Input.Password
+                    autoComplete="current-password"
+                    placeholder="Password"
+                />
             </Form.Item>
 
             <Form.Item

@@ -12,7 +12,6 @@ from policies.risk.models import AudioEquipmentRisk, PhoneRisk
 def create_test_user_risk_for_policy(
     policy: Policy, user: User, risk_type="cell_phone"
 ):
-
     create_kwargs = {
         "make": "Apple",
         "model": "Iphone 13",
@@ -39,7 +38,6 @@ def create_test_user_risk_for_policy(
 
 
 def create_paid_claim_for_user(user, policy, amount):
-
     claim = Claim.objects.create(
         policy=policy,
         claimant=user,
@@ -72,7 +70,8 @@ def create_test_risks_for_policy_members(policy: Policy):
 
 
 def create_test_policy(
-    pod: Pod, start_date: datetime = timezone.datetime(2022, 5, 29, tzinfo=timezone.utc)
+    pod: Pod,
+    start_date: datetime = timezone.datetime(2022, 5, 29, tzinfo=timezone.utc),
 ) -> Tuple[datetime, Policy]:
     policy = Policy.objects.create(
         name="$10 Small electronics policy",
@@ -86,6 +85,7 @@ def create_test_policy(
         coverage_duration=12,  # months
         coverage_start_date=start_date,
         escrow_manager=pod.creator,
+        is_public=True,
     )
     create_test_risks_for_policy_members(policy)
     schedule_premiums(policy)

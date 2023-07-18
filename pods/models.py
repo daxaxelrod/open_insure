@@ -63,13 +63,18 @@ class Pod(models.Model):
 class UserPod(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     pod = models.ForeignKey(Pod, on_delete=models.SET_NULL, null=True, blank=True)
-    risk_penalty = models.IntegerField(default=0, help_text="Base penalty for user who is percieved as more risky to the group, in basis points")
+    risk_penalty = models.IntegerField(
+        default=0,
+        help_text="Base penalty for user who is percieved as more risky to the group, in basis points",
+    )
     is_user_friend_of_the_pod = models.BooleanField(
         default=False
     )  # is the user trusted by the rest of the POD? IE are they friends with the other members
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    left_at = models.DateTimeField(null=True, blank=True) # when the user left the pod/policy
+    left_at = models.DateTimeField(
+        null=True, blank=True
+    )  # when the user left the pod/policy
 
 
 class PodInvite(models.Model):
@@ -89,8 +94,13 @@ class PodInvite(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    first_read_at = models.DateTimeField(null=True, blank=True)
+    last_read_at = models.DateTimeField(null=True, blank=True)
+    accepted_at = models.DateTimeField(null=True, blank=True)
 
-    is_accepted = models.BooleanField(default=False)
+    is_accepted = models.BooleanField(
+        default=False
+    )  # if accepted then it cant be used again
 
     is_revoked_by_user = models.BooleanField(default=False)
     is_revoked_by_pod = models.BooleanField(default=False)
@@ -114,6 +124,7 @@ class PodInvite(models.Model):
         if self.membership:
             return f"👏 Invite Accepted: {self.invitor} invited {self.email} to {self.pod.name}"
         return f"{self.invitor} invited {self.email} to {self.pod.name}"
+
 
 class WaitlistMember(models.Model):
     email = models.EmailField()

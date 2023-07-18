@@ -1,8 +1,9 @@
-import { Avatar } from "antd";
 import React from "react";
+import { Avatar, Typography } from "antd";
 import { Policy } from "../../../../redux/reducers/commonTypes";
-import { UserOutlined } from "@ant-design/icons";
-import { maybePluralize } from "../../../utils/stringUtils";
+import { UserOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
+import colors from "../../../constants/colors";
+const { Text } = Typography;
 
 export default function Title({ policy }: { policy: Policy }) {
     return (
@@ -13,7 +14,32 @@ export default function Title({ policy }: { policy: Policy }) {
                 justifyContent: "space-between",
             }}
         >
-            <div>{policy.name}</div>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                }}
+            >
+                <div>{policy.name}</div>
+                {!policy.is_public ? (
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                        }}
+                    >
+                        <EyeInvisibleOutlined
+                            style={{
+                                marginRight: 4,
+                                color: colors.gray7,
+                            }}
+                        />
+                        <Text type="secondary">Private</Text>
+                    </div>
+                ) : null}
+            </div>
             <div
                 style={{
                     flexDirection: "row",

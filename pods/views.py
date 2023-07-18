@@ -1,6 +1,7 @@
 from django.conf import settings
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
 from rest_framework.decorators import action
 from rest_framework.status import (
     HTTP_403_FORBIDDEN,
@@ -17,6 +18,7 @@ from pods.serializers import (
     PodSerializer,
     UserSerializer,
     PatchableUserSerializer,
+    PodInviteSerializer,
 )
 from policies.claims.serializers import ClaimSerializer, FullClaimApprovalSerializer
 from policies.models import ClaimApproval, Policy
@@ -169,7 +171,8 @@ class UserViewSet(ModelViewSet):
 
         claim_approvals = ClaimApproval.objects.filter(approver=instance)
         claim_approvals_serializer = FullClaimApprovalSerializer(
-            claim_approvals, many=True)
+            claim_approvals, many=True
+        )
 
         all_premiums = instance.premiums_paid.all()
         total_payments = all_premiums.filter(paid=True)
@@ -206,14 +209,24 @@ class SelfView(RetrieveUpdateAPIView):
         return self.request.user
 
 
+class PodInviteRetrieveUpdateView(RetrieveUpdateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = PodInviteSerializer
+
+    def get_object(self):
+        try:
+            return PodInvite.objects.get(token=self.kwargs["token"], is_accepted=False)
+        except PodInvite.DoesNotExist:
+            raise NotFound(detail="Invite not found")
+
+
 class WaitlistView(APIView):
     serializer_class = InviteSerializer
 
     def post(self, request, format=None):
         serializer = InviteSerializer(data=request.data)
         if serializer.is_valid():
-            WaitlistMember.objects.create(
-                email=serializer.validated_data["email"])
+            WaitlistMember.objects.create(email=serializer.validated_data["email"])
             if settings.NOTIFY_ADMINS_OF_EVENTS:
                 send_notif_email_to_admins(
                     title="New waitlist member",

@@ -21,3 +21,7 @@ export const createPod = (values: PodCreationPayload) => {
 export const inviteUserToPod = (podId: number, values: PodInvitePayload) => {
     return axiosInstance.post(`/api/v1/pods/${podId}/invite/`, values);
 };
+
+export const getInviteDataFromToken = (token: string) => {
+    return axiosInstance.get(`/api/v1/invites/${token}/`);
+};

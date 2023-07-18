@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from rest_framework.serializers import (
@@ -10,7 +11,7 @@ from rest_framework.serializers import (
     # SerializerMethodField,
     DateTimeField,
 )
-from pods.models import Pod, User, UserPod
+from pods.models import Pod, PodInvite, User, UserPod
 
 from pods.utils.custom_serializers import FieldExcludableModelSerializer
 
@@ -63,6 +64,7 @@ class PodSerializer(FieldExcludableModelSerializer):
 class UserSerializer(ModelSerializer):
     pods = PodSerializer(many=True, read_only=True, exclude=["members"])
     password = CharField(write_only=True)
+    invite_token = CharField(write_only=True, required=False)
 
     def validate_email(self, value):
         lower_email = value.lower()
@@ -71,9 +73,38 @@ class UserSerializer(ModelSerializer):
         return lower_email
 
     def create(self, validated_data):
+        invite_token = None
+        if "invite_token" in validated_data:
+            invite_token = validated_data.pop("invite_token")
+
         user = super().create(validated_data)
         user.set_password(validated_data["password"])
         user.save()
+
+        if invite_token:
+            try:
+                invite = PodInvite.objects.get(token=invite_token, is_accepted=False)
+                if invite.email.lower() != user.email.lower():
+                    user.delete()
+                    raise ValidationError("Invalid invite token")
+                if invite.is_revoked:
+                    user.delete()
+                    raise ValidationError("Invite has been revoked")
+
+                new_membership = UserPod.objects.create(
+                    user=user,
+                    pod=invite.pod,
+                    is_user_friend_of_the_pod=True,
+                )
+                invite.membership = new_membership
+                invite.is_accepted = True
+                invite.accepted_at = timezone.now()
+                invite.save()
+
+            except PodInvite.DoesNotExist:
+                user.delete()
+                raise ValidationError("Invalid invite token")
+
         return user
 
     def update(self, instance, validated_data):
@@ -89,6 +120,7 @@ class UserSerializer(ModelSerializer):
             "id",
             "username",
             "password",
+            "invite_token",
             "first_name",
             "last_name",
             "email",
@@ -101,7 +133,6 @@ class UserSerializer(ModelSerializer):
 
 
 class PatchableUserSerializer(ModelSerializer):
-
     profile_picture = ImageField(write_only=True, required=False)
 
     def update(self, instance, validated_data):
@@ -130,3 +161,23 @@ class PatchableUserSerializer(ModelSerializer):
 
 class InviteSerializer(Serializer):
     email = EmailField()
+
+
+class PodInviteSerializer(ModelSerializer):
+    pod = PodSerializer(read_only=True, exclude=["memberships"])
+    invitor = PatchableUserSerializer(read_only=True)
+
+    class Meta:
+        model = PodInvite
+        fields = [
+            "email",
+            "pod",
+            "invitor",
+            "membership",
+            "created_at",
+            "is_accepted",
+            "is_revoked_by_user",
+            "is_revoked_by_pod",
+            "is_revoked_by_admin",
+            "is_revoked_by_system",
+        ]

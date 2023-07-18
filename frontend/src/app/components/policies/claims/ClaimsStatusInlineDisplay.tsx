@@ -15,9 +15,10 @@ export default function ClaimsStatusInlineDisplay({
     record: Policy;
     currentUser: User;
 }) {
-    let pendingClaims = record.claims.filter(
-        (claim: Claim) => !claim.is_claim_invalid && !claim.paid_on
-    );
+    let pendingClaims =
+        record?.claims?.filter(
+            (claim: Claim) => !claim.is_claim_invalid && !claim.paid_on
+        ) || [];
     let pendingClaimsWhereUserVoteNotSubmitted = pendingClaims.filter(
         (claim) => {
             return !claim.approvals.some(
