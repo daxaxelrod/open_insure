@@ -9,7 +9,7 @@ from rest_framework.mixins import UpdateModelMixin
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_403_FORBIDDEN
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
-from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
@@ -361,3 +361,23 @@ class PolicyPremiumViewSet(UpdateModelMixin, ReadOnlyModelViewSet):
             policy.pool_balance -= premium.amount
         policy.save()
         serializer.save(**kwargs)
+
+class PublicRiskViewSet(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        """
+        Compute the hypothetical premium amount for a proposed risk setting. Open to the world
+
+        """
+        risk_serializer = RiskSerializer(data=request.data)
+        risk_serializer.is_valid(raise_exception=True)
+        # DO NOT SAVE THE RISK SETTINGS
+        risk = Risk(**risk_serializer.validated_data, user=request.user)
+
+        # compute the hypothetical premium amount for each user
+        hypothetical_premium = compute_premium_amount(risk)
+
+        return Response(
+            hypothetical_premium,
+            status=HTTP_200_OK,

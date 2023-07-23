@@ -10,16 +10,18 @@ import {
     notification,
 } from "antd";
 import { SizeType } from "antd/es/config-provider/SizeContext";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import appleProducts from "../../../../constants/appleProducts";
+import { public_getHypotheticalQuote } from "../../../../../networking/premiums";
+import { PublicQuoteContext } from "../../../contexts/PublicQuoteContext";
 
 export default function DemoQuoteForm() {
-    const [quote, setQuote] = useState();
+    const { setQuote } = useContext(PublicQuoteContext);
+
     const [pending, setPending] = useState(false);
     const [form] = Form.useForm();
-    const [options, setOptions] = useState<{ value: string; label: string }[]>(
-        []
-    );
+    const [appleOptions, setAppleOptions] =
+        useState<{ value: string; label: string }[]>(appleProducts);
     const [api, contextHolder] = notification.useNotification();
 
     const onFormChange = (changedValues: any, allValues: any) => {};
@@ -29,18 +31,17 @@ export default function DemoQuoteForm() {
         if (!value) {
             res = [];
         } else {
-            res = ["gmail.com", "163.com", "qq.com"].map((domain) => ({
-                value,
-                label: `${value}@${domain}`,
-            }));
+            res = appleOptions.filter((product) =>
+                product.label.toLowerCase().includes(value.toLowerCase())
+            );
         }
-        setOptions(res);
+        setAppleOptions(res);
     };
 
     const submitForm = async () => {
         let values = await form.validateFields();
         try {
-            let result = await getHypotheticalQuote({
+            let result = await public_getHypotheticalQuote({
                 ...values,
                 asset_type: "cell_phone",
             });
@@ -73,20 +74,17 @@ export default function DemoQuoteForm() {
                 onFinish={submitForm}
             >
                 <Form.Item label="Make" name={"make"}>
-                    <Input placeholder="Apple" />
+                    <Input placeholder="Apple, Samsung" />
                 </Form.Item>
                 <Form.Item label="Model">
                     {formMakeField?.toLowerCase()?.includes("apple") ? (
                         <AutoComplete
                             style={{ width: 200 }}
-                            onSearch={handleIphoneAutoComplete}
-                            placeholder="Enter Iphone"
-                            options={appleProducts}
+                            placeholder="Search iPhone"
+                            options={appleOptions}
                         />
                     ) : (
-                        <Select>
-                            <Select.Option value="demo">Demo</Select.Option>
-                        </Select>
+                        <Input placeholder="Iphone 14, Galaxy S23" />
                     )}
                 </Form.Item>
                 <Form.Item label="Cascader">

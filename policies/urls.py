@@ -13,6 +13,7 @@ from policies.views import (
     PolicyRiskViewSet,
     RiskViewSet,
     RiskMediaViewSet,
+    PublicRiskViewSet
 )
 
 from policies.claims.views import (
@@ -55,4 +56,5 @@ urlpatterns = [
     path("media/riskPhoto/<int:photo_id>", RiskMediaViewSet.as_view()),
     path("", include(policy_nested_router.urls)),
     path("", include(claim_view_router.urls))
+    path("public/quote", PublicRiskViewSet.as_view(), name="public-quote")
 ]
