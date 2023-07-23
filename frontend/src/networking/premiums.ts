@@ -17,3 +17,7 @@ export const patchPremium = (
 export const getPolicyPremiums = (policyId: number) => {
     return axiosInstance.get(`/api/v1/policies/${policyId}/premiums/`);
 };
+
+export const public_getHypotheticalQuote = (payload: any) => {
+    return axiosInstance.post(`/api/v1/public/quote/`, payload);
+};
