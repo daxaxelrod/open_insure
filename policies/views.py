@@ -362,6 +362,7 @@ class PolicyPremiumViewSet(UpdateModelMixin, ReadOnlyModelViewSet):
         policy.save()
         serializer.save(**kwargs)
 
+
 class PublicRiskViewSet(APIView):
     permission_classes = [AllowAny]
 
@@ -381,3 +382,4 @@ class PublicRiskViewSet(APIView):
         return Response(
             hypothetical_premium,
             status=HTTP_200_OK,
+        )

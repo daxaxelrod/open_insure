@@ -8,12 +8,11 @@ from policies.views import (
     PremiumViewSet,
     RiskSettingsViewSet,
     RiskSettingsHyptotheticalApiView,
-
     # risk
     PolicyRiskViewSet,
     RiskViewSet,
     RiskMediaViewSet,
-    PublicRiskViewSet
+    PublicRiskViewSet,
 )
 
 from policies.claims.views import (
@@ -21,7 +20,7 @@ from policies.claims.views import (
     ClaimViewSet,
     ClaimEvidenceAPIView,
     ClaimViewModelViewSet,
-    ClaimCommentsViewSet
+    ClaimCommentsViewSet,
 )
 
 from policies.renewals.views import RenewalModelViewSet
@@ -33,20 +32,41 @@ router.register(r"risk", RiskViewSet, basename="risk")
 
 policy_nested_router = routers.NestedSimpleRouter(router, r"policies", lookup="policy")
 policy_nested_router.register(r"risk", PolicyRiskViewSet, basename="policy-risks")
-policy_nested_router.register(r"premiums", PolicyPremiumViewSet, basename="policy-premium")
+policy_nested_router.register(
+    r"premiums", PolicyPremiumViewSet, basename="policy-premium"
+)
 policy_nested_router.register(r"claims", ClaimViewSet, basename="policy-claims")
-policy_nested_router.register(r"renewals", RenewalModelViewSet, basename="policy-renewals")
+policy_nested_router.register(
+    r"renewals", RenewalModelViewSet, basename="policy-renewals"
+)
 
 # unsure if i can nest a router in an already nested router, to test
 # if so then refactor, would be cleaner that way
 claim_view_router = routers.DefaultRouter()
-claim_view_router.register(r"^policies/(?P<policy_pk>[^/.]+)/claims/(?P<claim_pk>[^/.]+)/views", ClaimViewModelViewSet, basename="claim-views")
-claim_view_router.register(r"^policies/(?P<policy_pk>[^/.]+)/claims/(?P<claim_pk>[^/.]+)/comments", ClaimCommentsViewSet, basename="claim-comments")
+claim_view_router.register(
+    r"^policies/(?P<policy_pk>[^/.]+)/claims/(?P<claim_pk>[^/.]+)/views",
+    ClaimViewModelViewSet,
+    basename="claim-views",
+)
+claim_view_router.register(
+    r"^policies/(?P<policy_pk>[^/.]+)/claims/(?P<claim_pk>[^/.]+)/comments",
+    ClaimCommentsViewSet,
+    basename="claim-comments",
+)
 
 urlpatterns = [
-    re_path("policies/(?P<policy_id>\d+)/risk_settings/$", RiskSettingsViewSet.as_view()),
-    re_path("policies/(?P<policy_id>\d+)/risk_settings/hypothetical/$", RiskSettingsHyptotheticalApiView.as_view()),
-    re_path("policies/(?P<policy_pk>\d+)/claim_evidence/$", ClaimEvidenceAPIView.as_view(), name="policy-claim-evidence"), # todo, standardize to policy_pk
+    re_path(
+        "policies/(?P<policy_id>\d+)/risk_settings/$", RiskSettingsViewSet.as_view()
+    ),
+    re_path(
+        "policies/(?P<policy_id>\d+)/risk_settings/hypothetical/$",
+        RiskSettingsHyptotheticalApiView.as_view(),
+    ),
+    re_path(
+        "policies/(?P<policy_pk>\d+)/claim_evidence/$",
+        ClaimEvidenceAPIView.as_view(),
+        name="policy-claim-evidence",
+    ),  # todo, standardize to policy_pk
     path("premiums/<int:pk>/", PremiumViewSet.as_view(), name="premium_detail"),
     path(
         "claims/<int:claim_pk>/approvals/<int:pk>/",
@@ -55,6 +75,6 @@ urlpatterns = [
     ),
     path("media/riskPhoto/<int:photo_id>", RiskMediaViewSet.as_view()),
     path("", include(policy_nested_router.urls)),
-    path("", include(claim_view_router.urls))
-    path("public/quote", PublicRiskViewSet.as_view(), name="public-quote")
+    path("", include(claim_view_router.urls)),
+    path("public/quote", PublicRiskViewSet.as_view(), name="public-quote"),
 ]
