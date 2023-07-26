@@ -185,7 +185,7 @@ class PolicyRiskSettings(models.Model):
 
     conservative_factor = models.IntegerField(
         default=0,
-        help_text="how much do you want to pad the risk score by. The higher it is the more premiums everyone pays",
+        help_text="how much do you want to pad the risk score by. The higher it is the more premiums everyone pays. Int from 0-100 which will be converted to %",
     )
 
     # todo JSON field with the risk settings for each risk type

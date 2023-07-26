@@ -24,12 +24,13 @@ from policies.permissions import (
 )
 from policies.premiums import schedule_premiums
 from policies.risk.emails import send_risk_update_email
-from policies.risk.models import PropertyImage, get_model_for_risk_type
+from policies.risk.models import PhoneRisk, PropertyImage, get_model_for_risk_type
 from policies.risk.permissions import IsRiskOwner
 from policies.risk.risk_scores import compute_premium_amount, compute_risk_score
 from policies.risk.serializers import (
     AlbumSerializer,
     ImageSerializer,
+    PhoneRiskSerializer,
     get_serializer_for_risk_type,
 )
 from policies.serializers import (
@@ -366,20 +367,42 @@ class PolicyPremiumViewSet(UpdateModelMixin, ReadOnlyModelViewSet):
 class PublicRiskViewSet(APIView):
     permission_classes = [AllowAny]
 
-    def post(self, request, *args, **kwargs):
+    def post(
+        self,
+        request,
+    ):
         """
         Compute the hypothetical premium amount for a proposed risk setting. Open to the world
 
         """
-        risk_serializer = RiskSerializer(data=request.data)
-        risk_serializer.is_valid(raise_exception=True)
+        phone_risk_serializer = PhoneRiskSerializer(data=request.data)
+        phone_risk_serializer.is_valid(raise_exception=True)
         # DO NOT SAVE THE RISK SETTINGS
-        risk = Risk(**risk_serializer.validated_data, user=request.user)
+        phone_risk = PhoneRisk(**phone_risk_serializer.validated_data)
+
+        risk = Risk(
+            underlying_insured_type="cell_phone",
+            content_type=ContentType.objects.get_for_model(PhoneRisk),
+            content_object=phone_risk,
+        )
+
+        mock_policy = Policy(name="Mock Policy", coverage_duration=12)
+        mock_risk_settings = PolicyRiskSettings(
+            conservative_factor=30,
+            cell_phone_peril_rate=7,  # 7% of phones in pool expected to be total lost in 1 year.
+            cell_phone_case_discount=100,
+            cell_phone_screen_protector_discount=100,
+            audio_equipment_peril_rate=15,
+            annual_discount_rate=500,
+        )
+
+        risk.policy = mock_policy
 
         # compute the hypothetical premium amount for each user
-        hypothetical_premium = compute_premium_amount(risk)
+        risk.risk_score = compute_risk_score(risk, mock_risk_settings)
+        risk.premium_amount = compute_premium_amount(risk)
 
         return Response(
-            hypothetical_premium,
+            RiskSerializer(risk).data,
             status=HTTP_200_OK,
         )
