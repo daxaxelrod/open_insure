@@ -7,7 +7,7 @@ export default function CellPhone() {
     });
     scene.scale.set(70, 70, 70);
     scene.position.set(0, 0, 0);
-    scene.rotation.set(0, 270, 0);
+    scene.rotation.set(0, 0, 0);
     const phoneRef = useRef();
 
     return (
