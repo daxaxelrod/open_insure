@@ -28,6 +28,8 @@ export default forwardRef(function SpacialAudio(
             if (sound.current.isPlaying) {
                 sound.current.stop();
             }
+            console.log("playing sound", refDistance);
+
             sound.current.setBuffer(buffer);
             sound.current.setRefDistance(refDistance > 0 ? refDistance : 1);
             sound.current.setLoop(false);

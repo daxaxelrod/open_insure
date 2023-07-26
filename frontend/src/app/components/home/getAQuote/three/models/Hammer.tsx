@@ -1,9 +1,10 @@
 // @ts-nocheck
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { animated, config, useSpring, useSpringRef } from "@react-spring/three";
+import { animated, useSpring } from "@react-spring/three";
 import SpacialAudio from "../SpacialAudio";
+import { Vector3 } from "three";
 
 const Y_OFFSET = 5;
 
@@ -13,6 +14,7 @@ export default function Hammer() {
     scene.position.set(0, Y_OFFSET, 5);
 
     const hammerRef = useRef();
+    const hammerRay = useRef();
     const audioRef = useRef();
     const audioRef2 = useRef();
     const audioRef3 = useRef();
@@ -50,7 +52,7 @@ export default function Hammer() {
                 const { width, height } = viewport;
 
                 hammer.position.x = x * 3;
-                hammer.position.y = y * 5 - Y_OFFSET;
+                hammer.position.y = y * 10 - Y_OFFSET;
             }
         }
     });
@@ -85,14 +87,14 @@ export default function Hammer() {
             <SpacialAudio
                 ref={audioRef}
                 refDistance={
-                    hammerRef.current ? hammerRef.current.position.z : 5
+                    hammerRef.current ? hammerRef.current.position.x : 5
                 }
                 url={"./audio/338694__natemarler__glass-bottle-break.wav"}
             />
             <SpacialAudio
                 ref={audioRef2}
                 refDistance={
-                    hammerRef.current ? hammerRef.current.position.z : 5
+                    hammerRef.current ? hammerRef.current.position.x : 5
                 }
                 url={"./audio/221528__unfa__glass-break.wav"}
             />
@@ -100,12 +102,18 @@ export default function Hammer() {
             <SpacialAudio
                 ref={audioRef3}
                 refDistance={
-                    hammerRef.current ? hammerRef.current.position.z : 5
+                    hammerRef.current ? hammerRef.current.position.x : 5
                 }
                 url={"./audio/500604__elenzack__breaking-glass_2.wav"}
             />
 
             <animated.primitive object={scene} />
+            <raycaster
+                ref={hammerRay}
+                ray={[new Vector3(-3, 0, 0), new Vector3(1, 0, 0)]}
+                showLine
+                color="red"
+            />
         </animated.group>
     );
 }
