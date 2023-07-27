@@ -50,7 +50,6 @@ export default function DemoQuoteForm() {
             });
             if (result.status === 200) {
                 setQuote(result.data);
-                console.log(result.data);
             }
             setPending(false);
         } catch (error) {

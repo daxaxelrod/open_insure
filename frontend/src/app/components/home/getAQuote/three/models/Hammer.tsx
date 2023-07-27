@@ -84,7 +84,7 @@ export default function Hammer() {
                     setContactPoints((points) =>
                         points.concat(
                             intersections.map((i) =>
-                                i.point.clone().add(new Vector3(0, 0, 1.1))
+                                i.point.clone().add(new Vector3(0, 0, 2))
                             )
                         )
                     );
@@ -175,25 +175,24 @@ export default function Hammer() {
                 <animated.primitive object={scene} />
             </animated.group>
             {contactPoints.map((point) => (
-                <mesh
-                    name={`contact-point`}
-                    position={point}
-                    rotateY={Math.PI / 2}
-                    rotateOnWorldAxis={new Vector3(0, 1, 0)}
-                >
-                    {/* <planeBufferGeometry attach="geometry" args={[1.5, 1.5]} /> */}
-                    <Image
-                        scale={2}
-                        rotateOnWorldAxis={new Vector3(1, 0, 0)}
-                        rotateX={Math.PI / 2}
-                        rotateZ={Math.PI / 2}
-                        url="./crackedGlass.png"
-                        transparent
-                        opacity={0.8}
-                    />
-                    <meshPhongMaterial attach="material" color="white" />
-                </mesh>
+                <ContactPoint point={point} />
             ))}
         </>
     );
 }
+
+const ContactPoint = ({ point }) => {
+    const randomRotation = useMemo(() => (Math.random() * Math.PI) / 2, []);
+    return (
+        <mesh name={`contact-point`} position={point}>
+            <Image
+                scale={2}
+                rotation={[0, 0, randomRotation]}
+                url="./crackedGlass.png"
+                transparent
+                opacity={0.8}
+            />
+            <meshPhongMaterial attach="material" color="white" />
+        </mesh>
+    );
+};

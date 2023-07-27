@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Space, Row, Typography, Grid } from "antd";
 import { Element } from "rc-scroll-anim";
 import heroImage from "../../../assets/images/home/hero_v2.png";
 import PerilousPhoneScene from "./getAQuote/three/PerilousPhoneScene";
 import DemoQuoteForm from "./getAQuote/form/DemoQuoteForm";
+import { PublicQuoteContext } from "../contexts/PublicQuoteContext";
+import QuoteComparison from "./getAQuote/result/QuoteComparison";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 const Banner = ({ className = "banner" }) => {
+    const { quote } = useContext(PublicQuoteContext);
     return (
         <Element component="section" className={`${className}-wrapper page`}>
             <Row
@@ -29,11 +32,13 @@ const Banner = ({ className = "banner" }) => {
                 >
                     <Title
                         style={{
-                            fontSize: "2.75rem",
+                            marginBottom: "0",
                         }}
+                        level={1}
                     >
-                        See how much you can save
+                        Phone Self Insurance
                     </Title>
+                    <Paragraph>See how much you can save</Paragraph>
 
                     <DemoQuoteForm />
                 </Col>
@@ -46,8 +51,11 @@ const Banner = ({ className = "banner" }) => {
                     lg={{ span: 12, offset: 0 }}
                     md={{ span: 24, offset: 0 }}
                     sm={{ span: 24, offset: 0 }}
+                    style={{
+                        minHeight: 650,
+                    }}
                 >
-                    <PerilousPhoneScene />
+                    {true ? <QuoteComparison /> : <PerilousPhoneScene />}
                 </Col>
             </Row>
         </Element>
