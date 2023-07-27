@@ -36,9 +36,16 @@ const Banner = ({ className = "banner" }) => {
                         }}
                         level={1}
                     >
-                        Phone Self Insurance
+                        Self Insurance Calculator
                     </Title>
-                    <Paragraph>See how much you can save</Paragraph>
+                    <Paragraph
+                        type="secondary"
+                        style={{
+                            marginBottom: "1.5rem",
+                        }}
+                    >
+                        See how much you can save
+                    </Paragraph>
 
                     <DemoQuoteForm />
                 </Col>
@@ -55,7 +62,7 @@ const Banner = ({ className = "banner" }) => {
                         minHeight: 650,
                     }}
                 >
-                    {true ? <QuoteComparison /> : <PerilousPhoneScene />}
+                    {quote ? <QuoteComparison /> : <PerilousPhoneScene />}
                 </Col>
             </Row>
         </Element>

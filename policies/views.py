@@ -401,8 +401,12 @@ class PublicRiskViewSet(APIView):
         # compute the hypothetical premium amount for each user
         risk.risk_score = compute_risk_score(risk, mock_risk_settings)
         risk.premium_amount = compute_premium_amount(risk)
+        risk.value_at_risk = risk.risk_score * risk.content_object.market_value
 
         return Response(
-            RiskSerializer(risk).data,
+            {
+                **RiskSerializer(risk).data,
+                "risk_settings": PolicyRiskSettingsSerializer(mock_risk_settings).data,
+            },
             status=HTTP_200_OK,
         )

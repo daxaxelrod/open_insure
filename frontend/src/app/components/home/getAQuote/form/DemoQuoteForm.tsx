@@ -17,6 +17,8 @@ import appleProducts from "../../../../constants/apple/appleProducts";
 import { public_getHypotheticalQuote } from "../../../../../networking/premiums";
 import { PublicQuoteContext } from "../../../contexts/PublicQuoteContext";
 import { CheckOutlined } from "@ant-design/icons";
+import { RuleObject } from "antd/es/form";
+import { StoreValue } from "antd/es/form/interface";
 
 export default function DemoQuoteForm() {
     const { setQuote } = useContext(PublicQuoteContext);
@@ -64,6 +66,31 @@ export default function DemoQuoteForm() {
 
     const formMakeField = Form.useWatch("make", form);
 
+    const marketValueValidator = (
+        rule: RuleObject,
+        value: StoreValue,
+        callback: (error?: string) => void
+    ) => {
+        try {
+            value = Number(value);
+            console.log("value", value);
+
+            if (value === 0) {
+                callback();
+                return;
+            }
+            if (value < 10) {
+                callback("Even a broken phone is worth at least $10!");
+            } else if (value < 0) {
+                callback("The market value cannot be negative.");
+            } else {
+                callback();
+            }
+        } catch (error) {
+            // Handle errors converting the value to a number.
+        }
+    };
+
     return (
         <>
             {contextHolder}
@@ -78,7 +105,7 @@ export default function DemoQuoteForm() {
                 requiredMark={false}
             >
                 <Form.Item label="Make" name={"make"}>
-                    <Input placeholder="Apple, Samsung" />
+                    <Input placeholder="Apple, Samsung" autoFocus />
                 </Form.Item>
                 <Form.Item label="Model">
                     {formMakeField?.toLowerCase()?.includes("apple") ? (
@@ -117,6 +144,10 @@ export default function DemoQuoteForm() {
                     name={"market_value"}
                     rules={[
                         { required: true, message: "Market Value required" },
+                        {
+                            type: "number",
+                            validator: marketValueValidator,
+                        },
                     ]}
                 >
                     <Input type={"number"} />
