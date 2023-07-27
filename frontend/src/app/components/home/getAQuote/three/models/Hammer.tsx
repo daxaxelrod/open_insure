@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useGLTF, Line } from "@react-three/drei";
+import { useGLTF, Line, Image } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { animated, useSpring } from "@react-spring/three";
 import SpacialAudio from "../SpacialAudio";
@@ -64,23 +64,31 @@ export default function Hammer() {
         if (hammer) {
             const tipOfHammer = hammer.position
                 .clone()
-                .add(new Vector3(0, Y_OFFSET + 4, 0));
+                .add(new Vector3(0, Y_OFFSET + 4.1, 0));
             raycaster.set(tipOfHammer, new Vector3(0, 0, -1).normalize());
+            debugger;
             const intersections = raycaster.intersectObjects(
-                fullScene.children
+                fullScene.children.filter(
+                    (child) => child.name !== "contact-point"
+                )
             );
 
-            console.log("intersections", intersections);
             if (intersections.length > 0) {
-                setContactPoints((points) =>
-                    points.concat(intersections.map((i) => i.point))
-                );
                 const audios = [audioRef, audioRef2, audioRef3];
                 const randomAudio =
                     audios[Math.floor(Math.random() * audios.length)];
                 setTimeout(() => {
                     randomAudio?.current?.playSound();
-                }, 300);
+                }, 200);
+                setTimeout(() => {
+                    setContactPoints((points) =>
+                        points.concat(
+                            intersections.map((i) =>
+                                i.point.clone().add(new Vector3(0, 0, 1.1))
+                            )
+                        )
+                    );
+                }, 500);
             } else {
                 // play whoosh sound
                 const audios = [audioRef4, audioRef5];
@@ -105,6 +113,8 @@ export default function Hammer() {
         };
     }, [gl]);
 
+    console.log(contactPoints);
+
     return (
         <>
             <animated.group ref={hammerRef} receiveShadow {...rotation}>
@@ -115,6 +125,7 @@ export default function Hammer() {
                             ? 5 - Math.abs(hammerRef.current.position.x)
                             : 5
                     }
+                    volumeOverride={4}
                     url={"./audio/338694__natemarler__glass-bottle-break.wav"}
                 />
                 <SpacialAudio
@@ -124,6 +135,7 @@ export default function Hammer() {
                             ? 5 - Math.abs(hammerRef.current.position.x)
                             : 5
                     }
+                    volumeOverride={4}
                     url={"./audio/221528__unfa__glass-break.wav"}
                 />
 
@@ -134,6 +146,7 @@ export default function Hammer() {
                             ? 5 - Math.abs(hammerRef.current.position.x)
                             : 5
                     }
+                    volumeOverride={4}
                     url={"./audio/500604__elenzack__breaking-glass_2.wav"}
                 />
 
@@ -144,7 +157,7 @@ export default function Hammer() {
                             ? 5 - Math.abs(hammerRef.current.position.x)
                             : 5
                     }
-                    volumeOverride={80}
+                    volumeOverride={50}
                     url={"./audio/whoosh1.wav"}
                 />
 
@@ -155,21 +168,30 @@ export default function Hammer() {
                             ? 5 - Math.abs(hammerRef.current.position.x)
                             : 5
                     }
-                    volumeOverride={80}
+                    volumeOverride={50}
                     url={"./audio/whoosh2.wav"}
                 />
 
                 <animated.primitive object={scene} />
             </animated.group>
-            {contactPoints.map((point, index) => (
-                <mesh>
-                    <boxGeometry
-                        args={[point.x, point.y, point.z]}
-                        height={5}
-                        width={5}
-                        depth={5}
+            {contactPoints.map((point) => (
+                <mesh
+                    name={`contact-point`}
+                    position={point}
+                    rotateY={Math.PI / 2}
+                    rotateOnWorldAxis={new Vector3(0, 1, 0)}
+                >
+                    {/* <planeBufferGeometry attach="geometry" args={[1.5, 1.5]} /> */}
+                    <Image
+                        scale={2}
+                        rotateOnWorldAxis={new Vector3(1, 0, 0)}
+                        rotateX={Math.PI / 2}
+                        rotateZ={Math.PI / 2}
+                        url="./crackedGlass.png"
+                        transparent
+                        opacity={0.8}
                     />
-                    <meshStandardMaterial color={"orange"} />
+                    <meshPhongMaterial attach="material" color="white" />
                 </mesh>
             ))}
         </>

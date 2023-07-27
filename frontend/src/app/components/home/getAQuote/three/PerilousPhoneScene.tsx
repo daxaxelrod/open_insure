@@ -1,9 +1,15 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import ModelLoader from "./models/ModelLoader";
 import CellPhone from "./models/CellPhone";
 import Hammer from "./models/Hammer";
-import { Center, GizmoHelper, GizmoViewport, Stage } from "@react-three/drei";
+import {
+    Center,
+    GizmoHelper,
+    GizmoViewport,
+    Stage,
+    useHelper,
+} from "@react-three/drei";
 import * as THREE from "three";
 // a scene with the phone at the center.
 // when you hover, a hammer appears and smashes the phone with every click.
@@ -37,9 +43,10 @@ export default function PerilousPhoneScene() {
                 {/* alternative: <GizmoViewcube /> */}
             </GizmoHelper>
 
-            <ambientLight intensity={10} />
+            <ambientLight intensity={5} />
+            <pointLight position={[5, 5, -5]} />
             <pointLight position={[5, 5, 5]} />
-            <spotLight position={[10, 10, 10]} angle={0.45} penumbra={1} />
+            <spotLight position={[0, -10, 100]} penumbra={1} intensity={0.03} />
         </Canvas>
     );
 }
