@@ -155,7 +155,7 @@ export default function DemoQuoteForm() {
                 <Row>
                     <Col span={7}>
                         <Form.Item
-                            label="Has case"
+                            label="Case?"
                             name={"has_case"}
                             valuePropName="checked"
                         >
@@ -175,7 +175,7 @@ export default function DemoQuoteForm() {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            label="Screen protector"
+                            label="Screen protector?"
                             name={"has_screen_protector"}
                             valuePropName="checked"
                         >

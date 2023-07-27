@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
 import { PublicQuoteContext } from "../../../contexts/PublicQuoteContext";
 import { motion } from "framer-motion";
-import { Card, Col, Divider, Row, Tooltip, Typography } from "antd";
+import { Button, Card, Col, Divider, Row, Tooltip, Typography } from "antd";
 import { ReloadOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import PerilGridDisplay from "../../../policies/detail/PerilGridDisplay";
 import { Peril } from "../../../../../redux/reducers/commonTypes";
 import colors from "../../../../constants/colors";
+import { Link } from "react-router-dom";
 
-const { Paragraph, Title } = Typography;
+const { Title } = Typography;
 
 const mockPerils: Peril[] = [
     {
@@ -180,7 +181,7 @@ export default function QuoteComparison() {
                     <Divider
                         orientation="left"
                         style={{
-                            marginTop: 40,
+                            marginTop: 30,
                         }}
                     >
                         Covered Events
@@ -196,10 +197,11 @@ export default function QuoteComparison() {
                             </Col>
                         ))}
                     </Row>
-
-                    <Paragraph>
-                        <pre>{JSON.stringify(quote, null, 2)}</pre>
-                    </Paragraph>
+                    <Link to="/join">
+                        <Button type="primary" size="large">
+                            Learn More
+                        </Button>
+                    </Link>
                 </motion.div>
             </Card>
             <Row>

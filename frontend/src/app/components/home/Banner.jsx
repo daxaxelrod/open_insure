@@ -42,6 +42,7 @@ const Banner = ({ className = "banner" }) => {
                         type="secondary"
                         style={{
                             marginBottom: "1.5rem",
+                            fontSize: "1.2rem",
                         }}
                     >
                         See how much you can save
