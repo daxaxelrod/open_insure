@@ -66,7 +66,7 @@ export default function Hammer() {
                 .clone()
                 .add(new Vector3(0, Y_OFFSET + 4.1, 0));
             raycaster.set(tipOfHammer, new Vector3(0, 0, -1).normalize());
-            debugger;
+
             const intersections = raycaster.intersectObjects(
                 fullScene.children.filter(
                     (child) => child.name !== "contact-point"

@@ -166,7 +166,9 @@ class RiskSettingsViewSet(RetrieveUpdateAPIView):
             old_risk = copy(risk.__dict__)
             risk.risk_score = compute_risk_score(risk, risk_settings)
             risk.premium_amount = compute_premium_amount(risk)
-            risk.value_at_risk = risk.risk_score * risk.content_object.market_value
+            risk.value_at_risk = (
+                risk.risk_score / 100 * risk.content_object.market_value
+            )
             risk.save()
 
             # send an email to the all policy members that their premiums have changed
@@ -401,7 +403,7 @@ class PublicRiskViewSet(APIView):
         # compute the hypothetical premium amount for each user
         risk.risk_score = compute_risk_score(risk, mock_risk_settings)
         risk.premium_amount = compute_premium_amount(risk)
-        risk.value_at_risk = risk.risk_score * risk.content_object.market_value
+        risk.value_at_risk = risk.risk_score / 100 * risk.content_object.market_value
 
         return Response(
             {
