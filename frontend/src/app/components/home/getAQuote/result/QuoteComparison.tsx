@@ -149,7 +149,7 @@ export default function QuoteComparison() {
                                     fontSize: ".8rem",
                                     fontWeight: 400,
                                     color: "rgba(0, 0, 0, 0.85)",
-                                    marginTop: 9,
+                                    marginTop: 10,
                                 }}
                             >
                                 potential refund
@@ -189,7 +189,7 @@ export default function QuoteComparison() {
                                     fontSize: ".8rem",
                                     fontWeight: 400,
                                     color: "rgba(0, 0, 0, 0.85)",
-                                    marginTop: 21,
+                                    marginTop: 20,
                                 }}
                             >
                                 actual cost
