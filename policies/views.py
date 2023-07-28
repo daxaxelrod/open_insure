@@ -9,7 +9,7 @@ from rest_framework.mixins import UpdateModelMixin
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_403_FORBIDDEN
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
-from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
@@ -24,12 +24,13 @@ from policies.permissions import (
 )
 from policies.premiums import schedule_premiums
 from policies.risk.emails import send_risk_update_email
-from policies.risk.models import PropertyImage, get_model_for_risk_type
+from policies.risk.models import PhoneRisk, PropertyImage, get_model_for_risk_type
 from policies.risk.permissions import IsRiskOwner
 from policies.risk.risk_scores import compute_premium_amount, compute_risk_score
 from policies.risk.serializers import (
     AlbumSerializer,
     ImageSerializer,
+    PhoneRiskSerializer,
     get_serializer_for_risk_type,
 )
 from policies.serializers import (
@@ -165,7 +166,9 @@ class RiskSettingsViewSet(RetrieveUpdateAPIView):
             old_risk = copy(risk.__dict__)
             risk.risk_score = compute_risk_score(risk, risk_settings)
             risk.premium_amount = compute_premium_amount(risk)
-            risk.value_at_risk = risk.risk_score * risk.content_object.market_value
+            risk.value_at_risk = (
+                risk.risk_score / 100 * risk.content_object.market_value
+            )
             risk.save()
 
             # send an email to the all policy members that their premiums have changed
@@ -361,3 +364,51 @@ class PolicyPremiumViewSet(UpdateModelMixin, ReadOnlyModelViewSet):
             policy.pool_balance -= premium.amount
         policy.save()
         serializer.save(**kwargs)
+
+
+class PublicRiskViewSet(APIView):
+    permission_classes = [AllowAny]
+
+    def post(
+        self,
+        request,
+    ):
+        """
+        Compute the hypothetical premium amount for a proposed risk setting. Open to the world
+
+        """
+        phone_risk_serializer = PhoneRiskSerializer(data=request.data)
+        phone_risk_serializer.is_valid(raise_exception=True)
+        # DO NOT SAVE THE RISK SETTINGS
+        phone_risk = PhoneRisk(**phone_risk_serializer.validated_data)
+
+        risk = Risk(
+            underlying_insured_type="cell_phone",
+            content_type=ContentType.objects.get_for_model(PhoneRisk),
+            content_object=phone_risk,
+        )
+
+        mock_policy = Policy(name="Mock Policy", coverage_duration=12)
+        mock_risk_settings = PolicyRiskSettings(
+            conservative_factor=30,
+            cell_phone_peril_rate=7,  # 7% of phones in pool expected to be total lost in 1 year.
+            cell_phone_case_discount=50,
+            cell_phone_screen_protector_discount=30,
+            audio_equipment_peril_rate=15,
+            annual_discount_rate=500,
+        )
+
+        risk.policy = mock_policy
+
+        # compute the hypothetical premium amount for each user
+        risk.risk_score = compute_risk_score(risk, mock_risk_settings)
+        risk.premium_amount = compute_premium_amount(risk)
+        risk.value_at_risk = risk.risk_score / 100 * risk.content_object.market_value
+
+        return Response(
+            {
+                **RiskSerializer(risk).data,
+                "risk_settings": PolicyRiskSettingsSerializer(mock_risk_settings).data,
+            },
+            status=HTTP_200_OK,
+        )

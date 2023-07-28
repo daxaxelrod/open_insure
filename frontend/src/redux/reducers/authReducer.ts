@@ -35,6 +35,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 loginPending: false,
                 registerPending: false,
+                registrationError: null,
                 loginError: null,
             };
         case LOGIN_PENDING:

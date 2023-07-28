@@ -13,13 +13,13 @@ const mockPerils: Peril[] = [
         name: "Water Damage",
         id: 1,
         description:
-            "Spilled water on it or dropped in the toilet, doesnt matter",
+            "Spilled water on it or dropped in the toilet, doesn't matter",
         icon_name: "alert",
     },
     {
         id: 2,
         name: "Broken Screen",
-        description: "Screen cracked or broken",
+        description: "Cracked or broken screen",
         icon_name: "meh",
     },
     {

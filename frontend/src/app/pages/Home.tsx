@@ -9,21 +9,24 @@ import Page3 from "../components/home/Page3";
 import Footer from "../components/home/Footer";
 import styled from "styled-components";
 import { Grid, Layout } from "antd";
+import PublicQuoteProvider from "../components/contexts/PublicQuoteContext";
 
 export default function Home() {
     return (
-        <Layout>
-            <Layout.Content>
-                <Banner key="banner" />
-                {/* <Page1 key="page1" /> */}
-                <WhyDoSelfInsurance />
+        <PublicQuoteProvider>
+            <Layout>
+                <Layout.Content>
+                    <Banner key="banner" />
+                    {/* <Page1 key="page1" /> */}
+                    <WhyDoSelfInsurance />
 
-                <Page2 key="page2" />
-                <AskForEmail />
-                <Page3 key="page3" />
-                <Footer key="footer" />
-            </Layout.Content>
-        </Layout>
+                    <Page2 key="page2" />
+                    <AskForEmail />
+                    <Page3 key="page3" />
+                    <Footer key="footer" />
+                </Layout.Content>
+            </Layout>
+        </PublicQuoteProvider>
     );
 }
 

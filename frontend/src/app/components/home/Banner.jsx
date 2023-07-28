@@ -1,74 +1,58 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Space, Row, Typography, Grid } from "antd";
 import { Element } from "rc-scroll-anim";
 import heroImage from "../../../assets/images/home/hero_v2.png";
-import { Link } from "react-router-dom";
+import PerilousPhoneScene from "./getAQuote/three/PerilousPhoneScene";
+import DemoQuoteForm from "./getAQuote/form/DemoQuoteForm";
+import { PublicQuoteContext } from "../contexts/PublicQuoteContext";
+import QuoteComparison from "./getAQuote/result/QuoteComparison";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 const Banner = ({ className = "banner" }) => {
+    const { quote } = useContext(PublicQuoteContext);
     const sizes = Grid.useBreakpoint();
-
-    const isTablet = sizes.md && !sizes.lg;
-    const isDesktop = sizes.lg || sizes.xl;
-    const isMobile = (sizes.sm || sizes.xs) && !isDesktop;
-    const isSmall = sizes.sm;
-    const isXSmall = sizes.xs;
-
+    const isMobile = sizes.xs || (sizes.sm && !sizes.md);
+    const isMdOrBelow = sizes.xs || sizes.sm || sizes.md;
     return (
         <Element component="section" className={`${className}-wrapper page`}>
             <Row
-                style={{ padding: "35px", overflow: "hidden" }}
+                style={{ padding: "0", overflow: "hidden" }}
                 justify="start"
                 align="middle"
             >
                 <Col
-                    xl={{ span: 8, offset: 4 }}
-                    lg={{ span: 8, offset: 3 }}
-                    md={{ span: 18, offset: 4 }}
-                    sm={{ span: 18, offset: 4 }}
+                    xl={{ span: 8, offset: 3 }}
+                    lg={{ span: 12, offset: 2 }}
+                    md={{ span: 18, offset: 3 }}
+                    sm={{ span: 18, offset: 3 }}
                     className={`${className}-text-wrapper`}
-                    delay={300}
                     style={{
+                        paddingRight: "2rem",
+                        ...(isMobile ? { paddingLeft: "2rem" } : {}),
                         display: "flex",
-                        justifyContent: "center",
                         flexDirection: "column",
                     }}
                 >
                     <Title
                         style={{
-                            fontSize: "2.75rem",
+                            marginBottom: "0",
+                            marginTop: isMdOrBelow ? "1rem" : "0",
                         }}
+                        level={1}
                     >
-                        Save 30-50% on cell phone insurance
+                        How much can you save?
                     </Title>
-                    <p
-                        className="main-info"
-                        key="p"
+                    <Paragraph
+                        type="secondary"
                         style={{
-                            lineHeight: "36px",
-                            fontSize: "1.5rem",
-                            margin: "30px 0 40px",
-                            fontWeight: 300,
-                            color: "rgba(0, 0, 0, 0.65)",
+                            fontSize: "1.2rem",
                         }}
                     >
-                        Create & manage a self insurance policy with people you
-                        already trust.
-                    </p>
+                        Self insurance estimator
+                    </Paragraph>
 
-                    <Link to={"/join"} style={{ display: "flex" }}>
-                        <Button
-                            type="primary"
-                            size="large"
-                            style={{
-                                fontWeight: "bold",
-                                width: "100%",
-                            }}
-                        >
-                            Browse Policies
-                        </Button>
-                    </Link>
+                    <DemoQuoteForm />
                 </Col>
                 {/* <div>
                     {isDesktop && "Desktop"}
@@ -76,57 +60,15 @@ const Banner = ({ className = "banner" }) => {
                     {isMobile && "Mobile"}
                 </div> */}
                 <Col
-                    lg={{ span: 12, offset: 0 }}
+                    xl={{ span: 12, offset: 0 }}
+                    lg={{ span: 10, offset: 0 }}
                     md={{ span: 24, offset: 0 }}
                     sm={{ span: 24, offset: 0 }}
                     style={{
-                        marginTop: 20,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        ...(isDesktop
-                            ? {
-                                  transform: "translateX(30%)",
-                                  marginBottom: "1.5rem",
-                              }
-                            : isSmall
-                            ? {
-                                  transform: "translateX(2%)",
-                              }
-                            : isXSmall
-                            ? { transform: "translateX(-2%)" }
-                            : {}),
+                        minHeight: 650,
                     }}
                 >
-                    <img
-                        width={
-                            isDesktop
-                                ? "130%"
-                                : isTablet && !isMobile
-                                ? "100%"
-                                : sizes.xs
-                                ? "115%"
-                                : "100%"
-                        }
-                        height={
-                            isDesktop
-                                ? "125%"
-                                : isTablet && !isMobile
-                                ? "95%"
-                                : sizes.xs
-                                ? "115%"
-                                : "100%"
-                        }
-                        style={{
-                            marginTop: isTablet
-                                ? "2rem"
-                                : isMobile
-                                ? "1rem"
-                                : 0,
-                        }}
-                        src={heroImage}
-                        alt=""
-                    />
+                    {quote ? <QuoteComparison /> : <PerilousPhoneScene />}
                 </Col>
             </Row>
         </Element>
