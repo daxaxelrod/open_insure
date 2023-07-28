@@ -1,10 +1,11 @@
 // @ts-nocheck
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useGLTF, Line, Image } from "@react-three/drei";
+import { useGLTF, Image } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { animated, useSpring } from "@react-spring/three";
 import SpacialAudio from "../SpacialAudio";
 import { Raycaster, Vector3 } from "three";
+import ReactGA from "react-ga4";
 
 const Y_OFFSET = 5;
 
@@ -99,6 +100,13 @@ export default function Hammer() {
                 }, 300);
             }
 
+            ReactGA.event({
+                category: "Landing",
+                action: "Hammer Smash",
+                value: intersections.length > 0 ? 1 : 0,
+                nonInteraction: false, // optional, true/false
+            });
+
             setClicked(true);
         }
     };
@@ -172,8 +180,8 @@ export default function Hammer() {
 
                 <animated.primitive object={scene} />
             </animated.group>
-            {contactPoints.map((point) => (
-                <ContactPoint point={point} />
+            {contactPoints.map((point, idx) => (
+                <ContactPoint point={point} key={`contact-point-${idx}`} />
             ))}
         </>
     );

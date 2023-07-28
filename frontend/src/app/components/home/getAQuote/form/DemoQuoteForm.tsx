@@ -1,24 +1,22 @@
 import {
     AutoComplete,
     Button,
-    Cascader,
     Col,
     Form,
     Input,
-    Radio,
     Row,
     Select,
     Switch,
     notification,
 } from "antd";
-import { SizeType } from "antd/es/config-provider/SizeContext";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import appleProducts from "../../../../constants/apple/appleProducts";
 import { public_getHypotheticalQuote } from "../../../../../networking/premiums";
 import { PublicQuoteContext } from "../../../contexts/PublicQuoteContext";
 import { CheckOutlined } from "@ant-design/icons";
 import { RuleObject } from "antd/es/form";
 import { StoreValue } from "antd/es/form/interface";
+import ReactGA from "react-ga4";
 
 export default function DemoQuoteForm() {
     const { setQuote } = useContext(PublicQuoteContext);
@@ -52,6 +50,11 @@ export default function DemoQuoteForm() {
             });
             if (result.status === 200) {
                 setQuote(result.data);
+                ReactGA.event({
+                    category: "Landing",
+                    action: "Got a quote",
+                    nonInteraction: false, // optional, true/false
+                });
             }
             setPending(false);
         } catch (error) {
