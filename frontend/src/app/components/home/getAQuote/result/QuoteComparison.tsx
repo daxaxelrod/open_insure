@@ -42,7 +42,7 @@ export default function QuoteComparison() {
     return (
         <motion.div
             style={{
-                marginTop: "3rem",
+                marginTop: "3.4rem",
                 width: 500,
             }}
             initial={{ opacity: 0 }}
