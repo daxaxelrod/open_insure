@@ -73,7 +73,6 @@ export default function DemoQuoteForm() {
     ) => {
         try {
             value = Number(value);
-            console.log("value", value);
 
             if (value === 0) {
                 callback();
@@ -97,7 +96,7 @@ export default function DemoQuoteForm() {
 
             <Form
                 form={form}
-                wrapperCol={{ span: 12 }}
+                wrapperCol={{ lg: 14, md: 24, sm: 24, xs: 24 }}
                 layout="vertical"
                 onValuesChange={onFormChange}
                 size={"middle"}

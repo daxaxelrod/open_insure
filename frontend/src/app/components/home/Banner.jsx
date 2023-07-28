@@ -11,6 +11,9 @@ import QuoteComparison from "./getAQuote/result/QuoteComparison";
 const { Title, Paragraph } = Typography;
 const Banner = ({ className = "banner" }) => {
     const { quote } = useContext(PublicQuoteContext);
+    const sizes = Grid.useBreakpoint();
+    const isMobile = sizes.xs || (sizes.sm && !sizes.md);
+    const isMdOrBelow = sizes.xs || sizes.sm || sizes.md;
     return (
         <Element component="section" className={`${className}-wrapper page`}>
             <Row
@@ -20,12 +23,13 @@ const Banner = ({ className = "banner" }) => {
             >
                 <Col
                     xl={{ span: 8, offset: 3 }}
-                    lg={{ span: 8, offset: 3 }}
+                    lg={{ span: 12, offset: 2 }}
                     md={{ span: 18, offset: 3 }}
                     sm={{ span: 18, offset: 3 }}
                     className={`${className}-text-wrapper`}
                     style={{
                         paddingRight: "2rem",
+                        ...(isMobile ? { paddingLeft: "2rem" } : {}),
                         display: "flex",
                         flexDirection: "column",
                     }}
@@ -33,6 +37,7 @@ const Banner = ({ className = "banner" }) => {
                     <Title
                         style={{
                             marginBottom: "0",
+                            marginTop: isMdOrBelow ? "1rem" : "0",
                         }}
                         level={1}
                     >
@@ -55,7 +60,8 @@ const Banner = ({ className = "banner" }) => {
                     {isMobile && "Mobile"}
                 </div> */}
                 <Col
-                    lg={{ span: 12, offset: 0 }}
+                    xl={{ span: 12, offset: 0 }}
+                    lg={{ span: 10, offset: 0 }}
                     md={{ span: 24, offset: 0 }}
                     sm={{ span: 24, offset: 0 }}
                     style={{

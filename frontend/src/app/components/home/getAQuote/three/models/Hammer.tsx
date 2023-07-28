@@ -113,8 +113,6 @@ export default function Hammer() {
         };
     }, [gl]);
 
-    console.log(contactPoints);
-
     return (
         <>
             <animated.group ref={hammerRef} receiveShadow {...rotation}>
