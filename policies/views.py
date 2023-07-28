@@ -392,8 +392,8 @@ class PublicRiskViewSet(APIView):
         mock_risk_settings = PolicyRiskSettings(
             conservative_factor=30,
             cell_phone_peril_rate=7,  # 7% of phones in pool expected to be total lost in 1 year.
-            cell_phone_case_discount=100,
-            cell_phone_screen_protector_discount=100,
+            cell_phone_case_discount=50,
+            cell_phone_screen_protector_discount=30,
             audio_equipment_peril_rate=15,
             annual_discount_rate=500,
         )

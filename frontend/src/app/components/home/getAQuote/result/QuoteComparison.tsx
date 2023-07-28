@@ -54,7 +54,7 @@ export default function QuoteComparison() {
         >
             <Card bordered={false}>
                 <motion.div
-                    initial={{ opacity: 0, y: 100 }}
+                    initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
                         delay: 0.5,
@@ -89,6 +89,7 @@ export default function QuoteComparison() {
                                 level={3}
                                 style={{
                                     margin: 0,
+                                    marginBottom: 5,
                                 }}
                             >
                                 ${(quote.premium_amount / 100).toFixed(2)}{" "}
@@ -97,6 +98,7 @@ export default function QuoteComparison() {
                                 level={5}
                                 style={{
                                     margin: 0,
+                                    marginBottom: 5,
                                     textAlign: "end",
                                     color: "rgba(0, 0, 0, 0.45)",
                                 }}
@@ -108,7 +110,7 @@ export default function QuoteComparison() {
                                     borderBlockStart:
                                         "2px solid rgba(5, 5, 5, .26)",
                                     marginTop: 3,
-                                    marginBottom: 5,
+                                    marginBottom: 10,
                                 }}
                             />
                             <Title
@@ -147,22 +149,29 @@ export default function QuoteComparison() {
                                     fontSize: ".8rem",
                                     fontWeight: 400,
                                     color: "rgba(0, 0, 0, 0.85)",
-                                    marginTop: 4,
+                                    marginTop: 9,
                                 }}
                             >
                                 potential refund
                                 <Tooltip
                                     color="black"
                                     placement="rightTop"
+                                    overlayStyle={{
+                                        minWidth: 320,
+                                    }}
                                     title={() => (
                                         <div style={{ padding: 10 }}>
-                                            Refund amount is based on a
-                                            conservative factor that represents
-                                            how much more premium is collects vs
-                                            what is actuarially needed to cover
-                                            claims. The higher the factor, the
-                                            safer the policy and the higher the
-                                            potential refund.
+                                            <div>
+                                                Refund amount varies by policy
+                                                and depends on the cost to cover
+                                                claims during the coverage
+                                                period. Refunds are not
+                                                guaranteed. Policies with more
+                                                conservative underwriting
+                                                assumptions tend to have higher
+                                                premiums and also larger
+                                                potential refunds.
+                                            </div>
                                         </div>
                                     )}
                                 >
@@ -175,6 +184,16 @@ export default function QuoteComparison() {
                                     />
                                 </Tooltip>
                             </span>
+                            <span
+                                style={{
+                                    fontSize: ".8rem",
+                                    fontWeight: 400,
+                                    color: "rgba(0, 0, 0, 0.85)",
+                                    marginTop: 21,
+                                }}
+                            >
+                                actual cost
+                            </span>
                         </div>
                     </div>
 
@@ -186,18 +205,27 @@ export default function QuoteComparison() {
                     >
                         Covered Events
                     </Divider>
-                    <Row>
+                    <Row
+                        style={{
+                            marginBottom: 30,
+                        }}
+                    >
                         {mockPerils.map((peril) => (
                             <Col
                                 span={12}
-                                style={{ padding: "1rem 0 2rem 0" }}
+                                style={{ padding: ".75rem 2rem .5rem" }}
                                 key={`${peril.id}-mock`}
                             >
                                 <PerilGridDisplay peril={peril} />
                             </Col>
                         ))}
                     </Row>
-                    <Link to="/join">
+                    <Link
+                        to="/join"
+                        style={{
+                            marginLeft: "2rem",
+                        }}
+                    >
                         <Button type="primary" size="large">
                             Learn More
                         </Button>

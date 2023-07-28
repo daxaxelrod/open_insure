@@ -157,7 +157,7 @@ export default function Hammer() {
                             ? 5 - Math.abs(hammerRef.current.position.x)
                             : 5
                     }
-                    volumeOverride={50}
+                    volumeOverride={55}
                     url={"./audio/whoosh1.wav"}
                 />
 
@@ -168,7 +168,7 @@ export default function Hammer() {
                             ? 5 - Math.abs(hammerRef.current.position.x)
                             : 5
                     }
-                    volumeOverride={50}
+                    volumeOverride={55}
                     url={"./audio/whoosh2.wav"}
                 />
 

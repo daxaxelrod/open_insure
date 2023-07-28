@@ -36,16 +36,15 @@ const Banner = ({ className = "banner" }) => {
                         }}
                         level={1}
                     >
-                        Self Insurance Calculator
+                        How much can you save?
                     </Title>
                     <Paragraph
                         type="secondary"
                         style={{
-                            marginBottom: "1.5rem",
                             fontSize: "1.2rem",
                         }}
                     >
-                        See how much you can save
+                        Self insurance estimator
                     </Paragraph>
 
                     <DemoQuoteForm />
