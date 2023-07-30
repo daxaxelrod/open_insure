@@ -199,6 +199,7 @@ SIMPLE_JWT = {
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_OBTAIN_SERIALIZER": "pods.serializers.TokenObtainPairSerializer",
 }
 
 ESCROW_AGENT = env("ESCROW_AGENT")

@@ -14,6 +14,9 @@ from rest_framework.serializers import (
 from pods.models import Pod, PodInvite, User, UserPod
 
 from pods.utils.custom_serializers import FieldExcludableModelSerializer
+from rest_framework_simplejwt.serializers import (
+    TokenObtainPairSerializer as SimpleTokenObtainPairSerializer,
+)
 
 
 class PodMembershipSerializer(ModelSerializer):
@@ -181,3 +184,9 @@ class PodInviteSerializer(ModelSerializer):
             "is_revoked_by_admin",
             "is_revoked_by_system",
         ]
+
+
+class TokenObtainPairSerializer(SimpleTokenObtainPairSerializer):
+    default_error_messages = {
+        "no_active_account": "Username or password is incorrect",
+    }
