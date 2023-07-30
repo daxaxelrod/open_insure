@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     "pods",
     "policies",
     "elections",
+    "gatherer",
 ]
 IS_MAIN_SCHEDULER = env("IS_MAIN_SCHEDULER")
 if IS_MAIN_SCHEDULER:
