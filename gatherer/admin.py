@@ -1,3 +1,5 @@
 from django.contrib import admin
+from gatherer.models import PolicyLineProperty, PropertyLifeExpectancyGuess
 
-# Register your models here.
+admin.site.register(PolicyLineProperty)
+admin.site.register(PropertyLifeExpectancyGuess)

@@ -1,3 +1,20 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from gatherer.models import PolicyLineProperty, PropertyLifeExpectancyGuess
+from gatherer.serializers import (
+    PolicyLinePropertySerializer,
+    PropertyLifeExpectancyGuessSerializer,
+)
 
-# Create your views here.
+
+class PolicyLinePropertyViewSet(ModelViewSet):
+    serializer_class = PolicyLinePropertySerializer
+
+    class Meta:
+        model = PolicyLineProperty
+
+
+class PropertyLifeExpectancyGuessViewSet(ModelViewSet):
+    serializer_class = PropertyLifeExpectancyGuessSerializer
+
+    class Meta:
+        model = PropertyLifeExpectancyGuess
