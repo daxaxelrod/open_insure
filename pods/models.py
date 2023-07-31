@@ -147,7 +147,7 @@ class Badge(models.Model):
     )
 
     def __str__(self):
-        return f"{self.name} Badge ({self.members.count()} members)"
+        return f"{self.name} Badge"
 
 
 class UserBadge(models.Model):
