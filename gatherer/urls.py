@@ -7,4 +7,4 @@ router = routers.DefaultRouter()
 router.register(r"property-types", PolicyLinePropertyViewSet)
 router.register(r"guess", PropertyLifeExpectancyGuessViewSet)
 
-# urlpatterns = []
+urlpatterns = []
