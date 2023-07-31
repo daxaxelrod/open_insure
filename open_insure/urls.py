@@ -27,7 +27,6 @@ urlpatterns = [
     path("api/v1/", include(("pods.urls", "pods"), namespace="pods")),
     path("api/v1/", include(("policies.urls", "policies"), namespace="policies")),
     path("api/v1/", include(("elections.urls", "elections"), namespace="elections")),
-    path("api/v1/", include(("gatherer.urls", "gatherer"), namespace="gatherer")),
     path(
         "api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"
     ),  # aka login
