@@ -13,7 +13,8 @@ import Dashboard from "./app/pages/dashboard/Dashboard";
 import Onboarding from "./app/pages/Onboarding";
 import Login from "./app/pages/Login";
 import Index from "./app/pages/Home";
-import FAQs from "./app/pages/FrequentlyAskedQuestions";
+import FAQs from "./app/pages/public/FrequentlyAskedQuestions";
+import Contribute from "./app/pages/public/Contribute";
 import NavBar from "./app/components/NavBar";
 import PolicyListSearch from "./app/components/dashboard/PolicyListSearch";
 import UserPolicies from "./app/pages/UserPolicies";
@@ -39,6 +40,7 @@ const App = () => {
                 <Route path="/join" element={<Onboarding />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/faqs" element={<FAQs />} />
+                <Route path="/contribute" element={<Contribute />} />
                 {!loggedIn && <Route path="/" element={<Index />} />}
                 <Route path="/" element={<Dashboard />}>
                     <Route path="home" element={<PolicyListSearch />} />

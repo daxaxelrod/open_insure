@@ -246,3 +246,35 @@ export interface InviteData {
     is_revoked_by_pod: boolean;
     is_revoked_by_admin: boolean;
 }
+
+export interface PolicyLine {
+    name: string;
+    description?: string;
+    image_url?: string;
+    created_at: string;
+    updated_at: string;
+    orignal_creator?: number;
+}
+
+export interface LossDataPoint {
+    loss_date: string;
+    loss_months_into_ownership?: number;
+    loss_percent?: number;
+    loss_amount: number;
+    loss_reason: "damaged" | "lost" | "stolen";
+}
+
+export interface PropertyLifeDatePoint {
+    guesser?: number;
+    is_guessor_audited_authority: boolean; // see backend, mostly false
+    property_name: string;
+    property_make?: string;
+    property_type: PolicyLine;
+    purchase_price: number;
+    purchase_date: string;
+    age_of_ownership?: number;
+    yearly_loss_rate_bsp?: number;
+    createdAt: string;
+    updatedAt: string;
+    losses: LossDataPoint[];
+}

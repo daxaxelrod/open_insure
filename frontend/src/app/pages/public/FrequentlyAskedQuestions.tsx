@@ -1,8 +1,8 @@
 import React from "react";
-import { Button, Col, Collapse, Row, Typography } from "antd";
-import faqs from "../constants/faqs";
-import { Link } from "react-router-dom";
-import OpenInsureFooter from "../components/home/Footer";
+import { Col, Collapse, Row, Typography } from "antd";
+
+import OpenInsureFooter from "../../components/home/Footer";
+import faqs from "../../constants/faqs";
 
 const { Title } = Typography;
 const { Panel } = Collapse;

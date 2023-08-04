@@ -16,12 +16,7 @@ import {
     PATCH_CLAIM_APPROVAL_SUCCESS,
     GET_CLAIM_COMMENTS_PENDING_OFF,
 } from "../actions/types";
-import {
-    Claim,
-    ClaimEvidence,
-    ClaimApproval,
-    ClaimComment,
-} from "./commonTypes";
+import { Claim, ClaimComment } from "./commonTypes";
 
 export interface ClaimsState {
     // policyId: number -> Claim[]
