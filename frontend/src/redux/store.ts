@@ -22,6 +22,7 @@ import premiumsReducer from "./reducers/premiumsReducer";
 import claimsReducer from "./reducers/claimsReducer";
 import usersReducer from "./reducers/usersReducer";
 import uiReducer from "./reducers/uiReducer";
+import actuaryReducer from "./reducers/actuaryReducer";
 
 const persistConfig = {
     key: "root",
@@ -34,6 +35,7 @@ const persistConfig = {
         "premiums",
         "claims",
         "users",
+        "actuary",
     ],
 };
 
@@ -52,6 +54,7 @@ const reducers = combineReducers({
     claims: claimsReducer,
     users: usersReducer,
     ui: uiReducer,
+    actuary: actuaryReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);
