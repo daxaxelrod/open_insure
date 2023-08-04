@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from pods.models import User
 
@@ -18,8 +19,8 @@ class PolicyLineProperty(models.Model):
 
 LOSS_REASON_CHOICES = [
     ("damaged", "Damaged"),
-    ("lost", "lost"),
-    ("stolen", "Earthquake"),
+    ("lost", "Lost"),
+    ("stolen", "Stolen"),
 ]
 
 
@@ -40,10 +41,18 @@ class PropertyLifeExpectancyGuess(models.Model):
     property_type = models.ForeignKey(
         PolicyLineProperty, on_delete=models.CASCADE, related_name="guesses"
     )
+    purchase_price = models.IntegerField(
+        blank=True,
+        null=True,
+        help_text="The original purchase price of the property, in the cents",
+    )
+    purchase_date = models.DateTimeField(
+        help_text="The date the property was purchased", null=True, blank=True
+    )
     age_of_ownership = models.IntegerField(
         blank=True,
         null=True,
-        help_text="Number of months since the property was acquired",
+        help_text="Number of days since the property was acquired",
     )
     yearly_loss_rate_bsp = models.IntegerField(
         blank=True,
@@ -56,8 +65,15 @@ class PropertyLifeExpectancyGuess(models.Model):
 
 
 class PropertyLifeLossGuess(models.Model):
-    loss_months_into_ownership = models.IntegerField()
-    loss_percent = models.IntegerField()
+    loss_date = models.DateTimeField(null=True, blank=True)
+    loss_months_into_ownership = models.IntegerField(null=True, blank=True)
+    loss_percent = models.IntegerField(
+        null=True,
+        blank=True,
+        help_text="in basis points, 0 - 10000",
+        validators=[MinValueValidator(0), MaxValueValidator(10000)],
+    )
+    loss_amount = models.IntegerField(help_text="The cost of the loss in cents")
     loss_reason = models.CharField(max_length=255, choices=LOSS_REASON_CHOICES)
     guess = models.ForeignKey(
         PropertyLifeExpectancyGuess, on_delete=models.CASCADE, related_name="losses"

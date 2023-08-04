@@ -143,7 +143,10 @@ class Badge(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     owners = models.ManyToManyField(
-        User, blank=True, related_name="badges", through="UserBadge"
+        User,
+        blank=True,
+        related_name="badges",
+        through="UserBadge",
     )
 
     def __str__(self):
