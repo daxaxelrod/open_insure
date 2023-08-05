@@ -5,6 +5,7 @@ from gatherer.serializers import (
     PolicyLinePropertySerializer,
     PropertyLifeExpectancyGuessSerializer,
 )
+from rest_framework.filters import SearchFilter
 from django.utils import timezone
 from rest_framework.permissions import AllowAny
 from pods.utils.badges import award_badge
@@ -14,6 +15,9 @@ class PolicyLinePropertyViewSet(ModelViewSet):
     serializer_class = PolicyLinePropertySerializer
 
     queryset = PolicyLineProperty.objects.all()
+
+    filter_backends = [SearchFilter]
+    search_fields = ["name", "description", "search_tags"]
 
 
 class PropertyLifeExpectancyGuessViewSet(ModelViewSet):

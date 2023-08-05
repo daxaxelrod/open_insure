@@ -7,6 +7,7 @@ from pods.models import User
 class PolicyLineProperty(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    search_tags = models.TextField(blank=True, null=True, help_text="comma separated")
 
     image_url = models.URLField(blank=True, null=True)
 
@@ -15,6 +16,9 @@ class PolicyLineProperty(models.Model):
     orignal_creator = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True
     )
+
+    def __str__(self):
+        return self.name
 
 
 LOSS_REASON_CHOICES = [

@@ -14,6 +14,7 @@ export const getAvailablePolicyLines =
         dispatch({ type: GET_AVAILABLE_POLICIES_LINES_PENDING });
         try {
             const response = await API.getAvailablePolicyLines();
+            debugger;
             dispatch({
                 type: GET_AVAILABLE_POLICIES_LINES_SUCCESS,
                 payload: response.data,

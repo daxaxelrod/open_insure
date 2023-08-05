@@ -72,7 +72,7 @@ function OpenInsureFooter() {
                     </Col>
                     <Col lg={4} sm={24} xs={24}>
                         <div className="footer-center">
-                            <h2>Like this project?</h2>
+                            <h2>Do More?</h2>
                             <div style={{ marginBottom: 5 }}>
                                 <a
                                     onClick={() => {
