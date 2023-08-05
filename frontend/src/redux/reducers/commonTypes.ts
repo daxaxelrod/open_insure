@@ -248,9 +248,11 @@ export interface InviteData {
 }
 
 export interface PolicyLine {
+    id: number;
     name: string;
     description?: string;
     image_url?: string;
+    search_tags?: string; // space separated
     created_at: string;
     updated_at: string;
     orignal_creator?: number;

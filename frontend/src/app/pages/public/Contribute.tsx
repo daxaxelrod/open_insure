@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import OpenInsureFooter from "../../components/home/Footer";
 import { Col, Grid, Row } from "antd";
 import AssetGuessForm from "../../components/users/guesses/AssetGuessForm";
@@ -6,6 +6,7 @@ import AssetGuessDisplay from "../../components/users/guesses/AssetGuessDisplay"
 
 export default function Contribute() {
     const screens = Grid.useBreakpoint();
+    const [atSecondStep, setAtSecondStep] = useState(false);
 
     const isMobile = !screens.lg;
 
@@ -14,19 +15,19 @@ export default function Contribute() {
             <Row>
                 <Col
                     md={{ span: 6 }}
-                    lg={{ span: 8 }}
+                    lg={{ span: 9 }}
                     style={{
                         padding: 24,
                     }}
                 >
-                    <AssetGuessForm />
+                    <AssetGuessForm setAtSecondStep={setAtSecondStep} />
                 </Col>
                 <Col
                     md={{
                         span: 18,
                     }}
                     lg={{
-                        span: 16,
+                        span: 15,
                     }}
                     style={{
                         backgroundColor: "white",

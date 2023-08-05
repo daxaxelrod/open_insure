@@ -7,6 +7,7 @@ import {
     GET_AVAILABLE_POLICIES_LINES_SUCCESS,
     GET_AVAILABLE_POLICIES_LINES_FAILURE,
 } from "../actions/types";
+import { PropertyLifeDatePoint } from "../reducers/commonTypes";
 
 export const getAvailablePolicyLines =
     (): ThunkAction<void, RootState, unknown, AnyAction> =>
