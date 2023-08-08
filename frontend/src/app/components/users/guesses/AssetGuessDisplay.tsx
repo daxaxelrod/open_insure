@@ -1,8 +1,15 @@
 import React from "react";
-import { Typography, Row, Col, Button, Card } from "antd";
+import { Typography, Card } from "antd";
+import { useAppSelector } from "../../../../redux/hooks";
 const { Title, Paragraph } = Typography;
 
-export default function AssetGuessDisplay() {
+export default function AssetGuessDisplay({
+    isOnSecondStep,
+}: {
+    isOnSecondStep: boolean;
+}) {
+    // const { guess } = useAppSelector((state) => state.actuary.guess);
+
     return (
         <div
             style={{
@@ -15,20 +22,25 @@ export default function AssetGuessDisplay() {
                 style={{
                     backgroundImage: `url(https://placekitten.com/200/300)`,
                     backgroundSize: "contain",
-                    filter: "blur(1px)",
+                    filter: `blur(${isOnSecondStep ? 4 : 16}px)`,
                     height: "100%",
                     width: "100%",
                 }}
             ></div>
-            <Card
+            <div
                 style={{
                     position: "absolute",
-                    top: "50%",
-                    left: "50%",
+                    height: "100%",
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                 }}
             >
-                <Title level={2}>Fill out the form to see data</Title>
-            </Card>
+                <Card style={{ marginBottom: 20, height: 90 }}>
+                    <Title level={2}>Fill out the form to see data</Title>
+                </Card>
+            </div>
         </div>
     );
 }

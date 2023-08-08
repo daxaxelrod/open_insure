@@ -34,7 +34,7 @@ export default function Contribute() {
                         padding: 24,
                     }}
                 >
-                    <AssetGuessDisplay />
+                    <AssetGuessDisplay isOnSecondStep={atSecondStep} />
                 </Col>
             </Row>
             <OpenInsureFooter key="footer" />

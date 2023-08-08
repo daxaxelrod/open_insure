@@ -24,11 +24,7 @@ type Props = {
 
 const Container = styled("div")`
     padding: 2.75rem 0.35rem;
-    display: flex;
     flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
 `;
 
 const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
@@ -39,6 +35,8 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
     const [autoCompletePolicyLines, setAutoCompletePolicyLines] = useState<
         PolicyLine[]
     >([]);
+
+    const form = Form.useForm()[0];
 
     const handlePolicyLineAutoComplete = (value: string) => {
         let res: PolicyLine[] = [];
@@ -65,10 +63,6 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
         setAtSecondStep(true);
     });
 
-    useEffect(() => {
-        setAutoCompletePolicyLines(allPolicyLines);
-    }, [allPolicyLines]);
-
     const autoCompletePolicyLinesOptions = useMemo(
         () =>
             autoCompletePolicyLines.map((policyLine: PolicyLine) => ({
@@ -77,13 +71,18 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
             })),
         [autoCompletePolicyLines]
     );
+    const isFormFilledOut = Form.useWatch("property_type", form);
+
+    useEffect(() => {
+        setAutoCompletePolicyLines(allPolicyLines);
+    }, [allPolicyLines]);
 
     return (
         <Container>
-            <Paragraph>
+            {/* <Paragraph>
                 Step {number}, What type of property do you want to submit
-            </Paragraph>
-            <Form.Item label="Property type" name={"make"}>
+            </Paragraph> */}
+            <Form.Item label="Property type" name="property_type">
                 <AutoComplete
                     placeholder="Desktop Computer, DSLR Camera, Necklace"
                     autoFocus
@@ -94,10 +93,10 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
 
             <Row>
                 <Space>
-                    <Button onClick={previousStep}>
-                        {isFirstStep ? "do nothing" : "Go back"}
-                    </Button>
-                    <Button onClick={nextStep}>
+                    <Button
+                        onClick={nextStep}
+                        type={isFormFilledOut ? "primary" : "default"}
+                    >
                         {isLastStep ? "Submit" : "Go Next"}
                     </Button>
                 </Space>
