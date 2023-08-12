@@ -13,8 +13,8 @@ import {
     Space,
     Typography,
 } from "antd";
-import { PolicyLine } from "../../../../redux/reducers/commonTypes";
-import { useAppSelector } from "../../../../redux/hooks";
+import { PolicyLine } from "../../../../../redux/reducers/commonTypes";
+import { useAppSelector } from "../../../../../redux/hooks";
 const { Paragraph } = Typography;
 
 type Props = {

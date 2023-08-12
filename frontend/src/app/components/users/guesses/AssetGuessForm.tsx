@@ -11,9 +11,9 @@ import { Col, Form, Row } from "antd";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { getAvailablePolicyLines } from "../../../../redux/actions/guesses";
 import AnimatedStep from "./AnimatedStep";
-import PolicyLineStep from "./PolicyLineStep";
-import AssetForm from "./AssetForm";
-import LossForm from "./LossForm";
+import PolicyLineStep from "./steps/PolicyLineStep";
+import AssetForm from "./steps/AssetForm";
+import LossForm from "./steps/LossForm";
 import AssetGuessFormHeader from "./AssetGuessFormHeader";
 
 export default function AssetGuessForm({
@@ -30,12 +30,15 @@ export default function AssetGuessForm({
     const previousStep = useRef<number>(0);
     const [form] = Form.useForm();
 
-    const onFormChange = () => {
-        console.log("onFormChange");
+    const onFormChange = async () => {
+        let values = await form.validateFields();
+
+        console.log("onFormChange", values);
     };
 
-    const submitForm = () => {
+    const submitForm = async () => {
         console.log("submitForm");
+        let values = await form.validateFields();
     };
 
     return (
@@ -72,10 +75,10 @@ export default function AssetGuessForm({
                                 />
                             </AnimatedStep>
                             <AnimatedStep previousStep={previousStep}>
-                                <AssetForm />
+                                <AssetForm submitForm={submitForm} />
                             </AnimatedStep>
                             <AnimatedStep previousStep={previousStep}>
-                                <LossForm />
+                                <LossForm submitForm={submitForm} />
                             </AnimatedStep>
                         </Wizard>
                     </Form>
