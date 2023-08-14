@@ -20,6 +20,7 @@ const { Paragraph } = Typography;
 type Props = {
     number: number;
     setAtSecondStep: (value: boolean) => void;
+    form: FormInstance;
 };
 
 const Container = styled("div")`
@@ -27,7 +28,7 @@ const Container = styled("div")`
     flex-direction: column;
 `;
 
-const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
+const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep, form }) => {
     const { previousStep, nextStep, isLastStep, isFirstStep, handleStep } =
         useWizard();
 
@@ -35,8 +36,6 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
     const [autoCompletePolicyLines, setAutoCompletePolicyLines] = useState<
         PolicyLine[]
     >([]);
-
-    const form = Form.useForm()[0];
 
     const handlePolicyLineAutoComplete = (value: string) => {
         let res: PolicyLine[] = [];
@@ -84,12 +83,19 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
             </Paragraph> */}
             <Form.Item label="Property type" name="property_type">
                 <AutoComplete
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            nextStep();
+                        }
+                    }}
                     placeholder="Desktop Computer, DSLR Camera, Necklace"
                     autoFocus
                     onSearch={handlePolicyLineAutoComplete}
                     options={autoCompletePolicyLinesOptions}
                 />
             </Form.Item>
+
+            <Form.Item></Form.Item>
 
             <Row>
                 <Space>

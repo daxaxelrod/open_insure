@@ -85,8 +85,6 @@ export default function DemoQuoteForm() {
                 callback("Even a broken phone is worth at least $10!");
             } else if (value < 0) {
                 callback("The market value cannot be negative.");
-            } else {
-                callback();
             }
         } catch (error) {
             // Handle errors converting the value to a number.

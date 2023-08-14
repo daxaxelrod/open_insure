@@ -70,6 +70,7 @@ export default function AssetGuessForm({
                         >
                             <AnimatedStep previousStep={previousStep}>
                                 <PolicyLineStep
+                                    form={form}
                                     number={1}
                                     setAtSecondStep={setAtSecondStep}
                                 />
