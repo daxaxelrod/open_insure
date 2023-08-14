@@ -1,4 +1,13 @@
-import { Button, Checkbox, DatePicker, Form, Input, Row, Switch } from "antd";
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Form,
+    Input,
+    Row,
+    Statistic,
+    Switch,
+} from "antd";
 import React from "react";
 import { useWizard } from "react-use-wizard";
 import { CloseOutlined } from "@ant-design/icons";
@@ -11,7 +20,7 @@ export default function AssetForm({ submitForm }: { submitForm: () => void }) {
     const form = Form.useFormInstance();
 
     const hasHadLosses = Form.useWatch("has_had_losses", form);
-    const isChecked = Form.useWatch("has_had_losses", form);
+    const purchaseDate = Form.useWatch("purchase_date", form);
 
     const marketValueValidator = (
         rule: RuleObject,
@@ -22,13 +31,10 @@ export default function AssetForm({ submitForm }: { submitForm: () => void }) {
             value = Number(value);
 
             if (value === 0) {
-                callback();
                 return;
             }
             if (value < 50) {
                 callback("$50 Minimum");
-            } else if (value < 0) {
-                callback("The purchase price cannot be negative.");
             }
         } catch (error) {
             // Handle errors converting the value to a number.
@@ -38,15 +44,35 @@ export default function AssetForm({ submitForm }: { submitForm: () => void }) {
     const conditionalGoNext = () => {
         return hasHadLosses ? nextStep() : submitForm();
     };
+
+    const monthsOld = purchaseDate
+        ? Math.abs(
+              Math.round(
+                  purchaseDate.diff(new Date()) / 1000 / 60 / 60 / 24 / 30
+              )
+          )
+        : null;
+
     return (
         <div>
-            <Form.Item
-                label="When did you purchase it?"
-                name="purchase_date"
-                required
-            >
-                <DatePicker picker="month" />
-            </Form.Item>
+            <Row>
+                <Form.Item
+                    label="When did you purchase it?"
+                    name="purchase_date"
+                    required
+                >
+                    <DatePicker picker="month" />
+                </Form.Item>
+                <div
+                    style={{
+                        marginLeft: "2rem",
+                    }}
+                >
+                    {monthsOld ? (
+                        <Statistic title="Months Old" value={monthsOld} />
+                    ) : null}
+                </div>
+            </Row>
 
             <Form.Item
                 label="Purchase Price"
@@ -59,7 +85,7 @@ export default function AssetForm({ submitForm }: { submitForm: () => void }) {
                     },
                 ]}
             >
-                <Input addonBefore="$" defaultValue={50} />
+                <Input addonBefore="$" placeholder="300" />
             </Form.Item>
             <Form.Item label="Manufacturer" name="property_make">
                 <Input placeholder="Apple, Dior, Rolex" />
