@@ -65,7 +65,13 @@ export default function AssetForm({ submitForm }: { submitForm: () => void }) {
                     }}
                 >
                     {monthsOld ? (
-                        <Statistic title="Months Old" value={monthsOld} />
+                        <Statistic
+                            title="Months Old"
+                            value={monthsOld}
+                            style={{
+                                textAlign: "center",
+                            }}
+                        />
                     ) : null}
                 </div>
             </Row>

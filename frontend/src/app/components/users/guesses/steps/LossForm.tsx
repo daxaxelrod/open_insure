@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Input, Row, Space } from "antd";
+import { Button, DatePicker, Form, Input, Row, Space } from "antd";
 import { useWizard } from "react-use-wizard";
 
 export default function LossForm({ submitForm }: { submitForm: () => void }) {
@@ -8,7 +8,7 @@ export default function LossForm({ submitForm }: { submitForm: () => void }) {
 
     return (
         <div>
-            <h1>Losses</h1>
+            <h1>Damage or full losses</h1>
 
             <Form.List
                 name="losses"
@@ -62,18 +62,18 @@ const LossRow = ({ key, name }: any) => {
             style={{
                 display: "flex",
                 justifyContent: "space-between",
-                alignItems: "center",
+                alignItems: "stretch",
                 flexDirection: "row",
             }}
         >
-            <Form.Item name={[name, "date"]}>
-                <Input placeholder="Date of loss" />
+            <Form.Item name={[name, "date"]} label="Date">
+                <DatePicker placeholder="2023-04-01" />
             </Form.Item>
-            <Form.Item name={[name, "cost"]}>
-                <Input placeholder="Cost" />
+            <Form.Item name={[name, "cost"]} label="Amount">
+                <Input placeholder="Cost" prefix="$" />
             </Form.Item>
-            <Form.Item name={[name, "description"]}>
-                <Input placeholder="Water damage" />
+            <Form.Item name={[name, "description"]} label="Description">
+                <Input.TextArea placeholder="Water damage" />
             </Form.Item>
         </Space>
     );
