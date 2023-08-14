@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Row, Col, Button, Card } from "antd";
+import { Typography } from "antd";
 import colors from "../../../constants/colors";
 const { Title, Paragraph } = Typography;
 
@@ -11,6 +11,7 @@ export default function AssetGuessFormHeader() {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
+                marginBottom: "2rem",
             }}
         >
             <img

@@ -6,17 +6,13 @@ import {
     Input,
     Row,
     Statistic,
-    Switch,
 } from "antd";
-import React from "react";
 import { useWizard } from "react-use-wizard";
-import { CloseOutlined } from "@ant-design/icons";
-import { CheckOutlined } from "@ant-design/icons";
 import { RuleObject } from "antd/es/form";
 import { StoreValue } from "antd/es/form/interface";
 
 export default function AssetForm({ submitForm }: { submitForm: () => void }) {
-    const { handleStep, nextStep, previousStep, isLastStep } = useWizard();
+    const { nextStep, previousStep } = useWizard();
     const form = Form.useFormInstance();
 
     const hasHadLosses = Form.useWatch("has_had_losses", form);

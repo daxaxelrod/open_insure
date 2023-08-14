@@ -14,8 +14,8 @@ export default function Contribute() {
         <div>
             <Row>
                 <Col
-                    md={{ span: 6 }}
-                    lg={{ span: 9 }}
+                    md={{ span: 16 }}
+                    lg={{ span: 11 }}
                     style={{
                         padding: 24,
                     }}
@@ -24,10 +24,10 @@ export default function Contribute() {
                 </Col>
                 <Col
                     md={{
-                        span: 18,
+                        span: 8,
                     }}
                     lg={{
-                        span: 15,
+                        span: 13,
                     }}
                     style={{
                         backgroundColor: "white",

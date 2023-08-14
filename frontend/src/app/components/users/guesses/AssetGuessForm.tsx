@@ -37,8 +37,8 @@ export default function AssetGuessForm({
     };
 
     const submitForm = async () => {
-        console.log("submitForm");
         let values = await form.validateFields();
+        console.log("submitForm", values);
     };
 
     return (
