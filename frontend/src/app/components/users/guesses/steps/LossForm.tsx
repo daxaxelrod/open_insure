@@ -2,9 +2,13 @@ import React from "react";
 import { Button, DatePicker, Form, Input, Row, Space } from "antd";
 import { useWizard } from "react-use-wizard";
 
-export default function LossForm({ submitForm }: { submitForm: () => void }) {
+export default function LossForm() {
     const { previousStep } = useWizard();
     const form = Form.useFormInstance();
+
+    const handleSubmit = async () => {
+        await form.submit();
+    };
 
     return (
         <div>
@@ -22,8 +26,8 @@ export default function LossForm({ submitForm }: { submitForm: () => void }) {
             >
                 {(fields, { add, remove }) => (
                     <div>
-                        {fields.map((field) => (
-                            <LossRow {...field} />
+                        {fields.map((field, idx) => (
+                            <LossRow {...field} key={idx} />
                         ))}
                         <Form.Item>
                             <Button
@@ -46,8 +50,8 @@ export default function LossForm({ submitForm }: { submitForm: () => void }) {
                 <Button onClick={previousStep} type={"default"}>
                     Back
                 </Button>
-                <Button onClick={submitForm} type={"default"}>
-                    Next
+                <Button onClick={handleSubmit} type={"default"}>
+                    Submit
                 </Button>
             </Row>
         </div>

@@ -100,6 +100,7 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep, form }) => {
             <Row>
                 <Space>
                     <Button
+                        disabled={!isFormFilledOut}
                         onClick={nextStep}
                         type={isFormFilledOut ? "primary" : "default"}
                     >

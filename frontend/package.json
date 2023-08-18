@@ -21,6 +21,7 @@
         "axios": "^0.27.2",
         "axios-jwt": "^1.8.0",
         "chart.js": "^3.8.2",
+        "dayjs": "^1.11.9",
         "framer-motion": "^10.13.1",
         "gaussian": "^1.2.0",
         "hamburger-react": "^2.5.0",

@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Form, Input, Row, Grid } from "antd";
+import { Alert, Button, Col, Form, Input, Row, Grid, notification } from "antd";
 import { isLoggedIn } from "axios-jwt";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ export default function LoginForm() {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const screens = Grid.useBreakpoint();
+    const [api, contextHolder] = notification.useNotification();
     const isMobile = !screens.lg;
     const isLoginPending = useAppSelector((state) => state.auth.loginPending);
     const loginError = useAppSelector(
@@ -48,11 +49,17 @@ export default function LoginForm() {
                 xl: { span: 16 },
                 xxl: { span: 16 },
             }}
-            onFinishFailed={() => {
-                console.log("Failed");
+            onFinishFailed={({ errorFields }) => {
+                for (let i = 0; i < errorFields.length; i++) {
+                    const err = errorFields[i];
+                    api.error({
+                        message: err.errors[0],
+                    });
+                }
             }}
             autoComplete="on"
         >
+            {contextHolder}
             <Form.Item
                 label={isMobile ? null : "Email"}
                 name="email"

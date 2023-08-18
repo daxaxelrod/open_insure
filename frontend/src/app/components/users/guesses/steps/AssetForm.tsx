@@ -1,44 +1,30 @@
 import {
     Button,
     Checkbox,
+    Col,
     DatePicker,
     Form,
     Input,
     Row,
     Statistic,
+    Typography,
 } from "antd";
 import { useWizard } from "react-use-wizard";
 import { RuleObject } from "antd/es/form";
 import { StoreValue } from "antd/es/form/interface";
+import moment from "moment-timezone";
+import dayjs from "dayjs";
 
-export default function AssetForm({ submitForm }: { submitForm: () => void }) {
+const { Title } = Typography;
+
+export default function AssetForm() {
     const { nextStep, previousStep } = useWizard();
     const form = Form.useFormInstance();
 
     const hasHadLosses = Form.useWatch("has_had_losses", form);
     const purchaseDate = Form.useWatch("purchase_date", form);
-
-    const marketValueValidator = (
-        rule: RuleObject,
-        value: StoreValue,
-        callback: (error?: string) => void
-    ) => {
-        try {
-            value = Number(value);
-
-            if (value === 0) {
-                return;
-            }
-            if (value < 50) {
-                callback("$50 Minimum");
-            }
-        } catch (error) {
-            // Handle errors converting the value to a number.
-        }
-    };
-
     const conditionalGoNext = () => {
-        return hasHadLosses ? nextStep() : submitForm();
+        hasHadLosses ? nextStep() : form.submit();
     };
 
     const monthsOld = purchaseDate
@@ -52,28 +38,51 @@ export default function AssetForm({ submitForm }: { submitForm: () => void }) {
     return (
         <div>
             <Row>
-                <Form.Item
-                    label="When did you purchase it?"
-                    name="purchase_date"
-                    required
-                >
-                    <DatePicker picker="month" />
-                </Form.Item>
-                <div
-                    style={{
-                        marginLeft: "2rem",
-                    }}
-                >
-                    {monthsOld ? (
-                        <Statistic
-                            title="Months Old"
-                            value={monthsOld}
+                <Col span={12}>
+                    <Form.Item
+                        label="When did you purchase it?"
+                        name="purchase_date"
+                        required
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input the purchase date",
+                            },
+                        ]}
+                    >
+                        <DatePicker
+                            disabledDate={(current) =>
+                                current && current >= dayjs().endOf("day")
+                            }
+                            picker="month"
                             style={{
-                                textAlign: "center",
+                                width: "100%",
                             }}
                         />
-                    ) : null}
-                </div>
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <div
+                        style={{
+                            marginLeft: "2rem",
+                            justifyContent: "center",
+                            display: "flex",
+                            alignItems: "center",
+                            height: "100%",
+                        }}
+                    >
+                        {monthsOld ? (
+                            <Title
+                                level={3}
+                                style={{
+                                    marginTop: 14,
+                                }}
+                            >
+                                {monthsOld} months ago
+                            </Title>
+                        ) : null}
+                    </div>
+                </Col>
             </Row>
 
             <Form.Item
@@ -82,9 +91,21 @@ export default function AssetForm({ submitForm }: { submitForm: () => void }) {
                 required
                 rules={[
                     {
-                        type: "number",
-                        validator: marketValueValidator,
+                        required: true,
+                        message: "Please input the purchase price",
                     },
+                    () => ({
+                        validator(rule, value) {
+                            let toTest = Number(value);
+                            if (toTest === 0) {
+                                return Promise.resolve();
+                            }
+                            if (toTest < 50) {
+                                return Promise.reject("$50 Minimum");
+                            }
+                            return Promise.resolve();
+                        },
+                    }),
                 ]}
             >
                 <Input addonBefore="$" placeholder="300" />
