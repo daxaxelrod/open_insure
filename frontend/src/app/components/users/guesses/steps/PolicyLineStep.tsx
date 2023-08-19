@@ -1,26 +1,13 @@
-import React, { FC, memo, useEffect, useMemo, useState } from "react";
+import { FC, memo, useEffect, useMemo, useState } from "react";
 import { useWizard } from "react-use-wizard";
 import styled from "styled-components";
-import {
-    AutoComplete,
-    Button,
-    Col,
-    Form,
-    FormInstance,
-    Grid,
-    Input,
-    Row,
-    Space,
-    Typography,
-} from "antd";
+import { AutoComplete, Button, Form, Row, Space } from "antd";
 import { PolicyLine } from "../../../../../redux/reducers/commonTypes";
 import { useAppSelector } from "../../../../../redux/hooks";
-const { Paragraph } = Typography;
 
 type Props = {
     number: number;
     setAtSecondStep: (value: boolean) => void;
-    form: FormInstance;
 };
 
 const Container = styled("div")`
@@ -28,7 +15,8 @@ const Container = styled("div")`
     flex-direction: column;
 `;
 
-const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep, form }) => {
+const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
+    const form = Form.useFormInstance();
     const { previousStep, nextStep, isLastStep, isFirstStep, handleStep } =
         useWizard();
 
@@ -85,6 +73,7 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep, form }) => {
                 <AutoComplete
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
+                            e.preventDefault();
                             nextStep();
                         }
                     }}
@@ -94,8 +83,6 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep, form }) => {
                     options={autoCompletePolicyLinesOptions}
                 />
             </Form.Item>
-
-            <Form.Item></Form.Item>
 
             <Row>
                 <Space>

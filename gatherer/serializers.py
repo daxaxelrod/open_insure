@@ -1,5 +1,4 @@
-from pyexpat import model
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, CharField
 
 from gatherer.models import (
     PolicyLineProperty,
@@ -21,6 +20,7 @@ class PropertyLifeLossGuessSerializer(ModelSerializer):
 
 
 class PropertyLifeExpectancyGuessSerializer(ModelSerializer):
+    property_type = CharField(write_only=True, required=True)
     losses = PropertyLifeLossGuessSerializer(many=True)
 
     def create(self, validated_data):

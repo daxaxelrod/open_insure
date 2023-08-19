@@ -34,19 +34,33 @@ export default function AssetGuessForm({
     const [api, contextHolder] = notification.useNotification();
     const [form] = Form.useForm();
 
-    const onFormChange = async () => {
-        let values = await form.validateFields();
-
-        console.log("onFormChange", values);
-    };
-
     const submitForm = async () => {
-        console.log("submitting form");
-        // let values = await form.validateFields();
-        let values = {};
+        let values = await form.validateFields();
+        const { property_type, losses } = form.getFieldsValue([
+            "property_type",
+            "losses",
+        ]);
+        debugger;
+        if (!property_type) {
+            api.error({
+                message: "Please select a property type (first page)",
+            });
+            return;
+        }
+
+        if (values.has_had_losses && losses.length === 0) {
+            api.error({
+                message: "Please add at least one loss (last page)",
+            });
+            return;
+        }
+
         try {
             let result = await public_submitActuaryGuess({
                 ...values,
+                purchase_date: values.purchase_date.toDate(),
+                property_type: property_type,
+                losses: values.has_had_losses ? losses : [],
             });
             if (result.status === 200) {
                 console.log("success", result.data);
@@ -80,11 +94,7 @@ export default function AssetGuessForm({
                     <Form
                         form={form}
                         layout="vertical"
-                        onValuesChange={onFormChange}
                         size={"middle"}
-                        onSubmitCapture={() => {
-                            console.log("onSubmitCapture");
-                        }}
                         onFinish={submitForm}
                         onFinishFailed={({ errorFields }) => {
                             for (let i = 0; i < errorFields.length; i++) {
@@ -105,7 +115,6 @@ export default function AssetGuessForm({
                         >
                             <AnimatedStep previousStep={previousStep}>
                                 <PolicyLineStep
-                                    form={form}
                                     number={1}
                                     setAtSecondStep={setAtSecondStep}
                                 />

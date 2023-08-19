@@ -40,7 +40,7 @@ class PropertyLifeExpectancyGuess(models.Model):
         default=False,
         help_text="Means the user is the producer/a large consumer of the property type, and is therefore their guess is more likely to be accurate",
     )
-    property_name = models.CharField(max_length=255)
+    property_name = models.CharField(max_length=255, null=True, blank=True)
     property_make = models.CharField(max_length=255, null=True, blank=True)
     property_type = models.ForeignKey(
         PolicyLineProperty, on_delete=models.CASCADE, related_name="guesses"

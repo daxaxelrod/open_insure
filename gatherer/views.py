@@ -7,8 +7,20 @@ from gatherer.serializers import (
 )
 from rest_framework.filters import SearchFilter
 from django.utils import timezone
+from django.conf import settings
 from rest_framework.permissions import AllowAny
+from django.db.models import Q
+from open_insure.admin.emails import send_notif_email_to_admins
 from pods.utils.badges import award_badge
+from django.urls import reverse
+
+
+def url_to_edit_object(obj):
+    url = reverse(
+        "admin:%s_%s_change" % (obj._meta.app_label, obj._meta.model_name),
+        args=[obj.id],
+    )
+    return f'<a href="{url}">Edit {obj.__str__()}</a>'
 
 
 class PolicyLinePropertyViewSet(ModelViewSet):
@@ -30,7 +42,35 @@ class PropertyLifeExpectancyGuessViewSet(ModelViewSet):
     queryset = PropertyLifeExpectancyGuess.objects.all()
 
     def perform_create(self, serializer):
-        guess = serializer.save(user=self.request.user)
+        kwargs = {}
+        import pdb
+
+        pdb.set_trace()
+        property_type = serializer.validated_data.get("property_type", None)
+        if isinstance(property_type, str):
+            try:
+                property_object = PolicyLineProperty.objects.get(
+                    Q(name__iexact=property_type)
+                    | Q(search_tags__icontains=property_type)
+                )
+                serializer.validated_data["property_type"] = property_object
+            except PolicyLineProperty.DoesNotExist:
+                policy_line_kwargs = {
+                    "name": property_type,
+                }
+                if self.request.user.is_authenticated:
+                    policy_line_kwargs["orignal_creator"] = self.request.user
+                property_object = PolicyLineProperty.objects.create(
+                    **policy_line_kwargs
+                )
+                # if settings.NOTIFY_ADMINS_OF_EVENTS:
+                send_notif_email_to_admins(
+                    title="New property type created",
+                    description=f"New property type created: {property_type}, Heres the link: {url_to_edit_object(property_object)}",
+                )
+            kwargs["property_type"] = property_object
+
+        guess = serializer.save(user=self.request.user, **kwargs)
 
         # fill out extra fields on guess
         for loss in guess.losses.filter(loss_percent=None):

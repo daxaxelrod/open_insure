@@ -6,13 +6,9 @@ import {
     Form,
     Input,
     Row,
-    Statistic,
     Typography,
 } from "antd";
 import { useWizard } from "react-use-wizard";
-import { RuleObject } from "antd/es/form";
-import { StoreValue } from "antd/es/form/interface";
-import moment from "moment-timezone";
 import dayjs from "dayjs";
 
 const { Title } = Typography;
