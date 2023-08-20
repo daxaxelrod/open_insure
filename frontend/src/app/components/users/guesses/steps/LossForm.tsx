@@ -3,11 +3,12 @@ import { Button, DatePicker, Form, Input, Row, Space, Typography } from "antd";
 import { useWizard } from "react-use-wizard";
 import { PlusOutlined } from "@ant-design/icons";
 import colors from "../../../../constants/colors";
+import dayjs, { Dayjs } from "dayjs";
 
 const { Title, Paragraph } = Typography;
 
-type LossType = {
-    date: string;
+export type LossType = {
+    date: Dayjs;
     cost: string;
     description?: string;
 };
@@ -16,7 +17,9 @@ export default function LossForm() {
     const { previousStep } = useWizard();
     const form = Form.useFormInstance();
 
-    const losses = Form.useWatch("losses", form);
+    const losses = Form.useWatch("losses", form) || [];
+    const reportedOriginalPurchaseDate = form.getFieldValue("purchase_date");
+
     const hasAtLeastOneLossFilledOut = losses.some(
         (loss: LossType) => loss.date && loss.cost
     );
@@ -54,7 +57,13 @@ export default function LossForm() {
                 {(fields, { add, remove }) => (
                     <div>
                         {fields.map((field, idx) => (
-                            <LossRow {...field} key={idx} />
+                            <LossRow
+                                {...field}
+                                key={idx}
+                                reportedOriginalPurchaseDate={
+                                    reportedOriginalPurchaseDate
+                                }
+                            />
                         ))}
                         <Form.Item>
                             <Button
@@ -89,7 +98,7 @@ export default function LossForm() {
     );
 }
 
-const LossRow = ({ key, name }: any) => {
+const LossRow = ({ key, name, reportedOriginalPurchaseDate }: any) => {
     return (
         <Space
             key={key}
@@ -106,7 +115,16 @@ const LossRow = ({ key, name }: any) => {
                 label="Date"
                 rules={[{ required: true, message: "When did this happen" }]}
             >
-                <DatePicker placeholder="2023-04-01" autoFocus />
+                <DatePicker
+                    placeholder="2023-04-01"
+                    autoFocus
+                    disabledDate={(current) =>
+                        current &&
+                        (current >= dayjs().endOf("day") ||
+                            current <
+                                reportedOriginalPurchaseDate.startOf("month"))
+                    }
+                />
             </Form.Item>
             <Form.Item
                 name={[name, "cost"]}

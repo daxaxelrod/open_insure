@@ -2,7 +2,11 @@ from django import forms
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from gatherer.models import PolicyLineProperty, PropertyLifeExpectancyGuess
+from gatherer.models import (
+    PolicyLineProperty,
+    PropertyLifeExpectancyGuess,
+    PropertyLifeLossGuess,
+)
 
 
 class MergePropertyLineForm(forms.Form):
@@ -53,5 +57,15 @@ class PropertyLineAdmin(admin.ModelAdmin):
     actions = [merge_property_lines]
 
 
+class LossAdmin(admin.ModelAdmin):
+    list_display = (
+        "loss_date",
+        "loss_months_into_ownership",
+        "loss_percent",
+        "loss_amount",
+    )
+
+
 admin.site.register(PolicyLineProperty, PropertyLineAdmin)
+admin.site.register(PropertyLifeLossGuess, LossAdmin)
 admin.site.register(PropertyLifeExpectancyGuess)

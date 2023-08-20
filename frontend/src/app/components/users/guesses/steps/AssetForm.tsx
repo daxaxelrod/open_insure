@@ -5,6 +5,7 @@ import {
     DatePicker,
     Form,
     Input,
+    InputNumber,
     Row,
     Typography,
 } from "antd";
@@ -47,6 +48,7 @@ export default function AssetForm() {
                         ]}
                     >
                         <DatePicker
+                            autoFocus
                             disabledDate={(current) =>
                                 current && current >= dayjs().endOf("day")
                             }
@@ -104,7 +106,7 @@ export default function AssetForm() {
                     }),
                 ]}
             >
-                <Input addonBefore="$" placeholder="300" />
+                <InputNumber addonBefore="$" placeholder="300" step={10} />
             </Form.Item>
             <Form.Item label="Manufacturer" name="property_make">
                 <Input placeholder="Apple, Dior, Rolex" />

@@ -24,6 +24,11 @@ def url_to_edit_object(obj):
 
 
 class PolicyLinePropertyViewSet(ModelViewSet):
+    def get_permissions(self):
+        if self.action == "list":
+            return [AllowAny()]
+        return super().get_permissions()
+
     serializer_class = PolicyLinePropertySerializer
 
     queryset = PolicyLineProperty.objects.all()
