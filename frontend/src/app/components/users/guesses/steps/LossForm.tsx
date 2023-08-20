@@ -10,10 +10,11 @@ import {
     Typography,
 } from "antd";
 import { useWizard } from "react-use-wizard";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import colors from "../../../../constants/colors";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { LossDataPoint } from "../../../../../redux/reducers/commonTypes";
+import { color } from "framer-motion";
 
 const { Title, Paragraph } = Typography;
 
@@ -65,13 +66,19 @@ export default function LossForm() {
             >
                 {(fields, { add, remove }) => (
                     <div>
-                        {fields.map((field, idx) => (
+                        {fields.map((field, idx, allFields) => (
                             <LossRow
                                 {...field}
                                 key={idx}
                                 reportedOriginalPurchaseDate={
                                     reportedOriginalPurchaseDate
                                 }
+                                {...(idx === allFields.length - 1 &&
+                                allFields.length > 1
+                                    ? {
+                                          remove,
+                                      }
+                                    : {})}
                             />
                         ))}
                         <Form.Item>
@@ -107,58 +114,115 @@ export default function LossForm() {
     );
 }
 
-const LossRow = ({ key, name, reportedOriginalPurchaseDate }: any) => {
+const LossRow = ({ key, name, reportedOriginalPurchaseDate, remove }: any) => {
     return (
-        <Space
-            key={key}
-            size={"middle"}
+        <div
             style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "stretch",
-                flexDirection: "row",
+                position: "relative",
             }}
         >
-            <Form.Item
-                name={[name, "loss_date"]}
-                label="Date"
-                rules={[{ required: true, message: "When did this happen" }]}
+            <Space
+                key={key}
+                size={"small"}
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "stretch",
+                    flexDirection: "row",
+                }}
             >
-                <DatePicker
-                    placeholder="2023-04-01"
-                    autoFocus
-                    disabledDate={(current) =>
-                        current &&
-                        (current >= dayjs().endOf("day") ||
-                            current <
-                                reportedOriginalPurchaseDate.startOf("month"))
-                    }
-                />
-            </Form.Item>
-            <Form.Item
-                name={[name, "loss_amount"]}
-                label="Amount"
-                rules={[{ required: true, message: "How much did it cost?" }]}
-            >
-                <InputNumber placeholder="Cost" prefix="$" step={10} />
-            </Form.Item>
-            <Form.Item
-                name={[name, "loss_reason"]}
-                label="Description"
-                rules={[
-                    {
-                        required: true,
-                        message: "Add a short description of what happened",
-                    },
-                    {
-                        pattern: /^.{0,1000}$/s,
-                        message:
-                            "Descriptions should be less than 1000 characters",
-                    },
-                ]}
-            >
-                <Input.TextArea placeholder="Water damage" maxLength={1024} />
-            </Form.Item>
-        </Space>
+                <Form.Item
+                    name={[name, "loss_date"]}
+                    label="Date"
+                    rules={[
+                        { required: true, message: "When did this happen" },
+                    ]}
+                >
+                    <DatePicker
+                        placeholder="2023-04-01"
+                        autoFocus
+                        disabledDate={(current) =>
+                            current &&
+                            (current >= dayjs().endOf("day") ||
+                                current <
+                                    reportedOriginalPurchaseDate.startOf(
+                                        "month"
+                                    ))
+                        }
+                    />
+                </Form.Item>
+                <Form.Item
+                    name={[name, "loss_amount"]}
+                    label="Amount"
+                    rules={[
+                        {
+                            required: true,
+                            message: "How much did it cost?",
+                            type: "number",
+                            min: 10,
+                        },
+                    ]}
+                >
+                    <InputNumber placeholder="Cost" prefix="$" step={10} />
+                </Form.Item>
+                <Form.Item
+                    name={[name, "loss_reason"]}
+                    label="Description"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Add a short description of what happened",
+                        },
+                        {
+                            pattern: /^.{0,1000}$/s,
+                            message:
+                                "Descriptions should be less than 1000 characters",
+                        },
+                    ]}
+                >
+                    <Input.TextArea
+                        placeholder="Water damage"
+                        maxLength={1024}
+                    />
+                </Form.Item>
+            </Space>
+            {remove ? (
+                <div
+                    style={{
+                        position: "absolute",
+                        top: "20%",
+                        right: -70,
+                        bottom: "20%",
+                        display: "flex",
+                    }}
+                >
+                    <style>
+                        {`
+                        #remove-loss-item__trash-icon {
+                            color: ${colors.alert2}
+                        }
+                        #remove-loss-item__trash-icon:hover {
+                            color: ${colors.alert1}
+                        `}
+                    </style>
+                    <div
+                        style={{
+                            padding: "10px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            display: "flex",
+                            cursor: "pointer",
+                            flex: 1,
+                        }}
+                        onClick={() => remove(name)}
+                    >
+                        <DeleteOutlined
+                            id="remove-loss-item__trash-icon"
+                            size={28}
+                        />
+                    </div>
+                </div>
+            ) : null}
+        </div>
     );
 };
