@@ -85,12 +85,17 @@ export default function AssetGuessForm({
                 property_make,
                 purchase_price,
             });
-            if (result.status === 200) {
+            if (result.status < 300 && result.status >= 200) {
                 console.log("success", result.data);
                 ReactGA.event({
                     category: "Contribute",
                     action: "Submit an asset datapoint",
                 });
+
+                dispatch(setHighlightedContribution(result.data));
+                dispatch(
+                    getActuarialStatsForPolicyLine(result.data.policy_line)
+                );
 
                 if (!loggedIn) {
                     console.log(

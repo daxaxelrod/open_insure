@@ -6,10 +6,12 @@ from gatherer.serializers import (
     PropertyLifeExpectancyGuessSerializer,
 )
 from rest_framework.filters import SearchFilter
+from rest_framework.response import Response
 from django.utils import timezone
 from django.conf import settings
 from rest_framework.permissions import AllowAny
 from django.db.models import Q
+from gatherer.utils import generate_summary_stats_for_policy_line
 from open_insure.admin.emails import send_notif_email_to_admins
 from pods.utils.badges import award_badge
 from django.urls import reverse
@@ -35,6 +37,13 @@ class PolicyLinePropertyViewSet(ModelViewSet):
 
     filter_backends = [SearchFilter]
     search_fields = ["name", "description", "search_tags"]
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        actuary_details = generate_summary_stats_for_policy_line(instance.guesses)
+        serializer = self.get_serializer(instance)
+
+        return Response({**serializer.data, "actuary_details": actuary_details})
 
 
 class PropertyLifeExpectancyGuessViewSet(ModelViewSet):

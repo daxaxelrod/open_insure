@@ -21,6 +21,7 @@ class PropertyLifeLossGuessSerializer(ModelSerializer):
 
 class PropertyLifeExpectancyGuessSerializer(ModelSerializer):
     property_type = CharField(write_only=True, required=True)
+    property_line = PolicyLinePropertySerializer(read_only=True, source="property_type")
     losses = PropertyLifeLossGuessSerializer(many=True)
 
     def create(self, validated_data):
