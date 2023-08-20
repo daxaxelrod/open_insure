@@ -1,6 +1,7 @@
 from unicodedata import category
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.urls import reverse
 
 from pods.models import User
 
@@ -26,6 +27,9 @@ class PolicyLineProperty(models.Model):
             guess.property_type = primary_line
             guess.save()
         self.delete()
+
+    def get_absolute_url(self):
+        return reverse("policy-lines-detail", kwargs={"pk": self.id})
 
 
 LOSS_REASON_CHOICES = [

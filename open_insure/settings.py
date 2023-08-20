@@ -25,6 +25,7 @@ env = environ.Env(
     PG_PASSWORD=(str, "postgres"),
     PG_DBNAME=(str, "open_insure"),
     NOTIFY_ADMINS_OF_EVENTS=(bool, False),
+    DESIRED_CONTRIBUTION_TO_PREMIUM_CONFIDENCE_LEVEL=(float, 0.95),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -205,7 +206,9 @@ SIMPLE_JWT = {
 
 ESCROW_AGENT = env("ESCROW_AGENT")
 # more escrow agent config from env ...
-
+DESIRED_CONTRIBUTION_TO_PREMIUM_CONFIDENCE_LEVEL = env(
+    "DESIRED_CONTRIBUTION_TO_PREMIUM_CONFIDENCE_LEVEL"
+)
 
 if IS_MAIN_SCHEDULER:
     APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"

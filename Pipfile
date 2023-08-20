@@ -17,6 +17,7 @@ django-multiselectfield = "*"
 drf-nested-routers = "*"
 pillow = "*"
 numpy = "*"
+scipy = "*"
 
 [dev-packages]
 black = "*"

@@ -27,7 +27,7 @@ def url_to_edit_object(obj):
 
 class PolicyLinePropertyViewSet(ModelViewSet):
     def get_permissions(self):
-        if self.action == "list":
+        if self.action == "list" or self.action == "retrieve":
             return [AllowAny()]
         return super().get_permissions()
 
@@ -38,9 +38,11 @@ class PolicyLinePropertyViewSet(ModelViewSet):
     filter_backends = [SearchFilter]
     search_fields = ["name", "description", "search_tags"]
 
+    # todo, setup url to send in a slug thats instance.name.replace(" ", "-").tolower()
+
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        actuary_details = generate_summary_stats_for_policy_line(instance.guesses)
+        actuary_details = generate_summary_stats_for_policy_line(instance.guesses.all())
         serializer = self.get_serializer(instance)
 
         return Response({**serializer.data, "actuary_details": actuary_details})
