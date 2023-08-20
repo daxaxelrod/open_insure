@@ -30,7 +30,7 @@ export default function LossForm() {
 
     return (
         <div>
-            <Title level={3}>Damage or full losses</Title>
+            <Title level={5}>Damage or full losses</Title>
             <Paragraph
                 style={{
                     color: colors.gray8,
