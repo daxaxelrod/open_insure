@@ -53,14 +53,19 @@ def merge_property_lines(modeladmin, request, queryset):
 
 class PropertyLineAdmin(admin.ModelAdmin):
     list_display = ("name", "description", "search_tags", "created_at")
-
     actions = [merge_property_lines]
+    view_on_site = True
 
 
 class LossAdmin(admin.ModelAdmin):
+    list_filter = ("guess__property_type",)
     list_display = ("__str__",)
+
+
+class GuessAdmin(admin.ModelAdmin):
+    list_filter = ("property_type",)
 
 
 admin.site.register(PolicyLineProperty, PropertyLineAdmin)
 admin.site.register(PropertyLifeLossGuess, LossAdmin)
-admin.site.register(PropertyLifeExpectancyGuess)
+admin.site.register(PropertyLifeExpectancyGuess, GuessAdmin)

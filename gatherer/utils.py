@@ -29,7 +29,10 @@ def calculate_summary_statistics(data):
     max_value = np.max(data_array)
     quantile_25 = np.percentile(data_array, 25)
     quantile_75 = np.percentile(data_array, 75)
-    z_scores = (data_array - mean) / std_dev
+    if std_dev == 0:
+        z_scores = np.zeros(len(data_array))
+    else:
+        z_scores = (data_array - mean) / std_dev
 
     desired_confidence = settings.DESIRED_CONTRIBUTION_TO_PREMIUM_CONFIDENCE_LEVEL
     desired_z_score = z_score_from_confidence(desired_confidence)
@@ -76,11 +79,17 @@ def generate_summary_stats_for_policy_line(
     for guess in guesses:
         loss_count = guess.losses.count()
         purchase_date = guess.purchase_date
-        average_age_of_loss = (
-            sum([(loss.loss_date - purchase_date).days for loss in guess.losses])
-            / loss_count
-        )
-        total_value_lost = sum([loss.loss_amount for loss in guess.losses])
+
+        loss_days = []
+        total_loss_amount = 0
+
+        for loss in guess.losses.all():
+            loss_days.append((loss.loss_date - purchase_date).days)
+            total_loss_amount += loss.loss_amount
+
+        average_age_of_loss = np.mean(loss_days)
+        total_value_lost = total_loss_amount
+
         loss_cost_by_loss_count_by_avg_age.append(
             {
                 "loss_count": loss_count,
