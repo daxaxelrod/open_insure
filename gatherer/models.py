@@ -20,6 +20,12 @@ class PolicyLineProperty(models.Model):
     def __str__(self):
         return self.name
 
+    def merge_into(self, primary_line):
+        for guess in self.guesses.all():
+            guess.property_type = primary_line
+            guess.save()
+        self.delete()
+
 
 LOSS_REASON_CHOICES = [
     ("damaged", "Damaged"),

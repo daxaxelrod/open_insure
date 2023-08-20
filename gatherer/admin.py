@@ -5,10 +5,10 @@ from django.shortcuts import render
 from gatherer.models import PolicyLineProperty, PropertyLifeExpectancyGuess
 
 
-class MergePropertyLineForm(forms.ModelForm):
-    class Meta:
-        model = PolicyLineProperty
-        fields = ["id"]
+class MergePropertyLineForm(forms.Form):
+    def __init__(self, qs, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["primary_line"] = forms.ModelChoiceField(queryset=qs, required=True)
 
 
 @admin.action(description="Merge selected PropertyLine objects")
@@ -19,24 +19,31 @@ def merge_property_lines(modeladmin, request, queryset):
         )
         return
 
-    if "primary_line" in request.POST:
-        form = MergePropertyLineForm(request.POST)
+    if (
+        "primary_line" in request.POST
+        and request.POST.get("confirmation", None) == "Confirm"
+    ):
+        form = MergePropertyLineForm(queryset, request.POST)
         if form.is_valid():
-            primary_line = form.cleaned_data["id"]
-            for line in queryset:
-                if line.id != primary_line.id:
-                    line.merge_into(primary_line)
+            primary_line = form.cleaned_data["primary_line"]
+            remaining_lines = queryset.exclude(id=primary_line.id)
+            for line in remaining_lines:
+                line.merge_into(primary_line)
             modeladmin.message_user(
                 request,
-                f"Merged {queryset.count()} PropertyLine objects into {primary_line}",
+                f"Merged {remaining_lines.count()} PropertyLine objects into {primary_line}",
             )
         return HttpResponseRedirect(request.get_full_path())
     else:
-        form = MergePropertyLineForm()
+        form = MergePropertyLineForm(qs=queryset)
         return render(
             request,
             "admin/merge_property_line_form.html",
-            {"items": queryset.order_by("pk"), "form": form, "action": "extend_policy"},
+            {
+                "items": queryset.order_by("pk"),
+                "form": form,
+                "action": "merge_property_lines",
+            },
         )
 
 

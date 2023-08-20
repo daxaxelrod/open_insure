@@ -43,9 +43,6 @@ class PropertyLifeExpectancyGuessViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         kwargs = {}
-        import pdb
-
-        pdb.set_trace()
         property_type = serializer.validated_data.get("property_type", None)
         if isinstance(property_type, str):
             try:
@@ -65,7 +62,7 @@ class PropertyLifeExpectancyGuessViewSet(ModelViewSet):
                 )
                 # if settings.NOTIFY_ADMINS_OF_EVENTS:
                 send_notif_email_to_admins(
-                    title="New property type created",
+                    title="new '{property_type}' property type",
                     description=f"New property type created: {property_type}, Heres the link: {url_to_edit_object(property_object)}",
                 )
             kwargs["property_type"] = property_object

@@ -6,11 +6,9 @@
     {% for item in items %}
     <input type="hidden" name="_selected_action" value="{{ item.pk }}" />
     {% endfor %}
-
+    <p>Which is the primary Policy line for merging property lines?</p>
     {{ form }}
-    <p>which is the primary Policy line for merging property lines?</p>
-    <ul>{{ items|unordered_list }}</ul>
-    <div class="submit-row">
+    <div class="submit-row" style="margin-top: 1.25rem;">
         <input type="hidden" name="action" value="{{action}}" />
         <input type="submit" name="confirmation" value="Confirm" />
         <span style="padding: 10px 15px" onclick="window.history.back(); return false;" class="button cancel-link">No,
