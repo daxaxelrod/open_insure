@@ -34,7 +34,7 @@ class GuessTestCase(TestCase):
         data = {
             "property_name": "David's Handbag",
             "property_make": "Diore",
-            "property_type": self.handbag_property.id,
+            "property_type": self.handbag_property.name,
             "purchase_price": bag_cost,  # $1000
             "purchase_date": (
                 timezone.now() - timezone.timedelta(days=30 * 6)
@@ -61,7 +61,7 @@ class GuessTestCase(TestCase):
         self.assertEquals(len(guesses), 1)
         self.assertEquals(len(losses), 1)
         self.assertIsNotNone(guesses[0].age_of_ownership)
-        self.assertEquals(guesses[0].property_type, self.handbag_property)
+        self.assertEquals(guesses[0].property_type.id, self.handbag_property.id)
         self.assertEquals(guesses[0].yearly_loss_rate_bsp, assumed_loss_rate)
 
     def test_guess_with_multiple_years_of_history(self):
@@ -75,7 +75,7 @@ class GuessTestCase(TestCase):
         data = {
             "property_name": "David's older Handbag",
             "property_make": "Birkin",
-            "property_type": self.handbag_property.id,
+            "property_type": self.handbag_property.name,
             "purchase_price": bag_cost,  # $1000
             "purchase_date": purchase_date.isoformat(),
             "losses": [
@@ -104,7 +104,7 @@ class GuessTestCase(TestCase):
         self.assertEquals(len(guesses), 1)
         self.assertEquals(len(losses), 1)
         self.assertIsNotNone(guesses[0].age_of_ownership)
-        self.assertEquals(guesses[0].property_type, self.handbag_property)
+        self.assertEquals(guesses[0].property_type.id, self.handbag_property.id)
         self.assertEquals(guesses[0].yearly_loss_rate_bsp, assumed_loss_rate_per_year)
 
     def test_user_can_create_a_guess(self):
@@ -116,7 +116,7 @@ class GuessTestCase(TestCase):
         data = {
             "property_name": "David's older Handbag",
             "property_make": "Birkin",
-            "property_type": self.handbag_property.id,
+            "property_type": self.handbag_property.name,
             "purchase_price": bag_cost,  # $1000
             "purchase_date": purchase_date.isoformat(),
             "losses": [],
@@ -137,7 +137,7 @@ class GuessTestCase(TestCase):
         self.assertEquals(len(guesses), 1)
         self.assertEquals(len(losses), 0)
         self.assertIsNotNone(guesses[0].age_of_ownership)
-        self.assertEquals(guesses[0].property_type, self.handbag_property)
+        self.assertEquals(guesses[0].property_type.id, self.handbag_property.id)
         self.assertEquals(guesses[0].guesser, user)
 
         # make sure the user got their badge
