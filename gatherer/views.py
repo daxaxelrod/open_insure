@@ -60,11 +60,11 @@ class PropertyLifeExpectancyGuessViewSet(ModelViewSet):
                 property_object = PolicyLineProperty.objects.create(
                     **policy_line_kwargs
                 )
-                # if settings.NOTIFY_ADMINS_OF_EVENTS:
-                send_notif_email_to_admins(
-                    title="new '{property_type}' property type",
-                    description=f"New property type created: {property_type}, Heres the link: {url_to_edit_object(property_object)}",
-                )
+                if settings.NOTIFY_ADMINS_OF_EVENTS:
+                    send_notif_email_to_admins(
+                        title=f"new '{property_type}' property type",
+                        description=f"New property type created: {property_type}, Heres the link: {url_to_edit_object(property_object)}",
+                    )
             kwargs["property_type"] = property_object
 
         guess = serializer.save(user=self.request.user, **kwargs)

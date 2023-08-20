@@ -73,6 +73,9 @@ class PropertyLifeExpectancyGuess(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.property_type} ${self.purchase_price} loss rate: {self.yearly_loss_rate_bsp} bsp/year"
+
 
 class PropertyLifeLossGuess(models.Model):
     loss_date = models.DateTimeField(null=True, blank=True)
