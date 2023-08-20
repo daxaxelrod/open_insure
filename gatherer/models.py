@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -78,7 +79,7 @@ class PropertyLifeExpectancyGuess(models.Model):
 
 
 class PropertyLifeLossGuess(models.Model):
-    loss_date = models.DateTimeField(null=True, blank=True)
+    loss_date = models.DateTimeField()
     loss_months_into_ownership = models.IntegerField(null=True, blank=True)
     loss_percent = models.IntegerField(
         null=True,
@@ -87,7 +88,13 @@ class PropertyLifeLossGuess(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(10000)],
     )
     loss_amount = models.IntegerField(help_text="The cost of the loss in cents")
-    loss_reason = models.CharField(max_length=255, choices=LOSS_REASON_CHOICES)
+    loss_reason = models.CharField(max_length=1024)
+    category = models.CharField(
+        max_length=255, choices=LOSS_REASON_CHOICES, null=True, blank=True
+    )
     guess = models.ForeignKey(
         PropertyLifeExpectancyGuess, on_delete=models.CASCADE, related_name="losses"
     )
+
+    def __str__(self) -> str:
+        return f"${self.loss_amount} of {self.guess.property_type} lost on {self.loss_date}"

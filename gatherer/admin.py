@@ -58,12 +58,7 @@ class PropertyLineAdmin(admin.ModelAdmin):
 
 
 class LossAdmin(admin.ModelAdmin):
-    list_display = (
-        "loss_date",
-        "loss_months_into_ownership",
-        "loss_percent",
-        "loss_amount",
-    )
+    list_display = ("__str__",)
 
 
 admin.site.register(PolicyLineProperty, PropertyLineAdmin)

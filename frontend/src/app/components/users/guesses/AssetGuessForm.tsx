@@ -18,6 +18,7 @@ import LossForm, { LossType } from "./steps/LossForm";
 import AssetGuessFormHeader from "./AssetGuessFormHeader";
 import ReactGA from "react-ga4";
 import { isLoggedIn } from "axios-jwt";
+import { Dayjs } from "dayjs";
 
 export default function AssetGuessForm({
     setAtSecondStep,
@@ -56,7 +57,6 @@ export default function AssetGuessForm({
             "losses", // page 3
         ]);
 
-        debugger;
         if (!property_type) {
             api.error({
                 message: "Please select a property type (first page)",
@@ -79,7 +79,7 @@ export default function AssetGuessForm({
                 losses: has_had_losses
                     ? losses.map((loss: LossType) => ({
                           ...loss,
-                          date: loss.date.toDate(),
+                          date: (loss.loss_date as unknown as Dayjs).toDate(),
                       }))
                     : [],
                 property_make,

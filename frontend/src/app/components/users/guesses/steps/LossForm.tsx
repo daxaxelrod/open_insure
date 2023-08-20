@@ -1,17 +1,25 @@
 import React from "react";
-import { Button, DatePicker, Form, Input, Row, Space, Typography } from "antd";
+import {
+    Button,
+    DatePicker,
+    Form,
+    Input,
+    InputNumber,
+    Row,
+    Space,
+    Typography,
+} from "antd";
 import { useWizard } from "react-use-wizard";
 import { PlusOutlined } from "@ant-design/icons";
 import colors from "../../../../constants/colors";
 import dayjs, { Dayjs } from "dayjs";
+import { LossDataPoint } from "../../../../../redux/reducers/commonTypes";
 
 const { Title, Paragraph } = Typography;
 
-export type LossType = {
-    date: Dayjs;
-    cost: string;
-    description?: string;
-};
+export interface LossType extends LossDataPoint {
+    loss_date: string;
+}
 
 export default function LossForm() {
     const { previousStep } = useWizard();
@@ -21,7 +29,8 @@ export default function LossForm() {
     const reportedOriginalPurchaseDate = form.getFieldValue("purchase_date");
 
     const hasAtLeastOneLossFilledOut = losses.some(
-        (loss: LossType) => loss.date && loss.cost
+        (loss: LossType) =>
+            loss.loss_date && loss.loss_amount && loss.loss_reason
     );
     const handleSubmit = async () => {
         if (losses.length === 0) {
@@ -48,9 +57,9 @@ export default function LossForm() {
                 name="losses"
                 initialValue={[
                     {
-                        date: "",
-                        cost: "",
-                        description: "",
+                        loss_date: "",
+                        loss_amount: "",
+                        loss_reason: "",
                     },
                 ]}
             >
@@ -111,7 +120,7 @@ const LossRow = ({ key, name, reportedOriginalPurchaseDate }: any) => {
             }}
         >
             <Form.Item
-                name={[name, "date"]}
+                name={[name, "loss_date"]}
                 label="Date"
                 rules={[{ required: true, message: "When did this happen" }]}
             >
@@ -127,14 +136,28 @@ const LossRow = ({ key, name, reportedOriginalPurchaseDate }: any) => {
                 />
             </Form.Item>
             <Form.Item
-                name={[name, "cost"]}
+                name={[name, "loss_amount"]}
                 label="Amount"
                 rules={[{ required: true, message: "How much did it cost?" }]}
             >
-                <Input placeholder="Cost" prefix="$" />
+                <InputNumber placeholder="Cost" prefix="$" step={10} />
             </Form.Item>
-            <Form.Item name={[name, "description"]} label="Description">
-                <Input.TextArea placeholder="Water damage" />
+            <Form.Item
+                name={[name, "loss_reason"]}
+                label="Description"
+                rules={[
+                    {
+                        required: true,
+                        message: "Add a short description of what happened",
+                    },
+                    {
+                        pattern: /^.{0,1000}$/s,
+                        message:
+                            "Descriptions should be less than 1000 characters",
+                    },
+                ]}
+            >
+                <Input.TextArea placeholder="Water damage" maxLength={1024} />
             </Form.Item>
         </Space>
     );
