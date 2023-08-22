@@ -20,7 +20,9 @@ def z_score_from_confidence(confidence):
 
 def calculate_summary_statistics(data):
     data_array = np.array(data)
+    data_array = data_array[data_array != None]
 
+    count = len(data_array)
     mean = np.mean(data_array)
     median = np.median(data_array)
     std_dev = np.std(data_array)
@@ -43,6 +45,7 @@ def calculate_summary_statistics(data):
     )
 
     summary = {
+        "count": count,
         "mean": mean,
         "median": median,
         "standard_deviation": std_dev,
@@ -88,6 +91,8 @@ def generate_summary_stats_for_policy_line(
             total_loss_amount += loss.loss_amount
 
         average_age_of_loss = np.mean(loss_days)
+        if np.isnan(average_age_of_loss):
+            average_age_of_loss = 0.0
         total_value_lost = total_loss_amount
 
         loss_cost_by_loss_count_by_avg_age.append(

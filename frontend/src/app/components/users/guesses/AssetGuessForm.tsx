@@ -9,7 +9,11 @@ import { Wizard } from "react-use-wizard";
 import { AnimatePresence } from "framer-motion";
 import { Col, Form, Row, Spin, notification } from "antd";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { getAvailablePolicyLines } from "../../../../redux/actions/guesses";
+import {
+    getActuarialStatsForPolicyLine,
+    getAvailablePolicyLines,
+    setHighlightedContribution,
+} from "../../../../redux/actions/guesses";
 import { public_submitActuaryGuess } from "../../../../networking/guesses";
 import AnimatedStep from "./AnimatedStep";
 import PolicyLineStep from "./steps/PolicyLineStep";
@@ -85,17 +89,22 @@ export default function AssetGuessForm({
                 property_make,
                 purchase_price,
             });
-            if (result.status < 300 && result.status >= 200) {
-                console.log("success", result.data);
+            if (result.status >= 200 && result.status < 300) {
                 ReactGA.event({
                     category: "Contribute",
                     action: "Submit an asset datapoint",
                 });
 
                 dispatch(setHighlightedContribution(result.data));
-                dispatch(
-                    getActuarialStatsForPolicyLine(result.data.policy_line)
-                );
+                if (result.data.property_line.id) {
+                    dispatch(
+                        getActuarialStatsForPolicyLine(
+                            result.data.property_line.id
+                        )
+                    );
+                } else {
+                    // should never happen
+                }
 
                 if (!loggedIn) {
                     console.log(

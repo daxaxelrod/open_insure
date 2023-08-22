@@ -52,9 +52,17 @@ def merge_property_lines(modeladmin, request, queryset):
 
 
 class PropertyLineAdmin(admin.ModelAdmin):
-    list_display = ("name", "description", "search_tags", "created_at")
+    list_display = (
+        "name",
+        "num_contributions",
+        "description",
+        "search_tags",
+    )
     actions = [merge_property_lines]
     view_on_site = True
+
+    def num_contributions(self, obj):
+        return obj.guesses.count()
 
 
 class LossAdmin(admin.ModelAdmin):
