@@ -1,6 +1,8 @@
 import React from "react";
-import { Typography, Card } from "antd";
+import { Typography, Card, Row, Col } from "antd";
 import { useAppSelector } from "../../../../../redux/hooks";
+import GlassOverlay from "../../../common/GlassOverlay";
+import { PolicyLineStats } from "../../../../../redux/reducers/types/actuaryTypes";
 const { Title, Paragraph } = Typography;
 
 export default function PolicyLineStats({
@@ -10,7 +12,17 @@ export default function PolicyLineStats({
 }) {
     // const { guess } = useAppSelector((state) => state.actuary.guess);
 
-    const hasContributed = false;
+    const activeGuess = useAppSelector(
+        (state) => state.actuary.activePropertyLifeDatePoint
+    );
+    const stats: PolicyLineStats = useAppSelector(
+        (state) => state.actuary.activePolicyLineStats
+    );
+    const getStatsPending = useAppSelector(
+        (state) => state.actuary.getPolicyLineStatsPending
+    );
+
+    const hasContributed = !!activeGuess;
 
     return (
         <div
@@ -20,30 +32,41 @@ export default function PolicyLineStats({
                 height: "100%",
             }}
         >
+            <GlassOverlay
+                blur={hasContributed || true ? 0 : isOnSecondStep ? 4 : 9}
+            />
+
             <div
                 style={{
-                    backgroundImage: `url(https://placekitten.com/200/300)`,
-                    backgroundSize: "contain",
-                    filter: `blur(${
-                        hasContributed ? 0 : isOnSecondStep ? 4 : 16
-                    }px)`,
-                    height: "100%",
-                    width: "100%",
-                }}
-            ></div>
-            <div
-                style={{
-                    position: "absolute",
-                    height: "100%",
-                    width: "100%",
+                    flex: 1,
                     display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    zIndex: 1,
                 }}
             >
-                <Card style={{ marginBottom: 20, height: 90 }}>
-                    <Title level={2}>Fill out the form to see data</Title>
-                </Card>
+                <SignifiganceThermometer
+                    count={stats.actuary_details.count}
+                    requiredCount={stats.actuary_details.count * 2 || 10}
+                />
+                <Row>
+                    <Col span={12}>
+                        <PolicyStatsHeadlineNumbers stats={stats} />
+                    </Col>
+                    <Col span={12}>
+                        <LossByCountByAgeInteractiveChart
+                            data={
+                                stats.actuary_details
+                                    .loss_cost_by_loss_count_by_avg_age
+                            }
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24}>
+                        <LossRateBoxAndWiskersChart
+                            data={stats.actuary_details.loss_rate_summary}
+                        />
+                    </Col>
+                </Row>
             </div>
         </div>
     );

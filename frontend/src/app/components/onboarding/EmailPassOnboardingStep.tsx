@@ -23,7 +23,7 @@ export default function EmailPassOnboardingStep({
 
     handleStep(() => {
         // when we have multiple steps, this will just be a patch to the user
-        alert("Going to step 2");
+        // alert("Going to step 2");
     });
 
     const isRegisterPending = useAppSelector(

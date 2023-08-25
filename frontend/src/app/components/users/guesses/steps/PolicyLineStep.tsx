@@ -50,9 +50,7 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
 
     handleStep(() => {
         setAtSecondStep(true);
-        console.log("going to step 2");
 
-        debugger;
         let policyLine = allPolicyLines.find(
             (policyLine: PolicyLine) =>
                 policyLine.name === form.getFieldValue("property_type")

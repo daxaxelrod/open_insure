@@ -29,10 +29,6 @@ export default function Contribute() {
                     lg={{
                         span: 13,
                     }}
-                    style={{
-                        backgroundColor: "white",
-                        padding: 24,
-                    }}
                 >
                     <PolicyLineStats isOnSecondStep={atSecondStep} />
                 </Col>
