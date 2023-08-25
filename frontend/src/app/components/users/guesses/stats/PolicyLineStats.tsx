@@ -7,6 +7,7 @@ import SignifiganceThermometer from "./SignifiganceThermometer";
 import PolicyStatsHeadlineNumbers from "./PolicyStatsHeadlineNumbers";
 import LossByCountByAgeInteractiveChart from "./LossByCountByAgeInteractiveChart";
 import LossRateBoxAndWiskersChart from "./LossRateBoxAndWiskersChart";
+import ManufacturerHistogram from "./ManufacturerHistogram";
 
 export default function PolicyLineStats({
     isOnSecondStep,
@@ -72,11 +73,16 @@ export default function PolicyLineStats({
                             </Col>
                         </Row>
                         <Row>
-                            <Col span={24}>
+                            <Col span={16}>
                                 <LossRateBoxAndWiskersChart
                                     data={
                                         stats.actuary_details.loss_rate_summary
                                     }
+                                />
+                            </Col>
+                            <Col span={8}>
+                                <ManufacturerHistogram
+                                    data={stats.actuary_details.manufacturers}
                                 />
                             </Col>
                         </Row>

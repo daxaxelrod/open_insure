@@ -34,6 +34,7 @@ export interface PropertyLifeDatePoint {
 
 export interface SummaryStats {
     count: number;
+    sum: number;
     mean: number;
     median: number;
     standard_deviation: number;
@@ -46,7 +47,7 @@ export interface SummaryStats {
     confidence_interval: [number, number];
 }
 
-interface Manufacturers {
+export interface Manufacturers {
     bins: string[];
     counts: number[];
     raw: string[];

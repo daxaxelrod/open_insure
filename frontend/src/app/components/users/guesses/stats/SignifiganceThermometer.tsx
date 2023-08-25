@@ -71,8 +71,6 @@ export default function SignifiganceThermometer({
                 }}
                 trailColor="#f3f3f3"
             />
-
-            <span className="percent">{percent}%</span>
         </div>
     );
 }

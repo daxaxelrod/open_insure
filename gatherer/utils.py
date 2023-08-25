@@ -46,6 +46,7 @@ def calculate_summary_statistics(data):
 
     summary = {
         "count": count,
+        "sum": sum(data_array),
         "mean": mean,
         "median": median,
         "standard_deviation": std_dev,
