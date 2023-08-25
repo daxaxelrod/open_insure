@@ -32,7 +32,7 @@ export interface PropertyLifeDatePoint {
     losses: LossDataPoint[];
 }
 
-interface SummaryStats {
+export interface SummaryStats {
     count: number;
     mean: number;
     median: number;
@@ -52,13 +52,13 @@ interface Manufacturers {
     raw: string[];
 }
 
-interface LossCostByAge {
+export interface LossCostByAge {
     loss_count: number;
     average_age_of_loss: number;
     total_value_lost: number;
 }
 
-interface ActuaryDetails {
+export interface ActuaryDetails {
     count: number;
     total_asset_value: number;
     asset_value_summary: SummaryStats;
