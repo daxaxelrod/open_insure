@@ -14,6 +14,7 @@ const Overlay = styled.div<{ blur: number }>((props) => ({
     boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
     backdropFilter: `blur(${props.blur}px)`,
     border: "1px solid rgba(255, 255, 255, 0.39)",
+    pointerEvents: "none",
 }));
 
 export default function GlassOverlay({ blur = 9 }: { blur?: number }) {

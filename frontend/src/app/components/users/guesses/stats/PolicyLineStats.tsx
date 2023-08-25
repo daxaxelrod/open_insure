@@ -1,8 +1,8 @@
 import React from "react";
-import { Typography, Card, Row, Col, Spin } from "antd";
+import { Row, Col, Spin } from "antd";
 import { useAppSelector } from "../../../../../redux/hooks";
 import GlassOverlay from "../../../common/GlassOverlay";
-import { PolicyLineStats } from "../../../../../redux/reducers/types/actuaryTypes";
+import { PolicyLineStats as PolicyLineStatsType } from "../../../../../redux/reducers/types/actuaryTypes";
 import SignifiganceThermometer from "./SignifiganceThermometer";
 import PolicyStatsHeadlineNumbers from "./PolicyStatsHeadlineNumbers";
 import LossByCountByAgeInteractiveChart from "./LossByCountByAgeInteractiveChart";
@@ -18,7 +18,7 @@ export default function PolicyLineStats({
     const activeGuess = useAppSelector(
         (state) => state.actuary.activePropertyLifeDatePoint
     );
-    const stats: PolicyLineStats = useAppSelector(
+    const stats: PolicyLineStatsType = useAppSelector(
         (state) => state.actuary.activePolicyLineStats
     );
     const getStatsPending = useAppSelector(
@@ -45,7 +45,9 @@ export default function PolicyLineStats({
                         style={{
                             flex: 1,
                             display: "flex",
+                            flexDirection: "column",
                             zIndex: 1,
+                            padding: "1rem",
                         }}
                     >
                         <SignifiganceThermometer
