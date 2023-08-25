@@ -24,7 +24,7 @@ import {
     PATCH_CLAIM_APPROVAL_FAILURE,
     GET_CLAIM_COMMENTS_PENDING_OFF,
 } from "../actions/types";
-import { Claim } from "../reducers/commonTypes";
+import { Claim } from "../reducers/types/commonTypes";
 
 export const createClaim =
     (

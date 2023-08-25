@@ -1,5 +1,5 @@
 import React from "react";
-import { Policy } from "../../../redux/reducers/commonTypes";
+import { Policy } from "../../../redux/reducers/types/commonTypes";
 import type { BadgeProps } from "antd";
 import { Badge, Calendar, Typography } from "antd";
 import moment from "moment-timezone";

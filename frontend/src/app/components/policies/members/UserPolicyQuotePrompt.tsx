@@ -5,7 +5,7 @@ import { getQuote } from "../../../../redux/actions/risk";
 import { ToTopOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 
-import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
+import { Policy, Risk } from "../../../../redux/reducers/types/commonTypes";
 
 const { Title, Paragraph } = Typography;
 

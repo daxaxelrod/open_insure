@@ -1,6 +1,10 @@
 import React from "react";
 import { Typography } from "antd";
-import { Claim, Policy, User } from "../../../../redux/reducers/commonTypes";
+import {
+    Claim,
+    Policy,
+    User,
+} from "../../../../redux/reducers/types/commonTypes";
 import { maybePluralize } from "../../../utils/stringUtils";
 
 import { AlertOutlined } from "@ant-design/icons";

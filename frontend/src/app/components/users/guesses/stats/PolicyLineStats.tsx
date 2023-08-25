@@ -1,14 +1,16 @@
 import React from "react";
 import { Typography, Card } from "antd";
-import { useAppSelector } from "../../../../redux/hooks";
+import { useAppSelector } from "../../../../../redux/hooks";
 const { Title, Paragraph } = Typography;
 
-export default function AssetGuessDisplay({
+export default function PolicyLineStats({
     isOnSecondStep,
 }: {
     isOnSecondStep: boolean;
 }) {
     // const { guess } = useAppSelector((state) => state.actuary.guess);
+
+    const hasContributed = false;
 
     return (
         <div
@@ -22,7 +24,9 @@ export default function AssetGuessDisplay({
                 style={{
                     backgroundImage: `url(https://placekitten.com/200/300)`,
                     backgroundSize: "contain",
-                    filter: `blur(${isOnSecondStep ? 4 : 16}px)`,
+                    filter: `blur(${
+                        hasContributed ? 0 : isOnSecondStep ? 4 : 16
+                    }px)`,
                     height: "100%",
                     width: "100%",
                 }}

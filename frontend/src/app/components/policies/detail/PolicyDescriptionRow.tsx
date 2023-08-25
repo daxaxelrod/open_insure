@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Grid, Row, Space, Statistic, Tag, Typography } from "antd";
-import { Peril, Policy } from "../../../../redux/reducers/commonTypes";
+import { Peril, Policy } from "../../../../redux/reducers/types/commonTypes";
 import PerilGridDisplay from "./PerilGridDisplay";
 import { CalendarOutlined } from "@ant-design/icons";
 import moment from "moment-timezone";

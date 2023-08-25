@@ -8,7 +8,7 @@ import {
     GET_POLICY_PREMIUMS_SUCCESS,
     GET_POLICY_PREMIUMS_FAILURE,
 } from "../actions/types";
-import { Policy, Premium } from "./commonTypes";
+import { Policy, Premium } from "./types/commonTypes";
 
 export interface PremiumsState {
     // policyId: number -> Premium[]

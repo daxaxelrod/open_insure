@@ -1,7 +1,7 @@
 import { Row } from "antd";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { Button, Drawer, Typography } from "antd";
-import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
+import { Policy, Risk } from "../../../../redux/reducers/types/commonTypes";
 import { useAppSelector } from "../../../../redux/hooks";
 import PolicyQuoteForm from "./PolicyQuoteForm";
 

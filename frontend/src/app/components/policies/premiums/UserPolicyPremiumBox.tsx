@@ -1,7 +1,7 @@
 import { Card, Grid, Skeleton } from "antd";
 import React from "react";
 import { useAppSelector } from "../../../../redux/hooks";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import ProspectiveMemberPrompt from "../members/ProspectiveMemberPrompt";
 import UserMainPremiumObligation from "../members/UserMainPremiumObligation";
 import UserPolicyQuotePrompt from "../members/UserPolicyQuotePrompt";

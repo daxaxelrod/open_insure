@@ -11,7 +11,7 @@ import {
 } from "antd";
 import { patchPolicy } from "../../../../redux/actions/policies";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import colors from "../../../constants/colors";
 
 const { Paragraph } = Typography;

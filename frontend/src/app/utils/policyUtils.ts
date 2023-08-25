@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import { Policy, Premium, User } from "../../redux/reducers/commonTypes";
+import { Policy, Premium, User } from "../../redux/reducers/types/commonTypes";
 
 export function getCoverageTypeHumanReadable(coverageType: string): string {
     switch (coverageType) {

@@ -26,7 +26,7 @@ import {
     GET_QUOTE_FAILURE,
     UPDATE_RISK_ALBUM,
 } from "../actions/types";
-import { Risk, RiskSettings } from "./commonTypes";
+import { Risk, RiskSettings } from "./types/commonTypes";
 
 export interface RiskState {
     focusedRisk: Risk | null;

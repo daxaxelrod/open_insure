@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Button,
     DatePicker,
@@ -13,8 +13,7 @@ import { useWizard } from "react-use-wizard";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import colors from "../../../../constants/colors";
 import dayjs from "dayjs";
-import { LossDataPoint } from "../../../../../redux/reducers/commonTypes";
-import { color } from "framer-motion";
+import { LossDataPoint } from "../../../../../redux/reducers/types/actuaryTypes";
 
 const { Title, Paragraph } = Typography;
 
@@ -40,6 +39,19 @@ export default function LossForm() {
             await form.submit();
         }
     };
+
+    useEffect(() => {
+        const handleBeforeUnload = (e: any) => {
+            e.preventDefault();
+            e.returnValue = "Click go back if you dont want to lose your data";
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
 
     return (
         <div>

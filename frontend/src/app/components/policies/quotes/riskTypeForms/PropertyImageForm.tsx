@@ -3,7 +3,11 @@ import { Col, Row, UploadFile, UploadProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Typography, message, Upload, Modal } from "antd";
 
-import { Risk, Image, Policy } from "../../../../../redux/reducers/commonTypes";
+import {
+    Risk,
+    Image,
+    Policy,
+} from "../../../../../redux/reducers/types/commonTypes";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { getBase64 } from "../../utils/photoUtils";
 import { getAssetTypeName } from "../../../../utils/riskUtils";

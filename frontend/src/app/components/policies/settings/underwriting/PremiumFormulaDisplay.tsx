@@ -7,7 +7,7 @@ import {
     Risk,
     RiskSettings,
     User,
-} from "../../../../../redux/reducers/commonTypes";
+} from "../../../../../redux/reducers/types/commonTypes";
 import colors from "../../../../constants/colors";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { useParams } from "react-router-dom";

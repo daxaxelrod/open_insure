@@ -1,6 +1,6 @@
 import { Typography } from "antd";
 import React from "react";
-import { User } from "../../../../redux/reducers/commonTypes";
+import { User } from "../../../../redux/reducers/types/commonTypes";
 import { MailOutlined } from "@ant-design/icons";
 import colors from "../../../constants/colors";
 import moment from "moment-timezone";

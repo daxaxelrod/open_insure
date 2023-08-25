@@ -14,7 +14,7 @@ import { getPolicyPremiums } from "../../../../redux/actions/premiums";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { useParams } from "react-router-dom";
 import moment from "moment-timezone";
-import { Policy, Premium } from "../../../../redux/reducers/commonTypes";
+import { Policy, Premium } from "../../../../redux/reducers/types/commonTypes";
 
 ChartJS.register(
     CategoryScale,

@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar, Typography } from "antd";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import { UserOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import colors from "../../../constants/colors";
 const { Text } = Typography;

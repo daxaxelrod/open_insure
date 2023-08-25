@@ -6,7 +6,7 @@ import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import moment from "moment-timezone";
 import { logout } from "../../networking/auth";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { User } from "../../redux/reducers/commonTypes";
+import { User } from "../../redux/reducers/types/commonTypes";
 import UserLargeImage from "../components/users/profile/UserLargeImage";
 import { LOGOUT } from "../../redux/actions/types";
 

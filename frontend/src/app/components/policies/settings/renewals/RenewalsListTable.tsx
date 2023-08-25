@@ -9,7 +9,7 @@ import {
     Policy,
     Renewal,
     User,
-} from "../../../../../redux/reducers/commonTypes";
+} from "../../../../../redux/reducers/types/commonTypes";
 import moment from "moment-timezone";
 
 export default function RenewalsListTable({ policy }: { policy: Policy }) {

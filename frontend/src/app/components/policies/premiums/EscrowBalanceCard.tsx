@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Card, Col, Row, Typography } from "antd";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Col, Row, Typography } from "antd";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import PolicyPoolStats from "./PolicyPoolStats";
 import { useNavigate } from "react-router-dom";
 import EscrowPoolChart from "../escrow/EscrowPoolChart";

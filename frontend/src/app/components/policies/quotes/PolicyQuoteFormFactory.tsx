@@ -1,5 +1,5 @@
 import React from "react";
-import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
+import { Policy, Risk } from "../../../../redux/reducers/types/commonTypes";
 import AudioEquipmentRiskForm from "./riskTypeForms/AudioEquipmentRiskForm";
 import PhoneRiskForm from "./riskTypeForms/PhoneRiskForm";
 

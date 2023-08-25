@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Dropdown, Grid, Menu, Row } from "antd";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import { Link } from "react-router-dom";
 import Title from "./Title";
 import PolicyIcon from "./PolicyIcon";

@@ -22,7 +22,7 @@ import {
     UPDATE_RISK_ALBUM,
     CLEAR_FOCUSED_RISK,
 } from "./types";
-import { Risk } from "../reducers/commonTypes";
+import { Risk } from "../reducers/types/commonTypes";
 
 export const getRisksForPolicy =
     (policyId: number): ThunkAction<void, RootState, unknown, AnyAction> =>

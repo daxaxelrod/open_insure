@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Grid, Input, Row, Typography } from "antd";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Policy } from "../../../redux/reducers/commonTypes";
+import { Policy } from "../../../redux/reducers/types/commonTypes";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import CreatePolicyModal from "./modals/CreatePolicyModal";
 import PolicyCard from "../policies/publicCard/PolicyCard";

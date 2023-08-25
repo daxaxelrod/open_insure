@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Image, Upload, UploadProps } from "antd";
-import { User } from "../../../../redux/reducers/commonTypes";
+import { User } from "../../../../redux/reducers/types/commonTypes";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 
 import { UploadRequestOption } from "rc-upload/lib/interface";

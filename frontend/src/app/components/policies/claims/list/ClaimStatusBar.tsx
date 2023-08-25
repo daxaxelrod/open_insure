@@ -1,6 +1,6 @@
 import React from "react";
 import { Tag } from "antd";
-import { Claim } from "../../../../../redux/reducers/commonTypes";
+import { Claim } from "../../../../../redux/reducers/types/commonTypes";
 
 export default function ClaimStatusBar({
     claim,

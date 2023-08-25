@@ -12,7 +12,7 @@ import {
     Typography,
 } from "antd";
 import { SettingOutlined, EllipsisOutlined } from "@ant-design/icons";
-import { Policy, User } from "../../../redux/reducers/commonTypes";
+import { Policy, User } from "../../../redux/reducers/types/commonTypes";
 
 import moment from "moment-timezone";
 import PolicyQuoteRequestForm, {

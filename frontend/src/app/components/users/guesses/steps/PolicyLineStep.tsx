@@ -2,8 +2,9 @@ import { FC, memo, useEffect, useMemo, useState } from "react";
 import { useWizard } from "react-use-wizard";
 import styled from "styled-components";
 import { AutoComplete, Button, Form, Row, Space } from "antd";
-import { PolicyLine } from "../../../../../redux/reducers/commonTypes";
-import { useAppSelector } from "../../../../../redux/hooks";
+import { PolicyLine } from "../../../../../redux/reducers/types/actuaryTypes";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
+import { getActuarialStatsForPolicyLine } from "../../../../../redux/actions/guesses";
 
 type Props = {
     number: number;
@@ -17,8 +18,9 @@ const Container = styled("div")`
 
 const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
     const form = Form.useFormInstance();
-    const { previousStep, nextStep, isLastStep, isFirstStep, handleStep } =
-        useWizard();
+    const { nextStep, isLastStep, handleStep } = useWizard();
+
+    const dispatch = useAppDispatch();
 
     const allPolicyLines = useAppSelector((state) => state.actuary.policyLines);
     const [autoCompletePolicyLines, setAutoCompletePolicyLines] = useState<
@@ -48,6 +50,16 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
 
     handleStep(() => {
         setAtSecondStep(true);
+        console.log("going to step 2");
+
+        debugger;
+        let policyLine = allPolicyLines.find(
+            (policyLine: PolicyLine) =>
+                policyLine.name === form.getFieldValue("property_type")
+        );
+        if (policyLine) {
+            dispatch(getActuarialStatsForPolicyLine(policyLine.id));
+        }
     });
 
     const autoCompletePolicyLinesOptions = useMemo(
@@ -88,7 +100,7 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
                 <Space>
                     <Button
                         disabled={!isFormFilledOut}
-                        onClick={nextStep}
+                        onClick={() => nextStep()}
                         type={isFormFilledOut ? "primary" : "default"}
                     >
                         {isLastStep ? "Submit" : "Go Next"}

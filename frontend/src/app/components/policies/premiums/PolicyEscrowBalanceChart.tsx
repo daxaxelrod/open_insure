@@ -1,5 +1,5 @@
 import React from "react";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import { ReactComponent } from "../../../../assets/images/policy-detail/undraw_visual_data_re_mxxo.svg";
 import { Col, Row } from "antd";
 

@@ -5,7 +5,7 @@ import {
     GET_USER_DETAIL_SUCCESS,
     GET_USER_DETAIL_FAILURE,
 } from "../actions/types";
-import { User, Policy } from "./commonTypes";
+import { User, Policy } from "./types/commonTypes";
 
 export interface UIState {
     getUserDetailPending: boolean;

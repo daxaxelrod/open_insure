@@ -1,6 +1,6 @@
 import React from "react";
 import { Spin } from "antd";
-import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
+import { Policy, Risk } from "../../../../redux/reducers/types/commonTypes";
 import PolicyQuoteFormFactory from "./PolicyQuoteFormFactory";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import PolicyAssetCoverageSelection from "./PolicyAssetCoverageSelection";

@@ -5,7 +5,10 @@ import {
     patchCurrentUserClaimVote,
 } from "../../../../../redux/actions/claims";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
-import { ClaimApproval, User } from "../../../../../redux/reducers/commonTypes";
+import {
+    ClaimApproval,
+    User,
+} from "../../../../../redux/reducers/types/commonTypes";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import ClaimVoteStatus from "../list/ClaimVoteStatus";
 import { SideText, ClaimVotingBox } from "./Styled";

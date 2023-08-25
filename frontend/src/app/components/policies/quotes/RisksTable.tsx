@@ -6,7 +6,7 @@ import {
     UnderlyingInsuredType,
     Risk,
     User,
-} from "../../../../redux/reducers/commonTypes";
+} from "../../../../redux/reducers/types/commonTypes";
 import {
     MobileOutlined,
     CustomerServiceOutlined,

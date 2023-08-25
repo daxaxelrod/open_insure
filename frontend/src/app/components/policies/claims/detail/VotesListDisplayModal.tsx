@@ -1,6 +1,9 @@
 import React, { useContext } from "react";
 import { Avatar, Button, Col, Divider, Modal, Row, Typography } from "antd";
-import { ClaimApproval, User } from "../../../../../redux/reducers/commonTypes";
+import {
+    ClaimApproval,
+    User,
+} from "../../../../../redux/reducers/types/commonTypes";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import moment from "moment-timezone";

@@ -66,7 +66,6 @@ export default function DemoQuoteForm() {
             });
         }
     };
-
     const formMakeField = Form.useWatch("make", form);
 
     const marketValueValidator = (
@@ -85,6 +84,8 @@ export default function DemoQuoteForm() {
                 callback("Even a broken phone is worth at least $10!");
             } else if (value < 0) {
                 callback("The market value cannot be negative.");
+            } else if (value > 10000) {
+                callback("The market value cannot be greater than $10,000.");
             }
         } catch (error) {
             // Handle errors converting the value to a number.

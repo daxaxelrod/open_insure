@@ -18,7 +18,7 @@ import {
     Premium,
     Risk,
     User,
-} from "../../../../redux/reducers/commonTypes";
+} from "../../../../redux/reducers/types/commonTypes";
 import moment from "moment-timezone";
 import { getHumanReadablePaymentFrequencyForPolicy } from "../utils/riskUtils";
 import colors from "../../../constants/colors";

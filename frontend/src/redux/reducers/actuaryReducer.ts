@@ -5,21 +5,30 @@ import {
     GET_AVAILABLE_POLICIES_LINES_PENDING,
     GET_AVAILABLE_POLICIES_LINES_SUCCESS,
     GET_AVAILABLE_POLICIES_LINES_FAILURE,
+    GET_ACTUARIAL_STATS_FOR_POLICY_LINE_PENDING,
+    GET_ACTUARIAL_STATS_FOR_POLICY_LINE_SUCCESS,
+    GET_ACTUARIAL_STATS_FOR_POLICY_LINE_FAILURE,
 } from "../actions/types";
 import {
     PolicyLine,
-    LossDataPoint,
     PropertyLifeDatePoint,
-} from "./commonTypes";
+    PolicyLineStats,
+} from "./types/actuaryTypes";
 
 export interface ActuaryState {
     policyLines: PolicyLine[];
     getPolicyLinesPending: boolean;
+    activePropertyLifeDatePoint: PropertyLifeDatePoint | null;
+    activePolicyLineStats: PolicyLineStats | null;
+    getPolicyLineStatsPending: boolean;
 }
 
 const initialState: ActuaryState = {
     policyLines: [],
     getPolicyLinesPending: false,
+    activePropertyLifeDatePoint: null,
+    activePolicyLineStats: null,
+    getPolicyLineStatsPending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
@@ -39,6 +48,23 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 getPolicyLinesPending: false,
+            };
+        case GET_ACTUARIAL_STATS_FOR_POLICY_LINE_PENDING:
+            return {
+                ...state,
+                getPolicyLineStatsPending: false,
+            };
+        case GET_ACTUARIAL_STATS_FOR_POLICY_LINE_SUCCESS:
+            return {
+                ...state,
+                getPolicyLineStatsPending: false,
+                activePolicyLineStats: payload,
+            };
+        case GET_ACTUARIAL_STATS_FOR_POLICY_LINE_FAILURE:
+            return {
+                ...state,
+                getPolicyLineStatsPending: false,
+                activePolicyLineStats: null,
             };
 
         default:

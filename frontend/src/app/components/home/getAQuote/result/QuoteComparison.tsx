@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Button, Card, Col, Divider, Row, Tooltip, Typography } from "antd";
 import { ReloadOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import PerilGridDisplay from "../../../policies/detail/PerilGridDisplay";
-import { Peril } from "../../../../../redux/reducers/commonTypes";
+import { Peril } from "../../../../../redux/reducers/types/commonTypes";
 import colors from "../../../../constants/colors";
 import { Link } from "react-router-dom";
 

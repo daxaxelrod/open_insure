@@ -22,7 +22,7 @@ import {
     Policy,
     Risk,
     RiskSettings,
-} from "../../../../redux/reducers/commonTypes";
+} from "../../../../redux/reducers/types/commonTypes";
 import colors from "../../../constants/colors";
 import { computeHypotheticalPremiums } from "../../../../networking/risk";
 import {

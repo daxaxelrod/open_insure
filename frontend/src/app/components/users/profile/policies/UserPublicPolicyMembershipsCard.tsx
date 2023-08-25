@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { PublicProfileContext } from "../../../contexts/PublicProfileContext";
 import { Badge, Card, Table, Typography } from "antd";
-import { Policy } from "../../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../../redux/reducers/types/commonTypes";
 import type { ColumnsType } from "antd/es/table";
 
 const { Paragraph, Title } = Typography;

@@ -1,7 +1,11 @@
 import React from "react";
 import { Card, Col, Row, Typography } from "antd";
 import { Link } from "react-router-dom";
-import { Claim, Policy, User } from "../../../../../redux/reducers/commonTypes";
+import {
+    Claim,
+    Policy,
+    User,
+} from "../../../../../redux/reducers/types/commonTypes";
 import ClaimStatusBar from "./ClaimStatusBar";
 import ClaimEvidenceImages from "./ClaimEvidenceImages";
 import ClaimVoteStatus from "./ClaimVoteStatus";

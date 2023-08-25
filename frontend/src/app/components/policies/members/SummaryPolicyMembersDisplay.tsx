@@ -1,5 +1,5 @@
 import React from "react";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
 

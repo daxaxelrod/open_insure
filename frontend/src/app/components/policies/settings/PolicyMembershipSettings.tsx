@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row, Tabs, Typography } from "antd";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import InvitesList from "../members/InvitesList";
 import BoxWithTitleLine from "../../common/BoxWithTitleLine";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Typography } from "antd";
-import { Claim, User } from "../../../../../redux/reducers/commonTypes";
+import { Claim, User } from "../../../../../redux/reducers/types/commonTypes";
 import colors from "../../../../constants/colors";
 import { Link } from "react-router-dom";
 

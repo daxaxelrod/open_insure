@@ -1,4 +1,4 @@
-import { Premium } from "../redux/reducers/commonTypes";
+import { Premium } from "../redux/reducers/types/commonTypes";
 import { axiosInstance } from "./api";
 
 export interface PremiumPatchPayload extends Partial<Premium> {}

@@ -7,7 +7,7 @@ import { getClaimComments } from "../../../../../redux/actions/claims";
 import {
     ClaimComment as ClaimCommentType,
     Claim,
-} from "../../../../../redux/reducers/commonTypes";
+} from "../../../../../redux/reducers/types/commonTypes";
 import ClaimComment from "./ClaimComment";
 
 export default function ClaimCommentsList() {

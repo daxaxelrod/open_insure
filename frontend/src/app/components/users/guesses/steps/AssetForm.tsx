@@ -11,6 +11,7 @@ import {
 } from "antd";
 import { useWizard } from "react-use-wizard";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 const { Title } = Typography;
 
@@ -31,6 +32,19 @@ export default function AssetForm() {
               )
           )
         : null;
+
+    useEffect(() => {
+        const handleBeforeUnload = (e: any) => {
+            e.preventDefault();
+            e.returnValue = "Click go back if you dont want to lose your data";
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
 
     return (
         <div>
@@ -100,6 +114,9 @@ export default function AssetForm() {
                             }
                             if (toTest < 50) {
                                 return Promise.reject("$50 Minimum");
+                            }
+                            if (toTest > 20000) {
+                                return Promise.reject("$20,000 Maximum");
                             }
                             return Promise.resolve();
                         },

@@ -1,5 +1,5 @@
 import React, { KeyboardEvent, useState } from "react";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import { Button, Input, Modal, notification, Row, Typography } from "antd";
 import { inviteUserToPod } from "../../../../networking/pods";
 const { Paragraph } = Typography;

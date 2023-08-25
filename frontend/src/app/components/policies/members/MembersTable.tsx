@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Avatar, Button, Row, Table, Typography, notification } from "antd";
 
-import { Policy, User } from "../../../../redux/reducers/commonTypes";
+import { Policy, User } from "../../../../redux/reducers/types/commonTypes";
 import { CheckOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { Link } from "react-router-dom";

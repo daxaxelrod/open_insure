@@ -1,4 +1,4 @@
-import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
+import { Policy, Risk } from "../../../../redux/reducers/types/commonTypes";
 
 export function determineLowestPremium(risks: Risk[]) {
     let lowestPremium = 0;

@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
-import { Policy, Risk } from "../../../redux/reducers/commonTypes";
+import { Policy, Risk } from "../../../redux/reducers/types/commonTypes";
 import { getCoverageTypeHumanReadable } from "../../utils/policyUtils";
 import ClaimsStatusInlineDisplay from "./claims/ClaimsStatusInlineDisplay";
 import SummaryPolicyMembersDisplay from "./members/SummaryPolicyMembersDisplay";

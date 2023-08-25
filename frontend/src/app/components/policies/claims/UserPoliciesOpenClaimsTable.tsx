@@ -1,6 +1,10 @@
 import React from "react";
 import { Table, Typography } from "antd";
-import { Claim, Policy, User } from "../../../../redux/reducers/commonTypes";
+import {
+    Claim,
+    Policy,
+    User,
+} from "../../../../redux/reducers/types/commonTypes";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../../../redux/hooks";
 import type { ColumnsType } from "antd/es/table";

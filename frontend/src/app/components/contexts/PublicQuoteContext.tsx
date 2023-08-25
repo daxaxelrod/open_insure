@@ -4,7 +4,7 @@ import {
     GenericProperty,
     Risk,
     RiskSettings,
-} from "../../../redux/reducers/commonTypes";
+} from "../../../redux/reducers/types/commonTypes";
 
 export interface PublicQuoteContextType {
     quote: Risk & {

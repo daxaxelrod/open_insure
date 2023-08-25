@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import OpenInsureFooter from "../../components/home/Footer";
 import { Col, Grid, Row } from "antd";
 import AssetGuessForm from "../../components/users/guesses/AssetGuessForm";
-import AssetGuessDisplay from "../../components/users/guesses/AssetGuessDisplay";
+import PolicyLineStats from "../../components/users/guesses/stats/PolicyLineStats";
 
 export default function Contribute() {
     const screens = Grid.useBreakpoint();
@@ -34,7 +34,7 @@ export default function Contribute() {
                         padding: 24,
                     }}
                 >
-                    <AssetGuessDisplay isOnSecondStep={atSecondStep} />
+                    <PolicyLineStats isOnSecondStep={atSecondStep} />
                 </Col>
             </Row>
             <OpenInsureFooter key="footer" />
