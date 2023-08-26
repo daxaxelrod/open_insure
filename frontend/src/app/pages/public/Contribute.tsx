@@ -12,14 +12,12 @@ export default function Contribute() {
 
     return (
         <div>
-            <Row>
-                <Col
-                    md={{ span: 16 }}
-                    lg={{ span: 11 }}
-                    style={{
-                        padding: 24,
-                    }}
-                >
+            <Row
+                style={{
+                    padding: isMobile ? "1rem" : "2rem",
+                }}
+            >
+                <Col md={{ span: 16 }} lg={{ span: 11 }}>
                     <AssetGuessForm setAtSecondStep={setAtSecondStep} />
                 </Col>
                 <Col

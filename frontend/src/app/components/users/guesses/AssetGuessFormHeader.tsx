@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography } from "antd";
 import colors from "../../../constants/colors";
+
 const { Title, Paragraph } = Typography;
 
 export default function AssetGuessFormHeader() {
@@ -15,7 +16,8 @@ export default function AssetGuessFormHeader() {
             }}
         >
             <img
-                src="https://placekitten.com/200/300"
+                alt="open insure logo"
+                src={require("../../../../assets/images/logo-512.png")}
                 style={{
                     borderRadius: "50%",
                     aspectRatio: "1",
@@ -31,10 +33,18 @@ export default function AssetGuessFormHeader() {
                     fontFamily: "sans-serif",
                 }}
             >
-                Create your own insurance policy
+                Share Your Details, access curated policies
             </Title>
-            <Paragraph style={{ color: colors.gray7 }}>
-                Contribute to the community by filling out the form below
+            <Paragraph
+                style={{
+                    color: colors.gray7,
+                    textAlign: "center",
+                    padding: "0 20px",
+                }}
+            >
+                Contribute to the community by filling out the form below. Once
+                enough people have contributed, you can create self insurance
+                policies based on the data.
             </Paragraph>
         </div>
     );
