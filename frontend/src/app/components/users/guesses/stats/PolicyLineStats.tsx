@@ -58,12 +58,12 @@ export default function PolicyLineStats({
                             }
                         />
                         <Row>
-                            <Col span={12}>
+                            <Col span={8}>
                                 <PolicyStatsHeadlineNumbers
                                     data={stats.actuary_details}
                                 />
                             </Col>
-                            <Col span={12}>
+                            <Col span={16}>
                                 <LossByCountByAgeInteractiveChart
                                     data={
                                         stats.actuary_details
