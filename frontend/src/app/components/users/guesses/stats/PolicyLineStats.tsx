@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Spin, Space, Card, Empty } from "antd";
+import { Row, Col, Spin, Space, Card, Empty, Button } from "antd";
 import { useAppSelector } from "../../../../../redux/hooks";
 import GlassOverlay from "../../../common/GlassOverlay";
 import { PolicyLineStats as PolicyLineStatsType } from "../../../../../redux/reducers/types/actuaryTypes";
@@ -46,6 +46,7 @@ export default function PolicyLineStats({
                             flex: 1,
                             display: "flex",
                             flexDirection: "column",
+                            backgroundColor: "white",
 
                             zIndex: 1,
                             padding: "1.5rem 2.5rem",
@@ -109,6 +110,21 @@ export default function PolicyLineStats({
                     />
                 )}
             </Spin>
+            <div
+                style={{
+                    position: "absolute",
+                    bottom: 10,
+                    right: 10,
+                }}
+            >
+                <Button
+                    type="ghost"
+                    target="_blank"
+                    href="https://github.com/daxaxelrod/open_insure/tree/master/gatherer/utils.py"
+                >
+                    Math
+                </Button>
+            </div>
         </div>
     );
 }
