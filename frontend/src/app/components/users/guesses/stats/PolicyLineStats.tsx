@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Spin } from "antd";
+import { Row, Col, Spin, Space } from "antd";
 import { useAppSelector } from "../../../../../redux/hooks";
 import GlassOverlay from "../../../common/GlassOverlay";
 import { PolicyLineStats as PolicyLineStatsType } from "../../../../../redux/reducers/types/actuaryTypes";
@@ -8,6 +8,7 @@ import PolicyStatsHeadlineNumbers from "./PolicyStatsHeadlineNumbers";
 import LossByCountByAgeInteractiveChart from "./LossByCountByAgeInteractiveChart";
 import LossRateBoxAndWiskersChart from "./LossRateBoxAndWiskersChart";
 import ManufacturerHistogram from "./ManufacturerHistogram";
+import LossByAgeBySeverityScatterPlot from "./LossByAgeBySeverityScatterPlot";
 
 export default function PolicyLineStats({
     isOnSecondStep,
@@ -47,45 +48,55 @@ export default function PolicyLineStats({
                             flex: 1,
                             display: "flex",
                             flexDirection: "column",
+
                             zIndex: 1,
-                            padding: "1rem",
+                            padding: "1.5rem 2.5rem",
                         }}
                     >
-                        <SignifiganceThermometer
-                            count={stats.actuary_details.count}
-                            requiredCount={
-                                stats.actuary_details.count * 2 || 10
-                            }
-                        />
-                        <Row>
-                            <Col span={8}>
-                                <PolicyStatsHeadlineNumbers
-                                    data={stats.actuary_details}
-                                />
-                            </Col>
-                            <Col span={16}>
-                                <LossByCountByAgeInteractiveChart
-                                    data={
-                                        stats.actuary_details
-                                            .loss_cost_by_loss_count_by_avg_age
-                                    }
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={16}>
-                                <LossRateBoxAndWiskersChart
-                                    data={
-                                        stats.actuary_details.loss_rate_summary
-                                    }
-                                />
-                            </Col>
-                            <Col span={8}>
-                                <ManufacturerHistogram
-                                    data={stats.actuary_details.manufacturers}
-                                />
-                            </Col>
-                        </Row>
+                        <Space direction="vertical" size="large">
+                            <SignifiganceThermometer
+                                count={stats.actuary_details.count}
+                                requiredCount={
+                                    stats.actuary_details.count * 2 || 10
+                                }
+                            />
+                            <Row>
+                                <Col span={11}>
+                                    <PolicyStatsHeadlineNumbers
+                                        data={stats.actuary_details}
+                                    />
+                                    <ManufacturerHistogram
+                                        data={
+                                            stats.actuary_details.manufacturers
+                                        }
+                                    />
+                                </Col>
+                                <Col span={13}>
+                                    <LossByAgeBySeverityScatterPlot
+                                        data={
+                                            stats.actuary_details
+                                                .loss_cost_by_loss_count_by_avg_age
+                                        }
+                                    />
+                                    {/* <LossByCountByAgeInteractiveChart
+                                        data={
+                                            stats.actuary_details
+                                                .loss_cost_by_loss_count_by_avg_age
+                                        }
+                                    /> */}
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col span={16}>
+                                    <LossRateBoxAndWiskersChart
+                                        data={
+                                            stats.actuary_details
+                                                .loss_rate_summary
+                                        }
+                                    />
+                                </Col>
+                            </Row>
+                        </Space>
                     </div>
                 )}
             </Spin>

@@ -18,12 +18,29 @@ export default function PolicyStatsHeadlineNumbers({
     data: ActuaryDetails;
 }) {
     return (
-        <>
-            <Row gutter={16}>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "stretch",
+                width: "100%",
+                marginBottom: "2rem",
+                flex: 1,
+            }}
+        >
+            <Row
+                gutter={16}
+                style={{
+                    marginBottom: "2rem",
+                }}
+            >
                 <Col span={24}>
                     <Statistic
                         title="Total Contributions"
                         value={data.count}
+                        valueStyle={{
+                            fontSize: "2.5rem",
+                        }}
                         formatter={formatter}
                     />
                 </Col>
@@ -52,11 +69,10 @@ export default function PolicyStatsHeadlineNumbers({
                         title="Loss Cost"
                         value={data.loss_rate_summary.sum}
                         precision={4}
-                        suffix="%"
                         formatter={formatter}
                     />
                 </Col>
             </Row>
-        </>
+        </div>
     );
 }

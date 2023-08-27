@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
-    Billboard,
     OrbitControls,
+    OrthographicCamera,
     PerspectiveCamera,
-    PresentationControls,
     Text,
 } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
@@ -28,17 +27,7 @@ export default function LossByCountByAgeInteractiveChart({
     const farClip = Math.max(xMax, scaledYMax, scaledZMax) * 10;
 
     return (
-        <Canvas
-            orthographic
-            camera={{
-                zoom: 5,
-                position: [-zMax, 0, xMax],
-                rotation: [-Math.PI / 4, 0, 0],
-                near: nearClip,
-                far: farClip,
-            }}
-            style={{ width: "100%", height: 600 }}
-        >
+        <Canvas style={{ width: "100%", height: 600 }}>
             <ambientLight />
             <pointLight position={[10, 10, 10]} />
             {/* <axesHelper args={[]} /> */}
@@ -65,16 +54,15 @@ export default function LossByCountByAgeInteractiveChart({
                 <boxBufferGeometry args={[1, yMax, 1]} />
                 <meshStandardMaterial color="green" />
             </mesh>
-            <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
-                <Text
-                    position={[6, yMax / 2, 0]}
-                    fontSize={12}
-                    color="black"
-                    rotation={[0, 0, -Math.PI / 2]}
-                >
-                    Total Value Lost
-                </Text>
-            </Billboard>
+
+            <Text
+                position={[6, yMax / 2, 0]}
+                fontSize={12}
+                color="black"
+                rotation={[0, 0, -Math.PI / 2]}
+            >
+                Total Value Lost
+            </Text>
 
             {/* Z-axis */}
             <mesh position={[-1, -1, scaledZMax / 2]}>
@@ -105,8 +93,13 @@ export default function LossByCountByAgeInteractiveChart({
                     <meshStandardMaterial color="blue" />
                 </mesh>
             ))}
+            <OrthographicCamera
+                makeDefault
+                position={[xMax, yMax, zMax]}
+                zoom={1}
+            />
 
-            <OrbitControls />
+            <OrbitControls minDistance={3} maxDistance={yMax} />
         </Canvas>
     );
 }
