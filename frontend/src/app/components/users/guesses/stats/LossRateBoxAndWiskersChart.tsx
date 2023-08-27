@@ -1,5 +1,4 @@
 import { SummaryStats } from "../../../../../redux/reducers/types/actuaryTypes";
-import Boxplot from "react-boxplot";
 
 // https://github.com/sgratzl/chartjs-chart-boxplot
 
