@@ -35,7 +35,6 @@ const persistConfig = {
         "premiums",
         "claims",
         "users",
-        "actuary",
     ],
 };
 

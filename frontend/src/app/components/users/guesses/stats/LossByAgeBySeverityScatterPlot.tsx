@@ -24,8 +24,6 @@ export default function LossByAgeBySeverityScatterPlot({
         dataPointCounts[key] = (dataPointCounts[key] || 0) + 1;
     });
 
-    console.log("dataPointCounts", dataPointCounts);
-
     const scatterData = {
         datasets: [
             {

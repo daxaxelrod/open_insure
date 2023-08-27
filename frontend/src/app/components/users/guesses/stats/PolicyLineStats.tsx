@@ -1,12 +1,10 @@
 import React from "react";
-import { Row, Col, Spin, Space } from "antd";
+import { Row, Col, Spin, Space, Card, Empty } from "antd";
 import { useAppSelector } from "../../../../../redux/hooks";
 import GlassOverlay from "../../../common/GlassOverlay";
 import { PolicyLineStats as PolicyLineStatsType } from "../../../../../redux/reducers/types/actuaryTypes";
 import SignifiganceThermometer from "./SignifiganceThermometer";
 import PolicyStatsHeadlineNumbers from "./PolicyStatsHeadlineNumbers";
-import LossByCountByAgeInteractiveChart from "./LossByCountByAgeInteractiveChart";
-import LossRateBoxAndWiskersChart from "./LossRateBoxAndWiskersChart";
 import ManufacturerHistogram from "./ManufacturerHistogram";
 import LossByAgeBySeverityScatterPlot from "./LossByAgeBySeverityScatterPlot";
 
@@ -37,10 +35,12 @@ export default function PolicyLineStats({
                 height: "100%",
             }}
         >
-            <GlassOverlay blur={hasContributed ? 0 : isOnSecondStep ? 4 : 9} />
+            <GlassOverlay
+                blur={hasContributed || !stats ? 0 : isOnSecondStep ? 4 : 9}
+            />
 
             <Spin spinning={getStatsPending}>
-                {stats && (
+                {stats ? (
                     <div
                         style={{
                             flex: 1,
@@ -100,6 +100,13 @@ export default function PolicyLineStats({
                             {/* <UserContributionBadgesSection /> */}
                         </Space>
                     </div>
+                ) : (
+                    <Empty
+                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        description={
+                            <span>Choose a property type to get started</span>
+                        }
+                    />
                 )}
             </Spin>
         </div>

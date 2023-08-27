@@ -1,10 +1,11 @@
 import { FC, memo, useEffect, useMemo, useState } from "react";
 import { useWizard } from "react-use-wizard";
 import styled from "styled-components";
-import { AutoComplete, Button, Form, Row, Space } from "antd";
+import { AutoComplete, Button, Form, Row, Space, Tag, Typography } from "antd";
 import { PolicyLine } from "../../../../../redux/reducers/types/actuaryTypes";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { getActuarialStatsForPolicyLine } from "../../../../../redux/actions/guesses";
+const { Paragraph } = Typography;
 
 type Props = {
     number: number;
@@ -70,6 +71,14 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
     );
     const isFormFilledOut = Form.useWatch("property_type", form);
 
+    const firstThreeRandomPolicyLines = useMemo(
+        () =>
+            allPolicyLines
+                .sort(() => Math.random() - Math.random())
+                .slice(0, 3),
+        [allPolicyLines]
+    );
+
     useEffect(() => {
         setAutoCompletePolicyLines(allPolicyLines);
     }, [allPolicyLines]);
@@ -104,6 +113,36 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
                         {isLastStep ? "Submit" : "Go Next"}
                     </Button>
                 </Space>
+            </Row>
+
+            <Row
+                style={{
+                    marginTop: 10,
+                }}
+            >
+                <Paragraph
+                    style={{ marginBottom: 0, marginRight: 10 }}
+                    type="secondary"
+                >
+                    Try:
+                </Paragraph>
+                {firstThreeRandomPolicyLines.map((policyLine: PolicyLine) => {
+                    return (
+                        <Tag
+                            style={{
+                                cursor: "pointer",
+                            }}
+                            onClick={() =>
+                                form.setFieldValue(
+                                    "property_type",
+                                    policyLine.name
+                                )
+                            }
+                        >
+                            {policyLine.name}
+                        </Tag>
+                    );
+                })}
             </Row>
         </Container>
     );

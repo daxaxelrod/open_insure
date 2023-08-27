@@ -121,7 +121,12 @@ export default function SignifiganceThermometer({
             />
             <Row style={{ marginBottom: "2rem", marginTop: "1rem" }}>
                 <Col
-                    span={2}
+                    xl={3}
+                    xxl={2}
+                    lg={4}
+                    md={4}
+                    sm={4}
+                    xs={4}
                     style={{
                         display: "flex",
                         alignItems: "flex-start",
@@ -143,7 +148,7 @@ export default function SignifiganceThermometer({
                         alt="policy line icon"
                     />
                 </Col>
-                <Col span={22}>
+                <Col xl={21} xxl={22} lg={20} md={20} sm={20} xs={20}>
                     <Title style={{ marginBottom: 0, marginTop: "1rem" }}>
                         {policyLine.name}
                     </Title>
