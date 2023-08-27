@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { PublicProfileContext } from "../../../contexts/PublicProfileContext";
 import { Button, Card, Empty, Table, Typography } from "antd";
-import { Claim } from "../../../../../redux/reducers/commonTypes";
+import { Claim } from "../../../../../redux/reducers/types/commonTypes";
 import type { ColumnsType } from "antd/es/table";
 import moment from "moment-timezone";
 

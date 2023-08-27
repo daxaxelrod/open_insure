@@ -1,6 +1,6 @@
 import React from "react";
 import { Progress } from "antd";
-import { User } from "../../../../redux/reducers/commonTypes";
+import { User } from "../../../../redux/reducers/types/commonTypes";
 import colors from "../../../constants/colors";
 import { Typography } from "antd";
 

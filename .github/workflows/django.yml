@@ -24,6 +24,7 @@ env:
     EMAIL_HOST: "smtp.provider.com"
     EMAIL_PORT: 587
     FRONTEND_URL: "http://localhost:3000"
+    DESIRED_CONTRIBUTION_TO_PREMIUM_CONFIDENCE_LEVEL: 0.95
 
 jobs:
     build:

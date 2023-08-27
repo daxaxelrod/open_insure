@@ -1,4 +1,4 @@
-import { RiskSettings } from "../redux/reducers/commonTypes";
+import { RiskSettings } from "../redux/reducers/types/commonTypes";
 import { axiosInstance } from "./api";
 import { PaginatedListViewParams } from "./commonTypes";
 import { objectToQueryString } from "./utils";

@@ -1,5 +1,5 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
-import { User } from "../reducers/commonTypes";
+import { User } from "../reducers/types/commonTypes";
 import { RootState } from "../store";
 import {
     UPDATE_OWN_PROFILE,

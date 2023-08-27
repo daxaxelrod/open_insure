@@ -5,7 +5,7 @@ import {
     Claim,
     ClaimApproval,
     Policy,
-} from "../../../../../redux/reducers/commonTypes";
+} from "../../../../../redux/reducers/types/commonTypes";
 import type { ColumnsType } from "antd/es/table";
 import moment, { Moment } from "moment-timezone";
 import { CheckCircleOutlined, MinusOutlined } from "@ant-design/icons";

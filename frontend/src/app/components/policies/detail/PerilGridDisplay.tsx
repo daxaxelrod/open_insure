@@ -1,5 +1,5 @@
 import React from "react";
-import { Peril } from "../../../../redux/reducers/commonTypes";
+import { Peril } from "../../../../redux/reducers/types/commonTypes";
 import {
     MehOutlined,
     AlertOutlined,

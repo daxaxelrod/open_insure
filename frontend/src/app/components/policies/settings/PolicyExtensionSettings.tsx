@@ -9,7 +9,7 @@ import {
     Space,
     Typography,
 } from "antd";
-import { Policy, Renewal } from "../../../../redux/reducers/commonTypes";
+import { Policy, Renewal } from "../../../../redux/reducers/types/commonTypes";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
     clearRenewalError,

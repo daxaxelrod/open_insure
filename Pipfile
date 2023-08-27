@@ -16,6 +16,8 @@ psycopg2-binary = "*"
 django-multiselectfield = "*"
 drf-nested-routers = "*"
 pillow = "*"
+numpy = "*"
+scipy = "*"
 
 [dev-packages]
 black = "*"

@@ -3,7 +3,7 @@ import { Breadcrumb, Col, Row, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
-import { Policy } from "../../../redux/reducers/commonTypes";
+import { Policy } from "../../../redux/reducers/types/commonTypes";
 import ClaimCreationForm from "../../components/policies/claims/detail/create/ClaimCreationForm";
 import ClaimListErrorBar from "../../components/policies/claims/detail/create/ClaimListErrorBar";
 import ClaimCreationHelp from "../../components/policies/claims/detail/create/ClaimCreationHelp";

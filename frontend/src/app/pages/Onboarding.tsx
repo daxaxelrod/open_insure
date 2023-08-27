@@ -6,7 +6,7 @@ import { Wizard } from "react-use-wizard";
 import EmailPassOnboardingStep from "../components/onboarding/EmailPassOnboardingStep";
 import { getInviteDataFromToken } from "../../networking/pods";
 import PublicInviteTokenBanner from "../components/onboarding/PublicInviteTokenBanner";
-import { InviteData } from "../../redux/reducers/commonTypes";
+import { InviteData } from "../../redux/reducers/types/commonTypes";
 
 const { Title, Paragraph } = Typography;
 

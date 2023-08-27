@@ -133,3 +133,36 @@ class WaitlistMember(models.Model):
 
     def __str__(self):
         return f"{self.email} is on the waitlist for "
+
+
+class Badge(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=200, null=True, blank=True)
+    picture = models.URLField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    owners = models.ManyToManyField(
+        User,
+        blank=True,
+        related_name="badges",
+        through="UserBadge",
+    )
+
+    def __str__(self):
+        return f"{self.name} Badge"
+
+
+class UserBadge(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    badge = models.ForeignKey(Badge, on_delete=models.CASCADE)
+    earn_event = models.CharField(max_length=150, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ("user", "badge")
+
+    def __str__(self):
+        return f"{self.user} has {self.badge}"

@@ -2,7 +2,7 @@ import { Button, Form, Input, Row, Select, Space } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../../../redux/hooks";
-import { Policy } from "../../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../../redux/reducers/types/commonTypes";
 import PropertyImageForm from "./PropertyImageForm";
 
 export default function AudioEquipmentRiskForm({

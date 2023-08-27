@@ -6,7 +6,7 @@ import {
     QuestionCircleOutlined,
 } from "@ant-design/icons";
 import { useAppSelector } from "../../../../redux/hooks";
-import { Policy, User } from "../../../../redux/reducers/commonTypes";
+import { Policy, User } from "../../../../redux/reducers/types/commonTypes";
 import { titleCase } from "../../../utils/stringUtils";
 import EscrowPoolAddressInlineDisplay from "../premiums/EscrowPoolAddressInlineDisplay";
 import colors from "../../../constants/colors";

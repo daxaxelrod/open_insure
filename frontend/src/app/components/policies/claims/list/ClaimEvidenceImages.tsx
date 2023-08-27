@@ -1,6 +1,6 @@
 import { Carousel, Empty } from "antd";
 import React from "react";
-import { Claim } from "../../../../../redux/reducers/commonTypes";
+import { Claim } from "../../../../../redux/reducers/types/commonTypes";
 
 const contentStyle: React.CSSProperties = {
     margin: 0,

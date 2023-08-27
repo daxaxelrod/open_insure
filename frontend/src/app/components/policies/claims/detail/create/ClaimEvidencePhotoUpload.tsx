@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Modal, Upload, UploadProps } from "antd";
 import { RcFile, UploadFile } from "antd/es/upload";
 import { PlusOutlined } from "@ant-design/icons";
-import { Policy } from "../../../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../../../redux/reducers/types/commonTypes";
 import { createClaimEvidence } from "../../../../../../networking/claims";
 import type { UploadRequestOption as RcCustomRequestOptions } from "rc-upload/lib/interface";
 

@@ -17,7 +17,7 @@ import { getUserPolicies } from "../../redux/actions/policies";
 import UserPoliciesList from "../components/policies/UserPoliciesList";
 import UserPolicyCalendar from "../components/policies/UserPolicyCalendar";
 import { getUserRisks } from "../../redux/actions/risk";
-import { Claim, Policy } from "../../redux/reducers/commonTypes";
+import { Claim, Policy } from "../../redux/reducers/types/commonTypes";
 
 const { Title } = Typography;
 

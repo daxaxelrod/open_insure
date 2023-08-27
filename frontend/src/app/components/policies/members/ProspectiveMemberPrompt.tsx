@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Row, Space, Statistic, Typography } from "antd";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { Policy, Risk } from "../../../../redux/reducers/commonTypes";
+import { Policy, Risk } from "../../../../redux/reducers/types/commonTypes";
 import { getHumanReadablePaymentFrequencyForPolicy } from "../utils/riskUtils";
 import Confetti, { ConfettiConfig } from "react-dom-confetti";
 import { joinPolicy } from "../../../../redux/actions/policies";

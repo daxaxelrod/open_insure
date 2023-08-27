@@ -5,7 +5,7 @@ import {
     Pod,
     Policy,
     User,
-} from "../../../redux/reducers/commonTypes";
+} from "../../../redux/reducers/types/commonTypes";
 
 export type PublicProfileContextType = {
     user: User | undefined;

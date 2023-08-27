@@ -4,7 +4,7 @@ import {
     Claim,
     ClaimApproval,
     Policy,
-} from "../../../../../redux/reducers/commonTypes";
+} from "../../../../../redux/reducers/types/commonTypes";
 import colors from "../../../../constants/colors";
 
 import "../../../../styles/dashboard/claims/ClaimVoteStatus.css";

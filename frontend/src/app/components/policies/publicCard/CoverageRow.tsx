@@ -1,7 +1,7 @@
 import { Col, Row, Typography } from "antd";
 import moment from "moment-timezone";
 import React from "react";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import { dateFormat } from "../../../constants/moment";
 import { grey } from "@ant-design/colors";
 import colors from "../../../constants/colors";

@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row, Skeleton, Statistic } from "antd";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 import {
     getGovernanceTypeHumanReadable,
     getPremiumsPaidThisMonth,

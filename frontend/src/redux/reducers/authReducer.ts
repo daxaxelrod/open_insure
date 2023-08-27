@@ -10,7 +10,7 @@ import {
     UPDATE_OWN_PROFILE,
     CLEAR_AUTH_PENDING,
 } from "../actions/types";
-import { User } from "./commonTypes";
+import { User } from "./types/commonTypes";
 
 export interface AuthState {
     currentUser?: User | any;

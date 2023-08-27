@@ -20,7 +20,7 @@ import {
     Claim,
     Policy,
     Risk,
-} from "../../../../../../redux/reducers/commonTypes";
+} from "../../../../../../redux/reducers/types/commonTypes";
 import colors from "../../../../../constants/colors";
 import ClaimEvidencePhotoUpload from "./ClaimEvidencePhotoUpload";
 import moment from "moment-timezone";

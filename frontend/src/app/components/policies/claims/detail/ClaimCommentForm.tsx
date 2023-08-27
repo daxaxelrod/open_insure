@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Row, Avatar, Form, Button, Input, Col, notification } from "antd";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
-import { User } from "../../../../../redux/reducers/commonTypes";
+import { User } from "../../../../../redux/reducers/types/commonTypes";
 import { createClaimComment } from "../../../../../redux/actions/claims";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import { getUserPhotoUrl } from "../../utils/photoUtils";

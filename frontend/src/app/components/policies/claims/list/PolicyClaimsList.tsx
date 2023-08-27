@@ -4,7 +4,7 @@ import { Button, Empty, notification, Row, Typography } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { FileAddOutlined } from "@ant-design/icons";
 import { useAppSelector } from "../../../../../redux/hooks";
-import { Claim, Policy } from "../../../../../redux/reducers/commonTypes";
+import { Claim, Policy } from "../../../../../redux/reducers/types/commonTypes";
 import PolicyClaimCard from "./PolicyClaimCard";
 
 const { Title } = Typography;

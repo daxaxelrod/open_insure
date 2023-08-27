@@ -1,4 +1,4 @@
-import { Risk } from "../../redux/reducers/commonTypes";
+import { Risk } from "../../redux/reducers/types/commonTypes";
 
 export function getAssetTypeName(risk: Risk) {
     switch (risk?.underlying_insured_type) {

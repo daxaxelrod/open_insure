@@ -3,7 +3,7 @@ import { Divider, Typography } from "antd";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
 import { ClaimDetailContext } from "../../components/contexts/ClaimDetailContext";
-import { Claim, Policy } from "../../../redux/reducers/commonTypes";
+import { Claim, Policy } from "../../../redux/reducers/types/commonTypes";
 import ClaimSteps from "../../components/policies/claims/detail/ClaimSteps";
 import ClaimMetaData from "../../components/policies/claims/detail/ClaimMetaData";
 import ClaimVotes from "../../components/policies/claims/detail/ClaimVotes";

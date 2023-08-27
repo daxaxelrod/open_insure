@@ -1,6 +1,6 @@
 import { Button, Col, DatePicker, Row, Typography } from "antd";
 import React, { useState } from "react";
-import { Policy } from "../../../../redux/reducers/commonTypes";
+import { Policy } from "../../../../redux/reducers/types/commonTypes";
 
 const { Title, Paragraph } = Typography;
 

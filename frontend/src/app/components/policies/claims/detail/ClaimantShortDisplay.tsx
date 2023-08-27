@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "antd";
-import { User } from "../../../../../redux/reducers/commonTypes";
+import { User } from "../../../../../redux/reducers/types/commonTypes";
 import colors from "../../../../constants/colors";
 import { Link } from "react-router-dom";
 import { getUserPhotoUrl } from "../../utils/photoUtils";

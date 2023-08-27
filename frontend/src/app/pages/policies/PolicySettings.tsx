@@ -4,7 +4,10 @@ import { Col, Divider, Row, Typography } from "antd";
 import PolicyUnderwritingSettings from "../../components/policies/settings/PolicyUnderwritingSettings";
 import PolicyExtensionSettings from "../../components/policies/settings/PolicyExtensionSettings";
 import PolicyMemebershipSettings from "../../components/policies/settings/PolicyMembershipSettings";
-import { Policy, RiskSettings } from "../../../redux/reducers/commonTypes";
+import {
+    Policy,
+    RiskSettings,
+} from "../../../redux/reducers/types/commonTypes";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useParams } from "react-router-dom";
 import PolicyDangerZone from "../../components/policies/settings/PolicyDangerZone";

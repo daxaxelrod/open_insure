@@ -25,7 +25,7 @@ import {
     JOIN_POLICY_FAILURE,
 } from "./types";
 import { getRisksForPolicy } from "./risk";
-import { RiskSettings } from "../reducers/commonTypes";
+import { RiskSettings } from "../reducers/types/commonTypes";
 import { setClaimsForPolicy } from "./claims";
 import { AxiosError } from "axios";
 

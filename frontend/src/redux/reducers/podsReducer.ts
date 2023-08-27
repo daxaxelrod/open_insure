@@ -7,7 +7,7 @@ import {
     CREATE_POD_FAILURE,
     GET_SINGLE_POD_SUCCESS,
 } from "../actions/types";
-import { Pod } from "./commonTypes";
+import { Pod } from "./types/commonTypes";
 
 export interface PodsState {
     pods: Pod[];

@@ -1,5 +1,5 @@
 import React from "react";
-import { InviteData } from "../../../redux/reducers/commonTypes";
+import { InviteData } from "../../../redux/reducers/types/commonTypes";
 import { Alert, Avatar } from "antd";
 import { getUserPhotoUrl } from "../policies/utils/photoUtils";
 

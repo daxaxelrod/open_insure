@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Col, Row, Statistic, Tooltip } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import { Claim, Policy } from "../../../../redux/reducers/commonTypes";
+import { Claim, Policy } from "../../../../redux/reducers/types/commonTypes";
 import colors from "../../../constants/colors";
 
 export default function PolicyClaimsBriefCard({ policy }: { policy: Policy }) {

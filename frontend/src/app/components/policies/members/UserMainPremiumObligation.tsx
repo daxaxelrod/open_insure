@@ -7,7 +7,7 @@ import {
     PodMembership,
     Policy,
     Premium,
-} from "../../../../redux/reducers/commonTypes";
+} from "../../../../redux/reducers/types/commonTypes";
 import colors from "../../../constants/colors";
 import { ConditionalWrapper } from "../../../utils/componentUtils";
 

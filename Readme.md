@@ -1,8 +1,8 @@
 ## Open insure
 
-Take control of your insurance
+A platform that enables you to organize and manage your own self insurance policies and manage claims against them.
 
--   setup group insurance for you and your friends
+-   Set up group insurance for you and your friends
 -   Browse and pick group insurance policies that are right for you
 -   100% of unused premiums get returned to you at the end of the period
 -   Manage claims against your policies with a direct democracy, opt for "jury duty" or elect representatives to manage on your behalf

@@ -24,7 +24,7 @@ import {
     GET_RENEWALS_FAILURE,
     CLEAR_RENEWAL_ERROR,
 } from "../actions/types";
-import { Policy, Renewal } from "./commonTypes";
+import { Policy, Renewal } from "./types/commonTypes";
 
 export interface PoliciesState {
     publicPolicies: Policy[];

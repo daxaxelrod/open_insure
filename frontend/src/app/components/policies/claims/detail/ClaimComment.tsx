@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Avatar, Col, Row, Typography } from "antd";
 import moment from "moment-timezone";
-import { ClaimComment as ClaimCommentType } from "../../../../../redux/reducers/commonTypes";
+import { ClaimComment as ClaimCommentType } from "../../../../../redux/reducers/types/commonTypes";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { ClaimDetailContext } from "../../../contexts/ClaimDetailContext";
 import styled from "styled-components";

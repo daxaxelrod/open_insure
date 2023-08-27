@@ -1,5 +1,5 @@
 import React from "react";
-import { CoverageTypes } from "../../../../redux/reducers/commonTypes";
+import { CoverageTypes } from "../../../../redux/reducers/types/commonTypes";
 import { ReactComponent as modern_design } from "../../../../assets/images/policy-icons/undraw_modern_design_re_dlp8.svg";
 import { ReactComponent as apartment_rent } from "../../../../assets/images/policy-icons/undraw_apartment_rent_o-0-ut.svg";
 import { ReactComponent as around_the_world } from "../../../../assets/images/policy-icons/undraw_around_the_world_re_rb1p.svg";
