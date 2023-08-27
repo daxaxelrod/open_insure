@@ -55,9 +55,12 @@ export default function PolicyLineStats({
                     >
                         <Space direction="vertical" size="large">
                             <SignifiganceThermometer
+                                policyLine={stats}
                                 count={stats.actuary_details.count}
                                 requiredCount={
-                                    stats.actuary_details.count * 2 || 10
+                                    stats.actuary_details.loss_rate_summary
+                                        .required_count_for_desired_confidence ||
+                                    10
                                 }
                             />
                             <Row>
@@ -86,7 +89,7 @@ export default function PolicyLineStats({
                                     /> */}
                                 </Col>
                             </Row>
-                            <Row>
+                            {/* <Row>
                                 <Col span={16}>
                                     <LossRateBoxAndWiskersChart
                                         data={
@@ -95,7 +98,7 @@ export default function PolicyLineStats({
                                         }
                                     />
                                 </Col>
-                            </Row>
+                            </Row> */}
                         </Space>
                     </div>
                 )}

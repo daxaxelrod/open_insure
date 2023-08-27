@@ -36,10 +36,12 @@ export default function PolicyStatsHeadlineNumbers({
             >
                 <Col span={24}>
                     <Statistic
-                        title="Total Contributions"
-                        value={data.count}
+                        title="Average Loss Ratio"
+                        value={data.loss_rate_summary.mean / 100}
+                        precision={4}
+                        suffix="%"
                         valueStyle={{
-                            fontSize: "2.5rem",
+                            fontSize: "1.75rem",
                         }}
                         formatter={formatter}
                     />
@@ -49,7 +51,7 @@ export default function PolicyStatsHeadlineNumbers({
                 <Col span={8}>
                     <Statistic
                         title="Total Asset value"
-                        value={data.total_asset_value}
+                        value={Math.round(data.total_asset_value)}
                         precision={2}
                         prefix="$"
                         formatter={formatter}
@@ -57,10 +59,9 @@ export default function PolicyStatsHeadlineNumbers({
                 </Col>
                 <Col span={8}>
                     <Statistic
-                        title="Average Loss Ratio"
-                        value={data.loss_rate_summary.mean / 100}
-                        precision={4}
-                        suffix="%"
+                        title="Average Asset Value"
+                        value={Math.round(data.asset_value_summary.mean)}
+                        prefix="$"
                         formatter={formatter}
                     />
                 </Col>

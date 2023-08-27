@@ -45,6 +45,8 @@ export interface SummaryStats {
     "75th_percentile": number;
     z_scores: number[];
     confidence_interval: [number, number];
+    required_count_for_desired_confidence: number;
+    desired_confidence: number;
 }
 
 export interface Manufacturers {
@@ -61,6 +63,7 @@ export interface LossCostByAge {
 
 export interface ActuaryDetails {
     count: number;
+
     total_asset_value: number;
     asset_value_summary: SummaryStats;
     loss_rate_summary: SummaryStats;

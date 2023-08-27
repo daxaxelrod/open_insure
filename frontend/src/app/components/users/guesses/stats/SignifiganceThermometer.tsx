@@ -1,6 +1,11 @@
 import React from "react";
-import { Progress } from "antd";
+import { Typography, Col, Progress, Row } from "antd";
+
 import styled from "styled-components";
+import { PolicyLine } from "../../../../../redux/reducers/types/actuaryTypes";
+import colors from "../../../../constants/colors";
+
+const { Title, Paragraph } = Typography;
 
 const Marker = styled.div<{ complete?: boolean }>(({ complete }) => ({
     height: "40px",
@@ -26,14 +31,16 @@ const MarkersContainer = styled.div({
     justifyContent: "space-between",
     width: "100%",
     position: "absolute",
-    top: 8,
+    top: 14,
     zIndex: 2,
 });
 
 export default function SignifiganceThermometer({
+    policyLine,
     count,
     requiredCount,
 }: {
+    policyLine: PolicyLine;
     count: number;
     requiredCount: number;
 }) {
@@ -60,7 +67,6 @@ export default function SignifiganceThermometer({
                     );
                 })}
             </MarkersContainer>
-
             <Progress
                 strokeWidth={18}
                 percent={percent}
@@ -71,6 +77,44 @@ export default function SignifiganceThermometer({
                 }}
                 trailColor="#f3f3f3"
             />
+            <Row style={{ marginBottom: "2rem", marginTop: "1rem" }}>
+                <Col
+                    span={2}
+                    style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        justifyContent: "center",
+                    }}
+                >
+                    <img
+                        src={
+                            policyLine.image_url ||
+                            require("../../../../../assets/images/logo-512.png")
+                        }
+                        style={{
+                            marginTop: 4,
+                            height: 70,
+                            width: 70,
+                            borderRadius: 40,
+                            border: `1px solid ${colors.gray6}`,
+                        }}
+                        alt="policy line icon"
+                    />
+                </Col>
+                <Col span={22}>
+                    <Title style={{ marginBottom: 0, marginTop: "1rem" }}>
+                        {policyLine.name}
+                    </Title>
+                    <Title level={4}>
+                        Thanks for your submission. {count} of {requiredCount}{" "}
+                        contributions
+                    </Title>
+                    <Paragraph>
+                        Once we have {requiredCount}, you will be able to create
+                        a self insurance policy.
+                    </Paragraph>
+                </Col>
+            </Row>
         </div>
     );
 }

@@ -29,7 +29,7 @@ export default function LossByAgeBySeverityScatterPlot({
     const scatterData = {
         datasets: [
             {
-                label: "Loss Costs by Age",
+                label: "Repair/Replacement Cost by Age ",
                 data: data.map((item) => ({
                     x: item.average_age_of_loss,
                     y: item.total_value_lost,
@@ -79,8 +79,7 @@ export default function LossByAgeBySeverityScatterPlot({
 
                         if (!dataPoint) return "";
                         return `Age: ${dataPoint.x} days, Value Lost: $${
-                            dataPoint.yLoss Cost
-
+                            dataPoint.y
                         }, Occurrences: ${
                             dataPointCounts[`${dataPoint.x}_${dataPoint.y}`] ||
                             1

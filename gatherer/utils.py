@@ -3,16 +3,13 @@ import typing
 from functools import reduce
 
 import scipy
-from gatherer.models import PropertyLifeExpectancyGuess, PolicyLineProperty
+from gatherer.models import PropertyLifeExpectancyGuess
 import numpy as np
 from django.conf import settings
 
 
 def z_score_from_confidence(confidence):
     z_score = 0
-
-    # Calculate the z-score for the desired confidence level.
-
     z_score = scipy.stats.norm.ppf(1 - (1 - confidence) / 2)
 
     return z_score
@@ -39,6 +36,10 @@ def calculate_summary_statistics(data):
     desired_confidence = settings.DESIRED_CONTRIBUTION_TO_PREMIUM_CONFIDENCE_LEVEL
     desired_z_score = z_score_from_confidence(desired_confidence)
 
+    required_count_for_desired_confidence = int(
+        np.ceil((desired_z_score * std_dev / (desired_confidence * mean)) ** 2)
+    )
+
     confidence_interval = (
         mean - desired_z_score * std_dev / np.sqrt(len(data_array)),
         mean + desired_z_score * std_dev / np.sqrt(len(data_array)),
@@ -57,6 +58,8 @@ def calculate_summary_statistics(data):
         "75th_percentile": quantile_75,
         "z_scores": z_scores,
         "confidence_interval": confidence_interval,
+        "required_count_for_desired_confidence": required_count_for_desired_confidence,
+        "desired_confidence": desired_confidence,
     }
 
     return summary
