@@ -12,7 +12,7 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import {
     getActuarialStatsForPolicyLine,
     getAvailablePolicyLines,
-    setHighlightedContribution,
+    setActivePropertyLifeDatePoint,
 } from "../../../../redux/actions/guesses";
 import { public_submitActuaryGuess } from "../../../../networking/guesses";
 import AnimatedStep from "./AnimatedStep";
@@ -95,7 +95,7 @@ export default function AssetGuessForm({
                     action: "Submit an asset datapoint",
                 });
 
-                dispatch(setHighlightedContribution(result.data));
+                dispatch(setActivePropertyLifeDatePoint(result.data));
                 if (result.data.property_line.id) {
                     dispatch(
                         getActuarialStatsForPolicyLine(

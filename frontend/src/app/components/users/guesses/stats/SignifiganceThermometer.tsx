@@ -1,9 +1,20 @@
 import React from "react";
-import { Typography, Col, Progress, Row } from "antd";
+import {
+    Typography,
+    Col,
+    Progress,
+    Row,
+    Button,
+    Space,
+    notification,
+} from "antd";
 
 import styled from "styled-components";
 import { PolicyLine } from "../../../../../redux/reducers/types/actuaryTypes";
 import colors from "../../../../constants/colors";
+import { Link } from "react-router-dom";
+import { UploadOutlined } from "@ant-design/icons";
+import ReactGA from "react-ga4";
 
 const { Title, Paragraph } = Typography;
 
@@ -44,11 +55,42 @@ export default function SignifiganceThermometer({
     count: number;
     requiredCount: number;
 }) {
+    const [api, contextHolder] = notification.useNotification();
     const percent = Math.min(100, Math.round((count / requiredCount) * 100));
     const quartiles = [25, 50, 75];
 
+    const renderRequiredCount = () => {
+        if (count < requiredCount) {
+            return `${count} of ${requiredCount} contributions`;
+        } else {
+            return "Every contribution makes premiums more accurate.";
+        }
+    };
+
+    const renderDescription = () => {
+        if (count < requiredCount) {
+            return `Once we have ${requiredCount} contributions, you will be able to create a self insurance policy.`;
+        } else {
+            return `You can now create a self insurance policy with ${policyLine.name}. Share this form with your friends to help us get more data.`;
+        }
+    };
+
+    const share = () => {
+        api.success({
+            placement: "topRight",
+            message: "Link copied to clipboard",
+        });
+        navigator?.clipboard?.writeText(window.location.host);
+        ReactGA.event({
+            category: "Gathering",
+            action: "Share policy line loss form",
+            nonInteraction: false,
+        });
+    };
+
     return (
         <div className="thermometer">
+            {contextHolder}
             <MarkersContainer>
                 {quartiles.map((q) => {
                     return (
@@ -106,13 +148,28 @@ export default function SignifiganceThermometer({
                         {policyLine.name}
                     </Title>
                     <Title level={4}>
-                        Thanks for your submission. {count} of {requiredCount}{" "}
-                        contributions
+                        Thanks for your submission. {renderRequiredCount()}
                     </Title>
-                    <Paragraph>
-                        Once we have {requiredCount}, you will be able to create
-                        a self insurance policy.
-                    </Paragraph>
+                    <Paragraph>{renderDescription()}</Paragraph>
+                    <Space direction="horizontal" size="middle">
+                        {count >= requiredCount && (
+                            <Link to={`/home`} target="#">
+                                <Button type="dashed">
+                                    Protect {policyLine.name}
+                                </Button>
+                            </Link>
+                        )}
+
+                        <Button
+                            type="dashed"
+                            shape="round"
+                            onClick={share}
+                            icon={<UploadOutlined />}
+                            size={"middle"}
+                        >
+                            Share
+                        </Button>
+                    </Space>
                 </Col>
             </Row>
         </div>

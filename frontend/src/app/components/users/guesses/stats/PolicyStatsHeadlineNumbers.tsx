@@ -1,8 +1,12 @@
 import React from "react";
 import { ActuaryDetails } from "../../../../../redux/reducers/types/actuaryTypes";
 import CountUp from "react-countup";
-import { Col, Row, Statistic } from "antd";
+import { Col, Row, Statistic, Tooltip, Typography } from "antd";
 import { FormatConfig, valueType } from "antd/es/statistic/utils";
+import colors from "../../../../constants/colors";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+
+const { Paragraph } = Typography;
 
 const formatter = (value: valueType, config?: FormatConfig) => (
     <CountUp
@@ -34,9 +38,15 @@ export default function PolicyStatsHeadlineNumbers({
                     marginBottom: "2rem",
                 }}
             >
-                <Col span={24}>
+                <Col
+                    span={24}
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                    }}
+                >
                     <Statistic
-                        title="Average Loss Ratio"
+                        title="Average Loss Rate"
                         value={data.loss_rate_summary.mean / 100}
                         precision={4}
                         suffix="%"
@@ -45,6 +55,26 @@ export default function PolicyStatsHeadlineNumbers({
                         }}
                         formatter={formatter}
                     />
+                    <Tooltip
+                        color="black"
+                        placement="leftTop"
+                        title={() => (
+                            <div style={{ padding: 10 }}>
+                                For every $100 of asset value, the average
+                                damage per year costs $
+                                {(data.loss_rate_summary.mean / 100).toFixed(2)}
+                                .
+                            </div>
+                        )}
+                    >
+                        <QuestionCircleOutlined
+                            style={{
+                                color: colors.gray7,
+                                padding: "4px 10px",
+                                marginLeft: 0,
+                            }}
+                        />
+                    </Tooltip>
                 </Col>
             </Row>
             <Row>
@@ -67,11 +97,14 @@ export default function PolicyStatsHeadlineNumbers({
                 </Col>
                 <Col span={8}>
                     <Statistic
-                        title="Loss Cost"
-                        value={data.loss_rate_summary.sum}
-                        precision={4}
-                        formatter={formatter}
+                        title="Median Loss Cost"
+                        value={Math.round(data.loss_rate_summary.mean)}
+                        prefix="$"
                     />
+                    <Paragraph type="secondary">
+                        Std Dev:{" "}
+                        {Math.round(data.loss_rate_summary.standard_deviation)}
+                    </Paragraph>
                 </Col>
             </Row>
         </div>

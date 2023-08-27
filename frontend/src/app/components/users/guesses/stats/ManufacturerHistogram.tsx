@@ -47,6 +47,9 @@ export default function ManufacturerHistogram({
                     display: true,
                     text: "Count",
                 },
+                ticks: {
+                    precision: 0,
+                },
             },
             x: {
                 title: {

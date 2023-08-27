@@ -8,6 +8,7 @@ import {
     GET_ACTUARIAL_STATS_FOR_POLICY_LINE_PENDING,
     GET_ACTUARIAL_STATS_FOR_POLICY_LINE_SUCCESS,
     GET_ACTUARIAL_STATS_FOR_POLICY_LINE_FAILURE,
+    SET_ACTIVE_PROPERTY_LIFE_DATE_POINT,
 } from "../actions/types";
 import {
     PolicyLine,
@@ -65,6 +66,12 @@ export default (state = initialState, { type, payload }: AnyAction) => {
                 ...state,
                 getPolicyLineStatsPending: false,
                 activePolicyLineStats: null,
+            };
+
+        case SET_ACTIVE_PROPERTY_LIFE_DATE_POINT:
+            return {
+                ...state,
+                activePropertyLifeDatePoint: payload,
             };
 
         default:

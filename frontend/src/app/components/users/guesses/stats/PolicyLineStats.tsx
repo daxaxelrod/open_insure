@@ -37,9 +37,7 @@ export default function PolicyLineStats({
                 height: "100%",
             }}
         >
-            <GlassOverlay
-                blur={hasContributed || true ? 0 : isOnSecondStep ? 4 : 9}
-            />
+            <GlassOverlay blur={hasContributed ? 0 : isOnSecondStep ? 4 : 9} />
 
             <Spin spinning={getStatsPending}>
                 {stats && (
@@ -99,6 +97,7 @@ export default function PolicyLineStats({
                                     />
                                 </Col>
                             </Row> */}
+                            {/* <UserContributionBadgesSection /> */}
                         </Space>
                     </div>
                 )}

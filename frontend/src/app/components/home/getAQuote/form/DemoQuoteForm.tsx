@@ -53,7 +53,7 @@ export default function DemoQuoteForm() {
                 ReactGA.event({
                     category: "Landing",
                     action: "Got a quote",
-                    nonInteraction: false, // optional, true/false
+                    nonInteraction: false,
                 });
             }
             setPending(false);

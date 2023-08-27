@@ -9,9 +9,12 @@ import {
     GET_ACTUARIAL_STATS_FOR_POLICY_LINE_PENDING,
     GET_ACTUARIAL_STATS_FOR_POLICY_LINE_SUCCESS,
     GET_ACTUARIAL_STATS_FOR_POLICY_LINE_FAILURE,
-    SET_HIGHLIGHTED_CONTRIBUTION,
+    SET_ACTIVE_PROPERTY_LIFE_DATE_POINT,
 } from "../actions/types";
-import { PropertyLifeDatePoint } from "../reducers/types/actuaryTypes";
+import {
+    LossDataPoint,
+    PropertyLifeDatePoint,
+} from "../reducers/types/actuaryTypes";
 
 export const getAvailablePolicyLines =
     (): ThunkAction<void, RootState, unknown, AnyAction> =>
@@ -31,15 +34,6 @@ export const getAvailablePolicyLines =
         }
     };
 
-export const setHighlightedContribution = (
-    contribution: PropertyLifeDatePoint
-) => {
-    return {
-        type: SET_HIGHLIGHTED_CONTRIBUTION,
-        payload: contribution,
-    };
-};
-
 export const getActuarialStatsForPolicyLine =
     (policyLineId: number): ThunkAction<void, RootState, unknown, AnyAction> =>
     async (dispatch) => {
@@ -58,4 +52,15 @@ export const getActuarialStatsForPolicyLine =
                 payload: error,
             });
         }
+    };
+
+export const setActivePropertyLifeDatePoint =
+    (
+        contribution: LossDataPoint
+    ): ThunkAction<void, RootState, unknown, AnyAction> =>
+    (dispatch) => {
+        dispatch({
+            type: SET_ACTIVE_PROPERTY_LIFE_DATE_POINT,
+            payload: contribution,
+        });
     };

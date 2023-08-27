@@ -36,9 +36,12 @@ def calculate_summary_statistics(data):
     desired_confidence = settings.DESIRED_CONTRIBUTION_TO_PREMIUM_CONFIDENCE_LEVEL
     desired_z_score = z_score_from_confidence(desired_confidence)
 
-    required_count_for_desired_confidence = int(
-        np.ceil((desired_z_score * std_dev / (desired_confidence * mean)) ** 2)
-    )
+    try:
+        required_count_for_desired_confidence = int(
+            np.ceil((desired_z_score * std_dev / (desired_confidence * mean)) ** 2)
+        )
+    except (ValueError, ZeroDivisionError) as e:
+        required_count_for_desired_confidence = 100
 
     confidence_interval = (
         mean - desired_z_score * std_dev / np.sqrt(len(data_array)),
