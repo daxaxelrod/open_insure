@@ -55,6 +55,7 @@ export default function LossByAgeBySeverityScatterPlot({
                     display: true,
                     text: "Average Age of Loss in Days",
                 },
+                min: 0,
             },
             y: {
                 type: "linear",
@@ -63,6 +64,7 @@ export default function LossByAgeBySeverityScatterPlot({
                     display: true,
                     text: "Total Value Lost",
                 },
+                min: 0,
             },
         },
         plugins: {
