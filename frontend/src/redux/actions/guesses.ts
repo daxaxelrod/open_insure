@@ -56,7 +56,7 @@ export const getActuarialStatsForPolicyLine =
 
 export const setActivePropertyLifeDatePoint =
     (
-        contribution: LossDataPoint
+        contribution: LossDataPoint | null
     ): ThunkAction<void, RootState, unknown, AnyAction> =>
     (dispatch) => {
         dispatch({

@@ -11,18 +11,28 @@ import {
 } from "antd";
 import { useWizard } from "react-use-wizard";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../../../../../redux/hooks";
 
 const { Title } = Typography;
 
 export default function AssetForm() {
     const { nextStep, previousStep } = useWizard();
     const form = Form.useFormInstance();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const contribution = useAppSelector(
+        (state) => state.actuary.activePropertyLifeDatePoint
+    );
 
     const hasHadLosses = Form.useWatch("has_had_losses", form);
     const purchaseDate = Form.useWatch("purchase_date", form);
     const conditionalGoNext = () => {
-        hasHadLosses ? nextStep() : form.submit();
+        if (hasHadLosses) {
+            nextStep();
+        } else {
+            setIsSubmitting(true);
+            form.submit();
+        }
     };
 
     const monthsOld = purchaseDate
@@ -32,6 +42,12 @@ export default function AssetForm() {
               )
           )
         : null;
+
+    useEffect(() => {
+        if (contribution) {
+            setIsSubmitting(false);
+        }
+    }, [contribution]);
 
     useEffect(() => {
         const handleBeforeUnload = (e: any) => {
@@ -147,7 +163,12 @@ export default function AssetForm() {
                 <Button onClick={previousStep} type={"default"}>
                     Back
                 </Button>
-                <Button onClick={conditionalGoNext} type={"default"}>
+                <Button
+                    onClick={conditionalGoNext}
+                    loading={isSubmitting}
+                    disabled={!!contribution}
+                    type={"default"}
+                >
                     Next
                 </Button>
             </Row>

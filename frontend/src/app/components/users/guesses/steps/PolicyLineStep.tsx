@@ -4,7 +4,10 @@ import styled from "styled-components";
 import { AutoComplete, Button, Form, Row, Space, Tag, Typography } from "antd";
 import { PolicyLine } from "../../../../../redux/reducers/types/actuaryTypes";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
-import { getActuarialStatsForPolicyLine } from "../../../../../redux/actions/guesses";
+import {
+    getActuarialStatsForPolicyLine,
+    setActivePropertyLifeDatePoint,
+} from "../../../../../redux/actions/guesses";
 const { Paragraph } = Typography;
 
 type Props = {
@@ -59,6 +62,8 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
         if (policyLine) {
             dispatch(getActuarialStatsForPolicyLine(policyLine.id));
         }
+
+        dispatch(setActivePropertyLifeDatePoint(null));
     });
 
     const autoCompletePolicyLinesOptions = useMemo(
