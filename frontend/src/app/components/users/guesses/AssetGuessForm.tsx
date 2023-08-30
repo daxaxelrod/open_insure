@@ -87,7 +87,7 @@ export default function AssetGuessForm({
                       }))
                     : [],
                 property_make,
-                purchase_price,
+                purchase_price: Math.round(purchase_price),
             });
             if (result.status >= 200 && result.status < 300) {
                 ReactGA.event({

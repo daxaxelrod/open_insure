@@ -32,6 +32,9 @@ export default function AssetForm() {
         } else {
             setIsSubmitting(true);
             form.submit();
+            setTimeout(() => {
+                setIsSubmitting(false);
+            }, 5000);
         }
     };
 
