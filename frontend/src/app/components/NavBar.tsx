@@ -8,6 +8,7 @@ import {
     MenuProps,
     Dropdown,
     Space,
+    Col,
 } from "antd";
 import { Squeeze as Hamburger } from "hamburger-react";
 
@@ -61,47 +62,52 @@ export default function NavBar() {
         <Header
             className="header"
             style={{
+                paddingLeft: 0,
+                paddingRight: 0,
                 background: "#f0f2f5",
                 paddingTop: 10,
                 paddingBottom: 10,
-                paddingInline: 30,
+
                 display: "flex",
             }}
         >
             <Row align="middle" justify="space-between" style={{ flex: 1 }}>
-                {loggedIn && (
-                    <Title level={4} style={{ margin: 0 }}>
-                        &nbsp;Hi {currentUser?.first_name}
-                    </Title>
-                )}
-
-                {isMedOrBelow && loggedIn ? (
-                    <Dropdown
-                        menu={{ items }}
-                        trigger={["click"]}
-                        onOpenChange={(open: boolean) => setOpen(open)}
-                    >
-                        <Space>
-                            <Hamburger
-                                toggled={isOpen}
-                                toggle={setOpen}
-                                size={20}
-                            />
-                        </Space>
-                    </Dropdown>
-                ) : (
-                    <Link to="/">
+                <Col md={{ span: 18, offset: 0 }} lg={{ span: 12, offset: 3 }}>
+                    {loggedIn && (
                         <Title level={4} style={{ margin: 0 }}>
-                            Open Insure&nbsp;
+                            &nbsp;Hi {currentUser?.first_name}
                         </Title>
-                    </Link>
-                )}
+                    )}
 
-                {!loggedIn && (
-                    <Link to={"/login"}>
-                        <Button type="link">Login</Button>
-                    </Link>
-                )}
+                    {isMedOrBelow && loggedIn ? (
+                        <Dropdown
+                            menu={{ items }}
+                            trigger={["click"]}
+                            onOpenChange={(open: boolean) => setOpen(open)}
+                        >
+                            <Space>
+                                <Hamburger
+                                    toggled={isOpen}
+                                    toggle={setOpen}
+                                    size={20}
+                                />
+                            </Space>
+                        </Dropdown>
+                    ) : (
+                        <Link to="/">
+                            <Title level={4} style={{ margin: 0 }}>
+                                Open Insure&nbsp;
+                            </Title>
+                        </Link>
+                    )}
+                </Col>
+                <Col lg={{ span: 6 }}>
+                    {!loggedIn && (
+                        <Link to={"/join"}>
+                            <Button type="link">Register</Button>
+                        </Link>
+                    )}
+                </Col>
             </Row>
         </Header>
     );
