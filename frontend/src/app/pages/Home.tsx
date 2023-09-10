@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Banner from "../components/home/Banner";
-import Page1 from "../components/home/Page1";
+import GetAQuote from "../components/home/GetAQuote";
+import EducationalLeader from "../components/home/EducationalLeader";
 import WhyDoSelfInsurance from "../components/home/WhyDoSelfInsurance";
 import AskForEmail from "../components/home/AskForEmail";
 import HeresHowItWorks from "../components/home/HeresHowItWorks";
@@ -16,7 +16,8 @@ export default function Home() {
         <PublicQuoteProvider>
             <Layout>
                 <Layout.Content>
-                    <Banner key="banner" />
+                    <EducationalLeader />
+                    <GetAQuote key="banner" />
                     {/* <Page1 key="page1" /> */}
                     <WhyDoSelfInsurance />
 

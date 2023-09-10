@@ -9,7 +9,7 @@ import { PublicQuoteContext } from "../contexts/PublicQuoteContext";
 import QuoteComparison from "./getAQuote/result/QuoteComparison";
 
 const { Title, Paragraph } = Typography;
-const Banner = ({ className = "banner" }) => {
+const GetAQuote = ({ className = "banner" }) => {
     const { quote } = useContext(PublicQuoteContext);
     const sizes = Grid.useBreakpoint();
     const isMobile = sizes.xs || (sizes.sm && !sizes.md);
@@ -75,4 +75,4 @@ const Banner = ({ className = "banner" }) => {
     );
 };
 
-export default Banner;
+export default GetAQuote;
