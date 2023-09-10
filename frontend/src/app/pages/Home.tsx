@@ -1,14 +1,11 @@
-import React, { useState } from "react";
 import GetAQuote from "../components/home/GetAQuote";
 import EducationalLeader from "../components/home/EducationalLeader";
 import WhyDoSelfInsurance from "../components/home/WhyDoSelfInsurance";
 import AskForEmail from "../components/home/AskForEmail";
-import HeresHowItWorks from "../components/home/HeresHowItWorks";
 import Page2 from "../components/home/Page2";
 import Page3 from "../components/home/Page3";
 import Footer from "../components/home/Footer";
-import styled from "styled-components";
-import { Grid, Layout } from "antd";
+import { Layout } from "antd";
 import PublicQuoteProvider from "../components/contexts/PublicQuoteContext";
 
 export default function Home() {
