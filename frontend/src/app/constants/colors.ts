@@ -19,4 +19,6 @@ export default {
     lightGood: "#64E392",
     linkColor: "#1890ff",
     logoTeal: "#E6F7FF",
+    darkerLogoTeal: "#CDEFFF",
+    brandTeal: "#0ABAB4",
 };

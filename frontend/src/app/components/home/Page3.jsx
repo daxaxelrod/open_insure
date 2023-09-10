@@ -36,7 +36,7 @@ export default function Page3() {
                 </Col>
                 <Col
                     key={"githubExplainer"}
-                    md={{span: 11, offset: 1}}
+                    md={{ span: 11, offset: 1 }}
                     xs={24}
                     style={{
                         display: "flex",
@@ -58,8 +58,8 @@ export default function Page3() {
                             fontSize: "1.6rem",
                         }}
                     >
-                        Transparency is a core tenet of this project. Our code
-                        is open source and available on GitHub.
+                        Transparency is a core tenet of this Open Insure. Our
+                        code is open source and available on GitHub.
                     </Paragraph>
                     <a
                         href={"https://github.com/daxaxelrod/open_insure"}

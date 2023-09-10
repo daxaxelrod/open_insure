@@ -198,7 +198,7 @@ export default function DemoQuoteForm() {
 
                 <Form.Item>
                     <Button loading={pending} htmlType="submit" type="primary">
-                        Get Quote
+                        Get sample quote
                     </Button>
                 </Form.Item>
             </Form>

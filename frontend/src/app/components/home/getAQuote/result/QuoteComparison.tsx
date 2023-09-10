@@ -180,6 +180,7 @@ export default function QuoteComparison() {
                                             color: colors.gray7,
                                             padding: "3px 10px 10px 3px",
                                             marginLeft: 1,
+                                            cursor: "pointer",
                                         }}
                                     />
                                 </Tooltip>
