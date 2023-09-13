@@ -45,13 +45,17 @@ export default function WhyDoSelfInsurance() {
                 </Col>
                 <Col md={{ span: 20, offset: 4 }} lg={{ span: 7, offset: 3 }}>
                     <StyledParagraph>
-                        With localized insurance, your money stays between you
-                        and your policy group. When your policy expires, get
-                        your unused premiums back.
+                        With self insurance, your money stays between you and
+                        your policy group. You manage your premiums and
+                        adjudicate claims. When your policy expires, get your
+                        <strong> unused premiums back.</strong>
                     </StyledParagraph>
                 </Col>
             </Row>
-            <Row align="middle" style={{ marginTop: "2rem" }}>
+            <Row
+                align="middle"
+                style={{ marginTop: "2rem", paddingBottom: "1.5rem" }}
+            >
                 <Col
                     md={{ span: 18, offset: isMobile ? 4 : 0 }}
                     lg={{ span: 8, offset: isMobile ? 1 : 3 }}

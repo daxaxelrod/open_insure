@@ -37,6 +37,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
         case GET_AVAILABLE_POLICIES_LINES_PENDING:
             return {
                 ...state,
+                policyLines: [...state.policyLines.map((p) => ({ ...p }))],
                 getPolicyLinesPending: true,
             };
         case GET_AVAILABLE_POLICIES_LINES_SUCCESS:
@@ -48,6 +49,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
         case GET_AVAILABLE_POLICIES_LINES_FAILURE:
             return {
                 ...state,
+                policyLines: [],
                 getPolicyLinesPending: false,
             };
         case GET_ACTUARIAL_STATS_FOR_POLICY_LINE_PENDING:
@@ -71,6 +73,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
         case SET_ACTIVE_PROPERTY_LIFE_DATE_POINT:
             return {
                 ...state,
+                policyLines: [...state.policyLines.map((p) => ({ ...p }))],
                 activePropertyLifeDatePoint: payload,
             };
 

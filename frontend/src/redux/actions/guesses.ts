@@ -11,10 +11,7 @@ import {
     GET_ACTUARIAL_STATS_FOR_POLICY_LINE_FAILURE,
     SET_ACTIVE_PROPERTY_LIFE_DATE_POINT,
 } from "../actions/types";
-import {
-    LossDataPoint,
-    PropertyLifeDatePoint,
-} from "../reducers/types/actuaryTypes";
+import { LossDataPoint } from "../reducers/types/actuaryTypes";
 
 export const getAvailablePolicyLines =
     (): ThunkAction<void, RootState, unknown, AnyAction> =>

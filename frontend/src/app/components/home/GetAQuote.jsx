@@ -49,7 +49,7 @@ const GetAQuote = ({ className = "banner" }) => {
                             fontSize: "1.2rem",
                         }}
                     >
-                        Self insurance estimator
+                        Get a cell phone protection quote in 30 seconds
                     </Paragraph>
 
                     <DemoQuoteForm />

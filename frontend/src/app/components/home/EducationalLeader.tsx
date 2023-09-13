@@ -89,7 +89,7 @@ export default function EducationalLeader() {
                         }}
                     >
                         Open Insure let's you painlessly self-insure your
-                        personal property all on a modern web platform
+                        personal property on a modern web platform
                     </Paragraph>
                     <div
                         style={{
@@ -108,7 +108,14 @@ export default function EducationalLeader() {
                     >
                         <Col span={10}>
                             <StatsBox>
-                                <Title level={3}>34%</Title>
+                                <Title
+                                    level={3}
+                                    style={{
+                                        marginBottom: 4,
+                                    }}
+                                >
+                                    34%
+                                </Title>
                                 <Paragraph
                                     style={{
                                         fontSize: ".85rem",
@@ -122,7 +129,14 @@ export default function EducationalLeader() {
                         </Col>
                         <Col span={14}>
                             <StatsBox>
-                                <Title level={3}>2</Title>
+                                <Title
+                                    level={3}
+                                    style={{
+                                        marginBottom: 4,
+                                    }}
+                                >
+                                    2
+                                </Title>
                                 <div
                                     style={{
                                         display: "flex",
@@ -171,6 +185,18 @@ export default function EducationalLeader() {
                                                                 />
                                                             </List.Item>
                                                         )}
+                                                        header={
+                                                            <Title
+                                                                level={4}
+                                                                style={{
+                                                                    paddingLeft: 24,
+                                                                    paddingRight: 14,
+                                                                }}
+                                                            >
+                                                                Available
+                                                                Property Types
+                                                            </Title>
+                                                        }
                                                         footer={
                                                             <div>
                                                                 <List.Item
@@ -180,17 +206,17 @@ export default function EducationalLeader() {
                                                                                 "contribute"
                                                                             }
                                                                         >
-                                                                            <Button>
+                                                                            <Button type="primary">
                                                                                 Contribute
                                                                             </Button>
                                                                         </Link>,
                                                                     ]}
                                                                 >
-                                                                    <div>
+                                                                    <Paragraph>
                                                                         Want to
                                                                         add
                                                                         more?
-                                                                    </div>
+                                                                    </Paragraph>
                                                                 </List.Item>
                                                             </div>
                                                         }
@@ -202,8 +228,7 @@ export default function EducationalLeader() {
                                                 style={{
                                                     cursor: "pointer",
                                                     color: colors.gray7,
-                                                    padding:
-                                                        "3px 10px 10px 3px",
+                                                    padding: "3px 10px 0px 3px",
                                                     marginLeft: 1,
                                                 }}
                                             />
