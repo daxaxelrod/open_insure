@@ -27,13 +27,16 @@ export default function EducationalLeader() {
             }}
         >
             <Col
-                xl={{ span: 8, offset: 3 }}
-                lg={{ span: 12, offset: 2 }}
+                xxl={{ span: 10, offset: 0 }}
+                xl={{ span: 12, offset: 3 }}
+                lg={{ span: 14, offset: 2 }}
                 md={{ span: 18, offset: 3 }}
-                sm={{ span: 18, offset: 3 }}
+                sm={{ span: 18, offset: 2 }}
+                xs={{ span: 20, offset: 2 }}
                 style={{
-                    paddingRight: "2rem",
-                    ...(isMobile ? { paddingLeft: "2rem" } : {}),
+                    ...(isMobile
+                        ? { paddingLeft: "2rem" }
+                        : { paddingRight: "2rem" }),
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
@@ -241,8 +244,9 @@ export default function EducationalLeader() {
                 </div>
             </Col>
             <Col
-                xl={{ span: 12, offset: 0 }}
-                lg={{ span: 10, offset: 0 }}
+                xxl={{ span: 10, offset: 0 }}
+                xl={{ span: 9, offset: 0 }}
+                lg={{ span: 8, offset: 0 }}
                 md={{ span: 24, offset: 0 }}
                 sm={{ span: 24, offset: 0 }}
                 style={{

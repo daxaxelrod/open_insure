@@ -72,7 +72,13 @@ export default function NavBar() {
             }}
         >
             <Row align="middle" justify="space-between" style={{ flex: 1 }}>
-                <Col md={{ span: 18, offset: 0 }} lg={{ span: 12, offset: 3 }}>
+                <Col
+                    xs={{ span: 14, offset: 2 }}
+                    sm={{ span: 16, offset: 2 }}
+                    md={{ span: 18, offset: 2 }}
+                    lg={{ span: 12, offset: 3 }}
+                    xl={{ span: 10, offset: 3 }}
+                >
                     {loggedIn && (
                         <Title level={4} style={{ margin: 0 }}>
                             &nbsp;Hi {currentUser?.first_name}
@@ -101,7 +107,12 @@ export default function NavBar() {
                         </Link>
                     )}
                 </Col>
-                <Col lg={{ span: 6 }}>
+                <Col
+                    xs={{ span: 4 }}
+                    sm={{ span: 4 }}
+                    md={{ span: 4 }}
+                    lg={{ span: 6 }}
+                >
                     {!loggedIn && (
                         <Link to={"/join"}>
                             <Button type="link">Register</Button>
