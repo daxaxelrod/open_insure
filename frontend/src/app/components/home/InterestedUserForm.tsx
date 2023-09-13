@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Button, Form, Input, notification } from "antd";
+import { Button, Form, Grid, Input, notification } from "antd";
 import { joinMailingList } from "../../../networking/users";
 
 export default function InterestedUserForm() {
     const [form] = Form.useForm();
     const [api, contextHolder] = notification.useNotification();
     const [pending, setPending] = useState(false);
+    const screens = Grid.useBreakpoint();
+    const isMobile = !screens.md && (screens.sm || screens.xs);
 
     const submitForm = async () => {
         try {
@@ -63,7 +65,14 @@ export default function InterestedUserForm() {
                     />
                 </Form.Item>
                 <Form.Item>
-                    <Button htmlType="submit" type="primary" loading={pending}>
+                    <Button
+                        htmlType="submit"
+                        type="primary"
+                        loading={pending}
+                        style={{
+                            marginTop: isMobile ? 10 : 0,
+                        }}
+                    >
                         Join waitlist
                     </Button>
                 </Form.Item>

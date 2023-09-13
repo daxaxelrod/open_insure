@@ -22,11 +22,21 @@ const ImageHeading = styled(Paragraph)({
 export default function WhyDoSelfInsurance() {
     const screens = useBreakpoint();
     const isMobile = !screens.lg;
+    const isSmOrBelow = !screens.md && (screens.sm || screens.xs);
 
     return (
-        <div style={{ backgroundColor: "white" }}>
+        <div
+            style={{
+                backgroundColor: "white",
+            }}
+        >
             <Row>
-                <Col md={{ span: 12, offset: 4 }} lg={{ span: 8, offset: 3 }}>
+                <Col
+                    md={{ span: 12, offset: 4 }}
+                    lg={{ span: 8, offset: 3 }}
+                    sm={{ span: 20, offset: 2 }}
+                    xs={{ span: 20, offset: 2 }}
+                >
                     <Title
                         level={4}
                         style={{ color: colors.linkColor, marginTop: "2.4rem" }}
@@ -37,13 +47,23 @@ export default function WhyDoSelfInsurance() {
                 </Col>
             </Row>
             <Row>
-                <Col md={{ span: 20, offset: 4 }} lg={{ span: 7, offset: 3 }}>
+                <Col
+                    lg={{ span: 7, offset: 3 }}
+                    md={{ span: 20, offset: 4 }}
+                    sm={{ span: 20, offset: 2 }}
+                    xs={{ span: 20, offset: 2 }}
+                >
                     <StyledParagraph>
                         A conventional insurance company makes a profit by
                         collecting more in premiums than it pays out in claims.
                     </StyledParagraph>
                 </Col>
-                <Col md={{ span: 20, offset: 4 }} lg={{ span: 7, offset: 3 }}>
+                <Col
+                    lg={{ span: 7, offset: 3 }}
+                    md={{ span: 20, offset: 4 }}
+                    sm={{ span: 20, offset: 2 }}
+                    xs={{ span: 20, offset: 2 }}
+                >
                     <StyledParagraph>
                         With self insurance, your money stays between you and
                         your policy group. You manage your premiums and
@@ -57,8 +77,10 @@ export default function WhyDoSelfInsurance() {
                 style={{ marginTop: "2rem", paddingBottom: "1.5rem" }}
             >
                 <Col
-                    md={{ span: 18, offset: isMobile ? 4 : 0 }}
                     lg={{ span: 8, offset: isMobile ? 1 : 3 }}
+                    md={{ span: 18, offset: isMobile ? 4 : 0 }}
+                    sm={{ span: 20, offset: 2 }}
+                    xs={{ span: 23, offset: 1 }}
                 >
                     <ImageHeading>Conventional Insurance</ImageHeading>
                     <img
@@ -67,7 +89,12 @@ export default function WhyDoSelfInsurance() {
                         alt="Image one"
                     />
                 </Col>
-                <Col md={{ span: 18, offset: 4 }} lg={{ span: 8, offset: 2 }}>
+                <Col
+                    md={{ span: 18, offset: 4 }}
+                    lg={{ span: 8, offset: 2 }}
+                    sm={{ span: 20, offset: 2 }}
+                    xs={{ span: 23, offset: 1 }}
+                >
                     <ImageHeading
                         style={{
                             marginTop: isMobile ? 40 : 0,
