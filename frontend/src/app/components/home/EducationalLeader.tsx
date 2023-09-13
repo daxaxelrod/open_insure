@@ -92,7 +92,7 @@ export default function EducationalLeader() {
                             marginTop: ".5rem",
                         }}
                     >
-                        Open Insure let's you self-insure your personal property
+                        Open Insure lets you self-insure your personal property
                         on a modern web platform
                     </Paragraph>
                     <div
