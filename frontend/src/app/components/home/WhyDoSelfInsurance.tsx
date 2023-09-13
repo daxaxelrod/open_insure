@@ -49,7 +49,7 @@ export default function WhyDoSelfInsurance() {
             <Row>
                 <Col
                     lg={{ span: 7, offset: 3 }}
-                    md={{ span: 20, offset: 4 }}
+                    md={{ span: 18, offset: 4 }}
                     sm={{ span: 20, offset: 2 }}
                     xs={{ span: 20, offset: 2 }}
                 >
@@ -60,7 +60,7 @@ export default function WhyDoSelfInsurance() {
                 </Col>
                 <Col
                     lg={{ span: 7, offset: 3 }}
-                    md={{ span: 20, offset: 4 }}
+                    md={{ span: 18, offset: 4 }}
                     sm={{ span: 20, offset: 2 }}
                     xs={{ span: 20, offset: 2 }}
                 >

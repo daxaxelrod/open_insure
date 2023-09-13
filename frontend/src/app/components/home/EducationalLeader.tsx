@@ -253,6 +253,7 @@ export default function EducationalLeader() {
                 style={{
                     display: isSmOrBelow ? "none" : "flex",
                     alignItems: "center",
+                    overflow: "hidden",
                 }}
             >
                 <img
