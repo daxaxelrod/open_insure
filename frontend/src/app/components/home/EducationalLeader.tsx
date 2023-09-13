@@ -32,10 +32,10 @@ export default function EducationalLeader() {
                 lg={{ span: 14, offset: 2 }}
                 md={{ span: 18, offset: 3 }}
                 sm={{ span: 18, offset: 2 }}
-                xs={{ span: 20, offset: 2 }}
+                xs={{ span: 22, offset: 2 }}
                 style={{
                     ...(isMobile
-                        ? { paddingLeft: "2rem" }
+                        ? { paddingLeft: "0rem", paddingRight: ".25rem" }
                         : { paddingRight: "2rem" }),
                     display: "flex",
                     flexDirection: "column",
@@ -49,7 +49,7 @@ export default function EducationalLeader() {
                         style={{
                             marginBottom: 0,
                             marginTop: 24,
-                            fontSize: "5rem",
+                            fontSize: isMobile ? "4.5rem" : "5rem",
                         }}
                     >
                         Insurance should
@@ -61,7 +61,7 @@ export default function EducationalLeader() {
                     >
                         <Title
                             style={{
-                                fontSize: "5rem",
+                                fontSize: isMobile ? "4.5rem" : "5rem",
                                 marginTop: 0,
                                 marginBottom: ".75rem",
                             }}
@@ -76,8 +76,9 @@ export default function EducationalLeader() {
                                 left: 0,
                                 height: "9rem",
                                 width: 250,
-                                transform:
-                                    "rotate(10deg) translateX(85px) translateY(-10px)",
+                                transform: isMobile
+                                    ? "rotate(10deg) translateX(65px) translateY(-10px)"
+                                    : "rotate(10deg) translateX(85px) translateY(-10px)",
                             }}
                         />
                     </div>
