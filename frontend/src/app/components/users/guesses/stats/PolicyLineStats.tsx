@@ -103,6 +103,9 @@ export default function PolicyLineStats({
                     </div>
                 ) : (
                     <Empty
+                        style={{
+                            marginTop: "3rem",
+                        }}
                         image={Empty.PRESENTED_IMAGE_SIMPLE}
                         description={
                             <span>Choose a property type to get started</span>
