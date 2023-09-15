@@ -145,10 +145,23 @@ export default function DemoQuoteForm() {
                     name={"market_value"}
                     rules={[
                         { required: true, message: "Market Value required" },
-                        {
-                            type: "number",
-                            validator: marketValueValidator,
-                        },
+                        () => ({
+                            validator(rule, value) {
+                                let toTest = Number(value);
+                                if (toTest === 0) {
+                                    return Promise.resolve();
+                                }
+                                if (toTest < 10) {
+                                    return Promise.reject(
+                                        "Even a broken phone is worth at least $10!"
+                                    );
+                                }
+                                if (toTest > 20000) {
+                                    return Promise.reject("$20,000 Maximum");
+                                }
+                                return Promise.resolve();
+                            },
+                        }),
                     ]}
                 >
                     <Input type={"number"} />
