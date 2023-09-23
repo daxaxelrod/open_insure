@@ -66,7 +66,7 @@ const GetAQuote = ({ className = "banner" }) => {
                     lg={{ span: 10, offset: 0 }}
                     md={{ span: 24, offset: 0 }}
                     sm={{ span: 24, offset: 0 }}
-                    style={{}}
+                    xs={{ span: 24, offset: 0 }}
                     id={"public-demo-quote-explanation"}
                 >
                     {quote ? <QuoteComparison /> : <PerilousPhoneScene />}

@@ -12,7 +12,6 @@ import useIsTouchDevice from "../../../hooks/useIsTouchDevice";
 
 export default function PerilousPhoneScene() {
     const [interacted, setInteracted] = useState(false);
-    const isTouchDevice = useIsTouchDevice();
 
     return (
         <Canvas
@@ -20,6 +19,9 @@ export default function PerilousPhoneScene() {
                 height: "650px",
             }}
             onMouseEnter={() => {
+                if (!interacted) setInteracted(true);
+            }}
+            onTouchStartCapture={() => {
                 if (!interacted) setInteracted(true);
             }}
             camera={{ position: [0, 0, 20] }}

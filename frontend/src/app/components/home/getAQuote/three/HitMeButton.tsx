@@ -3,8 +3,11 @@ import { Html } from "@react-three/drei";
 import { motion } from "framer-motion";
 
 import colors from "../../../../constants/colors";
+import useIsTouchDevice from "../../../hooks/useIsTouchDevice";
 
 export default function HitMeButton() {
+    const isTouchScreen = useIsTouchDevice();
+
     return (
         <Html center>
             <div
@@ -26,6 +29,7 @@ export default function HitMeButton() {
                         backgroundColor: "white",
                         fontWeight: "bold",
                         fontFamily: "sans-serif",
+                        textAlign: "center",
                     }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -36,7 +40,7 @@ export default function HitMeButton() {
                         repeatType: "reverse",
                     }}
                 >
-                    Hit me!
+                    {isTouchScreen ? "Drag the hammer" : "Hit me!"}
                 </motion.div>
             </div>
         </Html>

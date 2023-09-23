@@ -62,12 +62,12 @@ export default function Hammer() {
     const smashHammer = () => {
         const hammer = hammerRef.current;
         if (hammer) {
-            let tipOfHammer = hammer.position
+            const tipOfHammer = hammer.position
                 .clone()
                 .add(new Vector3(0, Y_OFFSET + 4.1, 0));
             raycaster.set(tipOfHammer, new Vector3(0, 0, -1).normalize());
 
-            let intersections = raycaster.intersectObjects(
+            const intersections = raycaster.intersectObjects(
                 fullScene.children.filter(
                     (child) => child.name !== "contact-point"
                 )
@@ -81,24 +81,18 @@ export default function Hammer() {
                     randomAudio?.current?.playSound();
                 }, 200);
                 setTimeout(() => {
-                    tipOfHammer = hammer.position
+                    const newTipOfHammer = hammer.position
                         .clone()
                         .add(new Vector3(0, Y_OFFSET + 4.1, 0));
-                    raycaster.set(
-                        tipOfHammer,
-                        new Vector3(0, 0, -1).normalize()
-                    );
-
-                    intersections = raycaster.intersectObjects(
-                        fullScene.children.filter(
-                            (child) => child.name !== "contact-point"
-                        )
-                    );
 
                     setContactPoints((points) =>
                         points.concat(
                             intersections.map((i) =>
-                                i.point.clone().add(new Vector3(0, 0, 2))
+                                i.point
+                                    .clone()
+                                    .add(new Vector3(0, 0, 2))
+                                    .sub(tipOfHammer)
+                                    .add(newTipOfHammer)
                             )
                         )
                     );
