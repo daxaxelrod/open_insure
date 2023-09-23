@@ -24,6 +24,7 @@ export default function DemoQuoteForm() {
     const [appleOptions, setAppleOptions] =
         useState<{ value: string }[]>(appleProducts);
     const [api, contextHolder] = notification.useNotification();
+    const isMobile = window.innerWidth < 768;
 
     const onFormChange = (changedValues: any, allValues: any) => {};
 
@@ -80,7 +81,7 @@ export default function DemoQuoteForm() {
                 requiredMark={false}
             >
                 <Form.Item label="Make" name={"make"}>
-                    <Input placeholder="Apple, Samsung" autoFocus />
+                    <Input placeholder="Apple, Samsung" required />
                 </Form.Item>
                 <Form.Item label="Model">
                     {formMakeField?.toLowerCase()?.includes("apple") ? (
@@ -138,7 +139,7 @@ export default function DemoQuoteForm() {
                         }),
                     ]}
                 >
-                    <Input type={"number"} />
+                    <Input type={"number"} prefix="$" />
                 </Form.Item>
                 <Row>
                     <Col span={7}>
@@ -189,6 +190,10 @@ export default function DemoQuoteForm() {
                         htmlType="submit"
                         type="primary"
                         disabled={!!quote?.premium_amount}
+                        size={isMobile ? "large" : "middle"}
+                        style={{
+                            ...(isMobile ? { width: "100%" } : {}),
+                        }}
                     >
                         Get sample quote
                     </Button>

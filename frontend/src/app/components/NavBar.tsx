@@ -73,7 +73,7 @@ export default function NavBar() {
                 <Col
                     xs={{ span: 14, offset: 2 }}
                     sm={{ span: 14, offset: 2 }}
-                    md={{ span: 16, offset: 2 }}
+                    md={{ span: 14, offset: 2 }}
                     lg={{ span: 16, offset: 3 }}
                     xl={{ span: 15, offset: 3 }}
                 >
@@ -110,6 +110,7 @@ export default function NavBar() {
                     sm={{ span: 6 }}
                     md={{ span: 4 }}
                     lg={{ span: 4 }}
+                    style={{ textAlign: "right" }}
                 >
                     {!loggedIn && (
                         <Link to={"/join"}>

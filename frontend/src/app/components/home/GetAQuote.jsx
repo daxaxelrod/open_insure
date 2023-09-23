@@ -24,12 +24,13 @@ const GetAQuote = ({ className = "banner" }) => {
                 <Col
                     xl={{ span: 8, offset: 3 }}
                     lg={{ span: 12, offset: 2 }}
-                    md={{ span: 18, offset: 3 }}
-                    sm={{ span: 18, offset: 3 }}
+                    md={{ span: 18, offset: 2 }}
+                    sm={{ span: 20, offset: 2 }}
+                    xs={{ span: 20, offset: 2 }}
                     className={`${className}-text-wrapper`}
                     style={{
                         paddingRight: "2rem",
-                        ...(isMobile ? { paddingLeft: "2rem" } : {}),
+
                         display: "flex",
                         flexDirection: "column",
                     }}
@@ -37,9 +38,9 @@ const GetAQuote = ({ className = "banner" }) => {
                     <Title
                         style={{
                             marginBottom: "0",
-                            marginTop: isMdOrBelow ? "1rem" : "0",
+                            marginTop: isMdOrBelow ? "2rem" : "0",
                         }}
-                        level={1}
+                        level={isMdOrBelow ? 2 : 1}
                         id="public-demo-quote-form"
                     >
                         How much can you save?
@@ -65,14 +66,8 @@ const GetAQuote = ({ className = "banner" }) => {
                     lg={{ span: 10, offset: 0 }}
                     md={{ span: 24, offset: 0 }}
                     sm={{ span: 24, offset: 0 }}
-                    style={{
-                        minHeight: 650,
-                    }}
-                    id={
-                        quote && isMdOrBelow
-                            ? "public-demo-quote-explanation"
-                            : undefined
-                    }
+                    style={{}}
+                    id={"public-demo-quote-explanation"}
                 >
                     {quote ? <QuoteComparison /> : <PerilousPhoneScene />}
                 </Col>

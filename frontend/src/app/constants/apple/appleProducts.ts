@@ -48,10 +48,10 @@ export default [
         value: "Iphone 15",
     },
     {
-        value: "Iphone 14 Pro",
+        value: "Iphone 15 Pro",
     },
     {
-        value: "Iphone 14 Pro Max",
+        value: "Iphone 15 Pro Max",
     },
     {
         value: "Airpods Max",

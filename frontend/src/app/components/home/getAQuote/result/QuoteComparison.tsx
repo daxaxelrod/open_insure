@@ -48,13 +48,13 @@ export default function QuoteComparison() {
         ((quote.risk_settings.conservative_factor / 100) *
             quote.premium_amount) /
         100;
-    const hasComparison = false;
 
     const grid = Grid.useBreakpoint();
-    const isMobile = !grid.lg && !grid.xl && !grid.xxl && !grid.md;
+    const isMobile =
+        grid.lg !== undefined && !grid.lg && !grid.xl && !grid.xxl && !grid.md;
 
     useEffect(() => {
-        if (quote?.premium_amount !== undefined && isMobile) {
+        if (typeof quote?.premium_amount === "number" && isMobile) {
             const section = document.querySelector(
                 "#public-demo-quote-explanation"
             );
@@ -68,7 +68,8 @@ export default function QuoteComparison() {
     return (
         <motion.div
             style={{
-                marginTop: "3.4rem",
+                marginTop: isMobile ? "1.4rem" : "3.4rem",
+                marginBottom: isMobile ? "1.4rem" : "0",
                 width: !isMobile ? 500 : "calc(100% - 1.5rem)",
                 marginLeft: isMobile ? ".75rem" : 0,
                 marginRight: isMobile ? ".75rem" : 0,
@@ -183,7 +184,7 @@ export default function QuoteComparison() {
                                 potential refund
                                 <Tooltip
                                     color="black"
-                                    placement="rightTop"
+                                    placement={isMobile ? "bottom" : "rightTop"}
                                     overlayStyle={{
                                         minWidth: 320,
                                     }}
@@ -193,12 +194,12 @@ export default function QuoteComparison() {
                                                 Refund amount varies by policy
                                                 and depends on the cost to cover
                                                 claims during the coverage
-                                                period. Refunds are not
-                                                guaranteed. Policies with more
+                                                period. Policies with more
                                                 conservative underwriting
                                                 assumptions tend to have higher
                                                 premiums and also larger
-                                                potential refunds.
+                                                potential refunds. Refunds are
+                                                not guaranteed.
                                             </div>
                                         </div>
                                     )}
@@ -207,7 +208,7 @@ export default function QuoteComparison() {
                                         style={{
                                             color: colors.gray7,
                                             padding: "3px 10px 10px 3px",
-                                            marginLeft: 1,
+                                            marginLeft: isMobile ? 3 : 1,
                                             cursor: "pointer",
                                         }}
                                     />

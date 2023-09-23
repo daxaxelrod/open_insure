@@ -17,8 +17,10 @@ const StatsBox = styled.div({
 
 export default function EducationalLeader() {
     const sizes = Grid.useBreakpoint();
-    const isMobile = sizes.xs || (sizes.sm && !sizes.md);
-    const isSmOrBelow = (sizes.xs || sizes.sm) && !sizes.md;
+    const isMobile =
+        sizes.xs || (sizes.sm && !sizes.md) || window.innerWidth < 768;
+    const isSmOrBelow =
+        ((sizes.xs || sizes.sm) && !sizes.md) || window.innerWidth < 768;
 
     return (
         <Row
@@ -74,7 +76,7 @@ export default function EducationalLeader() {
                                 position: "absolute",
                                 top: -30,
                                 left: 0,
-                                height: "9rem",
+                                height: "9.25rem",
                                 width: 250,
                                 transform: isMobile
                                     ? "rotate(10deg) translateX(65px) translateY(-10px)"
@@ -87,9 +89,10 @@ export default function EducationalLeader() {
                     <Paragraph
                         style={{
                             fontSize: "1.25rem",
-                            color: colors.gray7,
+                            color: colors.gray8,
                             fontWeight: 400,
-                            marginTop: ".5rem",
+                            marginTop: isMobile ? "1rem" : ".5rem",
+                            paddingRight: isMobile ? "1rem" : 0,
                         }}
                     >
                         Open Insure lets you self-insure your personal property

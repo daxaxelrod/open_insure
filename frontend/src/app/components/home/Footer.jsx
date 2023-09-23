@@ -17,46 +17,48 @@ function OpenInsureFooter() {
                             span: 4,
                             offset: 6,
                         }}
-                        sm={24}
-                        xs={24}
+                        md={{ span: 4, offset: 6 }}
+                        sm={{ span: 12 }}
+                        xs={{ span: 12 }}
                     >
                         <div className="footer-center">
                             <h2>Links</h2>
-                            <div style={{ marginBottom: 5 }}>
+                            <div style={{ marginBottom: 8 }}>
                                 <Link to="/login">Login</Link>
                             </div>
-                            <div style={{ marginBottom: 5 }}>
+                            <div style={{ marginBottom: 8 }}>
                                 <Link to="/join">Sign Up</Link>
                             </div>
                         </div>
                     </Col>
 
-                    <Col lg={4} sm={24} xs={24}>
+                    <Col lg={4} md={4} sm={{ span: 12 }} xs={{ span: 12 }}>
                         <div className="footer-center">
                             <h2>API</h2>
-                            <div style={{ marginBottom: 5 }}>
+                            <div style={{ marginBottom: 8 }}>
                                 <a
                                     target="_blank"
-                                    rel="noopener"
-                                    href="https://github.com/daxaxelrod/open_insure"
+                                    rel="noopener noreferrer"
+                                    href="https://github.com/daxaxelrod/open_insure#readme"
                                 >
                                     Deployment Instructions
                                 </a>
                             </div>
-                            <div style={{ marginBottom: 5 }}>
+                            <div style={{ marginBottom: 8 }}>
                                 <a
                                     onClick={() => {
                                         api.info({
                                             placement: "bottomRight",
                                             message: "Interest noted",
-                                            description: "Will build if demand",
+                                            description:
+                                                "Will build if there is demand",
                                         });
                                     }}
                                 >
                                     API Docs
                                 </a>
                             </div>
-                            <div style={{ marginBottom: 5 }}>
+                            <div style={{ marginBottom: 15 }}>
                                 <a
                                     onClick={() => {
                                         api.info({
@@ -65,15 +67,15 @@ function OpenInsureFooter() {
                                         });
                                     }}
                                 >
-                                    Backend Location
+                                    Backend Url
                                 </a>
                             </div>
                         </div>
                     </Col>
                     <Col lg={4} sm={24} xs={24}>
                         <div className="footer-center">
-                            <h2>Do More?</h2>
-                            <div style={{ marginBottom: 5 }}>
+                            <h2>Extras</h2>
+                            <div style={{ marginBottom: 8 }}>
                                 <a
                                     onClick={() => {
                                         api.success({
@@ -88,7 +90,7 @@ function OpenInsureFooter() {
                                     Tell your friends!
                                 </a>
                             </div>
-                            <div style={{ marginBottom: 5 }}>
+                            <div style={{ marginBottom: 8 }}>
                                 <a
                                     target="_blank"
                                     href="https://github.com/daxaxelrod/open_insure"
@@ -96,7 +98,7 @@ function OpenInsureFooter() {
                                     Star on Github
                                 </a>
                             </div>
-                            <div style={{ marginBottom: 5 }}>
+                            <div style={{ marginBottom: 8 }}>
                                 <a
                                     href="https://github.com/daxaxelrod/open_insure/graphs/contributors"
                                     target={"_blank"}
