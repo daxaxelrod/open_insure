@@ -67,17 +67,15 @@ export default function NavBar() {
                 background: "#f0f2f5",
                 paddingTop: 10,
                 paddingBottom: 10,
-
-                display: "flex",
             }}
         >
-            <Row align="middle" justify="space-between" style={{ flex: 1 }}>
+            <Row align="middle">
                 <Col
                     xs={{ span: 14, offset: 2 }}
-                    sm={{ span: 16, offset: 2 }}
-                    md={{ span: 18, offset: 2 }}
-                    lg={{ span: 12, offset: 3 }}
-                    xl={{ span: 10, offset: 3 }}
+                    sm={{ span: 14, offset: 2 }}
+                    md={{ span: 16, offset: 2 }}
+                    lg={{ span: 16, offset: 3 }}
+                    xl={{ span: 15, offset: 3 }}
                 >
                     {loggedIn && (
                         <Title level={4} style={{ margin: 0 }}>
@@ -108,10 +106,10 @@ export default function NavBar() {
                     )}
                 </Col>
                 <Col
-                    xs={{ span: 4 }}
-                    sm={{ span: 4 }}
+                    xs={{ span: 6 }}
+                    sm={{ span: 6 }}
                     md={{ span: 4 }}
-                    lg={{ span: 6 }}
+                    lg={{ span: 4 }}
                 >
                     {!loggedIn && (
                         <Link to={"/join"}>
