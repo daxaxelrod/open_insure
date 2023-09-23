@@ -1,16 +1,21 @@
 // @ts-nocheck
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useGLTF, Image } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { animated, useSpring } from "@react-spring/three";
 import SpacialAudio from "../SpacialAudio";
 import { Raycaster, Vector3 } from "three";
 import ReactGA from "react-ga4";
+import useIsTouchDevice from "../../../../hooks/useIsTouchDevice";
 
 const Y_OFFSET = 5;
+const doubleClickTimout = 300;
 
 export default function Hammer() {
+    const isTouchDevice = useIsTouchDevice();
     const [clicked, setClicked] = useState(false);
+    const dblClickTimeout = useRef();
+
     const { scene } = useGLTF("hammer.glb", true, true, (model) => {});
     scene.position.set(0, Y_OFFSET, 5);
 
@@ -20,7 +25,7 @@ export default function Hammer() {
     const audioRef3 = useRef();
     const audioRef4 = useRef();
     const audioRef5 = useRef();
-    const { viewport, mouse, gl, scene: fullScene } = useThree();
+    const { viewport, pointer, gl, scene: fullScene } = useThree();
     const [contactPoints, setContactPoints] = useState([]);
 
     const raycaster = useMemo(() => new Raycaster(), []);
@@ -44,22 +49,36 @@ export default function Hammer() {
         },
     });
 
-    // Update hammer position based on mouse position
+    // Update hammer position based on pointer position
     useFrame(() => {
         const hammer = hammerRef.current;
 
         if (hammer) {
             const hammer = hammerRef.current;
             if (hammer) {
-                const { x, y } = mouse;
+                if (isTouchDevice && false) {
+                    // move hammer with touch if intersecting with hammer
+                    // console.log("intersections", intersect, pointer);
+                } else {
+                    // move hammer with mouse
 
-                hammer.position.x = x * 10;
-                hammer.position.y = y * 10 - Y_OFFSET;
+                    const { x, y } = pointer;
+
+                    hammer.position.x = x * 10;
+                    hammer.position.y = y * 10 - Y_OFFSET;
+                }
             }
         }
     });
 
-    const smashHammer = () => {
+    const clearClickTimeout = () => {
+        if (dblClickTimeout) {
+            clearTimeout(dblClickTimeout.current);
+            dblClickTimeout.current = undefined;
+        }
+    };
+
+    const smashHammer = useCallback(() => {
         const hammer = hammerRef.current;
         if (hammer) {
             const tipOfHammer = hammer.position
@@ -116,17 +135,40 @@ export default function Hammer() {
 
             setClicked(true);
         }
-    };
+    }, [fullScene?.children, raycaster]);
 
     useEffect(() => {
-        // Attach the click event listener to the canvas element
-        gl.domElement.addEventListener("click", smashHammer);
+        if (isTouchDevice) {
+            gl.domElement.addEventListener(
+                "touchstart",
+                unlockHammerIfColliding
+            );
+            gl.domElement.addEventListener("touchmove", moveHammerIfColliding);
+            gl.domElement.addEventListener("touchend", lockHammerIfColliding);
+        } else {
+            gl.domElement.addEventListener("click", smashHammer);
+        }
 
         // Clean up the event listener on component unmount
         return () => {
-            gl.domElement.removeEventListener("click", smashHammer);
+            if (isTouchDevice) {
+                gl.domElement.removeEventListener(
+                    "touchstart",
+                    unlockHammerIfColliding
+                );
+                gl.domElement.removeEventListener(
+                    "touchmove",
+                    moveHammerIfColliding
+                );
+                gl.domElement.removeEventListener(
+                    "touchend",
+                    lockHammerIfColliding
+                );
+            } else {
+                gl.domElement.removeEventListener("click", smashHammer);
+            }
         };
-    }, [gl]);
+    }, [gl, isTouchDevice, smashHammer]);
 
     return (
         <>
