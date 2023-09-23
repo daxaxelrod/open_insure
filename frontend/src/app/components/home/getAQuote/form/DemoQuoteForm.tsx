@@ -17,7 +17,7 @@ import { CheckOutlined } from "@ant-design/icons";
 import ReactGA from "react-ga4";
 
 export default function DemoQuoteForm() {
-    const { setQuote } = useContext(PublicQuoteContext);
+    const { quote, setQuote } = useContext(PublicQuoteContext);
 
     const [pending, setPending] = useState(false);
     const [form] = Form.useForm();
@@ -184,7 +184,12 @@ export default function DemoQuoteForm() {
                 </Row>
 
                 <Form.Item>
-                    <Button loading={pending} htmlType="submit" type="primary">
+                    <Button
+                        loading={pending}
+                        htmlType="submit"
+                        type="primary"
+                        disabled={!!quote?.premium_amount}
+                    >
                         Get sample quote
                     </Button>
                 </Form.Item>

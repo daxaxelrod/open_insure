@@ -54,7 +54,7 @@ export default function QuoteComparison() {
     const isMobile = !grid.lg && !grid.xl && !grid.xxl && !grid.md;
 
     useEffect(() => {
-        if (quote && isMobile) {
+        if (quote?.premium_amount !== undefined && isMobile) {
             const section = document.querySelector(
                 "#public-demo-quote-explanation"
             );
@@ -67,7 +67,6 @@ export default function QuoteComparison() {
 
     return (
         <motion.div
-            id="public-demo-quote-explanation"
             style={{
                 marginTop: "3.4rem",
                 width: !isMobile ? 500 : "calc(100% - 1.5rem)",
@@ -243,7 +242,11 @@ export default function QuoteComparison() {
                         {mockPerils.map((peril) => (
                             <Col
                                 span={12}
-                                style={{ padding: ".75rem 2rem .5rem" }}
+                                style={{
+                                    padding: isMobile
+                                        ? "1.25rem 0"
+                                        : ".75rem 2rem .5rem",
+                                }}
                                 key={`${peril.id}-mock`}
                             >
                                 <PerilGridDisplay peril={peril} />
@@ -253,11 +256,21 @@ export default function QuoteComparison() {
                     <Link
                         to="/join"
                         style={{
-                            marginLeft: "2rem",
+                            marginLeft: isMobile ? "0" : "2rem",
                         }}
                     >
-                        <Button type="primary" size="large">
-                            Learn More
+                        <Button
+                            type="primary"
+                            size="large"
+                            style={{
+                                ...(isMobile
+                                    ? {
+                                          width: "100%",
+                                      }
+                                    : {}),
+                            }}
+                        >
+                            Register to learn more
                         </Button>
                     </Link>
                 </motion.div>
@@ -267,7 +280,7 @@ export default function QuoteComparison() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{
-                        delay: isMobile ? 1.5 : 4.5,
+                        delay: isMobile ? 2.5 : 4.5,
                         duration: 1.3,
                         ease: "easeOut",
                     }}

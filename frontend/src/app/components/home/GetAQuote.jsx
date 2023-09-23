@@ -68,6 +68,11 @@ const GetAQuote = ({ className = "banner" }) => {
                     style={{
                         minHeight: 650,
                     }}
+                    id={
+                        quote && isMdOrBelow
+                            ? "public-demo-quote-explanation"
+                            : undefined
+                    }
                 >
                     {quote ? <QuoteComparison /> : <PerilousPhoneScene />}
                 </Col>
