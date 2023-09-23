@@ -52,7 +52,6 @@ export default function Hammer() {
             const hammer = hammerRef.current;
             if (hammer) {
                 const { x, y } = mouse;
-                const { width, height } = viewport;
 
                 hammer.position.x = x * 10;
                 hammer.position.y = y * 10 - Y_OFFSET;
@@ -63,12 +62,12 @@ export default function Hammer() {
     const smashHammer = () => {
         const hammer = hammerRef.current;
         if (hammer) {
-            const tipOfHammer = hammer.position
+            let tipOfHammer = hammer.position
                 .clone()
                 .add(new Vector3(0, Y_OFFSET + 4.1, 0));
             raycaster.set(tipOfHammer, new Vector3(0, 0, -1).normalize());
 
-            const intersections = raycaster.intersectObjects(
+            let intersections = raycaster.intersectObjects(
                 fullScene.children.filter(
                     (child) => child.name !== "contact-point"
                 )
@@ -82,6 +81,20 @@ export default function Hammer() {
                     randomAudio?.current?.playSound();
                 }, 200);
                 setTimeout(() => {
+                    tipOfHammer = hammer.position
+                        .clone()
+                        .add(new Vector3(0, Y_OFFSET + 4.1, 0));
+                    raycaster.set(
+                        tipOfHammer,
+                        new Vector3(0, 0, -1).normalize()
+                    );
+
+                    intersections = raycaster.intersectObjects(
+                        fullScene.children.filter(
+                            (child) => child.name !== "contact-point"
+                        )
+                    );
+
                     setContactPoints((points) =>
                         points.concat(
                             intersections.map((i) =>

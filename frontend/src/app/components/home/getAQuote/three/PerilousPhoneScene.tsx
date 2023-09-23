@@ -4,6 +4,7 @@ import ModelLoader from "./models/ModelLoader";
 import CellPhone from "./models/CellPhone";
 import Hammer from "./models/Hammer";
 import HitMeButton from "./HitMeButton";
+import useIsTouchDevice from "../../../hooks/useIsTouchDevice";
 
 // a scene with the phone at the center.
 // when you hover, a hammer appears and smashes the phone with every click.
@@ -11,6 +12,7 @@ import HitMeButton from "./HitMeButton";
 
 export default function PerilousPhoneScene() {
     const [interacted, setInteracted] = useState(false);
+    const isTouchDevice = useIsTouchDevice();
 
     return (
         <Canvas
