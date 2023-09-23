@@ -1,7 +1,16 @@
-import React, { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { PublicQuoteContext } from "../../../contexts/PublicQuoteContext";
 import { motion } from "framer-motion";
-import { Button, Card, Col, Divider, Row, Tooltip, Typography } from "antd";
+import {
+    Button,
+    Card,
+    Col,
+    Divider,
+    Grid,
+    Row,
+    Tooltip,
+    Typography,
+} from "antd";
 import { ReloadOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import PerilGridDisplay from "../../../policies/detail/PerilGridDisplay";
 import { Peril } from "../../../../../redux/reducers/types/commonTypes";
@@ -34,16 +43,36 @@ const mockPerils: Peril[] = [
 
 export default function QuoteComparison() {
     const { quote, setQuote } = useContext(PublicQuoteContext);
+
     const potentialRefundAmount =
         ((quote.risk_settings.conservative_factor / 100) *
             quote.premium_amount) /
         100;
     const hasComparison = false;
+
+    const grid = Grid.useBreakpoint();
+    const isMobile = !grid.lg && !grid.xl && !grid.xxl && !grid.md;
+
+    useEffect(() => {
+        if (quote && isMobile) {
+            const section = document.querySelector(
+                "#public-demo-quote-explanation"
+            );
+            section?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }
+    }, [isMobile, quote]);
+
     return (
         <motion.div
+            id="public-demo-quote-explanation"
             style={{
                 marginTop: "3.4rem",
-                width: 500,
+                width: !isMobile ? 500 : "calc(100% - 1.5rem)",
+                marginLeft: isMobile ? ".75rem" : 0,
+                marginRight: isMobile ? ".75rem" : 0,
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -238,7 +267,7 @@ export default function QuoteComparison() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{
-                        delay: 4.5,
+                        delay: isMobile ? 1.5 : 4.5,
                         duration: 1.3,
                         ease: "easeOut",
                     }}
@@ -253,6 +282,15 @@ export default function QuoteComparison() {
                         flex: 1,
                     }}
                     onClick={() => {
+                        if (isMobile) {
+                            const section = document.querySelector(
+                                "#public-demo-quote-form"
+                            );
+                            section?.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start",
+                            });
+                        }
                         setQuote(null);
                     }}
                 >

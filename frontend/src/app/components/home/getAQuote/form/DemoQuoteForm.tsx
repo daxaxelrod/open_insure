@@ -14,8 +14,6 @@ import appleProducts from "../../../../constants/apple/appleProducts";
 import { public_getHypotheticalQuote } from "../../../../../networking/premiums";
 import { PublicQuoteContext } from "../../../contexts/PublicQuoteContext";
 import { CheckOutlined } from "@ant-design/icons";
-import { RuleObject } from "antd/es/form";
-import { StoreValue } from "antd/es/form/interface";
 import ReactGA from "react-ga4";
 
 export default function DemoQuoteForm() {
@@ -67,30 +65,6 @@ export default function DemoQuoteForm() {
         }
     };
     const formMakeField = Form.useWatch("make", form);
-
-    const marketValueValidator = (
-        rule: RuleObject,
-        value: StoreValue,
-        callback: (error?: string) => void
-    ) => {
-        try {
-            value = Number(value);
-
-            if (value === 0) {
-                callback();
-                return;
-            }
-            if (value < 10) {
-                callback("Even a broken phone is worth at least $10!");
-            } else if (value < 0) {
-                callback("The market value cannot be negative.");
-            } else if (value > 10000) {
-                callback("The market value cannot be greater than $10,000.");
-            }
-        } catch (error) {
-            // Handle errors converting the value to a number.
-        }
-    };
 
     return (
         <>
