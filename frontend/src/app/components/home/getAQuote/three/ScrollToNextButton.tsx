@@ -12,7 +12,9 @@ export default function ScrollToNextButton({ nextId }: { nextId: string }) {
         <div
             style={{
                 position: "absolute",
-                top: 0,
+                height: 80,
+                width: 130,
+
                 bottom: 0,
                 right: 0,
                 zIndex: 16929,
@@ -27,13 +29,9 @@ export default function ScrollToNextButton({ nextId }: { nextId: string }) {
                     justifyContent: "center",
                     alignItems: "center",
 
-                    height: 100,
-                    width: 70,
+                    height: 80,
+                    width: 130,
                     marginRight: 20,
-                }}
-                onClick={(e: any) => {
-                    e.stopPropagation();
-                    console.log("touch start");
                 }}
             >
                 <motion.div
@@ -47,6 +45,9 @@ export default function ScrollToNextButton({ nextId }: { nextId: string }) {
                         fontWeight: "bold",
                         fontFamily: "sans-serif",
                         textAlign: "center",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                     }}
                     onClick={(e: any) => {
                         e.stopPropagation();
@@ -55,12 +56,8 @@ export default function ScrollToNextButton({ nextId }: { nextId: string }) {
                         });
                     }}
                     onTouchStartCapture={(e: any) => {
-                        console.log("touch start capture");
                         e.stopPropagation();
                     }}
-                    // onTouchStart={(e: any) => {
-
-                    // }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{
@@ -70,7 +67,18 @@ export default function ScrollToNextButton({ nextId }: { nextId: string }) {
                         type: "spring",
                     }}
                 >
-                    <ArrowDownOutlined style={{ fontSize: 20 }} />
+                    <Paragraph
+                        style={{
+                            margin: 0,
+                            fontSize: 12,
+                            color: colors.gray8,
+                        }}
+                    >
+                        Continue
+                    </Paragraph>
+                    <ArrowDownOutlined
+                        style={{ fontSize: 14, marginLeft: 5 }}
+                    />
                 </motion.div>
             </div>
         </div>

@@ -71,9 +71,9 @@ export default function NavBar() {
         >
             <Row align="middle">
                 <Col
-                    xs={{ span: 14, offset: 2 }}
+                    xs={{ span: 15, offset: 2 }}
                     sm={{ span: 14, offset: 2 }}
-                    md={{ span: 14, offset: 2 }}
+                    md={{ span: 15, offset: 2 }}
                     lg={{ span: 16, offset: 3 }}
                     xl={{ span: 15, offset: 3 }}
                 >
