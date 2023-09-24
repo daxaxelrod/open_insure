@@ -16,7 +16,7 @@ export default function Hammer() {
 
     const touchStartLocation = useRef();
 
-    const { scene } = useGLTF("hammer.glb", true, true, (model) => {});
+    const { scene } = useGLTF("hammer.glb", true, true);
     scene.position.set(0, Y_OFFSET, 5);
 
     const hammerRef = useRef();
@@ -25,7 +25,7 @@ export default function Hammer() {
     const audioRef3 = useRef();
     const audioRef4 = useRef();
     const audioRef5 = useRef();
-    const { viewport, pointer, gl, scene: fullScene } = useThree();
+    const { pointer, gl, scene: fullScene } = useThree();
     const [contactPoints, setContactPoints] = useState([]);
 
     const raycaster = useMemo(() => new Raycaster(), []);
@@ -35,11 +35,9 @@ export default function Hammer() {
             tension: clicked ? 300 : 800,
         },
         from: {
-            position: [0, Y_OFFSET, clicked ? 0 : 5],
             rotation: clicked ? [0, 0, 0] : [0.5, 0, 0],
         },
         to: {
-            position: [0, Y_OFFSET, clicked ? 5 : 0],
             rotation: clicked ? [0.5, 0, 0] : [0, 0, 0],
         },
         onRest: () => {
@@ -150,7 +148,7 @@ export default function Hammer() {
             Math.pow(x - startX, 2) + Math.pow(y - startY, 2)
         );
 
-        console.log("dist between start and end", dist);
+        // console.log("dist between start and end", dist);
 
         if (dist < 0.1) {
             smashHammer();
@@ -197,14 +195,7 @@ export default function Hammer() {
                 gl.domElement.removeEventListener("click", smashHammer);
             }
         };
-    }, [
-        gl,
-        isTouchDevice,
-        panHammerWithMouse,
-        registerTouchStart,
-        smashHammer,
-        smashHammerIfFingerNotMoved,
-    ]);
+    }, [gl, isTouchDevice]);
 
     return (
         <>
