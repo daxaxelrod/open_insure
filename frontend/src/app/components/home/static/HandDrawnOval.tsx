@@ -11,8 +11,8 @@ const HandDrawnOval = (props: any) => {
         >
             <defs>
                 <linearGradient id="Gradient1">
-                    <stop offset="0%" stop-color={colors.gray6} />
-                    <stop offset="100%" stop-color={colors.darkerLogoTeal} />
+                    <stop offset="0%" stopColor={colors.gray6} />
+                    <stop offset="100%" stopColor={colors.darkerLogoTeal} />
                 </linearGradient>
             </defs>
 

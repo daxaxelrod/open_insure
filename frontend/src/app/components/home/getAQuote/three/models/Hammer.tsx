@@ -14,6 +14,7 @@ const doubleClickTimout = 300;
 export default function Hammer() {
     const isTouchDevice = useIsTouchDevice();
     const [clicked, setClicked] = useState(false);
+
     const dblClickTimeout = useRef();
 
     const { scene } = useGLTF("hammer.glb", true, true, (model) => {});
@@ -137,14 +138,26 @@ export default function Hammer() {
         }
     }, [fullScene?.children, raycaster]);
 
+    const panHammerWithMouse = () => {
+        const hammer = hammerRef.current;
+        if (hammer) {
+            const { x, y } = pointer;
+
+            hammer.position.x = x * 10;
+            hammer.position.y = y * 10 - Y_OFFSET;
+        }
+    };
+
+    const smashHammerOnDoubleClick = () => {
+        const hammer = hammerRef.current;
+        if (hammer) {
+        }
+    };
+
     useEffect(() => {
         if (isTouchDevice) {
-            gl.domElement.addEventListener(
-                "touchstart",
-                unlockHammerIfColliding
-            );
-            gl.domElement.addEventListener("touchmove", moveHammerIfColliding);
-            gl.domElement.addEventListener("touchend", lockHammerIfColliding);
+            gl.domElement.addEventListener("touchmove", panHammerWithMouse);
+            gl.domElement.addEventListener("click", smashHammerOnDoubleClick);
         } else {
             gl.domElement.addEventListener("click", smashHammer);
         }
@@ -153,16 +166,13 @@ export default function Hammer() {
         return () => {
             if (isTouchDevice) {
                 gl.domElement.removeEventListener(
-                    "touchstart",
-                    unlockHammerIfColliding
-                );
-                gl.domElement.removeEventListener(
                     "touchmove",
-                    moveHammerIfColliding
+                    panHammerWithMouse
                 );
+
                 gl.domElement.removeEventListener(
-                    "touchend",
-                    lockHammerIfColliding
+                    "click",
+                    smashHammerOnDoubleClick
                 );
             } else {
                 gl.domElement.removeEventListener("click", smashHammer);

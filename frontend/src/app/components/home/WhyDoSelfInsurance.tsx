@@ -29,6 +29,7 @@ export default function WhyDoSelfInsurance() {
             style={{
                 backgroundColor: "white",
             }}
+            id="public-why-do-self-insurance"
         >
             <Row>
                 <Col
