@@ -14,7 +14,6 @@ export default function ScrollToNextButton({ nextId }: { nextId: string }) {
                 position: "absolute",
                 height: 80,
                 width: 130,
-
                 bottom: 0,
                 right: 0,
                 zIndex: 16929,
@@ -28,7 +27,6 @@ export default function ScrollToNextButton({ nextId }: { nextId: string }) {
                 style={{
                     justifyContent: "center",
                     alignItems: "center",
-
                     height: 80,
                     width: 130,
                     marginRight: 20,

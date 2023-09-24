@@ -9,13 +9,12 @@ import ReactGA from "react-ga4";
 import useIsTouchDevice from "../../../../hooks/useIsTouchDevice";
 
 const Y_OFFSET = 5;
-const doubleClickTimout = 300;
 
 export default function Hammer() {
     const isTouchDevice = useIsTouchDevice();
     const [clicked, setClicked] = useState(false);
 
-    const dblClickTimeout = useRef();
+    const touchStartLocation = useRef();
 
     const { scene } = useGLTF("hammer.glb", true, true, (model) => {});
     scene.position.set(0, Y_OFFSET, 5);
@@ -57,12 +56,8 @@ export default function Hammer() {
         if (hammer) {
             const hammer = hammerRef.current;
             if (hammer) {
-                if (isTouchDevice && false) {
-                    // move hammer with touch if intersecting with hammer
-                    // console.log("intersections", intersect, pointer);
-                } else {
+                if (!isTouchDevice) {
                     // move hammer with mouse
-
                     const { x, y } = pointer;
 
                     hammer.position.x = x * 10;
@@ -71,13 +66,6 @@ export default function Hammer() {
             }
         }
     });
-
-    const clearClickTimeout = () => {
-        if (dblClickTimeout) {
-            clearTimeout(dblClickTimeout.current);
-            dblClickTimeout.current = undefined;
-        }
-    };
 
     const smashHammer = useCallback(() => {
         const hammer = hammerRef.current;
@@ -148,16 +136,40 @@ export default function Hammer() {
         }
     };
 
-    const smashHammerOnDoubleClick = () => {
-        const hammer = hammerRef.current;
-        if (hammer) {
+    const registerTouchStart = (e) => {
+        const { x, y } = pointer;
+        touchStartLocation.current = { x, y };
+    };
+
+    const smashHammerIfFingerNotMoved = (e) => {
+        if (touchStartLocation.current === null) return;
+        const { x, y } = pointer;
+        const { x: startX, y: startY } = touchStartLocation.current;
+
+        const dist = Math.sqrt(
+            Math.pow(x - startX, 2) + Math.pow(y - startY, 2)
+        );
+
+        console.log("dist between start and end", dist);
+
+        if (dist < 0.1) {
+            smashHammer();
         }
+        touchStartLocation.current = null;
     };
 
     useEffect(() => {
         if (isTouchDevice) {
+            gl.domElement.addEventListener("touchstart", registerTouchStart);
             gl.domElement.addEventListener("touchmove", panHammerWithMouse);
-            gl.domElement.addEventListener("click", smashHammerOnDoubleClick);
+            gl.domElement.addEventListener(
+                "touchend",
+                smashHammerIfFingerNotMoved
+            );
+            gl.domElement.addEventListener(
+                "touchcancel",
+                smashHammerIfFingerNotMoved
+            );
         } else {
             gl.domElement.addEventListener("click", smashHammer);
         }
@@ -166,19 +178,33 @@ export default function Hammer() {
         return () => {
             if (isTouchDevice) {
                 gl.domElement.removeEventListener(
+                    "touchstart",
+                    registerTouchStart
+                );
+                gl.domElement.removeEventListener(
                     "touchmove",
                     panHammerWithMouse
                 );
-
                 gl.domElement.removeEventListener(
-                    "click",
-                    smashHammerOnDoubleClick
+                    "touchend",
+                    smashHammerIfFingerNotMoved
+                );
+                gl.domElement.removeEventListener(
+                    "touchcancel",
+                    smashHammerIfFingerNotMoved
                 );
             } else {
                 gl.domElement.removeEventListener("click", smashHammer);
             }
         };
-    }, [gl, isTouchDevice, smashHammer]);
+    }, [
+        gl,
+        isTouchDevice,
+        panHammerWithMouse,
+        registerTouchStart,
+        smashHammer,
+        smashHammerIfFingerNotMoved,
+    ]);
 
     return (
         <>
