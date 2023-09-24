@@ -7,6 +7,7 @@ import {
     useState,
 } from "react";
 import { AudioLoader, PositionalAudio, AudioListener } from "three";
+import useIsTouchDevice from "../../../hooks/useIsTouchDevice";
 
 export default forwardRef(function SpacialAudio(
     {
@@ -20,13 +21,14 @@ export default forwardRef(function SpacialAudio(
     },
     ref
 ) {
+    const isTouchDevice = useIsTouchDevice();
     const sound = useRef<PositionalAudio | null>(null);
     const { camera } = useThree();
     const [listener] = useState(() => new AudioListener());
     const buffer = useLoader(AudioLoader, url);
 
     const playSound = () => {
-        if (sound.current) {
+        if (sound.current && !isTouchDevice) {
             if (sound.current.isPlaying) {
                 sound.current.stop();
             }
@@ -39,6 +41,9 @@ export default forwardRef(function SpacialAudio(
 
             sound.current.setLoop(false);
             sound.current.play();
+        } else {
+            const audioElement = new Audio(url);
+            audioElement.play();
         }
     };
 

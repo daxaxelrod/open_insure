@@ -40,11 +40,6 @@ export default function Hammer() {
         to: {
             rotation: clicked ? [0.5, 0, 0] : [0, 0, 0],
         },
-        onRest: () => {
-            if (clicked) {
-                setClicked(false);
-            }
-        },
     });
 
     // Update hammer position based on pointer position
@@ -121,6 +116,9 @@ export default function Hammer() {
             });
 
             setClicked(true);
+            setTimeout(() => {
+                setClicked(false);
+            }, 400);
         }
     }, [fullScene?.children, raycaster]);
 

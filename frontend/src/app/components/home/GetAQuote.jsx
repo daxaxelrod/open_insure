@@ -12,8 +12,8 @@ const { Title, Paragraph } = Typography;
 const GetAQuote = ({ className = "banner" }) => {
     const { quote } = useContext(PublicQuoteContext);
     const sizes = Grid.useBreakpoint();
-    const isMobile = sizes.xs || (sizes.sm && !sizes.md);
-    const isMdOrBelow = sizes.xs || sizes.sm || sizes.md;
+    const isMdOrBelow =
+        sizes.xs || sizes.sm || sizes.md || window.innerWidth < 768;
     return (
         <Element component="section" className={`${className}-wrapper page`}>
             <Row
