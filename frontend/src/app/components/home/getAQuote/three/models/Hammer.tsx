@@ -9,7 +9,6 @@ import ReactGA from "react-ga4";
 import useIsTouchDevice from "../../../../hooks/useIsTouchDevice";
 
 const Y_OFFSET = 5;
-
 export default function Hammer() {
     const isTouchDevice = useIsTouchDevice();
     const [clicked, setClicked] = useState(false);
@@ -17,6 +16,7 @@ export default function Hammer() {
     const touchStartLocation = useRef();
 
     const { scene } = useGLTF("hammer.glb", true, true);
+
     scene.position.set(0, Y_OFFSET, 5);
 
     const hammerRef = useRef();
@@ -199,7 +199,12 @@ export default function Hammer() {
 
     return (
         <>
-            <animated.group ref={hammerRef} receiveShadow {...rotation}>
+            <animated.group
+                ref={hammerRef}
+                receiveShadow
+                {...rotation}
+                position={[0, isTouchDevice ? -9 : 0, 0]}
+            >
                 <SpacialAudio
                     ref={audioRef}
                     refDistance={
