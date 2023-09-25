@@ -7,6 +7,7 @@ import SignifiganceThermometer from "./SignifiganceThermometer";
 import PolicyStatsHeadlineNumbers from "./PolicyStatsHeadlineNumbers";
 import ManufacturerHistogram from "./ManufacturerHistogram";
 import LossByAgeBySeverityScatterPlot from "./LossByAgeBySeverityScatterPlot";
+import PolicyLineLeader from "./PolicyLineLeader";
 
 export default function PolicyLineStats({
     isOnSecondStep,
@@ -54,6 +55,14 @@ export default function PolicyLineStats({
                     >
                         <Space direction="vertical" size="large">
                             <SignifiganceThermometer
+                                count={stats.actuary_details.count}
+                                requiredCount={
+                                    stats.actuary_details.loss_rate_summary
+                                        .required_count_for_desired_confidence ||
+                                    10
+                                }
+                            />
+                            <PolicyLineLeader
                                 policyLine={stats}
                                 count={stats.actuary_details.count}
                                 requiredCount={
