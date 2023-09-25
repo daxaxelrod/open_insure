@@ -26,13 +26,11 @@ const Marker = styled.div<{ complete?: boolean }>(({ complete }) => ({
     justifyContent: "center",
     paddingTop: 1,
 
-    background: colors.gray5,
+    background: colors.gray3five,
     borderRadius: 40,
-    boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
-    backdropFilter: "blur(8.9px)",
-    border: "1px solid rgba(255,255,255, 0.39)",
-    fontFamily: "math",
-    fontSize: ".85rem",
+    boxShadow: "0 4px 30px rgba(0, 0, 0, 0.2)",
+
+    fontSize: ".65rem",
     color: !complete ? "black" : "white",
 }));
 
@@ -57,7 +55,7 @@ export default function SignifiganceThermometer({
 }) {
     const [api, contextHolder] = notification.useNotification();
     const percent = Math.min(100, Math.round((count / requiredCount) * 100));
-    const quartiles = [25, 50, 75];
+    const quartiles = [25, 50, 75, 100];
 
     const renderRequiredCount = () => {
         if (count < requiredCount) {
@@ -102,15 +100,21 @@ export default function SignifiganceThermometer({
                                 justifyContent: "center",
                             }}
                         >
-                            <Marker complete={percent >= q + 5} key={q}>
-                                {q}%
+                            <Marker
+                                complete={percent >= Math.min(q + 5, 100)}
+                                key={q}
+                                style={{
+                                    fontSize: q === 100 ? ".85rem" : ".65rem",
+                                }}
+                            >
+                                {q === 100 ? `🎉` : `${q}%`}
                             </Marker>
                         </div>
                     );
                 })}
             </MarkersContainer>
             <Progress
-                strokeWidth={18}
+                strokeWidth={14}
                 percent={percent}
                 showInfo={false}
                 strokeColor={{
