@@ -8,12 +8,14 @@ export default function Contribute() {
     const [atSecondStep, setAtSecondStep] = useState(false);
 
     const isMdOrBelow = window.innerWidth < 992;
+    console.log("isMdOrBelow", isMdOrBelow, window.innerWidth);
 
     return (
         <div>
             <Row
                 style={{
                     padding: isMdOrBelow ? "1rem" : "2rem",
+                    ...(isMdOrBelow ? { minHeight: "75vh" } : {}),
                 }}
             >
                 <Col

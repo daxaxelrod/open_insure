@@ -123,6 +123,8 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
             <Row
                 style={{
                     marginTop: 10,
+                    display:
+                        firstThreeRandomPolicyLines.length > 0 ? "" : "none",
                 }}
             >
                 <Paragraph
