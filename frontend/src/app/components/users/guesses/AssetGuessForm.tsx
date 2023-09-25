@@ -129,9 +129,11 @@ export default function AssetGuessForm({
 
     return (
         <div
-            style={{
-                minHeight: "90vh",
-            }}
+            style={
+                {
+                    // minHeight: "90vh",
+                }
+            }
         >
             {contextHolder}
             <AssetGuessFormHeader />

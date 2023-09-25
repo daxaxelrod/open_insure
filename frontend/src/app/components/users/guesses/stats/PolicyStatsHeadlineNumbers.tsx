@@ -80,7 +80,7 @@ export default function PolicyStatsHeadlineNumbers({
             <Row>
                 <Col span={8}>
                     <Statistic
-                        title="Total Asset value"
+                        title="Total value of submitted assets"
                         value={Math.round(data.total_asset_value)}
                         precision={2}
                         prefix="$"

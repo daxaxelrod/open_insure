@@ -5,6 +5,7 @@ import colors from "../../../constants/colors";
 const { Title, Paragraph } = Typography;
 
 export default function AssetGuessFormHeader() {
+    const isMdOrBelow = window.innerWidth < 992;
     return (
         <div
             style={{
@@ -12,7 +13,7 @@ export default function AssetGuessFormHeader() {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                marginBottom: "2rem",
+                marginBottom: isMdOrBelow ? 0 : "2rem",
             }}
         >
             <img
@@ -31,6 +32,7 @@ export default function AssetGuessFormHeader() {
                 style={{
                     fontWeight: "bold",
                     fontFamily: "sans-serif",
+                    textAlign: "center",
                 }}
             >
                 Share Your Details, access curated policies
@@ -39,7 +41,7 @@ export default function AssetGuessFormHeader() {
                 style={{
                     color: colors.gray7,
                     textAlign: "center",
-                    padding: "0 20px",
+                    padding: `0 ${isMdOrBelow ? "8px" : "20px"}`,
                 }}
             >
                 Contribute to the community by filling out the form below. Once
