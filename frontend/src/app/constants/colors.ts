@@ -2,6 +2,7 @@ export default {
     gray1: "#ffffff",
     gray2: "#fafafa",
     gray3: "#f5f5f5",
+    gray3five: "#f3f3f3",
     gray4: "#f0f0f0",
     gray5: "#d9d9d9",
     gray6: "#bfbfbf",

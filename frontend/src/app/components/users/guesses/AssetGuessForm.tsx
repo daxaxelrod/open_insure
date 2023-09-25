@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { Wizard } from "react-use-wizard";
 import { AnimatePresence } from "framer-motion";
-import { Col, Form, Row, Spin, notification } from "antd";
+import { Col, Form, Grid, Row, Spin, notification } from "antd";
 import { useAppDispatch } from "../../../../redux/hooks";
 import {
     getActuarialStatsForPolicyLine,
@@ -23,6 +23,7 @@ import AssetGuessFormHeader from "./AssetGuessFormHeader";
 import ReactGA from "react-ga4";
 import { isLoggedIn } from "axios-jwt";
 import { Dayjs } from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 export default function AssetGuessForm({
     setAtSecondStep,
@@ -32,6 +33,9 @@ export default function AssetGuessForm({
     const dispatch = useAppDispatch();
     const [pending, setPending] = useState(false);
     let loggedIn = isLoggedIn();
+    const grid = Grid.useBreakpoint();
+    const isMdOrBelow = window.innerWidth < 992 || (grid.md && !grid.lg);
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getAvailablePolicyLines());
@@ -106,6 +110,11 @@ export default function AssetGuessForm({
                     // should never happen
                 }
 
+                if (isMdOrBelow) {
+                    // navigate to the second page where the stats will be shown
+                    navigate("/contribute/stats");
+                }
+
                 if (!loggedIn) {
                     console.log(
                         "Saving contribution to local storage for reatribution to this anon later if they'd like"
@@ -128,13 +137,7 @@ export default function AssetGuessForm({
     };
 
     return (
-        <div
-            style={
-                {
-                    // minHeight: "90vh",
-                }
-            }
-        >
+        <div>
             {contextHolder}
             <AssetGuessFormHeader />
             <Row>

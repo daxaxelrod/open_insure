@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import OpenInsureFooter from "../../components/home/Footer";
-import { Col, Row } from "antd";
+import { Col, Grid, Row } from "antd";
 import AssetGuessForm from "../../components/users/guesses/AssetGuessForm";
 import PolicyLineStats from "../../components/users/guesses/stats/PolicyLineStats";
 
 export default function Contribute() {
     const [atSecondStep, setAtSecondStep] = useState(false);
+    const grid = Grid.useBreakpoint();
 
-    const isMdOrBelow = window.innerWidth < 992;
-    console.log("isMdOrBelow", isMdOrBelow, window.innerWidth);
+    const isMdOrBelow = window.innerWidth < 992 || (grid.md && !grid.lg);
 
     return (
         <div>
@@ -21,7 +21,7 @@ export default function Contribute() {
                 <Col
                     xs={{ span: 24 }}
                     sm={{ span: 24 }}
-                    md={{ span: 16 }}
+                    md={{ span: 24 }}
                     lg={{ span: 11 }}
                     xl={{ span: 11 }}
                 >

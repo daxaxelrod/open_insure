@@ -26,7 +26,7 @@ const Marker = styled.div<{ complete?: boolean }>(({ complete }) => ({
     justifyContent: "center",
     paddingTop: 1,
 
-    background: "#0a0a7929",
+    background: colors.gray5,
     borderRadius: 40,
     boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
     backdropFilter: "blur(8.9px)",
@@ -42,7 +42,7 @@ const MarkersContainer = styled.div({
     justifyContent: "space-between",
     width: "100%",
     position: "absolute",
-    top: 14,
+    top: 16,
     zIndex: 2,
 });
 
@@ -117,7 +117,7 @@ export default function SignifiganceThermometer({
                     from: "#0a0a79",
                     to: "#00d4ff",
                 }}
-                trailColor="#f3f3f3"
+                trailColor={colors.gray3five}
             />
             <Row style={{ marginBottom: "2rem", marginTop: "1rem" }}>
                 <Col

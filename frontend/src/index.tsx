@@ -29,6 +29,7 @@ import PolicyPoolDetails from "./app/pages/dashboard/PolicyPoolDetails";
 import PolicyPremiumDetails from "./app/components/policies/premiums/PolicyPremiums";
 import ClaimCreate from "./app/pages/claims/ClaimCreate";
 import PolicySettings from "./app/pages/policies/PolicySettings";
+import ContributeMobileDetails from "./app/pages/public/ContributeMobileDetails";
 
 const App = () => {
     let loggedIn = isLoggedIn(); // called too often?
@@ -41,6 +42,10 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/faqs" element={<FAQs />} />
                 <Route path="/contribute" element={<Contribute />} />
+                <Route
+                    path="/contribute/stats"
+                    element={<ContributeMobileDetails />}
+                />
                 {!loggedIn && <Route path="/" element={<Index />} />}
                 <Route path="/" element={<Dashboard />}>
                     <Route path="home" element={<PolicyListSearch />} />
