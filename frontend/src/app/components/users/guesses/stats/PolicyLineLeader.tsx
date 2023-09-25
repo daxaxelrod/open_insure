@@ -78,10 +78,20 @@ export default function PolicyLineLeader({
                 />
             </Col>
             <Col xl={21} xxl={21} lg={20} md={20} sm={20} xs={20}>
-                <Title style={{ marginBottom: 0, marginTop: "1rem" }}>
+                <Paragraph
+                    type="secondary"
+                    style={{
+                        marginBottom: 0,
+                        marginTop: -10,
+                        fontSize: ".75rem",
+                    }}
+                >
+                    Asset Class
+                </Paragraph>
+                <Title style={{ marginBottom: 0, marginTop: "0" }}>
                     {policyLine.name}
                 </Title>
-                <Title level={4}>
+                <Title level={4} style={{ marginTop: ".5rem" }}>
                     Thanks for your submission. {renderRequiredCount()}
                 </Title>
                 <Paragraph>{renderDescription()}</Paragraph>

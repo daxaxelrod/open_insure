@@ -24,11 +24,13 @@ const Marker = styled.div<{ complete?: boolean }>(({ complete }) => ({
 
 const MarkersContainer = styled.div({
     display: "flex",
+    flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
+    alignItems: "center",
     width: "100%",
     position: "absolute",
-    top: 16,
+    top: -8,
     zIndex: 2,
 });
 
@@ -43,16 +45,20 @@ export default function SignifiganceThermometer({
     requiredCount: number;
 }) {
     const percent = Math.min(100, Math.round((count / requiredCount) * 100));
-    const quartiles = [25, 50, 75, 100];
+    const quartiles = [25, 50, 75];
 
     return (
-        <div className="thermometer">
+        <div
+            className="thermometer"
+            style={{
+                position: "relative",
+            }}
+        >
             <MarkersContainer>
                 {quartiles.map((q) => {
                     return (
                         <div
                             style={{
-                                flex: 1,
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
@@ -71,6 +77,18 @@ export default function SignifiganceThermometer({
                     );
                 })}
             </MarkersContainer>
+            <Marker
+                complete={percent >= 100}
+                style={{
+                    position: "absolute",
+                    right: 0,
+                    top: -8,
+                    fontSize: ".85rem",
+                    zIndex: 3,
+                }}
+            >
+                🎉
+            </Marker>
             <Progress
                 strokeWidth={14}
                 percent={percent}

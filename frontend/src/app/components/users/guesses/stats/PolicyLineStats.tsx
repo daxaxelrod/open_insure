@@ -33,7 +33,6 @@ export default function PolicyLineStats({
             style={{
                 display: "flex",
                 flexDirection: "column",
-                height: "100%",
             }}
         >
             <GlassOverlay
