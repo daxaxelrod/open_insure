@@ -13,16 +13,15 @@ export default function PolicyLineLeader({
     policyLine,
     count,
     requiredCount,
+    openRegisterModal,
 }: {
     policyLine: PolicyLine;
     count: number;
     requiredCount: number;
+    openRegisterModal: () => void;
 }) {
     const [api, contextHolder] = notification.useNotification();
     const isTouchDevice = useIsTouchDevice();
-
-    const openRegisterBottomModal = () => {};
-    const openRegisterModal = () => {};
 
     const renderRequiredCount = () => {
         if (count < requiredCount) {
@@ -146,11 +145,7 @@ export default function PolicyLineLeader({
                     <Button
                         type="dashed"
                         shape="round"
-                        onClick={
-                            isTouchDevice
-                                ? openRegisterBottomModal
-                                : openRegisterModal
-                        }
+                        onClick={openRegisterModal}
                         icon={
                             <img
                                 src={`${process.env.REACT_APP_CDN_URL}/badges/guess_contribution_badge.png`}

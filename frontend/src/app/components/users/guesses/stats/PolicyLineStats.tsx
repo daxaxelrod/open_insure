@@ -1,5 +1,15 @@
-import React from "react";
-import { Row, Col, Spin, Space, Grid, Empty, Button } from "antd";
+import React, { useState } from "react";
+import {
+    Row,
+    Col,
+    Spin,
+    Space,
+    Grid,
+    Empty,
+    Button,
+    Drawer,
+    Modal,
+} from "antd";
 import { useAppSelector } from "../../../../../redux/hooks";
 import GlassOverlay from "../../../common/GlassOverlay";
 import { PolicyLineStats as PolicyLineStatsType } from "../../../../../redux/reducers/types/actuaryTypes";
@@ -8,6 +18,7 @@ import PolicyStatsHeadlineNumbers from "./PolicyStatsHeadlineNumbers";
 import ManufacturerHistogram from "./ManufacturerHistogram";
 import LossByAgeBySeverityScatterPlot from "./LossByAgeBySeverityScatterPlot";
 import PolicyLineLeader from "./PolicyLineLeader";
+import { useNavigate } from "react-router-dom";
 
 export default function PolicyLineStats({
     isOnSecondStep,
@@ -17,6 +28,9 @@ export default function PolicyLineStats({
     // const { guess } = useAppSelector((state) => state.actuary.guess);
 
     const grid = Grid.useBreakpoint();
+    const navigate = useNavigate();
+
+    const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
     const activeGuess = useAppSelector(
         (state) => state.actuary.activePropertyLifeDatePoint
@@ -31,6 +45,14 @@ export default function PolicyLineStats({
     const hasContributed = !!activeGuess;
 
     const isMobile = window.innerWidth < 992 || (grid.sm && !grid.md);
+
+    const openRegisterModal = () => {
+        setIsRegisterModalOpen(true);
+    };
+
+    const onModalClose = () => {
+        setIsRegisterModalOpen(false);
+    };
 
     return (
         <div
@@ -67,6 +89,7 @@ export default function PolicyLineStats({
                                 }
                             />
                             <PolicyLineLeader
+                                openRegisterModal={openRegisterModal}
                                 policyLine={stats}
                                 count={stats.actuary_details.count}
                                 requiredCount={
@@ -141,6 +164,87 @@ export default function PolicyLineStats({
                     Math
                 </Button>
             </div>
+            {isMobile ? (
+                <Drawer
+                    title="Register to collect your badge"
+                    placement={"bottom"}
+                    closable={false}
+                    onClose={onModalClose}
+                    open={isRegisterModalOpen}
+                    key={"bottom-modal"}
+                >
+                    <MiniBadgeTeaser />
+                </Drawer>
+            ) : (
+                <Modal
+                    title="Register to collect your badge"
+                    open={isRegisterModalOpen}
+                    onCancel={onModalClose}
+                    footer={null}
+                >
+                    <MiniBadgeTeaser />
+                </Modal>
+            )}
         </div>
     );
 }
+
+const MiniBadgeTeaser = () => {
+    const navigate = useNavigate();
+    return (
+        <>
+            <Row>
+                <img
+                    src={`${process.env.REACT_APP_CDN_URL}/badges/guess_contribution_badge.png`}
+                    style={{
+                        height: 120,
+                        width: 120,
+                        marginRight: 10,
+                        objectFit: "contain",
+                    }}
+                    alt="earned badge icon"
+                />
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                    }}
+                >
+                    <span
+                        style={{
+                            fontSize: "2rem",
+                            fontFamily: "Menlo",
+                        }}
+                    >
+                        1x
+                    </span>
+                    <div
+                        style={{
+                            marginTop: 4,
+                            fontSize: "1rem",
+                            fontFamily: "Menlo",
+                        }}
+                    >
+                        Contribution Badge
+                    </div>
+                </div>
+            </Row>
+            <Row>
+                <Button
+                    size="large"
+                    type="primary"
+                    style={{
+                        width: "100%",
+                        marginTop: 10,
+                    }}
+                    onClick={() => {
+                        navigate("/join");
+                    }}
+                >
+                    Register
+                </Button>
+            </Row>
+        </>
+    );
+};
