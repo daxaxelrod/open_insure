@@ -129,7 +129,7 @@ export default function PolicyLineStats({
                 }}
             >
                 <Button
-                    type="ghost"
+                    type="text"
                     target="_blank"
                     href="https://github.com/daxaxelrod/open_insure/tree/master/gatherer/utils.py"
                 >

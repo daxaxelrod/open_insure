@@ -5,6 +5,7 @@ import colors from "../../../../constants/colors";
 import ReactGA from "react-ga4";
 import { Link } from "react-router-dom";
 import { UploadOutlined } from "@ant-design/icons";
+import useIsTouchDevice from "../../../hooks/useIsTouchDevice";
 
 const { Title, Paragraph } = Typography;
 
@@ -18,6 +19,11 @@ export default function PolicyLineLeader({
     requiredCount: number;
 }) {
     const [api, contextHolder] = notification.useNotification();
+    const isTouchDevice = useIsTouchDevice();
+
+    const openRegisterBottomModal = () => {};
+    const openRegisterModal = () => {};
+
     const renderRequiredCount = () => {
         if (count < requiredCount) {
             return `${count} of ${requiredCount} contributions`;
@@ -112,6 +118,30 @@ export default function PolicyLineLeader({
                         size={"middle"}
                     >
                         Share
+                    </Button>
+
+                    <Button
+                        type="dashed"
+                        shape="round"
+                        onClick={
+                            isTouchDevice
+                                ? openRegisterBottomModal
+                                : openRegisterModal
+                        }
+                        icon={
+                            <img
+                                src="https://placehold.co/600x400"
+                                style={{
+                                    height: 20,
+                                    width: 20,
+                                    objectFit: "contain",
+                                }}
+                                alt="earned badge icon"
+                            />
+                        }
+                        size={"middle"}
+                    >
+                        1x Badge
                     </Button>
                 </Space>
             </Col>

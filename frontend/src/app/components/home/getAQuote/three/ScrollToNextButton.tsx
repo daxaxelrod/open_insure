@@ -39,7 +39,7 @@ export default function ScrollToNextButton({ nextId }: { nextId: string }) {
                         backgroundColor: "rgba(255, 255, 255, 0.36)",
                         borderWidth: 2,
                         borderStyle: "solid",
-                        borderColor: colors.gray6,
+                        borderColor: colors.gray5,
                         fontWeight: "bold",
                         fontFamily: "sans-serif",
                         textAlign: "center",

@@ -4,7 +4,7 @@
     "private": true,
     "dependencies": {
         "@ant-design/colors": "^6.0.0",
-        "@react-spring/three": "^9.7.3",
+        "@react-spring/three": "~9.6.1",
         "@react-three/drei": "^9.77.6",
         "@react-three/fiber": "^8.13.4",
         "@reduxjs/toolkit": "^1.8.2",
@@ -36,6 +36,7 @@
         "react-dom-confetti": "^0.2.0",
         "react-ga4": "^2.1.0",
         "react-katex": "^3.0.1",
+        "react-modal-sheet": "^2.0.0",
         "react-redux": "^8.0.2",
         "react-router-dom": "^6.3.0",
         "react-scripts": "5.0.1",
