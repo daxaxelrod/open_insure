@@ -123,7 +123,7 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
 
             <Row
                 style={{
-                    marginTop: 10,
+                    marginTop: 15,
                     display:
                         firstThreeRandomPolicyLines.length > 0 ? "" : "none",
                 }}

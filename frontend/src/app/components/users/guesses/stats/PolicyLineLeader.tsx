@@ -58,7 +58,7 @@ export default function PolicyLineLeader({
             placement: "topRight",
             message: "Link copied to clipboard",
         });
-        navigator?.clipboard?.writeText(window.location.host);
+        navigator?.clipboard?.writeText(window.location.host + "/contribute");
         ReactGA.event({
             category: "Gathering",
             action: "Share policy line loss form",

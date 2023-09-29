@@ -1,10 +1,7 @@
-import { Typography, Progress, Grid } from "antd";
+import { Progress, Grid } from "antd";
 
 import styled from "styled-components";
-import { PolicyLine } from "../../../../../redux/reducers/types/actuaryTypes";
 import colors from "../../../../constants/colors";
-
-const { Title, Paragraph } = Typography;
 
 const Marker = styled.div<{ complete?: boolean }>(({ complete }) => ({
     height: "40px",
@@ -19,7 +16,7 @@ const Marker = styled.div<{ complete?: boolean }>(({ complete }) => ({
     boxShadow: "0 4px 30px rgba(0, 0, 0, 0.2)",
 
     fontSize: ".65rem",
-    color: !complete ? "black" : "white",
+    color: "black",
 }));
 
 const MarkersContainer = styled.div({

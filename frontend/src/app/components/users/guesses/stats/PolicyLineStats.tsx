@@ -51,6 +51,7 @@ export default function PolicyLineStats({
                             display: "flex",
                             flexDirection: "column",
                             backgroundColor: "white",
+                            borderRadius: 16,
 
                             zIndex: 1,
                             padding: `1.5rem ${isMobile ? 1 : 2}.5rem`,
