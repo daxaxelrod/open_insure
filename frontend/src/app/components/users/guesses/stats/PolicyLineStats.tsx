@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Spin, Space, Card, Empty, Button } from "antd";
+import { Row, Col, Spin, Space, Grid, Empty, Button } from "antd";
 import { useAppSelector } from "../../../../../redux/hooks";
 import GlassOverlay from "../../../common/GlassOverlay";
 import { PolicyLineStats as PolicyLineStatsType } from "../../../../../redux/reducers/types/actuaryTypes";
@@ -16,6 +16,8 @@ export default function PolicyLineStats({
 }) {
     // const { guess } = useAppSelector((state) => state.actuary.guess);
 
+    const grid = Grid.useBreakpoint();
+
     const activeGuess = useAppSelector(
         (state) => state.actuary.activePropertyLifeDatePoint
     );
@@ -27,6 +29,8 @@ export default function PolicyLineStats({
     );
 
     const hasContributed = !!activeGuess;
+
+    const isMobile = window.innerWidth < 992 || (grid.sm && !grid.md);
 
     return (
         <div
@@ -49,7 +53,7 @@ export default function PolicyLineStats({
                             backgroundColor: "white",
 
                             zIndex: 1,
-                            padding: "1.5rem 2.5rem",
+                            padding: `1.5rem ${isMobile ? 1 : 2}.5rem`,
                         }}
                     >
                         <Space direction="vertical" size="large">

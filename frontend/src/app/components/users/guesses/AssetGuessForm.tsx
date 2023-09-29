@@ -8,7 +8,7 @@ import React, {
 import { Wizard } from "react-use-wizard";
 import { AnimatePresence } from "framer-motion";
 import { Col, Form, Grid, Row, Spin, notification } from "antd";
-import { useAppDispatch } from "../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import {
     getActuarialStatsForPolicyLine,
     getAvailablePolicyLines,
@@ -36,9 +36,24 @@ export default function AssetGuessForm({
     const grid = Grid.useBreakpoint();
     const isMdOrBelow = window.innerWidth < 992 || (grid.md && !grid.lg);
     const navigate = useNavigate();
+    const getPolicyLinesPending = useAppSelector(
+        (state) => state.actuary.getPolicyLinesPending
+    );
 
     useEffect(() => {
-        dispatch(getAvailablePolicyLines());
+        // https://react.dev/learn/synchronizing-with-effects#fetching-data
+        // react can be dumb sometimes
+        let ignore = false;
+        async function retrieve() {
+            if (!ignore) {
+                dispatch(getAvailablePolicyLines());
+            }
+        }
+        retrieve();
+
+        return () => {
+            ignore = true;
+        };
     }, []);
 
     const previousStep = useRef<number>(0);

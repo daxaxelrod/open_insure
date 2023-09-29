@@ -11,13 +11,15 @@ export default function ContributeMobileDetails() {
         (state) => state.actuary.getPolicyLineStatsPending
     );
 
-    const stats: PolicyLineStatsType = useAppSelector(
-        (state) => state.actuary.activePolicyLineStats
+    const activeGuess = useAppSelector(
+        (state) => state.actuary.activePropertyLifeDatePoint
     );
+
+    const hasContributed = !!activeGuess;
 
     useEffect(() => {
         setTimeout(() => {
-            if (!stats && !getStatsPending) {
+            if (!hasContributed && !getStatsPending) {
                 navigate("/contribute");
             }
         }, 3000);

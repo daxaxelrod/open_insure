@@ -74,6 +74,7 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
             })),
         [autoCompletePolicyLines]
     );
+
     const isFormFilledOut = Form.useWatch("property_type", form);
 
     const firstThreeRandomPolicyLines = useMemo(
@@ -136,6 +137,7 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
                 {firstThreeRandomPolicyLines.map((policyLine: PolicyLine) => {
                     return (
                         <Tag
+                            key={policyLine.id}
                             style={{
                                 cursor: "pointer",
                             }}

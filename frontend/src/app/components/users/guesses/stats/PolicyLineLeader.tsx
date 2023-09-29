@@ -26,7 +26,7 @@ export default function PolicyLineLeader({
 
     const renderRequiredCount = () => {
         if (count < requiredCount) {
-            return `${count} of ${requiredCount} contributions`;
+            return `${count} contributions made`;
         } else {
             return "Every contribution makes premiums more accurate.";
         }
@@ -34,7 +34,20 @@ export default function PolicyLineLeader({
 
     const renderDescription = () => {
         if (count < requiredCount) {
-            return `Once we have ${requiredCount} contributions, you will be able to create a self insurance policy.`;
+            return (
+                <span>
+                    Once we have{" "}
+                    <span
+                        style={{
+                            fontWeight: "bold",
+                        }}
+                    >
+                        {requiredCount}
+                    </span>{" "}
+                    contributions, you will be able to create a self insurance
+                    policy.
+                </span>
+            );
         } else {
             return `You can now create a self insurance policy with ${policyLine.name}. Share this form with your friends to help us get more data.`;
         }
@@ -75,15 +88,23 @@ export default function PolicyLineLeader({
                         require("../../../../../assets/images/logo-512.png")
                     }
                     style={{
-                        marginTop: 20,
-                        height: 80,
-                        width: 80,
+                        width: "100%",
                         objectFit: "contain",
                     }}
                     alt="policy line icon"
                 />
             </Col>
-            <Col xl={21} xxl={21} lg={20} md={20} sm={20} xs={20}>
+            <Col
+                xl={21}
+                xxl={21}
+                lg={20}
+                md={20}
+                sm={20}
+                xs={20}
+                style={{
+                    paddingLeft: "1.25rem",
+                }}
+            >
                 <Paragraph
                     type="secondary"
                     style={{
@@ -97,9 +118,11 @@ export default function PolicyLineLeader({
                 <Title style={{ marginBottom: 0, marginTop: "0" }}>
                     {policyLine.name}
                 </Title>
-                <Title level={4} style={{ marginTop: ".5rem" }}>
-                    Thanks for your submission. {renderRequiredCount()}
-                </Title>
+                <Paragraph
+                    style={{ marginTop: ".5rem", marginBottom: ".5rem" }}
+                >
+                    {renderRequiredCount()}
+                </Paragraph>
                 <Paragraph>{renderDescription()}</Paragraph>
                 <Space direction="horizontal" size="middle">
                     {count >= requiredCount && (
@@ -115,7 +138,7 @@ export default function PolicyLineLeader({
                         shape="round"
                         onClick={share}
                         icon={<UploadOutlined />}
-                        size={"middle"}
+                        size={"large"}
                     >
                         Share
                     </Button>
@@ -130,16 +153,18 @@ export default function PolicyLineLeader({
                         }
                         icon={
                             <img
-                                src="https://placehold.co/600x400"
+                                src={`${process.env.REACT_APP_CDN_URL}/badges/guess_contribution_badge.png`}
                                 style={{
                                     height: 20,
                                     width: 20,
+                                    marginRight: 5,
+                                    marginTop: -2,
                                     objectFit: "contain",
                                 }}
                                 alt="earned badge icon"
                             />
                         }
-                        size={"middle"}
+                        size={"large"}
                     >
                         1x Badge
                     </Button>

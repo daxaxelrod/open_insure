@@ -1,4 +1,4 @@
-import { Typography, Progress } from "antd";
+import { Typography, Progress, Grid } from "antd";
 
 import styled from "styled-components";
 import { PolicyLine } from "../../../../../redux/reducers/types/actuaryTypes";
@@ -44,6 +44,9 @@ export default function SignifiganceThermometer({
     count: number;
     requiredCount: number;
 }) {
+    const grid = Grid.useBreakpoint();
+    const isSmallOrBelow =
+        (grid.xs || grid.sm) && !grid.md && !grid.lg && !grid.xl && !grid.xxl;
     const percent = Math.min(100, Math.round((count / requiredCount) * 100));
     const quartiles = [25, 50, 75];
 
@@ -58,6 +61,7 @@ export default function SignifiganceThermometer({
                 {quartiles.map((q) => {
                     return (
                         <div
+                            key={`${q}-markerpoint`}
                             style={{
                                 display: "flex",
                                 alignItems: "center",
@@ -68,10 +72,10 @@ export default function SignifiganceThermometer({
                                 complete={percent >= Math.min(q + 5, 100)}
                                 key={q}
                                 style={{
-                                    fontSize: q === 100 ? ".85rem" : ".65rem",
+                                    fontSize: ".65rem",
                                 }}
                             >
-                                {q === 100 ? `🎉` : `${q}%`}
+                                {`${q}%`}
                             </Marker>
                         </div>
                     );
@@ -81,7 +85,7 @@ export default function SignifiganceThermometer({
                 complete={percent >= 100}
                 style={{
                     position: "absolute",
-                    right: 0,
+                    right: isSmallOrBelow ? -18 : 0,
                     top: -8,
                     fontSize: ".85rem",
                     zIndex: 3,

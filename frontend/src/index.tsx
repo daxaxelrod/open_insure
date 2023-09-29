@@ -84,15 +84,13 @@ console.log(
 );
 
 root.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <PersistGate persistor={persistor}>
-                <Layout>
-                    <App />
-                </Layout>
-            </PersistGate>
-        </Provider>
-    </React.StrictMode>
+    <Provider store={store}>
+        <PersistGate persistor={persistor}>
+            <Layout>
+                <App />
+            </Layout>
+        </PersistGate>
+    </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

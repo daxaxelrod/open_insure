@@ -19,14 +19,17 @@ export const getAvailablePolicyLines =
         dispatch({ type: GET_AVAILABLE_POLICIES_LINES_PENDING });
         try {
             const response = await API.getAvailablePolicyLines();
+            console.log("get available policy lines", response.data);
+
             dispatch({
                 type: GET_AVAILABLE_POLICIES_LINES_SUCCESS,
                 payload: response.data,
             });
         } catch (error) {
+            console.log("get available policy lines error", error);
+
             dispatch({
                 type: GET_AVAILABLE_POLICIES_LINES_FAILURE,
-                payload: error,
             });
         }
     };
