@@ -33,21 +33,26 @@ export default function AssetGuessFormHeader() {
                     fontWeight: "bold",
                     fontFamily: "sans-serif",
                     textAlign: "center",
+                    marginBottom: isMdOrBelow ? "2rem" : 0,
                 }}
             >
-                Share Your Details, access curated policies
+                {isMdOrBelow
+                    ? "Contribute to the community by filling out the form below."
+                    : "Share info about your asset to help others"}
             </Title>
-            <Paragraph
-                style={{
-                    color: colors.gray7,
-                    textAlign: "center",
-                    padding: `0 ${isMdOrBelow ? "8px" : "20px"}`,
-                }}
-            >
-                Contribute to the community by filling out the form below. Once
-                enough people have contributed, you can create self insurance
-                policies based on the data.
-            </Paragraph>
+            {isMdOrBelow ? null : (
+                <Paragraph
+                    style={{
+                        color: colors.gray7,
+                        textAlign: "center",
+                        padding: `0 ${isMdOrBelow ? "8px" : "20px"}`,
+                    }}
+                >
+                    Contribute to the community by filling out the form below.
+                    Once enough people have contributed, you can create self
+                    insurance policies based on the data.
+                </Paragraph>
+            )}
         </div>
     );
 }

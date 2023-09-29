@@ -7,6 +7,7 @@ import {
     Input,
     InputNumber,
     Row,
+    Grid,
     Typography,
 } from "antd";
 import { useWizard } from "react-use-wizard";
@@ -19,10 +20,12 @@ const { Title } = Typography;
 export default function AssetForm() {
     const { nextStep, previousStep } = useWizard();
     const form = Form.useFormInstance();
+    const grid = Grid.useBreakpoint();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const contribution = useAppSelector(
         (state) => state.actuary.activePropertyLifeDatePoint
     );
+    const isMdOrBelow = (grid.xs || grid.sm || grid.md) && !grid.lg;
 
     const hasHadLosses = Form.useWatch("has_had_losses", form);
     const purchaseDate = Form.useWatch("purchase_date", form);
@@ -104,7 +107,7 @@ export default function AssetForm() {
                     >
                         {monthsOld ? (
                             <Title
-                                level={3}
+                                level={isMdOrBelow ? 5 : 3}
                                 style={{
                                     marginTop: 14,
                                 }}

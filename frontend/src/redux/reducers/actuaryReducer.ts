@@ -55,7 +55,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
         case GET_ACTUARIAL_STATS_FOR_POLICY_LINE_PENDING:
             return {
                 ...state,
-                getPolicyLineStatsPending: false,
+                getPolicyLineStatsPending: true,
             };
         case GET_ACTUARIAL_STATS_FOR_POLICY_LINE_SUCCESS:
             return {
