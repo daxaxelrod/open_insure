@@ -71,7 +71,11 @@ export default function LoginForm() {
                     },
                 ]}
             >
-                <Input placeholder="email" type={"email"} />
+                <Input
+                    placeholder="email"
+                    type={"email"}
+                    autoComplete="email"
+                />
             </Form.Item>
 
             <Form.Item

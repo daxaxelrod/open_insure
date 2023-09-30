@@ -97,7 +97,7 @@ export default function EmailPassOnboardingStep({
                         width: "calc(50%)",
                     }}
                 >
-                    <Input placeholder="First name" />
+                    <Input placeholder="First name" autoComplete="given-name" />
                 </Form.Item>
                 <Form.Item
                     name="lastName"
@@ -108,7 +108,7 @@ export default function EmailPassOnboardingStep({
                         margin: "0px 0px 0px 8px",
                     }}
                 >
-                    <Input placeholder="Last name" />
+                    <Input placeholder="Last name" autoComplete="family-name" />
                 </Form.Item>
             </Form.Item>
 
@@ -123,7 +123,11 @@ export default function EmailPassOnboardingStep({
                     },
                 ]}
             >
-                <Input placeholder="Email" disabled={!!prefilledEmail} />
+                <Input
+                    placeholder="Email"
+                    disabled={!!prefilledEmail}
+                    autoComplete="email"
+                />
             </Form.Item>
 
             <Form.Item
