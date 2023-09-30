@@ -162,7 +162,9 @@ export default function EducationalLeader() {
                                                 isSmOrBelow ? "click" : "hover"
                                             }
                                             color={colors.gray1}
-                                            placement="rightTop"
+                                            placement={
+                                                isSmOrBelow ? "top" : "rightTop"
+                                            }
                                             overlayStyle={{
                                                 minWidth: 400,
                                             }}
@@ -177,7 +179,7 @@ export default function EducationalLeader() {
                                                         itemLayout="horizontal"
                                                         dataSource={[
                                                             {
-                                                                title: "Cell Phone",
+                                                                title: "Cell Phones",
                                                             },
                                                             {
                                                                 title: "Headphones/Airpods",
@@ -236,7 +238,9 @@ export default function EducationalLeader() {
                                                     cursor: "pointer",
                                                     color: colors.gray7,
                                                     padding: "3px 10px 0px 3px",
-                                                    marginLeft: 1,
+                                                    marginLeft: isMobile
+                                                        ? 2
+                                                        : 1,
                                                 }}
                                             />
                                         </Tooltip>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import OpenInsureFooter from "../../components/home/Footer";
 import { Col, Grid, Row } from "antd";
 import AssetGuessForm from "../../components/users/guesses/AssetGuessForm";
@@ -9,6 +9,10 @@ export default function Contribute() {
     const grid = Grid.useBreakpoint();
 
     const isMdOrBelow = window.innerWidth < 992 || (grid.md && !grid.lg);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div>
