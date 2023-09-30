@@ -35,7 +35,7 @@ class PolicyLinePropertyViewSet(ModelViewSet):
 
     queryset = (
         PolicyLineProperty.objects.annotate(num_contributions=Count("guesses__id"))
-        .order_by("num_contributions")
+        .order_by("-num_contributions")
         .all()
     )
 
