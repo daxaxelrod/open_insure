@@ -59,11 +59,15 @@ export default function PolicyLineStats({
             style={{
                 display: "flex",
                 flexDirection: "column",
+                flex: 1,
+                position: "relative",
             }}
         >
-            <GlassOverlay
-                blur={hasContributed || !stats ? 0 : isOnSecondStep ? 4 : 9}
-            />
+            {!isMobile && (
+                <GlassOverlay
+                    blur={hasContributed || !stats ? 0 : isOnSecondStep ? 4 : 9}
+                />
+            )}
 
             <Spin spinning={getStatsPending}>
                 {stats ? (
@@ -73,10 +77,12 @@ export default function PolicyLineStats({
                             display: "flex",
                             flexDirection: "column",
                             backgroundColor: "white",
-                            borderRadius: 16,
+                            borderRadius: isMobile ? 0 : 16,
 
                             zIndex: 1,
-                            padding: `1.5rem ${isMobile ? 1 : 2}.5rem`,
+                            padding: `1.5rem ${isMobile ? 1 : 2}.5rem ${
+                                isMobile ? 3.5 : 2.5
+                            }rem ${isMobile ? 1 : 2}.5rem`,
                         }}
                     >
                         <Space direction="vertical" size="large">
@@ -171,7 +177,7 @@ export default function PolicyLineStats({
                 }}
             >
                 <Button
-                    type="text"
+                    type="link"
                     target="_blank"
                     href="https://github.com/daxaxelrod/open_insure/tree/master/gatherer/utils.py"
                 >

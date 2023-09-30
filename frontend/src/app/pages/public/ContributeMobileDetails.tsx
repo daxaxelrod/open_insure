@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import PolicyLineStats from "../../components/users/guesses/stats/PolicyLineStats";
 import { useNavigate } from "react-router-dom";
-import { PolicyLineStats as PolicyLineStatsType } from "../../../redux/reducers/types/actuaryTypes";
 import { useAppSelector } from "../../../redux/hooks";
+import { Button } from "antd";
 
 export default function ContributeMobileDetails() {
     const navigate = useNavigate();
@@ -25,5 +25,29 @@ export default function ContributeMobileDetails() {
         }, 3000);
     }, []);
 
-    return <PolicyLineStats isOnSecondStep={true} />;
+    return (
+        <>
+            <PolicyLineStats isOnSecondStep={true} />
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                    justifyContent: "center",
+                }}
+            >
+                <Button
+                    style={{
+                        margin: "2rem 16px",
+                    }}
+                    type="primary"
+                    onClick={() => {
+                        navigate("/join");
+                    }}
+                >
+                    Join
+                </Button>
+            </div>
+        </>
+    );
 }
