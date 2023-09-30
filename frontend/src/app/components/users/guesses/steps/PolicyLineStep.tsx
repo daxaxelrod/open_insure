@@ -8,6 +8,7 @@ import {
     getActuarialStatsForPolicyLine,
     setActivePropertyLifeDatePoint,
 } from "../../../../../redux/actions/guesses";
+import useIsTouchDevice from "../../../hooks/useIsTouchDevice";
 const { Paragraph } = Typography;
 
 type Props = {
@@ -30,6 +31,7 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
     const [autoCompletePolicyLines, setAutoCompletePolicyLines] = useState<
         PolicyLine[]
     >([]);
+    const isTouchDevice = useIsTouchDevice();
 
     const handlePolicyLineAutoComplete = (value: string) => {
         let res: PolicyLine[] = [];
@@ -118,7 +120,7 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
                         }
                     }}
                     placeholder="Desktop Computer, DSLR Camera, Necklace"
-                    autoFocus
+                    autoFocus={!isTouchDevice}
                     onSearch={handlePolicyLineAutoComplete}
                     options={autoCompletePolicyLinesOptions}
                 />

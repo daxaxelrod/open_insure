@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import PolicyLineStats from "../../components/users/guesses/stats/PolicyLineStats";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../redux/hooks";
 import { Button } from "antd";
 
 export default function ContributeMobileDetails() {
     const navigate = useNavigate();
+    const { pathname } = useLocation();
 
     const getStatsPending = useAppSelector(
         (state) => state.actuary.getPolicyLineStatsPending
@@ -24,6 +25,10 @@ export default function ContributeMobileDetails() {
             }
         }, 3000);
     }, []);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     return (
         <>
