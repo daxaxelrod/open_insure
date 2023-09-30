@@ -79,11 +79,26 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
 
     const firstThreeRandomPolicyLines = useMemo(
         () =>
-            allPolicyLines
+            [...allPolicyLines]
                 .sort(() => Math.random() - Math.random())
                 .slice(0, 3),
         [allPolicyLines]
     );
+
+    const handleNextWithValidation = () => {
+        form.validateFields(["property_type"]).then(({ property_type }) => {
+            if (!property_type) {
+                form.setFields([
+                    {
+                        name: "property_type",
+                        errors: ["Please enter a property type"],
+                    },
+                ]);
+            } else {
+                nextStep();
+            }
+        });
+    };
 
     useEffect(() => {
         setAutoCompletePolicyLines(allPolicyLines);
@@ -94,12 +109,12 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
             {/* <Paragraph>
                 Step {number}, What type of property do you want to submit
             </Paragraph> */}
-            <Form.Item label="Property type" name="property_type">
+            <Form.Item label="Property type" name="property_type" required>
                 <AutoComplete
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
                             e.preventDefault();
-                            nextStep();
+                            handleNextWithValidation();
                         }
                     }}
                     placeholder="Desktop Computer, DSLR Camera, Necklace"
@@ -112,8 +127,9 @@ const PolicyLineStep: FC<Props> = memo(({ number, setAtSecondStep }) => {
             <Row>
                 <Space>
                     <Button
-                        disabled={!isFormFilledOut}
-                        onClick={() => nextStep()}
+                        onClick={() => {
+                            handleNextWithValidation();
+                        }}
                         type={isFormFilledOut ? "primary" : "default"}
                     >
                         {isLastStep ? "Submit" : "Go Next"}

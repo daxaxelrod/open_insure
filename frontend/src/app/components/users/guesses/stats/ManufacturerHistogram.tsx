@@ -42,6 +42,10 @@ export default function ManufacturerHistogram({
     const chartOptions = {
         scales: {
             y: {
+                min: 0,
+                max: 10,
+                stepSize: 5,
+
                 beginAtZero: true,
                 title: {
                     display: true,

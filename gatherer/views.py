@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from django.utils import timezone
 from django.conf import settings
 from rest_framework.permissions import AllowAny
-from django.db.models import Q
+from django.db.models import Q, Count
 from gatherer.utils import generate_summary_stats_for_policy_line
 from open_insure.admin.emails import send_notif_email_to_admins
 from pods.utils.badges import award_badge
@@ -33,7 +33,11 @@ class PolicyLinePropertyViewSet(ModelViewSet):
 
     serializer_class = PolicyLinePropertySerializer
 
-    queryset = PolicyLineProperty.objects.all()
+    queryset = (
+        PolicyLineProperty.objects.annotate(num_contributions=Count("guesses__id"))
+        .order_by("num_contributions")
+        .all()
+    )
 
     filter_backends = [SearchFilter]
     search_fields = ["name", "description", "search_tags"]

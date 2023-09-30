@@ -43,7 +43,7 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 getPolicyLinesPending: false,
-                policyLines: payload,
+                policyLines: [...state.policyLines, ...payload],
             };
         case GET_AVAILABLE_POLICIES_LINES_FAILURE:
             return {

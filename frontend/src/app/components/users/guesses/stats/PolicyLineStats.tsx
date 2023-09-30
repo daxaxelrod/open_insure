@@ -99,17 +99,26 @@ export default function PolicyLineStats({
                                 }
                             />
                             <Row>
-                                <Col span={11}>
+                                <Col
+                                    xs={24}
+                                    sm={24}
+                                    md={24}
+                                    lg={16}
+                                    xl={12}
+                                    xxl={12}
+                                >
                                     <PolicyStatsHeadlineNumbers
                                         data={stats.actuary_details}
                                     />
-                                    <ManufacturerHistogram
-                                        data={
-                                            stats.actuary_details.manufacturers
-                                        }
-                                    />
                                 </Col>
-                                <Col span={13}>
+                                <Col
+                                    xs={24}
+                                    sm={24}
+                                    md={24}
+                                    lg={8}
+                                    xl={12}
+                                    xxl={12}
+                                >
                                     <LossByAgeBySeverityScatterPlot
                                         data={
                                             stats.actuary_details
@@ -123,6 +132,11 @@ export default function PolicyLineStats({
                                         }
                                     /> */}
                                 </Col>
+                            </Row>
+                            <Row>
+                                <ManufacturerHistogram
+                                    data={stats.actuary_details.manufacturers}
+                                />
                             </Row>
                             {/* <Row>
                                 <Col span={16}>
@@ -172,6 +186,7 @@ export default function PolicyLineStats({
                     onClose={onModalClose}
                     open={isRegisterModalOpen}
                     key={"bottom-modal"}
+                    height={300}
                 >
                     <MiniBadgeTeaser />
                 </Drawer>

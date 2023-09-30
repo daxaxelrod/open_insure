@@ -1,7 +1,7 @@
 import React from "react";
 import { ActuaryDetails } from "../../../../../redux/reducers/types/actuaryTypes";
 import CountUp from "react-countup";
-import { Col, Row, Statistic, Tooltip, Typography } from "antd";
+import { Col, Row, Statistic, Tooltip, Typography, Grid } from "antd";
 import { FormatConfig, valueType } from "antd/es/statistic/utils";
 import colors from "../../../../constants/colors";
 import { QuestionCircleOutlined } from "@ant-design/icons";
@@ -21,6 +21,10 @@ export default function PolicyStatsHeadlineNumbers({
 }: {
     data: ActuaryDetails;
 }) {
+    const grid = Grid.useBreakpoint();
+    const isMobile =
+        (grid.xs || grid.sm) && !grid.md && !grid.lg && !grid.xl && !grid.xxl;
+
     return (
         <div
             style={{
@@ -28,7 +32,7 @@ export default function PolicyStatsHeadlineNumbers({
                 flexDirection: "column",
                 alignItems: "stretch",
                 width: "100%",
-                marginBottom: "2rem",
+                marginBottom: "0rem",
                 flex: 1,
             }}
         >
@@ -37,12 +41,19 @@ export default function PolicyStatsHeadlineNumbers({
                 style={{
                     marginBottom: "2rem",
                 }}
+                wrap
             >
                 <Col
-                    span={24}
+                    xs={12}
+                    sm={12}
+                    md={24}
+                    lg={24}
+                    xl={24}
+                    xxl={24}
                     style={{
                         display: "flex",
                         flexDirection: "row",
+                        marginBottom: isMobile ? "2rem" : "1rem",
                     }}
                 >
                     <Statistic
@@ -76,9 +87,8 @@ export default function PolicyStatsHeadlineNumbers({
                         />
                     </Tooltip>
                 </Col>
-            </Row>
-            <Row>
-                <Col span={8}>
+
+                <Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
                     <Statistic
                         title="Total value of submitted assets"
                         value={Math.round(data.total_asset_value)}
@@ -87,7 +97,7 @@ export default function PolicyStatsHeadlineNumbers({
                         formatter={formatter}
                     />
                 </Col>
-                <Col span={8}>
+                <Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
                     <Statistic
                         title="Average Asset Value"
                         value={Math.round(data.asset_value_summary.mean)}
@@ -95,7 +105,7 @@ export default function PolicyStatsHeadlineNumbers({
                         formatter={formatter}
                     />
                 </Col>
-                <Col span={8}>
+                <Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
                     <Statistic
                         title="Median Loss Cost"
                         value={Math.round(data.loss_rate_summary.mean)}

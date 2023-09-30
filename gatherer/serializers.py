@@ -8,6 +8,8 @@ from gatherer.models import (
 
 
 class PolicyLinePropertySerializer(ModelSerializer):
+    num_contributions = CharField(read_only=True, allow_null=True)
+
     class Meta:
         model = PolicyLineProperty
         fields = "__all__"

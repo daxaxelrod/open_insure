@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React from "react";
 import { LossCostByAge } from "../../../../../redux/reducers/types/actuaryTypes";
+import { Grid } from "antd";
 import {
     Chart as ChartJS,
     LinearScale,
@@ -18,6 +19,8 @@ export default function LossByAgeBySeverityScatterPlot({
 }: {
     data: LossCostByAge[];
 }) {
+    const grid = Grid.useBreakpoint();
+    const isMobile = !grid.md && (grid.sm || grid.xs);
     const dataPointCounts: { [key: string]: number } = {};
     data.forEach((item) => {
         const key = `${item.average_age_of_loss}_${item.total_value_lost}`;
@@ -94,7 +97,7 @@ export default function LossByAgeBySeverityScatterPlot({
     };
 
     return (
-        <div style={{ padding: "1rem" }}>
+        <div style={{ padding: isMobile ? 0 : "1rem" }}>
             <Scatter data={scatterData} options={scatterOptions} />
         </div>
     );

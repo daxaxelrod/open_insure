@@ -46,9 +46,9 @@ export const getActuarialStatsForPolicyLine =
                 payload: response.data,
             });
         } catch (error) {
+            console.log("get actuarial stats for policy line error", error);
             dispatch({
                 type: GET_ACTUARIAL_STATS_FOR_POLICY_LINE_FAILURE,
-                payload: error,
             });
         }
     };
