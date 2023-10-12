@@ -7,6 +7,7 @@ from policies.models import Premium
 from policies.risk.emails import (
     send_unpaid_premium_due_soon,
     send_unpaid_premium_should_have_been_marked_paid,
+    send_unpaid_premiums_report_to_escrow_agent,
 )
 
 logger = logging.getLogger(__name__)
@@ -65,9 +66,11 @@ def unpaid_premiums_escrow_agent_notification_job():
         else:
             aggregate_per_escrow_agent[escrow_agent.id] = [premium]
 
-    for escrow_agent_id, premiums in aggregate_per_escrow_agent.items():
+    for premiums in aggregate_per_escrow_agent.values():
         escrow_agent = premiums[0].policy.escrow_manager
-        logger.info(f"Sending report to {escrow_agent.email}")
+        logger.info(
+            f"Sending unpaid premiums report to {escrow_agent.email} for policy {premiums[0].policy.name}"
+        )
         send_unpaid_premiums_report_to_escrow_agent(escrow_agent, premiums)
 
 

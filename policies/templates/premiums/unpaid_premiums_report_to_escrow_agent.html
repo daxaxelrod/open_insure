@@ -25,7 +25,7 @@
 </head>
 
 <body>
-    <p>Hello,</p>
+    <p>Hello {{escrow_agent.first_name}},</p>
     <p>You are the escrow agent on file for {{policy.name}}. Premiums were due 3 days ago, here is a list of all the
         people who haven't been marked as paid.</p>
     <table>
@@ -37,11 +37,11 @@
             </tr>
         </thead>
         <tbody>
-            {% for row in table_data %}
+            {% for premium in unpaid_premiums %}
             <tr>
-                <td>{{ row.name }}</td>
-                <td>{{ row.email }}</td>
-                <td>{{ row.premium_amount }}</td>
+                <td>{{ premium.payer.first_name }} {{ premium.payer.last_name }}</td>
+                <td>{{ premium.payer.email }}</td>
+                <td>${{ premium.amount / 100 |floatformat:2 }}</td>
             </tr>
             {% endfor %}
         </tbody>
