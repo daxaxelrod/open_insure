@@ -33,7 +33,8 @@
             <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Premium amound</th>
+                <th>Premium amount</th>
+                <th>Premium due</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,7 @@
                 <td>{{ premium.payer.first_name }} {{ premium.payer.last_name }}</td>
                 <td>{{ premium.payer.email }}</td>
                 <td>${{ premium.amount / 100 |floatformat:2 }}</td>
+                <td>${{ premium.due_date|timesince }}</td>
             </tr>
             {% endfor %}
         </tbody>
