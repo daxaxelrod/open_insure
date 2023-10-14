@@ -90,7 +90,7 @@ def schedule_email_premium_notification_emails(scheduler: BackgroundScheduler):
     )
     scheduler.add_job(
         unpaid_premiums_escrow_agent_notification_job,
-        CronTrigger.from_crontab("0 19 * * *"),
+        CronTrigger.from_crontab("0 17 * * *"),
         replace_existing=True,
         id="unpaid_premiums_escrow_agent_notification",
     )
