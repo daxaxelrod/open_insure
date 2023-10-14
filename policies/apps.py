@@ -13,7 +13,9 @@ class PoliciesConfig(AppConfig):
     def ready(self) -> None:
         import policies.signals
         import policies.risk.signals
-        from policies.risk.email_scheduler import schedule_email_premium_notification_emails
+        from policies.risk.email_scheduler import (
+            schedule_email_premium_notification_emails,
+        )
 
         # setup scheduler
         if settings.IS_MAIN_SCHEDULER:

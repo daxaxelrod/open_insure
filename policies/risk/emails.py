@@ -1,15 +1,18 @@
+import datetime
 import logging
 
 from pods.models import User
 from policies.models import Policy, PolicyRiskSettings, Premium
 
+from django.utils import timesince
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from django.utils import timezone
 
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
+from policies.serializers import PremiumSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -153,12 +156,26 @@ def send_unpaid_premium_should_have_been_marked_paid(premium: Premium):
 def send_unpaid_premiums_report_to_escrow_agent(
     escrow_agent: User, premiums: list[Premium]
 ):
+    policy = premiums[0].policy
+    policy_link = f"{settings.FRONTEND_URL}/policy/{policy.id}"
     html_message = render_to_string(
         "premiums/unpaid_premiums_report_to_escrow_agent.html",
         {
-            "unpaid_premiums": premiums,
+            "unpaid_premiums": [
+                {
+                    # this is extremely expensive/slow but fine for now, formated data is more important
+                    **PremiumSerializer(x).data,
+                    "payer__first_name": x.payer.first_name,
+                    "payer__last_name": x.payer.last_name,
+                    "payer__email": x.payer.email,
+                    "premium_formated": round(x.amount / 100, 2),
+                    "due_date": timesince.timesince(x.due_date),
+                }
+                for x in premiums
+            ],
             "escrow_agent": escrow_agent,
-            "policy": premiums[0].policy,
+            "policy": policy,
+            "policy_link": policy_link,
         },
     )
     plain_message = strip_tags(html_message)

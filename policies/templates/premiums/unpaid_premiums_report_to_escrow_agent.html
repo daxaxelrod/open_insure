@@ -25,7 +25,7 @@
 </head>
 
 <body>
-    <p>Hello {{escrow_agent.first_name}},</p>
+    <p>Hello {{escrow_agent.first_name|capfirst}},</p>
     <p>You are the escrow agent on file for {{policy.name}}. Premiums were due 3 days ago, here is a list of all the
         people who haven't been marked as paid.</p>
     <table>
@@ -40,14 +40,19 @@
         <tbody>
             {% for premium in unpaid_premiums %}
             <tr>
-                <td>{{ premium.payer.first_name }} {{ premium.payer.last_name }}</td>
-                <td>{{ premium.payer.email }}</td>
-                <td>${{ premium.amount / 100 |floatformat:2 }}</td>
-                <td>${{ premium.due_date|timesince }}</td>
+                <td>{{ premium.payer__first_name }} {{ premium.payer__last_name }}</td>
+                <td>{{ premium.payer__email }}</td>
+                <td>${{ premium.premium_formated }}</td>
+                <td>{{ premium.due_date }} ago</td> <!-- formatted as timesince -->
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <p>Reach out to fellow members or visit <a href="{{ policy_link }}">your policy</a> to update member statuses.</p>
+    <p>Thanks,</p>
+    <p>Open Insure System</p>
+
 </body>
 
 </html>
