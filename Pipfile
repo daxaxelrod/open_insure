@@ -18,6 +18,7 @@ drf-nested-routers = "*"
 pillow = "*"
 numpy = "*"
 scipy = "*"
+scrapy = "*"
 
 [dev-packages]
 black = "*"
