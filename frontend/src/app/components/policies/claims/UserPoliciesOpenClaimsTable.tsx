@@ -18,15 +18,20 @@ interface ClaimRowType extends Claim {
 
 export default function UserPoliciesOpenClaimsTable() {
     const userPolicies = useAppSelector((state) => state.policies.userPolicies);
-    const allOpenClaims = userPolicies
-        .reduce(
-            (previousValue: Policy[], policy: Policy) => [
-                ...previousValue,
-                ...policy.claims,
-            ],
-            []
-        )
-        .filter((claim: Claim) => !claim.is_claim_invalid && !claim.paid_on);
+    console.log("userPolicies", userPolicies);
+
+    const allOpenClaims =
+        userPolicies
+            ?.reduce(
+                (previousValue: Policy[], policy: Policy) => [
+                    ...previousValue,
+                    ...(policy?.claims || []),
+                ],
+                []
+            )
+            ?.filter(
+                (claim: Claim) => !claim.is_claim_invalid && !claim.paid_on
+            ) || [];
 
     const columns: ColumnsType<ClaimRowType> = [
         {

@@ -65,59 +65,58 @@ export default function NavBar() {
                 paddingLeft: 0,
                 paddingRight: 0,
                 background: "#f0f2f5",
+                height: "100%",
                 paddingTop: 10,
                 paddingBottom: 10,
             }}
         >
             <Row align="middle">
                 <Col
-                    xs={{ span: 15, offset: 2 }}
-                    sm={{ span: 14, offset: 2 }}
+                    xs={{ span: 10, offset: 2 }}
+                    sm={{ span: 10, offset: 2 }}
                     md={{ span: 15, offset: 2 }}
-                    lg={{ span: 16, offset: 3 }}
-                    xl={{ span: 15, offset: 3 }}
+                    lg={{ span: 14, offset: 2 }}
+                    xl={{ span: 14, offset: 2 }}
                 >
-                    {loggedIn && (
-                        <Title level={4} style={{ margin: 0 }}>
-                            &nbsp;Hi {currentUser?.first_name}
-                        </Title>
-                    )}
-
                     {isMedOrBelow && loggedIn ? (
                         <Dropdown
                             menu={{ items }}
                             trigger={["click"]}
                             onOpenChange={(open: boolean) => setOpen(open)}
                         >
-                            <Space>
+                            <div style={{ position: "relative" }}>
                                 <Hamburger
                                     toggled={isOpen}
                                     toggle={setOpen}
                                     size={20}
                                 />
-                            </Space>
+                            </div>
                         </Dropdown>
-                    ) : (
+                    ) : !loggedIn ? (
                         <Link to="/">
                             <Title level={4} style={{ margin: 0 }}>
                                 Open Insure&nbsp;
                             </Title>
                         </Link>
+                    ) : (
+                        <Title level={4} style={{ margin: 0 }}>
+                            &nbsp;Hi {currentUser?.first_name}
+                        </Title>
                     )}
                 </Col>
-                <Col
-                    xs={{ span: 6 }}
-                    sm={{ span: 6 }}
-                    md={{ span: 4 }}
-                    lg={{ span: 4 }}
-                    style={{ textAlign: "right" }}
-                >
-                    {!loggedIn && (
+                {!loggedIn && (
+                    <Col
+                        xs={{ span: 6 }}
+                        sm={{ span: 6 }}
+                        md={{ span: 4 }}
+                        lg={{ span: 4 }}
+                        style={{ textAlign: "right" }}
+                    >
                         <Link to={"/join"}>
                             <Button type="link">Register</Button>
                         </Link>
-                    )}
-                </Col>
+                    </Col>
+                )}
             </Row>
         </Header>
     );
