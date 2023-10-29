@@ -155,6 +155,14 @@ class Risk(models.Model):
         validators=[MinValueValidator(100)], help_text="in cents", null=True, blank=True
     )
 
+    is_premium_amount_overridden = models.BooleanField(
+        default=False,
+        help_text="If true, the premium amount was overridden by the escrow agent",
+    )
+    premium_amount_overridden_on = models.DateTimeField(
+        null=True, blank=True, help_text="When the escrow agent overrode the premium"
+    )
+
     # the details of the underlying asset, see risk -> models.py
     underlying_insured_type = models.CharField(
         choices=UNDERLYING_INSURED_TYPE, max_length=32, null=True, blank=True

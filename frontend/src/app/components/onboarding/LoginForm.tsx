@@ -72,7 +72,7 @@ export default function LoginForm() {
                 ]}
             >
                 <Input
-                    placeholder="email"
+                    placeholder="Edward@lloyds.com"
                     type={"email"}
                     autoComplete="email"
                 />
@@ -85,7 +85,10 @@ export default function LoginForm() {
                     { required: true, message: "Please input your password!" },
                 ]}
             >
-                <Input.Password autoComplete="current-password" />
+                <Input.Password
+                    autoComplete="current-password"
+                    placeholder="******"
+                />
             </Form.Item>
 
             <Form.Item

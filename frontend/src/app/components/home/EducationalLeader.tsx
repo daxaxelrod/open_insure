@@ -95,8 +95,9 @@ export default function EducationalLeader() {
                             paddingRight: isMobile ? "1rem" : 0,
                         }}
                     >
-                        Open Insure lets you self-insure your personal property
-                        on a modern web platform
+                        Open Insure makes it easy for you to{" "}
+                        <strong>self-insure</strong> your personal property on a
+                        modern web platform
                     </Paragraph>
                     <div
                         style={{

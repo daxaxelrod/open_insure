@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 django-environ = "*"
-django = "*"
+django = "==4.2.6"
 djangorestframework = "*"
 django-cors-headers = "*"
 dr-cli = "*"
