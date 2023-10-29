@@ -1,3 +1,16 @@
+export interface TrustworthinessDetails {
+    calculated_on: string;
+    next_refresh_available: string;
+    total_score: number;
+    components: {
+        payments: number;
+        claims: number;
+        background: number;
+        activity: number;
+        lifestyle: number;
+    };
+}
+
 export interface User {
     id: number;
     first_name: string;
@@ -10,6 +23,7 @@ export interface User {
 
     linkedin_url?: string;
     twitter_url?: string;
+    trustworthiness?: TrustworthinessDetails;
 }
 
 export interface Premium {

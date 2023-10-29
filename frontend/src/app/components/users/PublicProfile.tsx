@@ -46,7 +46,7 @@ export default function PublicProfile({}) {
                 <Col span={8}>
                     <UserHeader user={user} />
                 </Col>
-                <Col span={8}>
+                <Col span={11}>
                     <UserOpenInsureRating user={user} />
                 </Col>
             </Row>

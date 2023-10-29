@@ -10,12 +10,22 @@ const { Title, Paragraph } = Typography;
 export default function UserHeader({ user }: { user: User }) {
     return (
         <div>
-            <Title>
+            <Title style={{ marginBottom: ".25rem" }}>
                 {user?.first_name} {user?.last_name}
             </Title>
-            <Flex gap={10}>
-                {user?.linkedin_url && <LinkedinOutlined />}
-                {user?.twitter_url && <TwitterOutlined />}
+            <Flex
+                gap={10}
+                style={{
+                    backgroundColor: colors.gray1,
+                    marginBottom: ".25rem",
+                }}
+            >
+                {user?.linkedin_url && (
+                    <LinkedinOutlined style={{ color: colors.linkColor }} />
+                )}
+                {user?.twitter_url && (
+                    <TwitterOutlined style={{ color: colors.linkColor }} />
+                )}
             </Flex>
             <Paragraph
                 style={{

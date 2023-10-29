@@ -132,6 +132,8 @@ class UserSerializer(ModelSerializer):
             "updated_at",
             "verified_email",
             "pods",
+            "linkedin_url",
+            "twitter_url",
         ]
 
 
