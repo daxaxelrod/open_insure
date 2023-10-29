@@ -8,26 +8,27 @@ import { ReloadOutlined } from "@ant-design/icons";
 const { Title, Paragraph } = Typography;
 
 export default function UserOpenInsureRating({ user }: { user: User }) {
-    const { trustworthiness } = user;
+    const { reputation } = user;
+    const { total_score } = reputation || {};
 
-    const hasScore = !!trustworthiness?.total_score;
+    const hasScore = !!total_score;
 
     const scoreLeaderText = useMemo(() => {
-        if (trustworthiness?.total_score) {
-            if (trustworthiness?.total_score >= 80) {
+        if (total_score) {
+            if (total_score >= 80) {
                 return "Excellent";
-            } else if (trustworthiness?.total_score >= 60) {
+            } else if (total_score >= 60) {
                 return "Good";
-            } else if (trustworthiness?.total_score >= 40) {
+            } else if (total_score >= 40) {
                 return "Fair";
-            } else if (trustworthiness?.total_score >= 20) {
+            } else if (total_score >= 20) {
                 return "Poor";
             } else {
                 return "Very Poor";
             }
         }
         return "No score yet";
-    }, [trustworthiness?.total_score]);
+    }, [total_score]);
 
     return (
         <>
@@ -48,7 +49,7 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
                 </div>
                 <Progress
                     type="dashboard"
-                    percent={trustworthiness?.total_score || 0}
+                    percent={total_score || 0}
                     strokeColor={{
                         "0%": colors.good,
                         "100%": colors.lightGood,

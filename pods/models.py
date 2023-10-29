@@ -169,3 +169,44 @@ class UserBadge(models.Model):
 
     def __str__(self):
         return f"{self.user} has {self.badge}"
+
+
+class ReputationDetails(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="reputation_results"
+    )
+    calculated_on = models.DateTimeField()
+    next_refresh_available = models.DateTimeField(
+        help_text="When the next refresh is available"
+    )
+    total_score = models.DecimalField(max_digits=5, decimal_places=2)
+    payments = models.DecimalField(
+        max_digits=5, decimal_places=2, help_text="On time payments, volume of payments"
+    )
+    claims = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        help_text="claims made by user and how often the user is on the right side of claim votes",
+    )
+    background = models.DecimalField(
+        max_digits=5, decimal_places=2, help_text="Profession, education, etc"
+    )
+    activity = models.DecimalField(
+        max_digits=5, decimal_places=2, help_text="Platform activity"
+    )
+    lifestyle = models.DecimalField(
+        max_digits=5, decimal_places=2, help_text="Location, high risk hobbies"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Reputation Details (calculated on {self.calculated_on})"
+
+
+class EmailSettings(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    are_emails_enabled = models.BooleanField(default=True)
+    notify_of_new_reputation_score = models.BooleanField(default=True)

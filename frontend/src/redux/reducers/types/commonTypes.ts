@@ -1,4 +1,4 @@
-export interface TrustworthinessDetails {
+export interface ReputationDetails {
     calculated_on: string;
     next_refresh_available: string;
     total_score: number;
@@ -23,7 +23,7 @@ export interface User {
 
     linkedin_url?: string;
     twitter_url?: string;
-    trustworthiness?: TrustworthinessDetails;
+    reputation?: ReputationDetails;
 }
 
 export interface Premium {
