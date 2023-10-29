@@ -7,6 +7,9 @@ export interface User {
     created_at: string;
     updated_at: string;
     verified_email: boolean;
+
+    linkedin_url?: string;
+    twitter_url?: string;
 }
 
 export interface Premium {

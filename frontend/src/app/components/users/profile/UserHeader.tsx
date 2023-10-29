@@ -1,7 +1,7 @@
-import { Typography } from "antd";
+import { Flex, Typography } from "antd";
 import React from "react";
 import { User } from "../../../../redux/reducers/types/commonTypes";
-import { MailOutlined } from "@ant-design/icons";
+import { LinkedinOutlined, TwitterOutlined } from "@ant-design/icons";
 import colors from "../../../constants/colors";
 import moment from "moment-timezone";
 
@@ -13,6 +13,10 @@ export default function UserHeader({ user }: { user: User }) {
             <Title>
                 {user?.first_name} {user?.last_name}
             </Title>
+            <Flex gap={10}>
+                {user?.linkedin_url && <LinkedinOutlined />}
+                {user?.twitter_url && <TwitterOutlined />}
+            </Flex>
             <Paragraph
                 style={{
                     color: colors.gray8,

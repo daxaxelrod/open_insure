@@ -18,6 +18,9 @@ class User(AbstractUser):
         max_length=1, null=True, blank=True, choices=GENDER_CHOICES
     )
 
+    linkedin_url = models.URLField(null=True, blank=True)
+    twitter_url = models.URLField(null=True, blank=True)
+
 
 class Pod(models.Model):
     """One pod per policy"""

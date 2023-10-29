@@ -18,7 +18,11 @@ class UserAdmin(UserAdmin):
     model = User
 
     fieldsets = UserAdmin.fieldsets + (
-        (None, {"fields": ("picture", "verified_email", "gender", "birthday")}),
+        (
+            "Custom Fields",
+            {"fields": ("picture", "verified_email", "gender", "birthday")},
+        ),
+        ("Socials", {"fields": ("linkedin_url", "twitter_url")}),
     )
 
 
