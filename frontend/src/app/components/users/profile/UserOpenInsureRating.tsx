@@ -1,15 +1,21 @@
 import React, { useMemo } from "react";
-import { Col, Flex, Progress, Row } from "antd";
+import { Col, Flex, Progress, Row, Spin } from "antd";
 import { User } from "../../../../redux/reducers/types/commonTypes";
 import colors from "../../../constants/colors";
 import { Typography } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { getUserRepuation } from "../../../../redux/actions/users";
 
 const { Title, Paragraph } = Typography;
 
 export default function UserOpenInsureRating({ user }: { user: User }) {
     const { reputation } = user;
     const { total_score } = reputation || {};
+    const dispatch = useAppDispatch();
+    const getReputationPending = useAppSelector(
+        (state) => state.users.getUserReputationPending
+    );
 
     const hasScore = !!total_score;
 
@@ -30,6 +36,10 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
         return "No score yet";
     }, [total_score]);
 
+    const getReputation = () => {
+        dispatch(getUserRepuation(user.id));
+    };
+
     return (
         <>
             <Flex>
@@ -39,13 +49,33 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
                         top: 0,
                         right: 0,
                         zIndex: 1,
-                        display: "flex",
                     }}
                 >
-                    <ReloadOutlined
-                        style={{ marginRight: 4, color: colors.gray7 }}
-                    />
-                    <Paragraph style={{ marginBottom: 0 }}>Refresh</Paragraph>
+                    <div
+                        onClick={getReputation}
+                        style={{
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexDirection: "row",
+                        }}
+                    >
+                        {getReputationPending ? (
+                            <Spin />
+                        ) : (
+                            <ReloadOutlined style={{ color: colors.gray7 }} />
+                        )}
+                        <Paragraph
+                            style={{
+                                marginLeft: 6,
+                                marginBottom: 0,
+                                color: colors.gray9,
+                            }}
+                        >
+                            Refresh
+                        </Paragraph>
+                    </div>
                 </div>
                 <Progress
                     type="dashboard"

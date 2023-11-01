@@ -13,3 +13,7 @@ export function joinMailingList(email: string) {
 export function getUserDetail(userId: number) {
     return axiosInstance.get(`/api/v1/users/${userId}/`);
 }
+
+export function getUserReputation(userId: number) {
+    return axiosInstance.get(`/api/v1/users/${userId}/reputation/`);
+}

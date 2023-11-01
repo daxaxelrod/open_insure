@@ -12,48 +12,50 @@ from linkedin_scraper import Person, actions
 
 linkedin_email = settings.LINKEDIN_EMAIL
 linkedin_password = settings.LINKEDIN_PASSWORD
-driver = webdriver.Chrome()
 
 
-def scrape_linkedin_profile(linked_url):
-    if not linked_url:
+def scrape_linkedin_profile(linkedin_url) -> Person:
+    if not linkedin_url:
         return {}
+    driver = webdriver.Chrome()
+    # login action prevents security check
     actions.login(driver, linkedin_email, linkedin_password)
-    person = Person(linked_url, driver=driver)
-    import pdb
-
-    pdb.set_trace()
-    profile = {}
-    return profile
+    person = Person(linkedin_url, driver=driver)
+    return person
 
 
 def determine_reputation_for_user(user):
-    last_reputation: ReputationDetails = user.reputation_results.latest("created_at")
-    now = timezone.now()
-    if now < last_reputation.next_refresh_available:
-        return last_reputation
-    else:
-        linkedin_profile = scrape_linkedin_profile(user.linked_url)
-
-        payments = get_reputation_from_payments(user)
-        claims = get_reputation_from_claims(user)
-        background = get_reputation_from_background(user, linkedin_profile)
-        activity = get_reputation_from_activity(user)
-        lifestyle = get_reputation_from_lifestyle(user, linkedin_profile)
-
-        total_score = (payments + claims + background + activity + lifestyle) / 5
-
-        reputation = ReputationDetails.objects.create(
-            user=user,
-            calculated_on=timezone.now(),
-            next_refresh_available=now
-            + timezone.timedelta(days=settings.REPUTATION_REFRESH_COOLDAY_DAYS),
-            total_score=total_score,
-            payments=payments,
-            claims=claims,
-            background=background,
-            activity=activity,
-            lifestyle=lifestyle,
+    try:
+        last_reputation: ReputationDetails = user.reputation_results.latest(
+            "created_at"
         )
+        now = timezone.now()
+        if last_reputation and now < last_reputation.next_refresh_available:
+            return last_reputation
+    except ReputationDetails.DoesNotExist:
+        pass
 
-        return reputation
+    linkedin_profile = scrape_linkedin_profile(user.linkedin_url)
+
+    payments = get_reputation_from_payments(user)
+    claims = get_reputation_from_claims(user)
+    background = get_reputation_from_background(user, linkedin_profile)
+    activity = get_reputation_from_activity(user)
+    lifestyle = get_reputation_from_lifestyle(user, linkedin_profile)
+
+    total_score = (payments + claims + background + activity + lifestyle) / 5
+
+    reputation = ReputationDetails.objects.create(
+        user=user,
+        calculated_on=timezone.now(),
+        next_refresh_available=now
+        + timezone.timedelta(days=settings.REPUTATION_REFRESH_COOLDAY_DAYS),
+        total_score=total_score,
+        payments=payments,
+        claims=claims,
+        background=background,
+        activity=activity,
+        lifestyle=lifestyle,
+    )
+
+    return reputation

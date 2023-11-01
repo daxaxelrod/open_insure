@@ -4,17 +4,22 @@ import {
     GET_USER_DETAIL_PENDING,
     GET_USER_DETAIL_SUCCESS,
     GET_USER_DETAIL_FAILURE,
+    GET_USER_REPUTATION_PENDING,
+    GET_USER_REPUTATION_SUCCESS,
+    GET_USER_REPUTATION_FAILURE,
 } from "../actions/types";
 import { User, Policy } from "./types/commonTypes";
 
 export interface UIState {
     getUserDetailPending: boolean;
     users: Record<number, User>;
+    getUserReputationPending: boolean;
 }
 
 const initialState: UIState = {
     users: {},
     getUserDetailPending: false,
+    getUserReputationPending: false,
 };
 
 export default (state = initialState, { type, payload }: AnyAction) => {
@@ -52,6 +57,28 @@ export default (state = initialState, { type, payload }: AnyAction) => {
             return {
                 ...state,
                 getUserDetailPending: false,
+            };
+        case GET_USER_REPUTATION_PENDING:
+            return {
+                ...state,
+                getUserReputationPending: true,
+            };
+        case GET_USER_REPUTATION_SUCCESS:
+            return {
+                ...state,
+                getUserReputationPending: false,
+                users: {
+                    ...state.users,
+                    [payload.userId]: {
+                        ...state.users[payload.userId],
+                        reputation: payload.reputation,
+                    },
+                },
+            };
+        case GET_USER_REPUTATION_FAILURE:
+            return {
+                ...state,
+                getUserReputationPending: false,
             };
 
         default:

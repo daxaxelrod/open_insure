@@ -21,6 +21,7 @@ scipy = "*"
 scrapy = "*"
 linkedin-scraper = "*"
 selenium = "*"
+requests = "*"
 
 [dev-packages]
 black = "*"
