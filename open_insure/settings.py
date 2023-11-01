@@ -27,6 +27,8 @@ env = environ.Env(
     NOTIFY_ADMINS_OF_EVENTS=(bool, False),
     DESIRED_CONTRIBUTION_TO_PREMIUM_CONFIDENCE_LEVEL=(float, 0.95),
     REPUTATION_REFRESH_COOLDAY_DAYS=(int, 7),
+    LINKEDIN_EMAIL=(str, ""),
+    LINKEDIN_PASSWORD=(str, ""),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -235,6 +237,9 @@ LOG_PATH = LOG_DIR + LOG_FILE
 # send admins an email when important events happen
 NOTIFY_ADMINS_OF_EVENTS = env("NOTIFY_ADMINS_OF_EVENTS")
 DEFAULT_FROM_EMAIL = "Open Insure <noreply@openinsure.app>"  # todo, env-ify
+
+LINKEDIN_EMAIL = env("LINKEDIN_EMAIL")
+LINKEDIN_PASSWORD = env("LINKEDIN_PASSWORD")
 
 LOGGING = {
     "version": 1,

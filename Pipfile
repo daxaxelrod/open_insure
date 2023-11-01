@@ -19,6 +19,8 @@ pillow = "*"
 numpy = "*"
 scipy = "*"
 scrapy = "*"
+linkedin-scraper = "*"
+selenium = "*"
 
 [dev-packages]
 black = "*"
