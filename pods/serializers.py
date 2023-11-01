@@ -11,7 +11,7 @@ from rest_framework.serializers import (
     # SerializerMethodField,
     DateTimeField,
 )
-from pods.models import Pod, PodInvite, User, UserPod
+from pods.models import Pod, PodInvite, ReputationDetails, User, UserPod
 
 from pods.utils.custom_serializers import FieldExcludableModelSerializer
 from rest_framework_simplejwt.serializers import (
@@ -192,3 +192,9 @@ class TokenObtainPairSerializer(SimpleTokenObtainPairSerializer):
     default_error_messages = {
         "no_active_account": "Username or password is incorrect",
     }
+
+
+class ReputationSerializer(Serializer):
+    class Meta:
+        model = ReputationDetails
+        fields = "__all__"

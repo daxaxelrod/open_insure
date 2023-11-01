@@ -13,9 +13,11 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, SAFE_METHODS
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.views import APIView
 from pods.models import Pod, PodInvite, User, WaitlistMember
+from pods.reputation.reputation import determine_reputation_for_user
 from pods.serializers import (
     InviteSerializer,
     PodSerializer,
+    ReputationSerializer,
     UserSerializer,
     PatchableUserSerializer,
     PodInviteSerializer,
@@ -194,6 +196,12 @@ class UserViewSet(ModelViewSet):
                 "claims": claims_serializer.data,
             }
         )
+
+    @action(detail=True, methods=["GET"])
+    def reputation(self, request, **kwargs):
+        user = self.get_object()
+        reputation = determine_reputation_for_user(user)
+        return Response(ReputationSerializer(reputation).data, status=HTTP_200_OK)
 
 
 class SelfView(RetrieveUpdateAPIView):

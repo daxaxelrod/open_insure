@@ -20,6 +20,9 @@ def scrape_linkedin_profile(linked_url):
         return {}
     actions.login(driver, linkedin_email, linkedin_password)
     person = Person(linked_url, driver=driver)
+    import pdb
+
+    pdb.set_trace()
     profile = {}
     return profile
 
