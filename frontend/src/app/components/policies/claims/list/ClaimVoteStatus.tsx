@@ -46,10 +46,15 @@ export default function ClaimVoteStatus({
     strokeWidth?: number;
     withRedLine?: boolean;
 }) {
-    let approvals = claim.approvals;
-    let acceptances = approvals.filter((a: ClaimApproval) => a.approved).length;
-    let rejections = approvals.filter((a: ClaimApproval) => !a.approved).length;
-    let percent = (acceptances / (acceptances + rejections)) * 100;
+    const approvals = claim.approvals;
+    const acceptances = approvals.filter(
+        (a: ClaimApproval) => a.approved
+    ).length;
+    const rejections = approvals.filter(
+        (a: ClaimApproval) => !a.approved
+    ).length;
+    const percent = (acceptances / (acceptances + rejections)) * 100;
+    const rejectionsPercent = (rejections / (acceptances + rejections)) * 100;
 
     return (
         <div
@@ -60,13 +65,15 @@ export default function ClaimVoteStatus({
             }}
         >
             <Progress
-                percent={parseFloat(percent.toFixed(0))}
+                success={{ percent: parseFloat(percent.toFixed(0)) }}
+                percent={parseFloat(rejectionsPercent.toFixed(0))}
                 strokeWidth={strokeWidth}
                 status={
                     percent >= policy.claim_approval_threshold_percentage
                         ? "success"
-                        : "normal"
+                        : "exception"
                 }
+                showInfo={false}
             />
             {withRedLine && (
                 <ThresholdBar

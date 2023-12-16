@@ -115,6 +115,9 @@ export default function NavBar() {
                         <Link to={"/join"}>
                             <Button type="link">Register</Button>
                         </Link>
+                        <Link to={"/login"}>
+                            <Button type="link">Login</Button>
+                        </Link>
                     </Col>
                 )}
             </Row>
