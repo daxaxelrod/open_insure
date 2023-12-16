@@ -6,6 +6,8 @@ import { Typography } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { getUserRepuation } from "../../../../redux/actions/users";
+import { Collapse } from "antd";
+import RatingDetails from "./ratings/RatingDetails";
 
 const { Title, Paragraph } = Typography;
 
@@ -18,6 +20,8 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
     );
 
     const hasScore = !!total_score;
+
+    console.log("reputation", reputation);
 
     const scoreLeaderText = useMemo(() => {
         if (total_score) {
@@ -40,76 +44,92 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
         dispatch(getUserRepuation(user.id));
     };
 
-    return (
-        <>
-            <Flex>
+    const reputationHeader = (
+        <Flex>
+            <div
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    zIndex: 1,
+                }}
+            >
                 <div
+                    onClick={getReputation}
                     style={{
-                        position: "absolute",
-                        top: 0,
-                        right: 0,
-                        zIndex: 1,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "row",
                     }}
                 >
-                    <div
-                        onClick={getReputation}
+                    {getReputationPending ? (
+                        <Spin />
+                    ) : (
+                        <ReloadOutlined style={{ color: colors.gray7 }} />
+                    )}
+                    <Paragraph
                         style={{
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexDirection: "row",
+                            marginLeft: 6,
+                            marginBottom: 0,
+                            color: colors.gray9,
                         }}
                     >
-                        {getReputationPending ? (
-                            <Spin />
-                        ) : (
-                            <ReloadOutlined style={{ color: colors.gray7 }} />
-                        )}
-                        <Paragraph
+                        Refresh
+                    </Paragraph>
+                </div>
+            </div>
+            <Progress
+                type="dashboard"
+                percent={total_score || 0}
+                strokeColor={{
+                    "0%": colors.good,
+                    "100%": colors.lightGood,
+                }}
+                format={(percent) => (
+                    <div>
+                        {percent}
+                        <div
                             style={{
-                                marginLeft: 6,
-                                marginBottom: 0,
-                                color: colors.gray9,
+                                color: colors.gray8,
+                                fontSize: 12,
+                                marginTop: 4,
                             }}
                         >
-                            Refresh
-                        </Paragraph>
-                    </div>
-                </div>
-                <Progress
-                    type="dashboard"
-                    percent={total_score || 0}
-                    strokeColor={{
-                        "0%": colors.good,
-                        "100%": colors.lightGood,
-                    }}
-                    format={(percent) => (
-                        <div>
-                            {percent}
-                            <div
-                                style={{
-                                    color: colors.gray8,
-                                    fontSize: 12,
-                                    marginTop: 4,
-                                }}
-                            >
-                                Score
-                            </div>
+                            Score
                         </div>
-                    )}
-                />
-                <Col sm={{ offset: 2 }}>
-                    <Title level={4}>{scoreLeaderText}</Title>
-                    {hasScore ? (
-                        <Paragraph style={{ color: colors.gray8 }}></Paragraph>
-                    ) : (
-                        <Paragraph style={{ color: colors.gray8 }}>
-                            Seems like you dont have a score yet
-                        </Paragraph>
-                    )}
-                </Col>
-            </Flex>
-        </>
+                    </div>
+                )}
+            />
+            <Col sm={{ offset: 2 }}>
+                <Title level={4}>{scoreLeaderText}</Title>
+                {hasScore ? (
+                    <Paragraph style={{ color: colors.gray8 }}></Paragraph>
+                ) : (
+                    <Paragraph style={{ color: colors.gray8 }}>
+                        Seems like you dont have a score yet
+                    </Paragraph>
+                )}
+            </Col>
+        </Flex>
+    );
+
+    if (!reputation) {
+        return reputationHeader;
+    }
+
+    return (
+        <Collapse
+            ghost
+            items={[
+                {
+                    key: "1",
+                    showArrow: false,
+                    label: reputationHeader,
+                    children: <RatingDetails reputation={reputation} />,
+                },
+            ]}
+        />
     );
 }

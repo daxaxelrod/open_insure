@@ -20,12 +20,24 @@ export default function UserHeader({ user }: { user: User }) {
                     marginBottom: ".25rem",
                 }}
             >
-                {user?.linkedin_url && (
-                    <LinkedinOutlined style={{ color: colors.linkColor }} />
-                )}
-                {user?.twitter_url && (
-                    <TwitterOutlined style={{ color: colors.linkColor }} />
-                )}
+                {user?.linkedin_url ? (
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={user.linkedin_url}
+                    >
+                        <LinkedinOutlined style={{ color: colors.linkColor }} />
+                    </a>
+                ) : null}
+                {user?.twitter_url ? (
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={user.twitter_url}
+                    >
+                        <TwitterOutlined style={{ color: colors.linkColor }} />
+                    </a>
+                ) : null}
             </Flex>
             <Paragraph
                 style={{

@@ -170,6 +170,45 @@ class UserBadge(models.Model):
     def __str__(self):
         return f"{self.user} has {self.badge}"
 
+class RegionInfo(models.Model):
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="region_info")
+
+
+class Institution(models.Model):
+    institution_name = models.CharField(max_length=255, null=True, blank=True)
+    linkedin_url = models.URLField(null=True, blank=True)
+    website = models.URLField(null=True, blank=True)
+    industry = models.CharField(max_length=255, null=True, blank=True)
+    type = models.CharField(max_length=255, null=True, blank=True)
+    headquarters = models.CharField(max_length=255, null=True, blank=True)
+    company_size = models.IntegerField(null=True, blank=True)
+    founded = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+class Experience(Institution):
+    from_date = models.DateField(null=True, blank=True)
+    to_date = models.DateField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    position_title = models.CharField(max_length=255, null=True, blank=True)
+    duration = models.CharField(max_length=255, null=True, blank=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="experiences")
+
+class Education(Institution):
+    from_date = models.DateField(null=True, blank=True)
+    to_date = models.DateField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    degree = models.CharField(max_length=255, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="educations")
+
+class Interest(Institution):
+    title = models.CharField(max_length=255, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interests")
 
 class ReputationDetails(models.Model):
     user = models.ForeignKey(
@@ -197,11 +236,16 @@ class ReputationDetails(models.Model):
     lifestyle = models.DecimalField(
         max_digits=5, decimal_places=2, help_text="Location, high risk hobbies"
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Reputation Details (calculated on {self.calculated_on})"
+        return f"Reputation Details of {self.user.name} (calculated on {self.calculated_on})"
+    
+    verbose_name = "Reputation Details"
+    verbose_name_plural = "Reputation Details"
+
 
 
 class EmailSettings(models.Model):

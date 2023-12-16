@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
 
 
-from pods.models import Pod, PodInvite, User, WaitlistMember, UserPod, Badge, UserBadge
+from pods.models import Education, Experience, Interest, Pod, PodInvite, RegionInfo, ReputationDetails, User, WaitlistMember, UserPod, Badge, UserBadge
 
 
 class MembershipInline(admin.TabularInline):
@@ -14,8 +14,28 @@ class PodModelAdmin(admin.ModelAdmin):
     inlines = [MembershipInline]
 
 
+class ExperienceInline(admin.StackedInline):
+    model = Experience
+    extra = 1
+
+
+class EducationInline(admin.StackedInline):
+    model = Education
+    extra = 1
+
+
+class InterestInline(admin.StackedInline):
+    model = Interest
+    extra = 1
+
+class RegionInfoInline(admin.StackedInline):
+    model = RegionInfo
+    extra = 1
+
 class UserAdmin(UserAdmin):
     model = User
+    inlines = [ExperienceInline, EducationInline, InterestInline, RegionInfoInline]
+
 
     fieldsets = UserAdmin.fieldsets + (
         (
@@ -39,6 +59,9 @@ class BadgeAdmin(admin.ModelAdmin):
         "__str__",
         "description",
     ]
+
+
+admin.site.register(ReputationDetails)
 
 
 admin.site.register(User, UserAdmin)

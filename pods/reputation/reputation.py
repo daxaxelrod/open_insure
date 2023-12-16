@@ -1,3 +1,4 @@
+import json
 from pods.models import ReputationDetails
 from django.utils import timezone
 from django.conf import settings
@@ -42,6 +43,12 @@ def determine_reputation_for_user(user):
     background = get_reputation_from_background(user, linkedin_profile)
     activity = get_reputation_from_activity(user)
     lifestyle = get_reputation_from_lifestyle(user, linkedin_profile)
+
+    import pdb; pdb.set_trace()
+
+    with open('./profile.json', 'w') as file:
+            json.dump(linkedin_profile.to_dict(), file)
+
 
     total_score = (payments + claims + background + activity + lifestyle) / 5
 
