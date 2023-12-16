@@ -264,6 +264,9 @@ class Premium(models.Model):
 
     def __str__(self) -> str:
         return f"Premium for {self.policy.name} paid by {self.payer}, due on {self.due_date}"
+    
+    def paid_on_time(self):
+        return self.paid_date <= self.due_date
 
 
 class PolicyCloseout(models.Model):
@@ -354,6 +357,16 @@ class Claim(models.Model):
             return False
         return (approved_count / all_approvals_count) >= (
             self.policy.claim_approval_threshold_percentage / 100
+        )
+    
+    def is_denied(self):
+        all_approvals_count = self.approvals.count()
+        denied_count = self.approvals.filter(approved=False).count()
+        if all_approvals_count == 0:
+            # approvals not created for some reason, shouldnt happen
+            return False
+        return (denied_count / all_approvals_count) >= (
+            (100 - self.policy.claim_approval_threshold_percentage) / 100
         )
 
     def has_evidence(self):

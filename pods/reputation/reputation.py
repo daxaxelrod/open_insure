@@ -36,18 +36,13 @@ def determine_reputation_for_user(user):
     except ReputationDetails.DoesNotExist:
         pass
 
-    linkedin_profile = scrape_linkedin_profile(user.linkedin_url)
+    # linkedin_profile = scrape_linkedin_profile(user.linkedin_url)
 
     payments = get_reputation_from_payments(user)
     claims = get_reputation_from_claims(user)
-    background = get_reputation_from_background(user, linkedin_profile)
+    background = get_reputation_from_background(user)
     activity = get_reputation_from_activity(user)
-    lifestyle = get_reputation_from_lifestyle(user, linkedin_profile)
-
-    import pdb; pdb.set_trace()
-
-    with open('./profile.json', 'w') as file:
-            json.dump(linkedin_profile.to_dict(), file)
+    lifestyle = get_reputation_from_lifestyle(user)
 
 
     total_score = (payments + claims + background + activity + lifestyle) / 5
