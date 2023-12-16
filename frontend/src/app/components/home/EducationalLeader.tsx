@@ -29,10 +29,10 @@ export default function EducationalLeader() {
             }}
         >
             <Col
-                xxl={{ span: 10, offset: 0 }}
+                xxl={{ span: 10, offset: 3 }}
                 xl={{ span: 12, offset: 3 }}
                 lg={{ span: 14, offset: 2 }}
-                md={{ span: 18, offset: 3 }}
+                md={{ span: 18, offset: 2 }}
                 sm={{ span: 18, offset: 2 }}
                 xs={{ span: 22, offset: 2 }}
                 style={{
