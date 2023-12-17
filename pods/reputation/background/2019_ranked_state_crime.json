@@ -1,0 +1,1978 @@
+[
+  {
+    "State": "Alabama",
+    "Year": 2019,
+    "Data": {
+      "Population": 4903185,
+      "Rates": {
+        "Property": {
+          "All": 2674.4,
+          "Burglary": 531.9,
+          "Larceny": 1886.1,
+          "Motor": 256.5
+        },
+        "Violent": {
+          "All": 510.8,
+          "Assault": 381.0,
+          "Murder": 7.3,
+          "Rape": 42.2,
+          "Robbery": 80.4
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 131133,
+          "Burglary": 26079,
+          "Larceny": 92477,
+          "Motor": 12577
+        },
+        "Violent": {
+          "All": 25046,
+          "Assault": 18679,
+          "Murder": 358,
+          "Rape": 2068,
+          "Robbery": 3941
+        }
+      }
+    },
+    "Rank": 42
+  },
+  {
+    "State": "Alaska",
+    "Year": 2019,
+    "Data": {
+      "Population": 731545,
+      "Rates": {
+        "Property": {
+          "All": 2910.8,
+          "Burglary": 487.1,
+          "Larceny": 2066.0,
+          "Motor": 357.7
+        },
+        "Violent": {
+          "All": 867.1,
+          "Assault": 596.0,
+          "Murder": 9.4,
+          "Rape": 148.7,
+          "Robbery": 112.9
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 21294,
+          "Burglary": 3563,
+          "Larceny": 15114,
+          "Motor": 2617
+        },
+        "Violent": {
+          "All": 6343,
+          "Assault": 4360,
+          "Murder": 69,
+          "Rape": 1088,
+          "Robbery": 826
+        }
+      }
+    },
+    "Rank": 48
+  },
+  {
+    "State": "Arizona",
+    "Year": 2019,
+    "Data": {
+      "Population": 7278717,
+      "Rates": {
+        "Property": {
+          "All": 2440.5,
+          "Burglary": 394.3,
+          "Larceny": 1796.9,
+          "Motor": 249.4
+        },
+        "Violent": {
+          "All": 455.3,
+          "Assault": 311.9,
+          "Murder": 5.0,
+          "Rape": 50.3,
+          "Robbery": 88.1
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 177638,
+          "Burglary": 28699,
+          "Larceny": 130788,
+          "Motor": 18151
+        },
+        "Violent": {
+          "All": 33141,
+          "Assault": 22704,
+          "Murder": 365,
+          "Rape": 3662,
+          "Robbery": 6410
+        }
+      }
+    },
+    "Rank": 38
+  },
+  {
+    "State": "Arkansas",
+    "Year": 2019,
+    "Data": {
+      "Population": 3017804,
+      "Rates": {
+        "Property": {
+          "All": 2858.0,
+          "Burglary": 599.6,
+          "Larceny": 2012.6,
+          "Motor": 245.9
+        },
+        "Violent": {
+          "All": 584.6,
+          "Assault": 447.8,
+          "Murder": 8.0,
+          "Rape": 77.2,
+          "Robbery": 51.6
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 86250,
+          "Burglary": 18095,
+          "Larceny": 60735,
+          "Motor": 7420
+        },
+        "Violent": {
+          "All": 17643,
+          "Assault": 13513,
+          "Murder": 242,
+          "Rape": 2331,
+          "Robbery": 1557
+        }
+      }
+    },
+    "Rank": 47
+  },
+  {
+    "State": "California",
+    "Year": 2019,
+    "Data": {
+      "Population": 39512223,
+      "Rates": {
+        "Property": {
+          "All": 2331.2,
+          "Burglary": 386.1,
+          "Larceny": 1586.3,
+          "Motor": 358.8
+        },
+        "Violent": {
+          "All": 441.2,
+          "Assault": 267.1,
+          "Murder": 4.3,
+          "Rape": 37.5,
+          "Robbery": 132.4
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 921114,
+          "Burglary": 152555,
+          "Larceny": 626802,
+          "Motor": 141757
+        },
+        "Violent": {
+          "All": 174331,
+          "Assault": 105541,
+          "Murder": 1690,
+          "Rape": 14799,
+          "Robbery": 52301
+        }
+      }
+    },
+    "Rank": 33
+  },
+  {
+    "State": "Colorado",
+    "Year": 2019,
+    "Data": {
+      "Population": 5758736,
+      "Rates": {
+        "Property": {
+          "All": 2590.7,
+          "Burglary": 348.4,
+          "Larceny": 1858.3,
+          "Motor": 384.0
+        },
+        "Violent": {
+          "All": 381.0,
+          "Assault": 246.3,
+          "Murder": 3.8,
+          "Rape": 67.2,
+          "Robbery": 63.6
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 149189,
+          "Burglary": 20064,
+          "Larceny": 107012,
+          "Motor": 22113
+        },
+        "Violent": {
+          "All": 21938,
+          "Assault": 14185,
+          "Murder": 218,
+          "Rape": 3872,
+          "Robbery": 3663
+        }
+      }
+    },
+    "Rank": 39
+  },
+  {
+    "State": "Connecticut",
+    "Year": 2019,
+    "Data": {
+      "Population": 3565287,
+      "Rates": {
+        "Property": {
+          "All": 1426.6,
+          "Burglary": 180.7,
+          "Larceny": 1078.7,
+          "Motor": 167.3
+        },
+        "Violent": {
+          "All": 183.6,
+          "Assault": 105.0,
+          "Murder": 2.9,
+          "Rape": 21.6,
+          "Robbery": 54.1
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 50862,
+          "Burglary": 6441,
+          "Larceny": 38457,
+          "Motor": 5964
+        },
+        "Violent": {
+          "All": 6546,
+          "Assault": 3742,
+          "Murder": 104,
+          "Rape": 771,
+          "Robbery": 1929
+        }
+      }
+    },
+    "Rank": 9
+  },
+  {
+    "State": "Delaware",
+    "Year": 2019,
+    "Data": {
+      "Population": 973764,
+      "Rates": {
+        "Property": {
+          "All": 2252.2,
+          "Burglary": 304.8,
+          "Larceny": 1782.7,
+          "Motor": 164.7
+        },
+        "Violent": {
+          "All": 422.6,
+          "Assault": 304.7,
+          "Murder": 4.9,
+          "Rape": 31.8,
+          "Robbery": 81.1
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 21931,
+          "Burglary": 2968,
+          "Larceny": 17359,
+          "Motor": 1604
+        },
+        "Violent": {
+          "All": 4115,
+          "Assault": 2967,
+          "Murder": 48,
+          "Rape": 310,
+          "Robbery": 790
+        }
+      }
+    },
+    "Rank": 30
+  },
+  {
+    "State": "District of Columbia",
+    "Year": 2019,
+    "Data": {
+      "Population": 705749,
+      "Rates": {
+        "Property": {
+          "All": 4367.1,
+          "Burglary": 261.1,
+          "Larceny": 3775.4,
+          "Motor": 330.6
+        },
+        "Violent": {
+          "All": 1049.0,
+          "Assault": 592.1,
+          "Murder": 23.5,
+          "Rape": 48.9,
+          "Robbery": 384.4
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 30821,
+          "Burglary": 1843,
+          "Larceny": 26645,
+          "Motor": 2333
+        },
+        "Violent": {
+          "All": 7403,
+          "Assault": 4179,
+          "Murder": 166,
+          "Rape": 345,
+          "Robbery": 2713
+        }
+      }
+    },
+    "Rank": 52
+  },
+  {
+    "State": "Florida",
+    "Year": 2019,
+    "Data": {
+      "Population": 21477737,
+      "Rates": {
+        "Property": {
+          "All": 2145.7,
+          "Burglary": 295.2,
+          "Larceny": 1668.7,
+          "Motor": 181.8
+        },
+        "Violent": {
+          "All": 378.4,
+          "Assault": 258.3,
+          "Murder": 5.2,
+          "Rape": 39.4,
+          "Robbery": 75.5
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 460846,
+          "Burglary": 63396,
+          "Larceny": 358402,
+          "Motor": 39048
+        },
+        "Violent": {
+          "All": 81270,
+          "Assault": 55475,
+          "Murder": 1122,
+          "Rape": 8456,
+          "Robbery": 16217
+        }
+      }
+    },
+    "Rank": 27
+  },
+  {
+    "State": "Georgia",
+    "Year": 2019,
+    "Data": {
+      "Population": 10617423,
+      "Rates": {
+        "Property": {
+          "All": 2375.8,
+          "Burglary": 372.1,
+          "Larceny": 1779.8,
+          "Motor": 223.9
+        },
+        "Violent": {
+          "All": 340.7,
+          "Assault": 232.0,
+          "Murder": 6.2,
+          "Rape": 27.5,
+          "Robbery": 75.0
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 252249,
+          "Burglary": 39506,
+          "Larceny": 188967,
+          "Motor": 23776
+        },
+        "Violent": {
+          "All": 36170,
+          "Assault": 24633,
+          "Murder": 654,
+          "Rape": 2922,
+          "Robbery": 7961
+        }
+      }
+    },
+    "Rank": 35
+  },
+  {
+    "State": "Hawaii",
+    "Year": 2019,
+    "Data": {
+      "Population": 1415872,
+      "Rates": {
+        "Property": {
+          "All": 2841.2,
+          "Burglary": 377.2,
+          "Larceny": 2093.0,
+          "Motor": 371.1
+        },
+        "Violent": {
+          "All": 285.5,
+          "Assault": 148.2,
+          "Murder": 3.4,
+          "Rape": 54.0,
+          "Robbery": 79.9
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 40228,
+          "Burglary": 5340,
+          "Larceny": 29634,
+          "Motor": 5254
+        },
+        "Violent": {
+          "All": 4042,
+          "Assault": 2098,
+          "Murder": 48,
+          "Rape": 765,
+          "Robbery": 1131
+        }
+      }
+    },
+    "Rank": 45
+  },
+  {
+    "State": "Idaho",
+    "Year": 2019,
+    "Data": {
+      "Population": 1787065,
+      "Rates": {
+        "Property": {
+          "All": 1219.5,
+          "Burglary": 219.7,
+          "Larceny": 911.8,
+          "Motor": 87.9
+        },
+        "Violent": {
+          "All": 223.8,
+          "Assault": 167.9,
+          "Murder": 2.0,
+          "Rape": 45.3,
+          "Robbery": 8.7
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 21793,
+          "Burglary": 3927,
+          "Larceny": 16295,
+          "Motor": 1571
+        },
+        "Violent": {
+          "All": 4000,
+          "Assault": 3001,
+          "Murder": 35,
+          "Rape": 809,
+          "Robbery": 155
+        }
+      }
+    },
+    "Rank": 3
+  },
+  {
+    "State": "Illinois",
+    "Year": 2019,
+    "Data": {
+      "Population": 12671821,
+      "Rates": {
+        "Property": {
+          "All": 1846.5,
+          "Burglary": 271.7,
+          "Larceny": 1426.6,
+          "Motor": 148.2
+        },
+        "Violent": {
+          "All": 406.9,
+          "Assault": 254.0,
+          "Murder": 6.6,
+          "Rape": 48.0,
+          "Robbery": 98.4
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 233984,
+          "Burglary": 34433,
+          "Larceny": 180776,
+          "Motor": 18775
+        },
+        "Violent": {
+          "All": 51561,
+          "Assault": 32187,
+          "Murder": 832,
+          "Rape": 6078,
+          "Robbery": 12464
+        }
+      }
+    },
+    "Rank": 18
+  },
+  {
+    "State": "Indiana",
+    "Year": 2019,
+    "Data": {
+      "Population": 6732219,
+      "Rates": {
+        "Property": {
+          "All": 1971.0,
+          "Burglary": 323.7,
+          "Larceny": 1443.4,
+          "Motor": 203.8
+        },
+        "Violent": {
+          "All": 370.8,
+          "Assault": 249.3,
+          "Murder": 5.6,
+          "Rape": 36.8,
+          "Robbery": 79.2
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 132694,
+          "Burglary": 21795,
+          "Larceny": 97176,
+          "Motor": 13723
+        },
+        "Violent": {
+          "All": 24966,
+          "Assault": 16783,
+          "Murder": 377,
+          "Rape": 2475,
+          "Robbery": 5331
+        }
+      }
+    },
+    "Rank": 21
+  },
+  {
+    "State": "Iowa",
+    "Year": 2019,
+    "Data": {
+      "Population": 3155070,
+      "Rates": {
+        "Property": {
+          "All": 1733.7,
+          "Burglary": 371.1,
+          "Larceny": 1199.6,
+          "Motor": 163.0
+        },
+        "Violent": {
+          "All": 266.6,
+          "Assault": 200.4,
+          "Murder": 1.9,
+          "Rape": 36.9,
+          "Robbery": 27.4
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 54699,
+          "Burglary": 11710,
+          "Larceny": 37847,
+          "Motor": 5142
+        },
+        "Violent": {
+          "All": 8410,
+          "Assault": 6323,
+          "Murder": 60,
+          "Rape": 1164,
+          "Robbery": 863
+        }
+      }
+    },
+    "Rank": 16
+  },
+  {
+    "State": "Kansas",
+    "Year": 2019,
+    "Data": {
+      "Population": 2913314,
+      "Rates": {
+        "Property": {
+          "All": 2314.5,
+          "Burglary": 342.7,
+          "Larceny": 1721.9,
+          "Motor": 249.9
+        },
+        "Violent": {
+          "All": 410.8,
+          "Assault": 314.2,
+          "Murder": 3.6,
+          "Rape": 48.6,
+          "Robbery": 44.4
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 67428,
+          "Burglary": 9984,
+          "Larceny": 50165,
+          "Motor": 7279
+        },
+        "Violent": {
+          "All": 11968,
+          "Assault": 9154,
+          "Murder": 105,
+          "Rape": 1416,
+          "Robbery": 1293
+        }
+      }
+    },
+    "Rank": 31
+  },
+  {
+    "State": "Kentucky",
+    "Year": 2019,
+    "Data": {
+      "Population": 4467673,
+      "Rates": {
+        "Property": {
+          "All": 1897.4,
+          "Burglary": 345.7,
+          "Larceny": 1323.5,
+          "Motor": 228.2
+        },
+        "Violent": {
+          "All": 217.1,
+          "Assault": 128.6,
+          "Murder": 4.9,
+          "Rape": 35.2,
+          "Robbery": 48.4
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 84769,
+          "Burglary": 15443,
+          "Larceny": 59130,
+          "Motor": 10196
+        },
+        "Violent": {
+          "All": 9701,
+          "Assault": 5747,
+          "Murder": 221,
+          "Rape": 1572,
+          "Robbery": 2161
+        }
+      }
+    },
+    "Rank": 19
+  },
+  {
+    "State": "Louisiana",
+    "Year": 2019,
+    "Data": {
+      "Population": 4648794,
+      "Rates": {
+        "Property": {
+          "All": 3162.0,
+          "Burglary": 579.0,
+          "Larceny": 2352.4,
+          "Motor": 230.5
+        },
+        "Violent": {
+          "All": 549.3,
+          "Assault": 402.1,
+          "Murder": 11.7,
+          "Rape": 48.9,
+          "Robbery": 86.6
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 146993,
+          "Burglary": 26918,
+          "Larceny": 109359,
+          "Motor": 10716
+        },
+        "Violent": {
+          "All": 25537,
+          "Assault": 18695,
+          "Murder": 544,
+          "Rape": 2273,
+          "Robbery": 4025
+        }
+      }
+    },
+    "Rank": 51
+  },
+  {
+    "State": "Maine",
+    "Year": 2019,
+    "Data": {
+      "Population": 1344212,
+      "Rates": {
+        "Property": {
+          "All": 1245.6,
+          "Burglary": 174.8,
+          "Larceny": 1016.7,
+          "Motor": 54.0
+        },
+        "Violent": {
+          "All": 115.2,
+          "Assault": 61.3,
+          "Murder": 1.5,
+          "Rape": 38.4,
+          "Robbery": 14.0
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 16743,
+          "Burglary": 2350,
+          "Larceny": 13667,
+          "Motor": 726
+        },
+        "Violent": {
+          "All": 1548,
+          "Assault": 824,
+          "Murder": 20,
+          "Rape": 516,
+          "Robbery": 188
+        }
+      }
+    },
+    "Rank": 4
+  },
+  {
+    "State": "Maryland",
+    "Year": 2019,
+    "Data": {
+      "Population": 6045680,
+      "Rates": {
+        "Property": {
+          "All": 1950.2,
+          "Burglary": 278.9,
+          "Larceny": 1485.0,
+          "Motor": 186.2
+        },
+        "Violent": {
+          "All": 454.1,
+          "Assault": 261.3,
+          "Murder": 9.0,
+          "Rape": 31.6,
+          "Robbery": 152.2
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 117901,
+          "Burglary": 16862,
+          "Larceny": 89780,
+          "Motor": 11259
+        },
+        "Violent": {
+          "All": 27456,
+          "Assault": 15798,
+          "Murder": 542,
+          "Rape": 1913,
+          "Robbery": 9203
+        }
+      }
+    },
+    "Rank": 20
+  },
+  {
+    "State": "Massachusetts",
+    "Year": 2019,
+    "Data": {
+      "Population": 6892503,
+      "Rates": {
+        "Property": {
+          "All": 1179.8,
+          "Burglary": 179.0,
+          "Larceny": 911.8,
+          "Motor": 89.0
+        },
+        "Violent": {
+          "All": 327.6,
+          "Assault": 241.0,
+          "Murder": 2.2,
+          "Rape": 32.0,
+          "Robbery": 52.4
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 81317,
+          "Burglary": 12341,
+          "Larceny": 62844,
+          "Motor": 6132
+        },
+        "Violent": {
+          "All": 22578,
+          "Assault": 16609,
+          "Murder": 152,
+          "Rape": 2204,
+          "Robbery": 3613
+        }
+      }
+    },
+    "Rank": 1
+  },
+  {
+    "State": "Michigan",
+    "Year": 2019,
+    "Data": {
+      "Population": 9986857,
+      "Rates": {
+        "Property": {
+          "All": 1585.0,
+          "Burglary": 286.1,
+          "Larceny": 1121.3,
+          "Motor": 177.7
+        },
+        "Violent": {
+          "All": 437.4,
+          "Assault": 305.9,
+          "Murder": 5.6,
+          "Rape": 72.4,
+          "Robbery": 53.6
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 158296,
+          "Burglary": 28572,
+          "Larceny": 111980,
+          "Motor": 17744
+        },
+        "Violent": {
+          "All": 43686,
+          "Assault": 30545,
+          "Murder": 556,
+          "Rape": 7235,
+          "Robbery": 5350
+        }
+      }
+    },
+    "Rank": 14
+  },
+  {
+    "State": "Minnesota",
+    "Year": 2019,
+    "Data": {
+      "Population": 5639632,
+      "Rates": {
+        "Property": {
+          "All": 2078.8,
+          "Burglary": 282.4,
+          "Larceny": 1597.5,
+          "Motor": 198.9
+        },
+        "Violent": {
+          "All": 236.4,
+          "Assault": 135.1,
+          "Murder": 2.1,
+          "Rape": 43.4,
+          "Robbery": 55.8
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 117236,
+          "Burglary": 15927,
+          "Larceny": 90092,
+          "Motor": 11217
+        },
+        "Violent": {
+          "All": 13332,
+          "Assault": 7618,
+          "Murder": 117,
+          "Rape": 2448,
+          "Robbery": 3149
+        }
+      }
+    },
+    "Rank": 25
+  },
+  {
+    "State": "Mississippi",
+    "Year": 2019,
+    "Data": {
+      "Population": 2976149,
+      "Rates": {
+        "Property": {
+          "All": 2375.8,
+          "Burglary": 627.0,
+          "Larceny": 1555.7,
+          "Motor": 193.1
+        },
+        "Violent": {
+          "All": 277.9,
+          "Assault": 184.6,
+          "Murder": 11.2,
+          "Rape": 25.1,
+          "Robbery": 57.1
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 70707,
+          "Burglary": 18660,
+          "Larceny": 46300,
+          "Motor": 5747
+        },
+        "Violent": {
+          "All": 8272,
+          "Assault": 5493,
+          "Murder": 332,
+          "Rape": 747,
+          "Robbery": 1700
+        }
+      }
+    },
+    "Rank": 36
+  },
+  {
+    "State": "Missouri",
+    "Year": 2019,
+    "Data": {
+      "Population": 6137428,
+      "Rates": {
+        "Property": {
+          "All": 2638.7,
+          "Burglary": 430.4,
+          "Larceny": 1865.0,
+          "Motor": 343.3
+        },
+        "Violent": {
+          "All": 495.0,
+          "Assault": 357.4,
+          "Murder": 9.3,
+          "Rape": 47.5,
+          "Robbery": 80.8
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 161946,
+          "Burglary": 26414,
+          "Larceny": 114460,
+          "Motor": 21072
+        },
+        "Violent": {
+          "All": 30380,
+          "Assault": 21936,
+          "Murder": 568,
+          "Rape": 2917,
+          "Robbery": 4959
+        }
+      }
+    },
+    "Rank": 40
+  },
+  {
+    "State": "Montana",
+    "Year": 2019,
+    "Data": {
+      "Population": 1068778,
+      "Rates": {
+        "Property": {
+          "All": 2193.2,
+          "Burglary": 270.1,
+          "Larceny": 1700.6,
+          "Motor": 222.4
+        },
+        "Violent": {
+          "All": 404.9,
+          "Assault": 324.9,
+          "Murder": 2.5,
+          "Rape": 58.4,
+          "Robbery": 19.2
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 23440,
+          "Burglary": 2887,
+          "Larceny": 18176,
+          "Motor": 2377
+        },
+        "Violent": {
+          "All": 4328,
+          "Assault": 3472,
+          "Murder": 27,
+          "Rape": 624,
+          "Robbery": 205
+        }
+      }
+    },
+    "Rank": 29
+  },
+  {
+    "State": "Nebraska",
+    "Year": 2019,
+    "Data": {
+      "Population": 1934408,
+      "Rates": {
+        "Property": {
+          "All": 2039.3,
+          "Burglary": 245.3,
+          "Larceny": 1536.3,
+          "Motor": 257.7
+        },
+        "Violent": {
+          "All": 300.9,
+          "Assault": 192.9,
+          "Murder": 2.3,
+          "Rape": 64.8,
+          "Robbery": 40.9
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 39449,
+          "Burglary": 4745,
+          "Larceny": 29719,
+          "Motor": 4985
+        },
+        "Violent": {
+          "All": 5821,
+          "Assault": 3731,
+          "Murder": 45,
+          "Rape": 1253,
+          "Robbery": 792
+        }
+      }
+    },
+    "Rank": 23
+  },
+  {
+    "State": "Nevada",
+    "Year": 2019,
+    "Data": {
+      "Population": 3080156,
+      "Rates": {
+        "Property": {
+          "All": 2322.1,
+          "Burglary": 503.5,
+          "Larceny": 1453.0,
+          "Motor": 365.6
+        },
+        "Violent": {
+          "All": 493.8,
+          "Assault": 312.3,
+          "Murder": 4.6,
+          "Rape": 70.2,
+          "Robbery": 106.7
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 71525,
+          "Burglary": 15510,
+          "Larceny": 44755,
+          "Motor": 11260
+        },
+        "Violent": {
+          "All": 15210,
+          "Assault": 9620,
+          "Murder": 143,
+          "Rape": 2161,
+          "Robbery": 3286
+        }
+      }
+    },
+    "Rank": 32
+  },
+  {
+    "State": "New Hampshire",
+    "Year": 2019,
+    "Data": {
+      "Population": 1359711,
+      "Rates": {
+        "Property": {
+          "All": 1209.2,
+          "Burglary": 126.3,
+          "Larceny": 1017.3,
+          "Motor": 65.7
+        },
+        "Violent": {
+          "All": 152.5,
+          "Assault": 83.7,
+          "Murder": 2.4,
+          "Rape": 43.4,
+          "Robbery": 23.0
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 16442,
+          "Burglary": 1717,
+          "Larceny": 13832,
+          "Motor": 893
+        },
+        "Violent": {
+          "All": 2074,
+          "Assault": 1138,
+          "Murder": 33,
+          "Rape": 590,
+          "Robbery": 313
+        }
+      }
+    },
+    "Rank": 2
+  },
+  {
+    "State": "New Jersey",
+    "Year": 2019,
+    "Data": {
+      "Population": 8882190,
+      "Rates": {
+        "Property": {
+          "All": 1335.7,
+          "Burglary": 184.6,
+          "Larceny": 1034.7,
+          "Motor": 116.4
+        },
+        "Violent": {
+          "All": 206.9,
+          "Assault": 122.2,
+          "Murder": 2.9,
+          "Rape": 17.2,
+          "Robbery": 64.5
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 118637,
+          "Burglary": 16399,
+          "Larceny": 91902,
+          "Motor": 10336
+        },
+        "Violent": {
+          "All": 18375,
+          "Assault": 10852,
+          "Murder": 262,
+          "Rape": 1531,
+          "Robbery": 5730
+        }
+      }
+    },
+    "Rank": 5
+  },
+  {
+    "State": "New Mexico",
+    "Year": 2019,
+    "Data": {
+      "Population": 2096829,
+      "Rates": {
+        "Property": {
+          "All": 3112.7,
+          "Burglary": 696.8,
+          "Larceny": 1988.8,
+          "Motor": 427.2
+        },
+        "Violent": {
+          "All": 832.2,
+          "Assault": 650.5,
+          "Murder": 8.6,
+          "Rape": 61.4,
+          "Robbery": 111.6
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 65269,
+          "Burglary": 14610,
+          "Larceny": 41702,
+          "Motor": 8957
+        },
+        "Violent": {
+          "All": 17450,
+          "Assault": 13640,
+          "Murder": 181,
+          "Rape": 1288,
+          "Robbery": 2341
+        }
+      }
+    },
+    "Rank": 50
+  },
+  {
+    "State": "New York",
+    "Year": 2019,
+    "Data": {
+      "Population": 19453561,
+      "Rates": {
+        "Property": {
+          "All": 1373.3,
+          "Burglary": 141.9,
+          "Larceny": 1166.1,
+          "Motor": 65.3
+        },
+        "Violent": {
+          "All": 358.6,
+          "Assault": 229.0,
+          "Murder": 2.9,
+          "Rape": 33.8,
+          "Robbery": 92.9
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 267155,
+          "Burglary": 27600,
+          "Larceny": 226851,
+          "Motor": 12704
+        },
+        "Violent": {
+          "All": 69764,
+          "Assault": 44555,
+          "Murder": 558,
+          "Rape": 6583,
+          "Robbery": 18068
+        }
+      }
+    },
+    "Rank": 6
+  },
+  {
+    "State": "North Carolina",
+    "Year": 2019,
+    "Data": {
+      "Population": 10488084,
+      "Rates": {
+        "Property": {
+          "All": 2357.3,
+          "Burglary": 519.1,
+          "Larceny": 1666.0,
+          "Motor": 172.2
+        },
+        "Violent": {
+          "All": 371.8,
+          "Assault": 262.4,
+          "Murder": 6.0,
+          "Rape": 31.0,
+          "Robbery": 72.5
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 247236,
+          "Burglary": 54447,
+          "Larceny": 174728,
+          "Motor": 18061
+        },
+        "Violent": {
+          "All": 38995,
+          "Assault": 27517,
+          "Murder": 632,
+          "Rape": 3247,
+          "Robbery": 7599
+        }
+      }
+    },
+    "Rank": 34
+  },
+  {
+    "State": "North Dakota",
+    "Year": 2019,
+    "Data": {
+      "Population": 762062,
+      "Rates": {
+        "Property": {
+          "All": 1977.0,
+          "Burglary": 342.2,
+          "Larceny": 1399.6,
+          "Motor": 235.2
+        },
+        "Violent": {
+          "All": 284.6,
+          "Assault": 200.6,
+          "Murder": 3.1,
+          "Rape": 57.3,
+          "Robbery": 23.5
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 15066,
+          "Burglary": 2608,
+          "Larceny": 10666,
+          "Motor": 1792
+        },
+        "Violent": {
+          "All": 2169,
+          "Assault": 1529,
+          "Murder": 24,
+          "Rape": 437,
+          "Robbery": 179
+        }
+      }
+    },
+    "Rank": 22
+  },
+  {
+    "State": "Ohio",
+    "Year": 2019,
+    "Data": {
+      "Population": 11689100,
+      "Rates": {
+        "Property": {
+          "All": 2055.7,
+          "Burglary": 375.5,
+          "Larceny": 1520.4,
+          "Motor": 159.7
+        },
+        "Violent": {
+          "All": 293.2,
+          "Assault": 163.9,
+          "Murder": 4.6,
+          "Rape": 49.0,
+          "Robbery": 75.7
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 240291,
+          "Burglary": 43894,
+          "Larceny": 177725,
+          "Motor": 18672
+        },
+        "Violent": {
+          "All": 34269,
+          "Assault": 19154,
+          "Murder": 538,
+          "Rape": 5731,
+          "Robbery": 8846
+        }
+      }
+    },
+    "Rank": 24
+  },
+  {
+    "State": "Oklahoma",
+    "Year": 2019,
+    "Data": {
+      "Population": 3956971,
+      "Rates": {
+        "Property": {
+          "All": 2845.3,
+          "Burglary": 671.7,
+          "Larceny": 1835.5,
+          "Motor": 338.1
+        },
+        "Violent": {
+          "All": 431.8,
+          "Assault": 307.9,
+          "Murder": 6.7,
+          "Rape": 57.3,
+          "Robbery": 59.9
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 112587,
+          "Burglary": 26577,
+          "Larceny": 72632,
+          "Motor": 13378
+        },
+        "Violent": {
+          "All": 17086,
+          "Assault": 12183,
+          "Murder": 266,
+          "Rape": 2268,
+          "Robbery": 2369
+        }
+      }
+    },
+    "Rank": 46
+  },
+  {
+    "State": "Oregon",
+    "Year": 2019,
+    "Data": {
+      "Population": 4217737,
+      "Rates": {
+        "Property": {
+          "All": 2730.6,
+          "Burglary": 349.1,
+          "Larceny": 2021.5,
+          "Motor": 360.0
+        },
+        "Violent": {
+          "All": 284.4,
+          "Assault": 185.5,
+          "Murder": 2.8,
+          "Rape": 42.2,
+          "Robbery": 54.0
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 115170,
+          "Burglary": 14724,
+          "Larceny": 85261,
+          "Motor": 15185
+        },
+        "Violent": {
+          "All": 11995,
+          "Assault": 7825,
+          "Murder": 116,
+          "Rape": 1778,
+          "Robbery": 2276
+        }
+      }
+    },
+    "Rank": 44
+  },
+  {
+    "State": "Pennsylvania",
+    "Year": 2019,
+    "Data": {
+      "Population": 12801989,
+      "Rates": {
+        "Property": {
+          "All": 1403.4,
+          "Burglary": 182.4,
+          "Larceny": 1124.2,
+          "Motor": 96.8
+        },
+        "Violent": {
+          "All": 306.4,
+          "Assault": 191.1,
+          "Murder": 5.2,
+          "Rape": 34.0,
+          "Robbery": 76.1
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 179665,
+          "Burglary": 23354,
+          "Larceny": 143921,
+          "Motor": 12390
+        },
+        "Violent": {
+          "All": 39228,
+          "Assault": 24465,
+          "Murder": 669,
+          "Rape": 4351,
+          "Robbery": 9743
+        }
+      }
+    },
+    "Rank": 7
+  },
+  {
+    "State": "Rhode Island",
+    "Year": 2019,
+    "Data": {
+      "Population": 1059361,
+      "Rates": {
+        "Property": {
+          "All": 1534.8,
+          "Burglary": 219.1,
+          "Larceny": 1187.5,
+          "Motor": 128.2
+        },
+        "Violent": {
+          "All": 221.1,
+          "Assault": 132.9,
+          "Murder": 2.4,
+          "Rape": 46.3,
+          "Robbery": 39.5
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 16259,
+          "Burglary": 2321,
+          "Larceny": 12580,
+          "Motor": 1358
+        },
+        "Violent": {
+          "All": 2342,
+          "Assault": 1408,
+          "Murder": 25,
+          "Rape": 491,
+          "Robbery": 418
+        }
+      }
+    },
+    "Rank": 11
+  },
+  {
+    "State": "South Carolina",
+    "Year": 2019,
+    "Data": {
+      "Population": 5148714,
+      "Rates": {
+        "Property": {
+          "All": 2940.3,
+          "Burglary": 533.4,
+          "Larceny": 2116.1,
+          "Motor": 290.8
+        },
+        "Violent": {
+          "All": 511.3,
+          "Assault": 390.5,
+          "Murder": 9.0,
+          "Rape": 47.8,
+          "Robbery": 64.0
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 151389,
+          "Burglary": 27461,
+          "Larceny": 108953,
+          "Motor": 14975
+        },
+        "Violent": {
+          "All": 26323,
+          "Assault": 20105,
+          "Murder": 464,
+          "Rape": 2460,
+          "Robbery": 3294
+        }
+      }
+    },
+    "Rank": 49
+  },
+  {
+    "State": "South Dakota",
+    "Year": 2019,
+    "Data": {
+      "Population": 884659,
+      "Rates": {
+        "Property": {
+          "All": 1771.0,
+          "Burglary": 299.1,
+          "Larceny": 1273.4,
+          "Motor": 198.5
+        },
+        "Violent": {
+          "All": 399.0,
+          "Assault": 302.5,
+          "Murder": 1.9,
+          "Rape": 72.6,
+          "Robbery": 22.0
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 15667,
+          "Burglary": 2646,
+          "Larceny": 11265,
+          "Motor": 1756
+        },
+        "Violent": {
+          "All": 3530,
+          "Assault": 2676,
+          "Murder": 17,
+          "Rape": 642,
+          "Robbery": 195
+        }
+      }
+    },
+    "Rank": 17
+  },
+  {
+    "State": "Tennessee",
+    "Year": 2019,
+    "Data": {
+      "Population": 6829174,
+      "Rates": {
+        "Property": {
+          "All": 2652.6,
+          "Burglary": 437.4,
+          "Larceny": 1934.4,
+          "Motor": 280.9
+        },
+        "Violent": {
+          "All": 595.2,
+          "Assault": 456.7,
+          "Murder": 7.3,
+          "Rape": 41.2,
+          "Robbery": 90.1
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 181153,
+          "Burglary": 29869,
+          "Larceny": 132104,
+          "Motor": 19180
+        },
+        "Violent": {
+          "All": 40647,
+          "Assault": 31186,
+          "Murder": 498,
+          "Rape": 2813,
+          "Robbery": 6150
+        }
+      }
+    },
+    "Rank": 41
+  },
+  {
+    "State": "Texas",
+    "Year": 2019,
+    "Data": {
+      "Population": 28995881,
+      "Rates": {
+        "Property": {
+          "All": 2390.7,
+          "Burglary": 392.8,
+          "Larceny": 1730.6,
+          "Motor": 267.2
+        },
+        "Violent": {
+          "All": 418.9,
+          "Assault": 263.0,
+          "Murder": 4.9,
+          "Rape": 51.1,
+          "Robbery": 100.0
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 693204,
+          "Burglary": 113902,
+          "Larceny": 501813,
+          "Motor": 77489
+        },
+        "Violent": {
+          "All": 121474,
+          "Assault": 76253,
+          "Murder": 1409,
+          "Rape": 14824,
+          "Robbery": 28988
+        }
+      }
+    },
+    "Rank": 37
+  },
+  {
+    "State": "United States",
+    "Year": 2019,
+    "Data": {
+      "Population": 328239523,
+      "Rates": {
+        "Property": {
+          "All": 2109.9,
+          "Burglary": 340.5,
+          "Larceny": 1549.5,
+          "Motor": 219.9
+        },
+        "Violent": {
+          "All": 379.4,
+          "Assault": 250.2,
+          "Murder": 5.0,
+          "Rape": 42.6,
+          "Robbery": 81.6
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 6925677,
+          "Burglary": 1117696,
+          "Larceny": 5086096,
+          "Motor": 721885
+        },
+        "Violent": {
+          "All": 1245410,
+          "Assault": 821182,
+          "Murder": 16425,
+          "Rape": 139815,
+          "Robbery": 267988
+        }
+      }
+    },
+    "Rank": 26
+  },
+  {
+    "State": "Utah",
+    "Year": 2019,
+    "Data": {
+      "Population": 3205958,
+      "Rates": {
+        "Property": {
+          "All": 2169.3,
+          "Burglary": 276.7,
+          "Larceny": 1682.4,
+          "Motor": 210.2
+        },
+        "Violent": {
+          "All": 235.6,
+          "Assault": 141.4,
+          "Murder": 2.2,
+          "Rape": 56.8,
+          "Robbery": 35.1
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 69546,
+          "Burglary": 8871,
+          "Larceny": 53937,
+          "Motor": 6738
+        },
+        "Violent": {
+          "All": 7553,
+          "Assault": 4534,
+          "Murder": 72,
+          "Rape": 1822,
+          "Robbery": 1125
+        }
+      }
+    },
+    "Rank": 28
+  },
+  {
+    "State": "Vermont",
+    "Year": 2019,
+    "Data": {
+      "Population": 623989,
+      "Rates": {
+        "Property": {
+          "All": 1424.4,
+          "Burglary": 204.3,
+          "Larceny": 1172.3,
+          "Motor": 47.8
+        },
+        "Violent": {
+          "All": 202.2,
+          "Assault": 144.6,
+          "Murder": 1.8,
+          "Rape": 44.6,
+          "Robbery": 11.4
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 8888,
+          "Burglary": 1275,
+          "Larceny": 7315,
+          "Motor": 298
+        },
+        "Violent": {
+          "All": 1262,
+          "Assault": 902,
+          "Murder": 11,
+          "Rape": 278,
+          "Robbery": 71
+        }
+      }
+    },
+    "Rank": 8
+  },
+  {
+    "State": "Virginia",
+    "Year": 2019,
+    "Data": {
+      "Population": 8535519,
+      "Rates": {
+        "Property": {
+          "All": 1642.7,
+          "Burglary": 162.8,
+          "Larceny": 1359.5,
+          "Motor": 120.3
+        },
+        "Violent": {
+          "All": 208.0,
+          "Assault": 128.7,
+          "Murder": 5.0,
+          "Rape": 33.0,
+          "Robbery": 41.3
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 140213,
+          "Burglary": 13900,
+          "Larceny": 116044,
+          "Motor": 10269
+        },
+        "Violent": {
+          "All": 17753,
+          "Assault": 10987,
+          "Murder": 426,
+          "Rape": 2816,
+          "Robbery": 3524
+        }
+      }
+    },
+    "Rank": 15
+  },
+  {
+    "State": "Washington",
+    "Year": 2019,
+    "Data": {
+      "Population": 7614893,
+      "Rates": {
+        "Property": {
+          "All": 2681.9,
+          "Burglary": 453.6,
+          "Larceny": 1907.9,
+          "Motor": 320.5
+        },
+        "Violent": {
+          "All": 293.9,
+          "Assault": 179.9,
+          "Murder": 2.6,
+          "Rape": 43.8,
+          "Robbery": 67.6
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 204224,
+          "Burglary": 34540,
+          "Larceny": 145282,
+          "Motor": 24402
+        },
+        "Violent": {
+          "All": 22377,
+          "Assault": 13700,
+          "Murder": 198,
+          "Rape": 3332,
+          "Robbery": 5147
+        }
+      }
+    },
+    "Rank": 43
+  },
+  {
+    "State": "West Virginia",
+    "Year": 2019,
+    "Data": {
+      "Population": 1792147,
+      "Rates": {
+        "Property": {
+          "All": 1583.4,
+          "Burglary": 328.7,
+          "Larceny": 1119.7,
+          "Motor": 135.0
+        },
+        "Violent": {
+          "All": 316.6,
+          "Assault": 249.1,
+          "Murder": 4.4,
+          "Rape": 42.1,
+          "Robbery": 21.1
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 28376,
+          "Burglary": 5891,
+          "Larceny": 20066,
+          "Motor": 2419
+        },
+        "Violent": {
+          "All": 5674,
+          "Assault": 4464,
+          "Murder": 78,
+          "Rape": 754,
+          "Robbery": 378
+        }
+      }
+    },
+    "Rank": 13
+  },
+  {
+    "State": "Wisconsin",
+    "Year": 2019,
+    "Data": {
+      "Population": 5822434,
+      "Rates": {
+        "Property": {
+          "All": 1471.4,
+          "Burglary": 217.6,
+          "Larceny": 1127.0,
+          "Motor": 126.8
+        },
+        "Violent": {
+          "All": 293.2,
+          "Assault": 200.0,
+          "Murder": 3.0,
+          "Rape": 38.8,
+          "Robbery": 51.4
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 85672,
+          "Burglary": 12667,
+          "Larceny": 65620,
+          "Motor": 7385
+        },
+        "Violent": {
+          "All": 17070,
+          "Assault": 11643,
+          "Murder": 175,
+          "Rape": 2261,
+          "Robbery": 2991
+        }
+      }
+    },
+    "Rank": 10
+  },
+  {
+    "State": "Wyoming",
+    "Year": 2019,
+    "Data": {
+      "Population": 578759,
+      "Rates": {
+        "Property": {
+          "All": 1571.1,
+          "Burglary": 241.2,
+          "Larceny": 1206.7,
+          "Motor": 123.2
+        },
+        "Violent": {
+          "All": 217.4,
+          "Assault": 147.6,
+          "Murder": 2.2,
+          "Rape": 56.0,
+          "Robbery": 11.6
+        }
+      },
+      "Totals": {
+        "Property": {
+          "All": 9093,
+          "Burglary": 1396,
+          "Larceny": 6984,
+          "Motor": 713
+        },
+        "Violent": {
+          "All": 1258,
+          "Assault": 854,
+          "Murder": 13,
+          "Rape": 324,
+          "Robbery": 67
+        }
+      }
+    },
+    "Rank": 12
+  }
+]
