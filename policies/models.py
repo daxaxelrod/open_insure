@@ -266,6 +266,9 @@ class Premium(models.Model):
         return f"Premium for {self.policy.name} paid by {self.payer}, due on {self.due_date}"
     
     def paid_on_time(self):
+        if self.paid_date is None:
+            return False 
+
         return self.paid_date <= self.due_date
 
 

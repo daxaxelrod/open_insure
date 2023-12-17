@@ -204,7 +204,7 @@ class Education(Institution):
     to_date = models.DateField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     degree = models.CharField(max_length=255, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="educations")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="education")
 
 class Interest(Institution):
     title = models.CharField(max_length=255, null=True, blank=True)

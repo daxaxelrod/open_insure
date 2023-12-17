@@ -3,7 +3,7 @@ from pods.models import ReputationDetails
 from django.utils import timezone
 from django.conf import settings
 from pods.reputation.activity import get_reputation_from_activity
-from pods.reputation.background import get_reputation_from_background
+from pods.reputation.background.background import get_reputation_from_background
 from pods.reputation.claims import get_reputation_from_claims
 from pods.reputation.lifestyle import get_reputation_from_lifestyle
 from pods.reputation.payments import get_reputation_from_payments

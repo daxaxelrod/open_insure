@@ -6,9 +6,9 @@ from linkedin_scraper import Person
 # region_info https://corgis-edu.github.io/corgis/json/state_crime/
 
 
-def get_reputation_from_background(user: User, linkedin_profile: Person):
+def get_reputation_from_background(user: User):
     education = user.education.all()
-    experience = user.experience.all()
+    experience = user.experiences.all()
     interests = user.interests.all()
     region_info = user.region_info.all()
 
@@ -31,6 +31,7 @@ def determine_edu_score(education: list[Education]):
     for edu in education:
         if edu.institution_name.includes("University") or edu.institution_name.includes("College"):
             has_bachelors = True
+    
     if has_bachelors:
         return 25
     else:
