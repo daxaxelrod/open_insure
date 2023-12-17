@@ -47,11 +47,11 @@ def determine_reputation_for_user(user):
 
     total_score = (payments + claims + background + activity + lifestyle) / 5
 
+    now  = timezone.now()
     reputation = ReputationDetails.objects.create(
         user=user,
-        calculated_on=timezone.now(),
-        next_refresh_available=now
-        + timezone.timedelta(days=settings.REPUTATION_REFRESH_COOLDAY_DAYS),
+        calculated_on=now,
+        next_refresh_available=now + timezone.timedelta(days=settings.REPUTATION_REFRESH_COOLDAY_DAYS),
         total_score=total_score,
         payments=payments,
         claims=claims,

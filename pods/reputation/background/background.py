@@ -10,7 +10,11 @@ def get_reputation_from_background(user: User):
     education = user.education.all()
     experience = user.experiences.all()
     interests = user.interests.all()
-    region_info = user.region_info.all()
+    try:
+        # 1:1 relationship
+        region_info = user.region_info.get()
+    except RegionInfo.DoesNotExist:
+        region_info = None
 
     total_score = 0
 

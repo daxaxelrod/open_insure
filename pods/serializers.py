@@ -194,7 +194,7 @@ class TokenObtainPairSerializer(SimpleTokenObtainPairSerializer):
     }
 
 
-class ReputationSerializer(Serializer):
+class ReputationSerializer(ModelSerializer):
     class Meta:
         model = ReputationDetails
         fields = "__all__"

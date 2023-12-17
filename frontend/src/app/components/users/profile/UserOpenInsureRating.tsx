@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { Col, Flex, Progress, Row, Spin } from "antd";
 import { User } from "../../../../redux/reducers/types/commonTypes";
 import colors from "../../../constants/colors";
@@ -40,9 +40,15 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
         return "No score yet";
     }, [total_score]);
 
-    const getReputation = () => {
+    const getReputation = useCallback(() => {
         dispatch(getUserRepuation(user.id));
-    };
+    }, [dispatch, user.id]);
+
+    useEffect(() => {
+        if (user.id && !reputation) {
+            getReputation();
+        }
+    }, [getReputation, reputation, user]);
 
     const reputationHeader = (
         <Flex>

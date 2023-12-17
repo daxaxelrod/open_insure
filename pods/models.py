@@ -241,7 +241,7 @@ class ReputationDetails(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Reputation Details of {self.user.name} (calculated on {self.calculated_on})"
+        return f"Reputation Details of {self.user.email} (calculated on {self.calculated_on.strftime('%m/%d/%Y, %H:%M')})"
     
     verbose_name = "Reputation Details"
     verbose_name_plural = "Reputation Details"
