@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 // import { useAppSelector } from "../../../redux/hooks";
-import { Col, Row, Typography } from "antd";
+import { Col, Flex, Row, Typography } from "antd";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import UserLargeImage from "./profile/UserLargeImage";
 import UserHeader from "./profile/UserHeader";
@@ -39,17 +39,23 @@ export default function PublicProfile({}) {
             totalPremiumsScheduled={user?.total_premiums_scheduled}
             claims={user?.claims}
         >
-            <Row align="middle" style={{ marginBottom: 10 }}>
+            <Flex
+                style={{
+                    marginBottom: ".75rem",
+                }}
+            >
                 <Col span={4}>
                     <UserLargeImage user={user} editable={isSelf} />
                 </Col>
-                <Col span={8}>
-                    <UserHeader user={user} />
-                </Col>
-                <Col span={11}>
-                    <UserOpenInsureRating user={user} />
-                </Col>
-            </Row>
+                <Flex justify="space-between" flex={1}>
+                    <Flex align="middle" flex={8}>
+                        <UserHeader user={user} />
+                    </Flex>
+                    <Flex flex={11}>
+                        <UserOpenInsureRating user={user} />
+                    </Flex>
+                </Flex>
+            </Flex>
             <Row gutter={8}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <UserPublicPolicyMembershipsCard />
