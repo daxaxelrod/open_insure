@@ -9,8 +9,9 @@ import { getUserRepuation } from "../../../../redux/actions/users";
 import { Collapse } from "antd";
 import RatingDetails from "./ratings/RatingDetails";
 import RatingDetailsBrief from "./ratings/RatingDetailsBrief";
+import { getRatingColor } from "./ratings/ratingsUtils";
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 export default function UserOpenInsureRating({ user }: { user: User }) {
     const { reputation } = user;
@@ -22,28 +23,30 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
 
     const hasScore = !!total_score;
 
-    console.log("reputation", reputation);
-
     const scoreLeaderText = useMemo(() => {
         if (total_score) {
-            if (total_score >= 80) {
-                return "Excellent";
+            if (total_score >= 90) {
+                return "Extremely Trustworthy";
+            } else if (total_score >= 80) {
+                return "Trustworthy";
+            } else if (total_score >= 70) {
+                return "Mildly Trustworthy";
             } else if (total_score >= 60) {
-                return "Good";
-            } else if (total_score >= 40) {
-                return "Fair";
-            } else if (total_score >= 20) {
-                return "Poor";
+                return "Not Trustworthy";
             } else {
-                return "Very Poor";
+                return "Untrustworthy";
             }
         }
         return "No score yet";
     }, [total_score]);
 
-    const getReputation = useCallback(() => {
-        dispatch(getUserRepuation(user.id));
-    }, [dispatch, user.id]);
+    const getReputation = useCallback(
+        (e?: any) => {
+            e?.stopPropagation();
+            dispatch(getUserRepuation(user.id));
+        },
+        [dispatch, user.id]
+    );
 
     useEffect(() => {
         if (user.id && !reputation) {
@@ -88,12 +91,12 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
                 </div>
             </div>
             <Progress
-                type="dashboard"
+                type="circle"
+                gapDegree={90}
+                gapPosition="bottom"
+                strokeLinecap="round"
                 percent={total_score || 0}
-                strokeColor={{
-                    "0%": colors.good,
-                    "100%": colors.lightGood,
-                }}
+                strokeColor={getRatingColor(total_score || 0)}
                 format={(percent) => (
                     <div>
                         {percent}
@@ -109,20 +112,39 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
                     </div>
                 )}
             />
-            <Col sm={{ offset: 2 }}>
-                <Title level={4}>{scoreLeaderText}</Title>
+            <Flex
+                style={{
+                    marginLeft: "2.5rem",
+                    flexDirection: "column",
+                    flex: 1,
+                }}
+            >
+                <Text
+                    type="secondary"
+                    style={{
+                        fontSize: ".8rem",
+                    }}
+                >
+                    Your Rating:
+                </Text>
+                <Title
+                    level={3}
+                    style={{ marginTop: 0, marginBottom: "1.5rem" }}
+                >
+                    {scoreLeaderText}
+                </Title>
                 {hasScore ? (
                     <RatingDetailsBrief reputation={reputation} />
                 ) : (
                     <Paragraph style={{ color: colors.gray8 }}>
-                        Seems like you dont have a score yet
+                        Seems like you don't have a score yet
                     </Paragraph>
                 )}
-            </Col>
+            </Flex>
         </Flex>
     );
 
-    if (!reputation) {
+    if (!reputation || !reputation?.components) {
         return reputationHeader;
     }
 

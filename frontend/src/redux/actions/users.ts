@@ -37,7 +37,6 @@ export const getUserRepuation =
         dispatch({ type: GET_USER_REPUTATION_PENDING });
         try {
             const response = await API.getUserReputation(userId);
-            debugger;
             dispatch({
                 type: GET_USER_REPUTATION_SUCCESS,
                 payload: {

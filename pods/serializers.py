@@ -195,6 +195,28 @@ class TokenObtainPairSerializer(SimpleTokenObtainPairSerializer):
 
 
 class ReputationSerializer(ModelSerializer):
+    
+    def to_representation(self, instance):
+        # Customize how the data is represented
+        representation = super().to_representation(instance)
+
+        # Add or modify fields in the representation as needed
+        representation['components'] = {
+            'payments': instance.payments,
+            'claims': instance.claims,
+            'background': instance.background,
+            'activity': instance.activity,
+            'lifestyle': instance.lifestyle,
+        }
+
+        del representation['payments']
+        del representation['claims']
+        del representation['background']
+        del representation['activity']
+        del representation['lifestyle']
+
+        return representation
+
     class Meta:
         model = ReputationDetails
         fields = "__all__"
