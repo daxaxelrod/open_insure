@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { getUserRepuation } from "../../../../redux/actions/users";
 import { Collapse } from "antd";
 import RatingDetails from "./ratings/RatingDetails";
+import RatingDetailsBrief from "./ratings/RatingDetailsBrief";
 
 const { Title, Paragraph } = Typography;
 
@@ -111,7 +112,7 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
             <Col sm={{ offset: 2 }}>
                 <Title level={4}>{scoreLeaderText}</Title>
                 {hasScore ? (
-                    <Paragraph style={{ color: colors.gray8 }}></Paragraph>
+                    <RatingDetailsBrief reputation={reputation} />
                 ) : (
                     <Paragraph style={{ color: colors.gray8 }}>
                         Seems like you dont have a score yet
