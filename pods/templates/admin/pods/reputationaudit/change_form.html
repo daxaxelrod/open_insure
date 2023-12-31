@@ -1,0 +1,14 @@
+{% extends "admin/change_form.html" %}
+{% block object-tools %}
+{{ block.super }}
+{% if original %} {# Only show if changing #}
+<div class="submit-row">
+    <form action="{% url 'pods:mark-audit-complete' original.pk %}" method="post">
+        {% csrf_token %}
+        <input type="submit"
+            value="{% if original.performed_by is not None %}Remark{% else %}Mark{% endif %} audit complete"
+            class="{% if original.performed_by is None %} default {% endif %}" />
+    </form>
+</div>
+{% endif %}
+{% endblock %}

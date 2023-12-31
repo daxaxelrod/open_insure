@@ -18,14 +18,14 @@ export default function RatingDetails({
     const [api, contextHolder] = notification.useNotification();
 
     const requestAudit = async () => {
-        const response = await createReputationAudit(currentUser.id);
-        if (response?.status === 200) {
+        try {
+            const response = await createReputationAudit(currentUser.id);
             api.success({
                 message: "Success",
                 description:
-                    "Your request has been sent. You will be notified when the audit is complete.",
+                    response.data.message || "Successfully requested audit.",
             });
-        } else {
+        } catch (error) {
             api.error({
                 message: "Error",
                 description: "Your request could not be sent.",

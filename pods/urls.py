@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework import routers
 
-from pods.reputation.views import ReputationAuditView
+from pods.reputation.views import ReputationAuditView, AdminReputationAuditView
 from pods.views import (
     PodViewSet,
     UserViewSet,
@@ -21,7 +21,10 @@ urlpatterns = [
         name="me",
     ),
     path("waitlist/", WaitlistView.as_view(), name="waitlist"),
-    path("users/<int:pk>/reputation/audit", ReputationAuditView().as_view(), name="reputation-audit"),
+    path("users/<int:pk>/reputation/audit/",
+         ReputationAuditView().as_view(), name="reputation-audit"),
+    path("reputation/audits/<int:pk>/admin",
+         AdminReputationAuditView.as_view(), name="mark-audit-complete"),
     path(
         "invites/<slug:token>/",
         PodInviteRetrieveUpdateView.as_view(),

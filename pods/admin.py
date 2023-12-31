@@ -65,6 +65,7 @@ class BadgeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ReputationDetails)
+admin.site.register(ReputationAudit)
 
 
 admin.site.register(User, UserAdmin)

@@ -39,7 +39,8 @@ class Pod(models.Model):
         blank=True,
         related_name="created_pods",
     )
-    members = models.ManyToManyField(User, related_name="pods", through="UserPod")
+    members = models.ManyToManyField(
+        User, related_name="pods", through="UserPod")
 
     # related to security and locking down a pod
     max_pod_size = models.IntegerField(
@@ -67,7 +68,8 @@ class Pod(models.Model):
 
 class UserPod(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pod = models.ForeignKey(Pod, on_delete=models.SET_NULL, null=True, blank=True)
+    pod = models.ForeignKey(
+        Pod, on_delete=models.SET_NULL, null=True, blank=True)
     risk_penalty = models.IntegerField(
         default=0,
         help_text="Base penalty for user who is percieved as more risky to the group, in basis points",
@@ -172,11 +174,13 @@ class UserBadge(models.Model):
     def __str__(self):
         return f"{self.user} has {self.badge}"
 
+
 class RegionInfo(models.Model):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="region_info")
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="region_info")
 
 
 class Institution(models.Model):
@@ -192,6 +196,7 @@ class Institution(models.Model):
     class Meta:
         abstract = True
 
+
 class Experience(Institution):
     from_date = models.DateField(null=True, blank=True)
     to_date = models.DateField(null=True, blank=True)
@@ -199,18 +204,24 @@ class Experience(Institution):
     position_title = models.CharField(max_length=255, null=True, blank=True)
     duration = models.CharField(max_length=255, null=True, blank=True)
     location = models.CharField(max_length=255, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="experiences")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="experiences")
+
 
 class Education(Institution):
     from_date = models.DateField(null=True, blank=True)
     to_date = models.DateField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     degree = models.CharField(max_length=255, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="education")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="education")
+
 
 class Interest(Institution):
     title = models.CharField(max_length=255, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interests")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="interests")
+
 
 class ReputationDetails(models.Model):
     user = models.ForeignKey(
@@ -244,9 +255,9 @@ class ReputationDetails(models.Model):
 
     def __str__(self):
         return f"Reputation Details of {self.user.email} (calculated on {self.calculated_on.strftime('%m/%d/%Y, %H:%M')})"
-    
-    verbose_name = "Reputation Details"
-    verbose_name_plural = "Reputation Details"
+
+    class Meta:
+        verbose_name_plural = "Reputation details"
 
 
 class ReputationAudit(models.Model):
@@ -256,28 +267,35 @@ class ReputationAudit(models.Model):
     latest_reputation = models.ForeignKey(
         ReputationDetails, on_delete=models.CASCADE, related_name="audits"
     )
-    performed_on = models.DateTimeField(auto_now_add=True)
+    performed_on = models.DateTimeField(
+        null=True, blank=True, help_text="When the audit was performed"
+    )
     performed_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="reputation_audits_performed"
+        User,
+        on_delete=models.CASCADE,
+        related_name="reputation_audits_performed",
+        null=True,
+        blank=True,
     )
 
     # maybe a field or two related to email notifications?
-    
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        constraints = [
-            models.CheckConstraint(
-                check=Q(performed_by__is_staff=True) | Q(performed_by__is_superuser=True),
-                name='admin_or_superuser_constraint',
-            )
-        ]
+    def __str__(self):
+        performed_on_str = ""
+        if self.performed_on:
+            performed_on_str = f"(performed on {self.performed_on.strftime('%m/%d/%Y, %H:%M')} by {self.performed_by.email})"
+        return f"Audit of {self.user.email} {performed_on_str}"
 
     def save(self, *args, **kwargs):
-        if not self.performed_by.is_staff and not self.performed_by.is_superuser:
-            raise IntegrityError("Only admins or superusers can perform reputation audits.")
+        if self.performed_by_id and not self.performed_by.is_staff and not self.performed_by.is_superuser:
+            raise IntegrityError(
+                "Only admins or superusers can perform reputation audits.")
         super().save(*args, **kwargs)
+
+
 class EmailSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     updated_at = models.DateTimeField(auto_now=True)

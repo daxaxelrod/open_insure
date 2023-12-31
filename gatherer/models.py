@@ -9,7 +9,8 @@ from pods.models import User
 class PolicyLineProperty(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    search_tags = models.TextField(blank=True, null=True, help_text="comma separated")
+    search_tags = models.TextField(
+        blank=True, null=True, help_text="comma separated")
 
     image_url = models.URLField(blank=True, null=True)
 
@@ -78,6 +79,9 @@ class PropertyLifeExpectancyGuess(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name_plural = "Property life expectancy guesses"
+
     def __str__(self):
         return f"{self.property_type} ${self.purchase_price} loss rate: {self.yearly_loss_rate_bsp} bsp/year"
 
@@ -91,7 +95,8 @@ class PropertyLifeLossGuess(models.Model):
         help_text="in basis points, 0 - 10000",
         validators=[MinValueValidator(0), MaxValueValidator(10000)],
     )
-    loss_amount = models.IntegerField(help_text="The cost of the loss in cents")
+    loss_amount = models.IntegerField(
+        help_text="The cost of the loss in cents")
     loss_reason = models.CharField(max_length=1024)
     category = models.CharField(
         max_length=255, choices=LOSS_REASON_CHOICES, null=True, blank=True
@@ -99,6 +104,9 @@ class PropertyLifeLossGuess(models.Model):
     guess = models.ForeignKey(
         PropertyLifeExpectancyGuess, on_delete=models.CASCADE, related_name="losses"
     )
+
+    class Meta:
+        verbose_name_plural = "Property life loss guesses"
 
     def __str__(self) -> str:
         return f"${self.loss_amount} of {self.guess.property_type} lost on {self.loss_date}"
