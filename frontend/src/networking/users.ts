@@ -17,3 +17,7 @@ export function getUserDetail(userId: number) {
 export function getUserReputation(userId: number) {
     return axiosInstance.get(`/api/v1/users/${userId}/reputation/`);
 }
+
+export function createReputationAudit(userId: number) {
+    return axiosInstance.post(`/api/v1/users/${userId}/reputation/audit/`);
+}

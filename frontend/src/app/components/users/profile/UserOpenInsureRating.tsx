@@ -14,7 +14,7 @@ import { getRatingColor } from "./ratings/ratingsUtils";
 const { Title, Paragraph, Text } = Typography;
 
 export default function UserOpenInsureRating({ user }: { user: User }) {
-    const { reputation } = user;
+    const { reputation } = user || {};
     const { total_score } = reputation || {};
     const dispatch = useAppDispatch();
     const getReputationPending = useAppSelector(
@@ -43,13 +43,13 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
     const getReputation = useCallback(
         (e?: any) => {
             e?.stopPropagation();
-            dispatch(getUserRepuation(user.id));
+            dispatch(getUserRepuation(user?.id));
         },
-        [dispatch, user.id]
+        [dispatch, user?.id]
     );
 
     useEffect(() => {
-        if (user.id && !reputation) {
+        if (user?.id && !reputation) {
             getReputation();
         }
     }, [getReputation, reputation, user]);

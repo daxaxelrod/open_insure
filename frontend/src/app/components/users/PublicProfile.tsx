@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 // import { useAppSelector } from "../../../redux/hooks";
-import { Col, Flex, Row, Typography } from "antd";
+import { Col, Flex, Row } from "antd";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import UserLargeImage from "./profile/UserLargeImage";
 import UserHeader from "./profile/UserHeader";
@@ -11,8 +11,6 @@ import UserPublicPolicyMembershipsCard from "./profile/policies/UserPublicPolicy
 import PublicProfileProvider from "../contexts/PublicProfileContext";
 import UserPublicPolicyClaimHistoryCard from "./profile/policies/UserPublicPolicyClaimHistoryCard";
 import UserPublicPolicyVotingHistoryCard from "./profile/policies/UserPublicPolicyVotingHistoryCard";
-
-const { Paragraph } = Typography;
 
 export default function PublicProfile({}) {
     let { id } = useParams();

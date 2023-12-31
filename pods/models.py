@@ -2,6 +2,8 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.contrib.auth.models import AbstractUser
+from django.db import IntegrityError
+from django.db.models import Q
 
 from pods.utils.stringUtils import random_string_generator
 
@@ -247,7 +249,35 @@ class ReputationDetails(models.Model):
     verbose_name_plural = "Reputation Details"
 
 
+class ReputationAudit(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="reputation_audits"
+    )
+    latest_reputation = models.ForeignKey(
+        ReputationDetails, on_delete=models.CASCADE, related_name="audits"
+    )
+    performed_on = models.DateTimeField(auto_now_add=True)
+    performed_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="reputation_audits_performed"
+    )
 
+    # maybe a field or two related to email notifications?
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=Q(performed_by__is_staff=True) | Q(performed_by__is_superuser=True),
+                name='admin_or_superuser_constraint',
+            )
+        ]
+
+    def save(self, *args, **kwargs):
+        if not self.performed_by.is_staff and not self.performed_by.is_superuser:
+            raise IntegrityError("Only admins or superusers can perform reputation audits.")
+        super().save(*args, **kwargs)
 class EmailSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     updated_at = models.DateTimeField(auto_now=True)

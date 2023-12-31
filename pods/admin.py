@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
 
 
-from pods.models import Education, Experience, Interest, Pod, PodInvite, RegionInfo, ReputationDetails, User, WaitlistMember, UserPod, Badge, UserBadge
+from pods.models import Education, Experience, Interest, Pod, PodInvite, RegionInfo, ReputationDetails, User, WaitlistMember, UserPod, Badge, UserBadge, ReputationAudit
 
 
 class MembershipInline(admin.TabularInline):
@@ -28,14 +28,16 @@ class InterestInline(admin.StackedInline):
     model = Interest
     extra = 1
 
+
 class RegionInfoInline(admin.StackedInline):
     model = RegionInfo
     extra = 1
 
+
 class UserAdmin(UserAdmin):
     model = User
-    inlines = [ExperienceInline, EducationInline, InterestInline, RegionInfoInline]
-
+    inlines = [ExperienceInline, EducationInline,
+               InterestInline, RegionInfoInline]
 
     fieldsets = UserAdmin.fieldsets + (
         (
@@ -49,7 +51,8 @@ class UserAdmin(UserAdmin):
 class BadgeAdmin(admin.ModelAdmin):
     def image_tag(self, obj):
         return format_html(
-            '<img src="{}" style="height:100px;width:100px" />'.format(obj.picture)
+            '<img src="{}" style="height:100px;width:100px" />'.format(
+                obj.picture)
         )
 
     image_tag.short_description = "Icon"

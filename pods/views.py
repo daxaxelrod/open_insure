@@ -202,6 +202,7 @@ class UserViewSet(ModelViewSet):
         user = self.get_object()
         reputation = determine_reputation_for_user(user)
         return Response(ReputationSerializer(reputation).data, status=HTTP_200_OK)
+    
 
 
 class SelfView(RetrieveUpdateAPIView):
