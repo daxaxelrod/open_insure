@@ -9,7 +9,12 @@ const { Title, Paragraph } = Typography;
 
 export default function UserHeader({ user }: { user: User }) {
     return (
-        <div>
+        <div
+            style={{
+                marginLeft: "2rem",
+                minWidth: "10rem",
+            }}
+        >
             <Title style={{ marginBottom: ".25rem" }}>
                 {user?.first_name} {user?.last_name}
             </Title>

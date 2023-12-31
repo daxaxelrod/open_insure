@@ -42,10 +42,8 @@ export default function PublicProfile({}) {
                     marginBottom: ".75rem",
                 }}
             >
-                <Col span={4}>
+                <Flex justify="space-between" flex={1} wrap="wrap">
                     <UserLargeImage user={user} editable={isSelf} />
-                </Col>
-                <Flex justify="space-between" flex={1}>
                     <Flex align="middle" flex={8}>
                         <UserHeader user={user} />
                     </Flex>

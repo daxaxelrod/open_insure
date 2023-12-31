@@ -129,7 +129,11 @@ export default function UserOpenInsureRating({ user }: { user: User }) {
                 </Text>
                 <Title
                     level={3}
-                    style={{ marginTop: 0, marginBottom: "1.5rem" }}
+                    style={{
+                        marginTop: 0,
+                        marginBottom: "1.5rem",
+                        wordBreak: "keep-all",
+                    }}
                 >
                     {scoreLeaderText}
                 </Title>

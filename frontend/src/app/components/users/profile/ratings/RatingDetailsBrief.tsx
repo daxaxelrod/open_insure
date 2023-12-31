@@ -19,9 +19,8 @@ export default function RatingDetailsBrief({
                     width: "100%",
                     flexWrap: "wrap",
                 }}
-                wrap
             >
-                <Space size={"large"}>
+                <Space size={"large"} wrap>
                     <Statistic
                         title="Activity"
                         value={getRatingGrade(reputation.components.activity)}
