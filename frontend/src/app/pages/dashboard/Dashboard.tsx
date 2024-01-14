@@ -41,7 +41,7 @@ export default function Home(props: any) {
 
     useEffect(() => {
         if (!isLoggedIn()) {
-            navigate("/join");
+            navigate("/");
         } else {
             // hrm, do this here and its better for user experience, gets to see data faster
             // but do it in the sub component and it makes more sense code wise.
@@ -50,7 +50,7 @@ export default function Home(props: any) {
                 navigate("/home");
             }
         }
-    }, [accessToken, pageNum]);
+    }, [accessToken, dispatch, location.pathname, navigate, pageNum]);
 
     return (
         <Layout style={{ padding: "0 24px 24px" }}>

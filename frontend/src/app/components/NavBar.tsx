@@ -7,7 +7,6 @@ import {
     Grid,
     MenuProps,
     Dropdown,
-    Space,
     Col,
 } from "antd";
 import { Squeeze as Hamburger } from "hamburger-react";
@@ -17,6 +16,7 @@ import { isLoggedIn } from "axios-jwt";
 import { Link } from "react-router-dom";
 import { HomeOutlined, FileOutlined, UserOutlined } from "@ant-design/icons";
 import usePageTracking from "./hooks/usePageTracking";
+import useWindowScrollPosition from "./hooks/useWindowScrollPosition";
 
 const { Header } = Layout;
 
@@ -58,13 +58,21 @@ export default function NavBar() {
     // use hamburger menu on mobile
     const isMedOrBelow = !sizes.lg && !sizes.xl && !sizes.xxl;
 
+    const scrollPosition = useWindowScrollPosition();
+    const hasScrolled = useMemo(
+        () => scrollPosition.scrollY > 0,
+        [scrollPosition.scrollY]
+    );
+
     return (
         <Header
-            className="header"
+            className={`main-header header ${
+                hasScrolled ? "nav-scrolled" : ""
+            }`}
             style={{
                 paddingLeft: 0,
                 paddingRight: 0,
-                background: "#f0f2f5",
+                background: "white",
                 height: "100%",
                 paddingTop: 10,
                 paddingBottom: 10,

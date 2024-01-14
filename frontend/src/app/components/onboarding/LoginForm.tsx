@@ -77,7 +77,6 @@ export default function LoginForm() {
                     autoComplete="email"
                 />
             </Form.Item>
-
             <Form.Item
                 label={isMobile ? null : "Password"}
                 name="password"
@@ -90,15 +89,14 @@ export default function LoginForm() {
                     placeholder="******"
                 />
             </Form.Item>
-
             <Form.Item
                 wrapperCol={{
                     xs: { span: 24 },
                     sm: { span: 24 },
-                    md: { span: 12, offset: !screens.lg ? 6 : 12 },
-                    lg: { span: 0, offset: 8 },
-                    xl: { span: 0, offset: 8 },
-                    xxl: { span: 0, offset: 8 },
+                    md: { span: 24, offset: !screens.lg ? 6 : 12 },
+                    lg: { span: 12, offset: 8 },
+                    xl: { span: 12, offset: 8 },
+                    xxl: { span: 12, offset: 8 },
                 }}
             >
                 <Button
@@ -110,7 +108,6 @@ export default function LoginForm() {
                     Login
                 </Button>
             </Form.Item>
-
             {loginError ? (
                 <Row style={{ marginBottom: "2rem" }}>
                     <Col xs={{ offset: 0, span: 24 }}>
