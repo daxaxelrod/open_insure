@@ -65,14 +65,7 @@ export default function InterestedUserForm() {
                     />
                 </Form.Item>
                 <Form.Item>
-                    <Button
-                        htmlType="submit"
-                        type="primary"
-                        loading={pending}
-                        style={{
-                            marginTop: isMobile ? 10 : 0,
-                        }}
-                    >
+                    <Button htmlType="submit" type="primary" loading={pending}>
                         Join waitlist
                     </Button>
                 </Form.Item>

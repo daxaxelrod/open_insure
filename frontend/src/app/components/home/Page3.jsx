@@ -58,12 +58,13 @@ export default function Page3() {
                             fontSize: "1.6rem",
                         }}
                     >
-                        Transparency is a core tenet of this Open Insure. Our
-                        code is open source and available on GitHub.
+                        Transparency is a core tenet of Open Insure. Our code is
+                        open source and available on GitHub.
                     </Paragraph>
                     <a
                         href={"https://github.com/daxaxelrod/open_insure"}
                         target="_blank"
+                        rel="noreferrer"
                     >
                         <Button
                             icon={<GithubOutlined />}

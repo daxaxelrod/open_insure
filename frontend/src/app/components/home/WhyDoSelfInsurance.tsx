@@ -33,10 +33,11 @@ export default function WhyDoSelfInsurance() {
         >
             <Row>
                 <Col
-                    md={{ span: 12, offset: 4 }}
-                    lg={{ span: 8, offset: 3 }}
-                    sm={{ span: 20, offset: 2 }}
                     xs={{ span: 20, offset: 2 }}
+                    sm={{ span: 20, offset: 2 }}
+                    md={{ span: 12, offset: 2 }}
+                    lg={{ span: 8, offset: 2 }}
+                    xl={{ span: 8, offset: 3 }}
                 >
                     <Title
                         level={4}
@@ -49,10 +50,12 @@ export default function WhyDoSelfInsurance() {
             </Row>
             <Row>
                 <Col
-                    lg={{ span: 7, offset: 3 }}
-                    md={{ span: 18, offset: 4 }}
-                    sm={{ span: 20, offset: 2 }}
                     xs={{ span: 20, offset: 2 }}
+                    sm={{ span: 20, offset: 2 }}
+                    md={{ span: 18, offset: 2 }}
+                    lg={{ span: 9, offset: 2 }}
+                    xl={{ span: 8, offset: 3 }}
+                    xxl={{ span: 8, offset: 3 }}
                 >
                     <StyledParagraph>
                         A conventional insurance company makes a profit by
@@ -60,10 +63,12 @@ export default function WhyDoSelfInsurance() {
                     </StyledParagraph>
                 </Col>
                 <Col
-                    lg={{ span: 7, offset: 3 }}
-                    md={{ span: 18, offset: 4 }}
-                    sm={{ span: 20, offset: 2 }}
                     xs={{ span: 20, offset: 2 }}
+                    sm={{ span: 20, offset: 2 }}
+                    md={{ span: 18, offset: 2 }}
+                    lg={{ span: 9, offset: 2 }}
+                    xl={{ span: 8, offset: 2 }}
+                    xxl={{ span: 8, offset: 2 }}
                 >
                     <StyledParagraph>
                         With self insurance, your money stays between you and

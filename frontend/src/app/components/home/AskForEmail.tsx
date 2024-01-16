@@ -25,7 +25,14 @@ export default function AskForEmail() {
             }}
         >
             <Row>
-                <Col md={{ span: 12, offset: 4 }} lg={{ span: 8, offset: 4 }}>
+                <Col
+                    md={{ span: 12, offset: 3 }}
+                    lg={{ span: 10, offset: 2 }}
+                    xl={{
+                        span: 8,
+                        offset: 4,
+                    }}
+                >
                     <Title
                         level={4}
                         style={{ color: colors.linkColor, marginTop: "2.4rem" }}
@@ -36,7 +43,15 @@ export default function AskForEmail() {
                 </Col>
             </Row>
             <Row>
-                <Col md={{ span: 20, offset: 4 }} lg={{ span: 7, offset: 4 }}>
+                <Col
+                    sm={{ span: 24, offset: 0 }}
+                    md={{ span: 20, offset: 3 }}
+                    lg={{ span: 10, offset: 2 }}
+                    xl={{
+                        span: 8,
+                        offset: 4,
+                    }}
+                >
                     <StyledParagraph>
                         Only friends and family of policy members can join
                         existing policies. Sign up for our waitlist to be
@@ -46,8 +61,10 @@ export default function AskForEmail() {
                     </StyledParagraph>
                 </Col>
                 <Col
-                    md={{ span: 20, offset: 4 }}
-                    lg={{ span: 9, offset: 1 }}
+                    sm={{ span: 24, offset: 0 }}
+                    md={{ span: 20, offset: 3 }}
+                    lg={{ span: 10, offset: 1 }}
+                    xl={{ span: 9, offset: 3 }}
                     style={{ marginTop: "1.4rem" }}
                 >
                     <InterestedUserForm />

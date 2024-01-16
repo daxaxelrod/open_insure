@@ -83,7 +83,7 @@ export default function NavBar() {
                     xxl={{ span: 14, offset: 3 }}
                     xl={{ span: 14, offset: 3 }}
                     lg={{ span: 15, offset: 2 }}
-                    md={{ span: 10, offset: 2 }}
+                    md={{ span: 14, offset: 2 }}
                     sm={{ span: 13, offset: 2 }}
                     xs={{ span: 13, offset: 2 }}
                 >
@@ -117,7 +117,7 @@ export default function NavBar() {
                     <Col
                         xs={{ span: 6 }}
                         sm={{ span: 6 }}
-                        md={{ span: 4 }}
+                        md={{ span: 6 }}
                         lg={{ span: 4 }}
                         style={{ textAlign: "right" }}
                     >
