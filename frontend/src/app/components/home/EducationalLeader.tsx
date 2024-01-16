@@ -1,13 +1,12 @@
 import React from "react";
 import { Button, Col, Grid, List, Row, Tooltip } from "antd";
 import { Typography } from "antd";
-import HandDrawnCircle from "../../../assets/images/home/handdrawn_oval.svg";
 import HandDrawnOval from "./static/HandDrawnOval";
 import heroGraphic from "../../../assets/images/home/hero_v2.png";
 import colors from "../../constants/colors";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const { Title, Paragraph } = Typography;
 
 const StatsBox = styled.div({
@@ -21,6 +20,11 @@ export default function EducationalLeader() {
         sizes.xs || (sizes.sm && !sizes.md) || window.innerWidth < 768;
     const isSmOrBelow =
         ((sizes.xs || sizes.sm) && !sizes.md) || window.innerWidth < 768;
+    const navigate = useNavigate();
+
+    const goToRegister = () => {
+        navigate("/join");
+    };
 
     return (
         <Row
@@ -88,18 +92,19 @@ export default function EducationalLeader() {
                 <div>
                     <Paragraph
                         style={{
-                            fontSize: "1.25rem",
+                            fontSize: "1.45rem",
                             color: colors.gray8,
                             fontWeight: 400,
                             marginTop: isMobile ? "1rem" : ".5rem",
                             paddingRight: isMobile ? "1rem" : 0,
+                            marginBottom: 0,
                         }}
                     >
                         Open Insure makes it easy for you to{" "}
                         <strong>self-insure</strong> your personal property on a
-                        modern web platform
+                        modern web platform. 100% Free.
                     </Paragraph>
-                    <div
+                    {/* <div
                         style={{
                             width: "100%",
                             height: 3,
@@ -107,7 +112,7 @@ export default function EducationalLeader() {
 
                             borderRadius: 10,
                         }}
-                    />
+                    /> */}
                     <Row
                         style={{
                             marginTop: isSmOrBelow ? ".75rem" : "1rem",
@@ -157,7 +162,7 @@ export default function EducationalLeader() {
                                             fontWeight: 400,
                                         }}
                                     >
-                                        Property Types
+                                        Insurable Asset Classes
                                         <Tooltip
                                             trigger={
                                                 isSmOrBelow ? "click" : "hover"
@@ -250,6 +255,18 @@ export default function EducationalLeader() {
                             </StatsBox>
                         </Col>
                     </Row>
+                    <Button
+                        size="large"
+                        type="primary"
+                        style={{
+                            marginTop: isMobile ? "1rem" : "1.25rem",
+                            marginBottom: isMobile ? "1rem" : "1.25rem",
+                        }}
+                        shape="round"
+                        onClick={goToRegister}
+                    >
+                        Get Started
+                    </Button>
                 </div>
             </Col>
             <Col

@@ -80,11 +80,12 @@ export default function NavBar() {
         >
             <Row align="middle">
                 <Col
-                    xs={{ span: 10, offset: 2 }}
-                    sm={{ span: 10, offset: 2 }}
-                    md={{ span: 15, offset: 2 }}
-                    lg={{ span: 14, offset: 2 }}
-                    xl={{ span: 14, offset: 2 }}
+                    xxl={{ span: 14, offset: 3 }}
+                    xl={{ span: 14, offset: 3 }}
+                    lg={{ span: 15, offset: 2 }}
+                    md={{ span: 10, offset: 2 }}
+                    sm={{ span: 13, offset: 2 }}
+                    xs={{ span: 13, offset: 2 }}
                 >
                     {isMedOrBelow && loggedIn ? (
                         <Dropdown

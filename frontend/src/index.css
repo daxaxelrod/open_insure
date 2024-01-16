@@ -23,11 +23,11 @@ code {
 }
 
 .main-header.nav-scrolled {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     transition: 2s;
 }
 
 .main-header:not(.nav-scrolled) {
     box-shadow: none;
-    transition: 2s;
+    transition: 0.5s;
 }
